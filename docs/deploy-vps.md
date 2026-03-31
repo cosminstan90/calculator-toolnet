@@ -5,6 +5,7 @@ Stack-ul ramane clasic, fara Docker:
 - Next.js + Payload ruleaza prin `pm2`
 - PostgreSQL poate rula local pe VPS sau separat
 - Nginx sau CloudPanel fac reverse proxy spre aplicatie
+- build-ul Next.js foloseste `output: "standalone"`, deci PM2 porneste serverul din `.next/standalone/server.js`
 
 ## Pasii recomandati
 
