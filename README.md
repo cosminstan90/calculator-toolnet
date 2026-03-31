@@ -61,6 +61,7 @@ npm run lint
 npm run payload
 npm run payload:types
 npm run payload:importmap
+npm run ops:init-db
 npm run ops:bootstrap-cms
 npm run ops:validate-content
 npm run ops:seo-audit
@@ -88,6 +89,16 @@ Bootstrap-ul CMS creeaza:
 - 20 calculatoare functionale
 - articole suport
 - intrari de baza in `formula-library`
+
+## Prima initializare DB pe Linux / VPS
+
+Daca `payload migrate` se loveste de incompatibilitati ESM/TypeScript in CLI, foloseste:
+
+```bash
+npm run ops:init-db
+```
+
+Scriptul initializeaza Payload in mod controlat si lasa adapterul Postgres sa creeze schema de baza inainte de primul acces la `/admin`.
 
 ## Deploy
 

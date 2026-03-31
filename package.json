@@ -10,6 +10,7 @@
     "payload": "payload",
     "payload:types": "payload generate:types",
     "payload:importmap": "payload generate:importmap",
+    "ops:init-db": "node --import tsx scripts/init-db.mjs",
     "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
     "ops:seo-audit": "node scripts/seo-audit.mjs",
@@ -35,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

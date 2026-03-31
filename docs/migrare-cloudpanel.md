@@ -112,6 +112,14 @@ npm ci
 npm run build
 ```
 
+Daca prima initializare a bazei se loveste de blocaje in `payload migrate`, ruleaza:
+
+```bash
+npm run ops:init-db
+```
+
+Asta forteaza initializarea controlata a schemei Postgres inainte de primul acces la `/admin`.
+
 ## 5. Variabile de mediu
 
 Creezi `.env` pe server pornind din `.env.example`.
@@ -214,6 +222,7 @@ git clone REPO-UL-TAU
 cd calculatoare-online
 npm ci
 npm run build
+npm run ops:init-db
 pm2 start ecosystem.config.cjs
 ```
 
@@ -298,4 +307,3 @@ npm run ops:import-content -- --input=imports/content.json
 - CloudPanel Requirements: [cloudpanel.io/docs/v2/requirements](https://www.cloudpanel.io/docs/v2/requirements/)
 - CloudPanel Root User Commands: [cloudpanel.io/docs/v2/cloudpanel-cli/root-user-commands](https://www.cloudpanel.io/docs/v2/cloudpanel-cli/root-user-commands/)
 - CloudPanel Installer example pages cu DB engine-urile disponibile: [cloudpanel.io/docs/v2/getting-started/oracle-cloud/installation/installer](https://www.cloudpanel.io/docs/v2/getting-started/oracle-cloud/installation/installer/)
-
