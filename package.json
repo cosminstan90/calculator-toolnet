@@ -10,6 +10,7 @@
     "payload": "payload",
     "payload:types": "payload generate:types",
     "payload:importmap": "payload generate:importmap",
+    "ops:generate-import-map": "node --import tsx scripts/generate-import-map.mjs",
     "ops:init-db": "node --import tsx scripts/init-db.mjs",
     "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
