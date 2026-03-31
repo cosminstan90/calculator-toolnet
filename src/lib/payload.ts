@@ -1,4 +1,4 @@
-import config from "@/cms.config";
+import config from "../cms.config.ts";
 import { getPayload, type Payload } from "payload";
 
 let cachedPayload: Promise<Payload> | null = null;
@@ -15,3 +15,4 @@ export const getPayloadClient = async (): Promise<Payload> => {
     throw error;
   }
 };
+

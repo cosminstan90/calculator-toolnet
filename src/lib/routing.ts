@@ -1,4 +1,4 @@
-import { getPayloadClient } from "@/lib/payload";
+import { getPayloadClient } from "./payload.ts";
 
 const normalizePath = (path: string): string => {
   if (!path || path === "/") {
@@ -163,3 +163,4 @@ export const getRedirectNavigationMode = (statusCode?: string) => {
 };
 
 export const toNormalizedPath = normalizePath;
+

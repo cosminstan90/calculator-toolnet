@@ -1,4 +1,4 @@
-import type { Article, CalculatorCategory, CalculatorDoc } from "@/lib/content";
+import type { Article, CalculatorCategory, CalculatorDoc } from "./content.ts";
 
 export const fallbackHeroHighlights: Array<{ value: string; label: string }> = [
   { value: "20", label: "calculatoare disponibile in primul hub" },
@@ -96,3 +96,4 @@ export const fallbackArticles: Array<Pick<Article, "id" | "slug" | "title" | "ex
     articleType: "Conversii",
   },
 ];
+

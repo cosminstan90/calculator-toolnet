@@ -1,5 +1,5 @@
-import { ensureCalculatorFaq } from "@/lib/calculator-content";
-import { getCalculatorDefinition, type CalculatorKey } from "@/lib/calculator-registry";
+import { ensureCalculatorFaq } from "./calculator-content.ts";
+import { getCalculatorDefinition, type CalculatorKey } from "./calculator-registry.ts";
 import type { Payload } from "payload";
 
 type ImportEntity = "calculator" | "article" | "redirect";
@@ -379,6 +379,7 @@ export const importContent = async (
 
   return result;
 };
+
 
 
 

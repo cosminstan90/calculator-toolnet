@@ -2,8 +2,8 @@ import {
   CALCULATOR_KEYS,
   getCalculatorDefinition,
   type CalculatorKey,
-} from "@/lib/calculator-registry";
-import { ensureCalculatorFaq } from "@/lib/calculator-content";
+} from "./calculator-registry.ts";
+import { ensureCalculatorFaq } from "./calculator-content.ts";
 import type { Payload } from "payload";
 
 type BootstrapOptions = { force?: boolean };
@@ -1140,6 +1140,7 @@ export const bootstrapCms = async (payload: Payload, options: BootstrapOptions =
 
   return { homepage, categories, formulas, calculators, articles };
 };
+
 
 
 

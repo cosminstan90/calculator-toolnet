@@ -1,4 +1,4 @@
-﻿import { getPayloadClient } from "@/lib/payload";
+import { getPayloadClient } from "./payload.ts";
 import type { Where } from "payload";
 
 type RelationDoc = {
@@ -717,3 +717,4 @@ export const searchSuggestions = async (query: string) => {
     return Array.from(deduped.values());
   }, []);
 };
+

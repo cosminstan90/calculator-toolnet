@@ -1,4 +1,4 @@
-import { absoluteURL } from "@/lib/site";
+import { absoluteURL } from "./site.ts";
 
 export const xmlResponse = (xml: string): Response => {
   return new Response(xml, {
@@ -51,3 +51,4 @@ export const asSitemapNode = (path: string, lastmod?: string): string => {
 export const asURLNode = (path: string, lastmod?: string): string => {
   return `<url><loc>${absoluteURL(path)}</loc><lastmod>${toISO(lastmod)}</lastmod></url>`;
 };
+

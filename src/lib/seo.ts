@@ -1,4 +1,4 @@
-import { absoluteURL, organizationConfig, siteConfig } from "@/lib/site";
+import { absoluteURL, organizationConfig, siteConfig } from "./site.ts";
 import type { Metadata } from "next";
 
 type MetadataInput = {
@@ -227,4 +227,5 @@ export const buildFAQJsonLd = (
     },
   })),
 });
+
 
