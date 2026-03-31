@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getPayload } from "payload";
+import prompts from "prompts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,13 +47,24 @@ const previousNodeEnv = process.env.NODE_ENV;
 // on first boot without going through the CLI migration path.
 process.env.NODE_ENV = runtimeEnv;
 process.env.PAYLOAD_MIGRATING = "false";
+process.env.PAYLOAD_FORCE_DRIZZLE_PUSH = "true";
+
+// Drizzle / Payload can ask interactive questions during first schema push.
+// Pre-accept them in this one-off operational script so it can run unattended on VPS.
+prompts.inject([true, true, true, true, true]);
+
+console.log(`[init-db] Loading config from ${configPath}`);
 
 const importedConfig = await import(pathToFileURL(configPath).href);
 const config = await (importedConfig.default ?? importedConfig);
+config.telemetry = false;
+
+console.log(`[init-db] Initializing Payload with NODE_ENV=${runtimeEnv}`);
 
 const payload = await getPayload({ config });
 
 try {
+  console.log("[init-db] Payload initialized. Schema push should now be complete.");
   console.log(
     JSON.stringify(
       {
