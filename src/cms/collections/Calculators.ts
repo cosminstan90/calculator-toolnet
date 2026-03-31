@@ -2,8 +2,8 @@ import {
   CALCULATOR_KEYS,
   getCalculatorDefinition,
   type CalculatorKey,
-} from "@/lib/calculator-registry";
-import { buildDefaultCalculatorFaq } from "@/lib/calculator-content";
+} from "../../lib/calculator-registry.ts";
+import { buildDefaultCalculatorFaq } from "../../lib/calculator-content.ts";
 import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
 
 import {
@@ -11,10 +11,10 @@ import {
   isAdminEditorOrReviewer,
   isAdminOrEditor,
   publishedOnlyForGuests,
-} from "../access";
-import { contentBlocksField } from "../fields/contentBlocks";
-import { seoFieldGroup } from "../fields/seo";
-import { slugField } from "../fields/slug";
+} from "../access.ts";
+import { contentBlocksField } from "../fields/contentBlocks.ts";
+import { seoFieldGroup } from "../fields/seo.ts";
+import { slugField } from "../fields/slug.ts";
 
 const asString = (value: unknown): string | undefined => {
   return typeof value === "string" ? value : undefined;

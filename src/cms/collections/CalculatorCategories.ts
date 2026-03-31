@@ -1,9 +1,9 @@
 ﻿import type { CollectionConfig } from "payload";
 
-import { isAdmin, isAdminOrEditor } from "../access";
-import { contentBlocksField } from "../fields/contentBlocks";
-import { seoFieldGroup } from "../fields/seo";
-import { slugField } from "../fields/slug";
+import { isAdmin, isAdminOrEditor } from "../access.ts";
+import { contentBlocksField } from "../fields/contentBlocks.ts";
+import { seoFieldGroup } from "../fields/seo.ts";
+import { slugField } from "../fields/slug.ts";
 
 export const CalculatorCategories: CollectionConfig = {
   slug: "calculator-categories",

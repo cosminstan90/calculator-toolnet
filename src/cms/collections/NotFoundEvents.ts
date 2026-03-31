@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload";
 
-import { isAdmin, isAdminOrEditor } from "../access";
+import { isAdmin, isAdminOrEditor } from "../access.ts";
 
 export const NotFoundEvents: CollectionConfig = {
   slug: "not-found-events",

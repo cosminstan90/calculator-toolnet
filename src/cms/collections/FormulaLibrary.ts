@@ -1,7 +1,7 @@
 ﻿import type { CollectionConfig } from "payload";
 
-import { isAdmin, isAdminOrEditor } from "../access";
-import { slugField } from "../fields/slug";
+import { isAdmin, isAdminOrEditor } from "../access.ts";
+import { slugField } from "../fields/slug.ts";
 
 export const FormulaLibrary: CollectionConfig = {
   slug: "formula-library",

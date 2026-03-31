@@ -1,3 +1,3 @@
-import config from "./src/cms.config";
+import config from "./src/cms.config.ts";
 
 export default config;

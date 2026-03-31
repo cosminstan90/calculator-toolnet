@@ -4,14 +4,14 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 
-import { Articles } from "./cms/collections/Articles";
-import { CalculatorCategories } from "./cms/collections/CalculatorCategories";
-import { Calculators } from "./cms/collections/Calculators";
-import { FormulaLibrary } from "./cms/collections/FormulaLibrary";
-import { NotFoundEvents } from "./cms/collections/NotFoundEvents";
-import { Redirects } from "./cms/collections/Redirects";
-import { Users } from "./cms/collections/Users";
-import { Homepage } from "./cms/globals/Homepage";
+import { Articles } from "./cms/collections/Articles.ts";
+import { CalculatorCategories } from "./cms/collections/CalculatorCategories.ts";
+import { Calculators } from "./cms/collections/Calculators.ts";
+import { FormulaLibrary } from "./cms/collections/FormulaLibrary.ts";
+import { NotFoundEvents } from "./cms/collections/NotFoundEvents.ts";
+import { Redirects } from "./cms/collections/Redirects.ts";
+import { Users } from "./cms/collections/Users.ts";
+import { Homepage } from "./cms/globals/Homepage.ts";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

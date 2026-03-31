@@ -6,9 +6,9 @@ import {
   isAdminEditorOrReviewer,
   isAdminOrEditor,
   publishedOnlyForGuests,
-} from "../access";
-import { seoFieldGroup } from "../fields/seo";
-import { slugField } from "../fields/slug";
+} from "../access.ts";
+import { seoFieldGroup } from "../fields/seo.ts";
+import { slugField } from "../fields/slug.ts";
 
 const reviewedStatuses = new Set(["reviewed", "published"]);
 

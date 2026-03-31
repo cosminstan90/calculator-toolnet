@@ -1,8 +1,8 @@
 ﻿import type { GlobalConfig } from "payload";
 
-import { isAdminOrEditor } from "../access";
-import { contentBlocksField } from "../fields/contentBlocks";
-import { seoFieldGroup } from "../fields/seo";
+import { isAdminOrEditor } from "../access.ts";
+import { contentBlocksField } from "../fields/contentBlocks.ts";
+import { seoFieldGroup } from "../fields/seo.ts";
 
 export const Homepage: GlobalConfig = {
   slug: "homepage",

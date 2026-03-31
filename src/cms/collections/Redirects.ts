@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
-import { isSafeInternalPath } from "@/lib/routing";
+import { isSafeInternalPath } from "../../lib/routing.ts";
 
-import { isAdmin, isAdminOrEditor } from "../access";
+import { isAdmin, isAdminOrEditor } from "../access.ts";
 
 export const Redirects: CollectionConfig = {
   slug: "redirects",
