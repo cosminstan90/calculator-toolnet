@@ -15,6 +15,33 @@ export const Users: CollectionConfig = {
     update: adminsAndSelf,
     delete: isAdmin,
   },
+  hooks: {
+    beforeChange: [
+      async ({ data, operation, req }) => {
+        if (operation !== "create") {
+          return data;
+        }
+
+        const existingUser = await req.payload.find({
+          collection: "users",
+          depth: 0,
+          limit: 1,
+          overrideAccess: true,
+          pagination: false,
+          req,
+        });
+
+        if (existingUser.docs.length > 0) {
+          return data;
+        }
+
+        return {
+          ...data,
+          roles: ["admin"],
+        };
+      },
+    ],
+  },
   fields: [
     {
       name: "name",
