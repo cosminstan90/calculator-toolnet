@@ -9,6 +9,56 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 
+const patchPayloadLoadEnvInterop = async () => {
+  const loadEnvModulePath = path.join(
+    rootDir,
+    "node_modules",
+    "payload",
+    "dist",
+    "bin",
+    "loadEnv.js",
+  );
+
+  try {
+    const source = await fs.readFile(loadEnvModulePath, "utf8");
+
+    if (source.includes("nextEnvImportNs.loadEnvConfig")) {
+      return;
+    }
+
+    const importLine = "import nextEnvImport from '@next/env';";
+    const destructureLine = "const { loadEnvConfig } = nextEnvImport;";
+
+    if (!source.includes(importLine) || !source.includes(destructureLine)) {
+      console.warn(
+        `[init-db] Skipping loadEnv interop patch because the expected Payload helper shape was not found at ${loadEnvModulePath}`,
+      );
+      return;
+    }
+
+    const patchedSource = source
+      .replace(
+        importLine,
+        "import * as nextEnvImportNs from '@next/env';",
+      )
+      .replace(
+        destructureLine,
+        [
+          "const loadEnvConfig =",
+          "    nextEnvImportNs.loadEnvConfig ?? nextEnvImportNs.default?.loadEnvConfig;",
+          "if (typeof loadEnvConfig !== 'function') {",
+          "    throw new TypeError(\"Could not resolve loadEnvConfig from @next/env\");",
+          "}",
+        ].join("\n"),
+      );
+
+    await fs.writeFile(loadEnvModulePath, patchedSource, "utf8");
+    console.log(`[init-db] Patched ${loadEnvModulePath} for @next/env interop.`);
+  } catch (error) {
+    console.warn("[init-db] Could not patch Payload loadEnv helper.", error);
+  }
+};
+
 const loadEnvFile = async () => {
   const envPath = path.join(rootDir, ".env");
 
@@ -35,10 +85,11 @@ const loadEnvFile = async () => {
 };
 
 await loadEnvFile();
+await patchPayloadLoadEnvInterop();
 
 const configPath = process.env.PAYLOAD_CONFIG_PATH
   ? path.resolve(rootDir, process.env.PAYLOAD_CONFIG_PATH)
-  : path.join(rootDir, "payload.config.ts");
+  : path.join(rootDir, "src", "cms.config.ts");
 
 const runtimeEnv = process.env.PAYLOAD_INIT_NODE_ENV ?? "development";
 const previousNodeEnv = process.env.NODE_ENV;
