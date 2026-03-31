@@ -1,0 +1,6 @@
+legacy_url,destination_path,status_code,redirect_group,priority,notes
+/webcam-uri,/calculatoare,308,global-migration,high,"Fallback redirect from old vertical root"
+/judete,/calculatoare,308,legacy-sections,high,"Old county hub removed"
+/adauga-camera,/blog,308,legacy-sections,medium,"Could later point to methodology or editorial policy"
+/cauta,/calculatoare,308,legacy-sections,high,"Search intent should land in tool hub"
+/old-slug-example,/calculatoare/fitness/calculator-bmi-imc,308,calculator-mapping,medium,"Replace with real legacy slug"

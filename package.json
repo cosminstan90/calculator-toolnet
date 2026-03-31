@@ -1,0 +1,40 @@
+{
+  "name": "calculatoare-online",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3015",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "payload": "payload",
+    "payload:types": "payload generate:types",
+    "payload:importmap": "payload generate:importmap",
+    "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
+    "ops:validate-content": "node scripts/validate-content.mjs",
+    "ops:seo-audit": "node scripts/seo-audit.mjs",
+    "ops:import-content": "node scripts/import-content.mjs"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "^3.80.0",
+    "@payloadcms/next": "^3.80.0",
+    "@payloadcms/plugin-seo": "^3.80.0",
+    "@payloadcms/richtext-lexical": "^3.80.0",
+    "next": "16.2.1",
+    "payload": "^3.80.0",
+    "pg": "^8.20.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "slugify": "^1.6.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
