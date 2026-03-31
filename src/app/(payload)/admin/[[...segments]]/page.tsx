@@ -1,5 +1,6 @@
 import config from "@/cms.config";
 import { RootPage, generatePageMetadata } from "@payloadcms/next/views";
+import { redirect } from "next/navigation";
 import "@payloadcms/next/css";
 
 import { importMap } from "../importMap";
@@ -37,12 +38,23 @@ export default async function PayloadAdminPage({
   params: Params;
   searchParams: SearchParams;
 }) {
+  const resolvedParams = await params;
+  const segments = resolvedParams.segments ?? [];
+
+  if (segments.length === 0) {
+    const resolvedConfig = await configPromise;
+    const adminRoute =
+      resolvedConfig.routes.admin === "/" ? "" : resolvedConfig.routes.admin.replace(/\/$/, "");
+
+    redirect(`${adminRoute}/collections/calculators`);
+  }
+
   return RootPage({
     config: configPromise,
     importMap,
-    params: params.then((resolved) => ({
-      segments: resolved.segments ?? [],
-    })),
+    params: Promise.resolve({
+      segments,
+    }),
     searchParams,
   });
 }
