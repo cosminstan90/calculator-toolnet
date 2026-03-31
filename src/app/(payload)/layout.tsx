@@ -1,7 +1,8 @@
 import config from "@/cms.config";
-import { RootLayout, metadata as payloadMetadata, handleServerFunctions } from "@payloadcms/next/layouts";
+import { RootLayout, metadata as payloadMetadata } from "@payloadcms/next/layouts";
 
 import { importMap } from "./admin/importMap";
+import { payloadAdminServerFunction } from "./serverFunction";
 
 const configPromise = Promise.resolve(config);
 
@@ -12,11 +13,6 @@ export default function PayloadLayout({ children }: Readonly<{ children: React.R
     children,
     config: configPromise,
     importMap,
-    serverFunction: (args) =>
-      handleServerFunctions({
-        ...args,
-        config: configPromise,
-        importMap,
-      }),
+    serverFunction: payloadAdminServerFunction,
   });
 }
