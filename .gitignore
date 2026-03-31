@@ -17,6 +17,7 @@
 /.next/
 /out/
 /.playwright-cli/
+/output/playwright/
 
 # production
 /build
