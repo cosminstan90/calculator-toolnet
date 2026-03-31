@@ -1,4 +1,4 @@
-import { getCalculatorDefinition, type CalculatorKey } from "@/lib/calculator-registry";
+import { getCalculatorDefinition, type CalculatorKey } from "./calculator-registry.ts";
 
 type FAQItem = {
   question: string;
