@@ -47,6 +47,16 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      views: {
+        dashboard: {
+          Component: {
+            path: "./app/(payload)/admin/DashboardHome.tsx",
+            exportName: "DashboardHome",
+          },
+        },
+      },
+    },
     meta: {
       titleSuffix: " - Calculatoare CMS",
     },

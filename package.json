@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3015",
-    "build": "next build && node scripts/prepare-standalone.mjs",
+    "build": "npm run ops:generate-import-map && next build && node scripts/prepare-standalone.mjs",
     "start": "next start",
     "lint": "eslint",
     "payload": "payload",
