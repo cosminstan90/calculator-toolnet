@@ -44,32 +44,61 @@ Articole suport pentru Batch 01:
 
 ## Batch 02
 
+Al doilea lot finalizeaza celelalte 10 calculatoare deja prezente in registry si adauga suport editorial pentru ele.
+
+Calculatoare:
+
 1. `ideal-weight`
 2. `water-intake`
 3. `one-rep-max`
 4. `cost-per-km`
 5. `travel-time`
-6. `cum-calculezi-consumul-real-la-masina`
-7. `cum-estimezi-costul-unei-calatorii-cu-masina`
-8. `cum-estimezi-procentul-de-grasime-corporala`
-9. `cata-apa-ai-nevoie-zilnic-cu-adevarat`
-10. `cum-folosesti-one-rep-max-in-antrenament`
+6. `amps-to-watts`
+7. `watts-to-kwh`
+8. `kg-lb`
+9. `cm-inch`
+10. `temperature-converter`
+
+Articole suport:
+
+1. `cum-calculezi-consumul-real-la-masina`
+2. `cum-estimezi-costul-unei-calatorii-cu-masina`
+3. `kw-vs-cp-explicat-simplu`
+4. `cum-calculezi-consumul-electric-al-unui-aparat`
+5. `ghid-conversii-kg-lb-cm-inch`
+6. `cum-estimezi-procentul-de-grasime-corporala`
+7. `cata-apa-ai-nevoie-zilnic-cu-adevarat`
+8. `cum-folosesti-one-rep-max-in-antrenament`
+9. `cost-pe-kilometru-vs-cost-total-drum`
+10. `cum-transformi-amperii-in-wati-si-wati-in-kwh`
+
+Obiective:
+
+- inchidem primele 20 de calculatoare complete disponibile in produs
+- acoperim mai bine clusterele `fitness`, `auto`, `energie` si `conversii`
+- sustinem lotul cu redirect-uri pentru cateva URL-uri legacy deja observate live
+
+URL-uri legacy recuperate in bootstrap:
+
+1. `/calculator-imc` -> `/calculatoare/fitness/calculator-bmi-imc`
+2. `/calculator-combustibil-consum-auto` -> `/calculatoare/auto/calculator-consum-combustibil`
+3. `/calculator-kw-cp` -> `/calculatoare/energie/convertor-kw-in-cp`
 
 ## Batch 03
 
-1. `amps-to-watts`
-2. `watts-to-kwh`
-3. `cost-pe-kilometru-vs-cost-total-drum`
-4. `cum-calculezi-consumul-electric-al-unui-aparat`
-5. `cum-transformi-amperii-in-wati-si-wati-in-kwh`
+Batch rezervat pentru calculatoare noi, nu pentru cele deja existente in registry.
+
+Directii candidate:
+
+1. `beton-fundatie-volum`
+2. `gestatie-caini`
+3. `zile-libere`
+4. `food-cost`
+5. `marja-profit`
 
 ## Batch 04
 
-1. `kg-lb`
-2. `cm-inch`
-3. `temperature-converter`
-4. `ghid-conversii-kg-lb-cm-inch`
-5. `kw-vs-cp-explicat-simplu`
+Batch rezervat pentru extinderea clusterului `conversii` si pentru utilitare answer-first cu volum mare.
 
 ## Regula de operare
 
@@ -77,3 +106,4 @@ Articole suport pentru Batch 01:
 - `editorialStatus` descrie progresul real al paginii
 - doar `batch-01` este setat pentru publicare automata in seed-ul initial
 - loturile urmatoare raman draft pana la review si aprobare
+- redirect-urile legacy se pot publica direct atunci cand exista un inlocuitor clar si relevant

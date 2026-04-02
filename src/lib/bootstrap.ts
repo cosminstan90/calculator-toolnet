@@ -49,6 +49,7 @@ export type BootstrapCmsResult = {
   formulas: CounterSummary;
   calculators: CounterSummary;
   articles: CounterSummary;
+  redirects: CounterSummary;
 };
 
 type CategorySeed = {
@@ -90,6 +91,15 @@ type ArticleSeed = {
   publishByDefault?: boolean;
 };
 
+type RedirectSeed = {
+  key: string;
+  sourcePath: string;
+  destinationPath: string;
+  statusCode?: "301" | "302" | "307" | "308";
+  notes: string;
+  publishByDefault?: boolean;
+};
+
 const BATCH_01_CALCULATORS: CalculatorKey[] = [
   "bmi",
   "bmr",
@@ -110,8 +120,68 @@ const BATCH_01_ARTICLES = [
   "cate-proteine-ai-nevoie-zilnic",
 ];
 
+const BATCH_02_CALCULATORS: CalculatorKey[] = [
+  "ideal-weight",
+  "water-intake",
+  "one-rep-max",
+  "cost-per-km",
+  "travel-time",
+  "amps-to-watts",
+  "watts-to-kwh",
+  "kg-lb",
+  "cm-inch",
+  "temperature-converter",
+];
+
+const BATCH_02_ARTICLES = [
+  "cum-calculezi-consumul-real-la-masina",
+  "cum-estimezi-costul-unei-calatorii-cu-masina",
+  "kw-vs-cp-explicat-simplu",
+  "cum-calculezi-consumul-electric-al-unui-aparat",
+  "ghid-conversii-kg-lb-cm-inch",
+  "cum-estimezi-procentul-de-grasime-corporala",
+  "cata-apa-ai-nevoie-zilnic-cu-adevarat",
+  "cum-folosesti-one-rep-max-in-antrenament",
+  "cost-pe-kilometru-vs-cost-total-drum",
+  "cum-transformi-amperii-in-wati-si-wati-in-kwh",
+];
+
+const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
+  {
+    key: "legacy-bmi",
+    sourcePath: "/calculator-imc",
+    destinationPath: "/calculatoare/fitness/calculator-bmi-imc",
+    statusCode: "308",
+    notes:
+      "Legacy SEO recovery pentru vechiul calculator IMC/BMI indexat anterior pe domeniu.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-fuel-consumption",
+    sourcePath: "/calculator-combustibil-consum-auto",
+    destinationPath: "/calculatoare/auto/calculator-consum-combustibil",
+    statusCode: "308",
+    notes:
+      "Legacy SEO recovery pentru URL-ul istoric de consum combustibil auto.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-kw-cp",
+    sourcePath: "/calculator-kw-cp",
+    destinationPath: "/calculatoare/energie/convertor-kw-in-cp",
+    statusCode: "308",
+    notes:
+      "Legacy SEO recovery pentru pagina istorica de conversie KW in CP.",
+    publishByDefault: true,
+  },
+];
+
 const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
-  BATCH_01_CALCULATORS.includes(key) ? "batch-01" : "batch-02";
+  BATCH_01_CALCULATORS.includes(key)
+    ? "batch-01"
+    : BATCH_02_CALCULATORS.includes(key)
+      ? "batch-02"
+      : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
@@ -122,6 +192,10 @@ const shouldPublishCalculator = (key: CalculatorKey, meta: CalculatorMeta) =>
 const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
   if (BATCH_01_ARTICLES.includes(seed.slug)) {
     return "batch-01";
+  }
+
+  if (BATCH_02_ARTICLES.includes(seed.slug)) {
+    return "batch-02";
   }
 
   if (seed.launchWave === "wave-2") {
@@ -802,6 +876,61 @@ const articleSeeds: ArticleSeed[] = [
 const shouldPublishArticle = (seed: ArticleSeed) =>
   seed.publishByDefault === true || BATCH_01_ARTICLES.includes(seed.slug);
 
+const bootstrapRedirects = async (payload: Payload, force: boolean) => {
+  const results: SeedItemResult[] = [];
+
+  for (const seed of LEGACY_REDIRECT_SEEDS) {
+    const existing = await payload.find({
+      collection: "redirects",
+      depth: 0,
+      limit: 1,
+      pagination: false,
+      overrideAccess: true,
+      where: {
+        sourcePath: {
+          equals: seed.sourcePath,
+        },
+      },
+    });
+
+    const data = {
+      sourcePath: seed.sourcePath,
+      destinationPath: seed.destinationPath,
+      statusCode: seed.statusCode ?? "308",
+      isEnabled: seed.publishByDefault ?? true,
+      notes: seed.notes,
+      _status: "published" as const,
+    };
+
+    if (existing.docs[0]) {
+      if (!force) {
+        results.push({ key: seed.key, status: "skipped" });
+        continue;
+      }
+
+      await payload.update({
+        collection: "redirects",
+        id: existing.docs[0].id,
+        overrideAccess: true,
+        draft: false,
+        data,
+      });
+      results.push({ key: seed.key, status: "updated" });
+      continue;
+    }
+
+    await payload.create({
+      collection: "redirects",
+      overrideAccess: true,
+      draft: false,
+      data,
+    });
+    results.push({ key: seed.key, status: "created" });
+  }
+
+  return getCounterSummary(results);
+};
+
 const buildCalculatorSeoBody = (
   definition: ReturnType<typeof getCalculatorDefinition>,
   meta: CalculatorMeta
@@ -1262,8 +1391,9 @@ export const bootstrapCms = async (payload: Payload, options: BootstrapOptions =
   const formulas = await bootstrapFormulaLibrary(payload, force);
   const calculators = await bootstrapCalculators(payload, force);
   const articles = await bootstrapArticles(payload, force);
+  const redirects = await bootstrapRedirects(payload, force);
 
-  return { homepage, categories, formulas, calculators, articles };
+  return { homepage, categories, formulas, calculators, articles, redirects };
 };
 
 
