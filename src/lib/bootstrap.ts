@@ -182,6 +182,30 @@ const BATCH_03_ARTICLES = [
   "cum-evaluezi-un-roi-fara-sa-fortezi-cifrele",
 ];
 
+const BATCH_04_CALCULATORS: CalculatorKey[] = [
+  "percentage-of-number",
+  "percentage-change",
+  "reverse-percentage",
+  "discount",
+  "vat",
+  "reverse-vat",
+  "compound-interest",
+  "monthly-savings",
+  "savings-goal",
+  "loan-payment",
+];
+
+const BATCH_04_ARTICLES = [
+  "cum-calculezi-procentele-corect",
+  "procent-din-numar-vs-diferenta-procentuala",
+  "cum-calculezi-discountul-real",
+  "tva-inclus-vs-tva-exclus",
+  "cum-functioneaza-dobanda-compusa",
+  "cum-planifici-economii-lunare",
+  "cum-estimezi-un-obiectiv-de-economisire",
+  "cum-citesti-rata-lunara-la-un-credit",
+];
+
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   {
     key: "legacy-bmi",
@@ -228,7 +252,9 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
       ? "batch-02"
       : BATCH_03_CALCULATORS.includes(key)
         ? "batch-03"
-        : "batch-18";
+        : BATCH_04_CALCULATORS.includes(key)
+          ? "batch-04"
+          : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
@@ -249,18 +275,34 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-03";
   }
 
+  if (BATCH_04_ARTICLES.includes(seed.slug)) {
+    return "batch-04";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
 
-  return seed.relatedCategorySlug === "conversii" ? "batch-04" : "batch-03";
+  return seed.relatedCategorySlug === "finante"
+    ? "batch-04"
+    : seed.relatedCategorySlug === "conversii"
+      ? "batch-04"
+      : "batch-03";
 };
 
 const defaultEditorialStatusForArticle = (seed: ArticleSeed): EditorialStatus =>
   BATCH_01_ARTICLES.includes(seed.slug) ? "approved" : "draft";
 
-const calculatorDraftQueue = [...BATCH_02_CALCULATORS, ...BATCH_03_CALCULATORS];
-const articleDraftQueue = [...BATCH_02_ARTICLES, ...BATCH_03_ARTICLES];
+const calculatorDraftQueue = [
+  ...BATCH_02_CALCULATORS,
+  ...BATCH_03_CALCULATORS,
+  ...BATCH_04_CALCULATORS,
+];
+const articleDraftQueue = [
+  ...BATCH_02_ARTICLES,
+  ...BATCH_03_ARTICLES,
+  ...BATCH_04_ARTICLES,
+];
 
 const defaultPublishingScheduleForCalculator = (
   key: CalculatorKey,
@@ -350,6 +392,14 @@ const categoryFrames = {
     linkingLead:
       "Internal linking-ul este valoros aici pentru ca utilizatorul cauta de obicei mai multe unghiuri ale aceleiasi decizii: marja, markup, profit si ROI.",
   },
+  finante: {
+    audience:
+      "cand vrei sa calculezi procente, TVA, rate, economii sau scenarii financiare simple pentru uz personal ori comercial",
+    caution:
+      "In finante, formula ofera un reper bun, dar rezultatul trebuie citit cu atentie atunci cand intervin comisioane, taxe suplimentare, conditii contractuale sau dobanzi variabile.",
+    linkingLead:
+      "Paginile financiare functioneaza cel mai bine cand legi intre ele procentele, TVA-ul, economiile si creditele, pentru ca utilizatorul cauta de multe ori mai multe unghiuri ale aceleiasi decizii.",
+  },
 } as const;
 
 const readStringField = (doc: { [key: string]: unknown }, field: string): string => {
@@ -422,6 +472,10 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames.business;
   }
 
+  if (categorySlug === "finante") {
+    return categoryFrames.finante;
+  }
+
   return categoryFrames.fitness;
 };
 
@@ -463,12 +517,12 @@ const homepageSeed = {
   heroBadge: "Calculatoare online clare si utile",
   heroTitle: "Calcule utile, explicate pe inteles si gata de folosit.",
   heroDescription:
-    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, conversii, constructii si business, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
+    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, conversii, constructii, business si finante, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "30", label: "calculatoare disponibile in primele trei loturi" },
-    { value: "6", label: "categorii principale de cautare" },
+    { value: "40", label: "calculatoare disponibile in primele patru loturi" },
+    { value: "7", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
   contentBlocks: [
@@ -494,13 +548,14 @@ const homepageSeed = {
         { value: "Conversii", label: "temperatura, greutate, lungime si unitati uzuale" },
         { value: "Constructii", label: "suprafata, beton, vopsea, gresie si parchet" },
         { value: "Business", label: "food cost, marja, markup, break-even si ROI" },
+        { value: "Finante", label: "procente, TVA, economii, dobanzi si rate" },
       ],
     },
   ],
   seo: buildSeoPayload({
-    metaTitle: "Calculatoare Online - fitness, auto, business si constructii",
+    metaTitle: "Calculatoare Online - procente, TVA, fitness si business",
     metaDescription:
-      "Hub de calculatoare online pentru fitness, auto, energie, conversii, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
+      "Hub de calculatoare online pentru procente, TVA, fitness, auto, energie, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
   }),
 };
@@ -558,6 +613,15 @@ const categorySeeds: CategorySeed[] = [
     introContent:
       "Categoria Business aduna calcule simple, dar foarte cautate in vanzari, horeca si management: marja, markup, rentabilitate, ROI si alte repere care ajuta la decizii rapide. Fiecare pagina explica formula si limitele interpretarii ei in practica.",
     sortOrder: 60,
+    isFeatured: true,
+  },
+  {
+    name: "Finante",
+    slug: "finante",
+    summary: "Calculatoare pentru procente, TVA, discount, economii, dobanzi si rate de credit.",
+    introContent:
+      "Categoria Finante reuneste calcule rapide pentru procente, discounturi, TVA, economii, dobanda compusa si rate de credit. Este gandita atat pentru persoane care compara costuri si obiective de economisire, cat si pentru firme mici care vor calcule comerciale simple, clare si reutilizabile.",
+    sortOrder: 70,
     isFeatured: true,
   },
 ];
@@ -842,6 +906,146 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     ],
     relatedCalculatorKeys: ["kg-lb", "ideal-weight", "temperature-converter"],
     relatedArticleSlugs: ["ghid-conversii-kg-lb-cm-inch"],
+  },
+  "percentage-of-number": {
+    shortDescription: "Calculeaza rapid cat inseamna un procent dintr-o suma, valoare sau baza de comparatie.",
+    intro: "Calculatorul procent din numar este util cand vrei sa afli repede cat inseamna 19% dintr-un pret, 25% dintr-un buget sau orice alta pondere aplicata unei valori de baza.",
+    interpretationNotes: "Rezultatul este direct si exact matematic, dar merita verificat daca folosesti procentul pe baza corecta: net, brut, pret initial sau total final.",
+    isFeatured: true,
+    sortOrder: 310,
+    example: "La o baza de 1.500 lei si un procent de 19%, rezultatul este 285 lei.",
+    faq: [
+      { question: "Cand este util acest calculator?", answer: "Este util pentru TVA, comisioane, discounturi, bonusuri, targete si orice calcul in care procentul se aplica peste o valoare de baza." },
+      { question: "Care este cea mai frecventa greseala?", answer: "Sa aplici procentul la suma gresita: de exemplu la total cu TVA in loc de baza neta sau la suma deja redusa." },
+    ],
+    relatedCalculatorKeys: ["percentage-change", "discount", "vat"],
+    relatedArticleSlugs: ["cum-calculezi-procentele-corect"],
+  },
+  "percentage-change": {
+    shortDescription: "Arata cu cat a crescut sau a scazut o valoare in procente intre doua momente sau doua scenarii.",
+    intro: "Calculatorul de diferenta procentuala este util pentru preturi, salarii, trafic, vanzari sau orice comparatie intre o valoare initiala si una noua.",
+    interpretationNotes: "Rezultatul depinde intotdeauna de valoarea initiala, nu de cea noua, asa ca merita verificat ce cifra folosesti ca punct de plecare.",
+    isFeatured: true,
+    sortOrder: 320,
+    example: "Daca o valoare creste de la 100 la 125, diferenta absoluta este 25, iar cresterea procentuala este 25%.",
+    faq: [
+      { question: "De ce conteaza valoarea initiala?", answer: "Pentru ca diferenta procentuala se raporteaza la baza initiala, iar asta schimba rezultatul fata de o comparatie intuitiva." },
+      { question: "Calculatorul merge si pentru scaderi?", answer: "Da. Daca valoarea noua este mai mica, rezultatul procentual va fi negativ." },
+    ],
+    relatedCalculatorKeys: ["percentage-of-number", "reverse-percentage", "discount"],
+    relatedArticleSlugs: ["procent-din-numar-vs-diferenta-procentuala"],
+  },
+  "reverse-percentage": {
+    shortDescription: "Recupereaza valoarea initiala atunci cand stii rezultatul final si procentul de reducere sau majorare.",
+    intro: "Calculatorul procent invers este foarte util atunci cand vrei sa afli pretul initial dintr-un pret redus sau baza de la care s-a plecat dupa o crestere procentuala.",
+    interpretationNotes: "Este important sa alegi corect sensul procentului: reducere sau majorare. Acelasi procent aplicat invers duce la rezultate diferite.",
+    isFeatured: false,
+    sortOrder: 330,
+    example: "Daca pretul final este 81 lei dupa o reducere de 10%, pretul initial a fost 90 lei.",
+    faq: [
+      { question: "De ce nu pot adauga pur si simplu procentul inapoi?", answer: "Pentru ca procentul a fost aplicat la baza initiala, nu la valoarea finala redusa." },
+      { question: "Cand apare cel mai des acest calcul?", answer: "Apare frecvent la promotii, TVA, comisioane si comparatii de crestere/scadere." },
+    ],
+    relatedCalculatorKeys: ["discount", "percentage-of-number", "percentage-change"],
+    relatedArticleSlugs: ["procent-din-numar-vs-diferenta-procentuala"],
+  },
+  discount: {
+    shortDescription: "Calculeaza reducerea in lei si pretul final dupa aplicarea unui discount procentual.",
+    intro: "Calculatorul de discount este util pentru oferte comerciale, comparatii de pret si verificarea rapida a unei promotii inainte de achizitie sau publicare.",
+    interpretationNotes: "Un discount mare nu inseamna automat cel mai bun pret daca baza initiala este diferita sau daca apar comisioane si costuri suplimentare.",
+    isFeatured: true,
+    sortOrder: 340,
+    example: "La un pret initial de 299,99 lei si un discount de 15%, reducerea este de 45 lei, iar pretul final aproximativ 254,99 lei.",
+    faq: [
+      { question: "Calculatorul merge si pentru reduceri comerciale B2B?", answer: "Da, formula este aceeasi, doar contextul difera: retail, distributie sau negociere comerciala." },
+      { question: "Cum verific daca promotia este reala?", answer: "Compara pretul final, nu doar procentul afisat, si verifica daca baza initiala este una realista." },
+    ],
+    relatedCalculatorKeys: ["reverse-percentage", "vat", "percentage-of-number"],
+    relatedArticleSlugs: ["cum-calculezi-discountul-real"],
+  },
+  vat: {
+    shortDescription: "Adauga TVA peste o baza neta si afiseaza separat taxa si totalul de plata.",
+    intro: "Calculatorul TVA este util pentru facturi, oferte, pricing si orice situatie in care ai o suma neta si vrei sa afli totalul cu TVA inclus.",
+    interpretationNotes: "Rezultatul este exact matematic, dar in practica merita verificat daca lucrezi cu baza neta, cu o cota corecta si cu eventuale exceptii fiscale.",
+    isFeatured: true,
+    sortOrder: 350,
+    example: "Pentru o baza neta de 1.000 lei si o cota TVA de 19%, TVA-ul este 190 lei, iar totalul 1.190 lei.",
+    faq: [
+      { question: "Cand folosesc calculatorul TVA simplu?", answer: "Il folosesti cand ai suma fara TVA si vrei sa afli valoarea taxei si totalul de plata." },
+      { question: "Este suficient pentru orice situatie fiscala?", answer: "Nu. Pentru cazuri speciale sau regimuri fiscale particulare, formula standard trebuie verificata separat." },
+    ],
+    relatedCalculatorKeys: ["reverse-vat", "percentage-of-number", "discount"],
+    relatedArticleSlugs: ["tva-inclus-vs-tva-exclus"],
+  },
+  "reverse-vat": {
+    shortDescription: "Scoate TVA-ul dintr-o suma bruta si separa baza neta de componenta fiscala.",
+    intro: "Calculatorul TVA invers este util cand primesti sau compari sume cu TVA inclus si vrei sa afli rapid baza neta si taxa inclusa in total.",
+    interpretationNotes: "Rezultatul este corect doar daca suma introdusa include deja TVA-ul si cota aleasa este cea aplicata efectiv in acel caz.",
+    isFeatured: false,
+    sortOrder: 360,
+    example: "Dintr-o suma de 1.190 lei cu TVA 19%, baza neta este 1.000 lei, iar TVA-ul inclus este 190 lei.",
+    faq: [
+      { question: "Care este diferenta fata de calculatorul TVA normal?", answer: "Aici pleci de la suma bruta si afli baza neta, in timp ce calculatorul TVA normal porneste de la baza neta." },
+      { question: "Cand apare in practica?", answer: "Apare des la verificarea facturilor, comparatii de pret si reconcilieri rapide intre net si brut." },
+    ],
+    relatedCalculatorKeys: ["vat", "reverse-percentage", "percentage-of-number"],
+    relatedArticleSlugs: ["tva-inclus-vs-tva-exclus"],
+  },
+  "compound-interest": {
+    shortDescription: "Estimeaza cat ajunge o suma investita in timp atunci cand dobanda se capitalizeaza periodic.",
+    intro: "Calculatorul de dobanda compusa este unul dintre cele mai utile tool-uri financiare atunci cand vrei sa vezi efectul timpului si al capitalizarii asupra unei sume initiale.",
+    interpretationNotes: "Rezultatul este un scenariu matematic. In viata reala pot interveni taxe, randamente variabile, comisioane si perioade cu performanta diferita.",
+    isFeatured: true,
+    sortOrder: 370,
+    example: "La 10.000 lei investiti, 7% dobanda anuala, 10 ani si capitalizare lunara, valoarea viitoare trece de 20.000 lei.",
+    faq: [
+      { question: "De ce este atat de important timpul in dobanda compusa?", answer: "Pentru ca dobanda se reinvesteste si produce la randul ei dobanda, iar efectul creste pe perioade mai lungi." },
+      { question: "Este util si pentru depozite, si pentru investitii?", answer: "Da, ca model simplificat de crestere, chiar daca produsele reale pot avea reguli si randamente diferite." },
+    ],
+    relatedCalculatorKeys: ["monthly-savings", "savings-goal", "loan-payment"],
+    relatedArticleSlugs: ["cum-functioneaza-dobanda-compusa"],
+  },
+  "monthly-savings": {
+    shortDescription: "Arata cat se poate aduna din contributii lunare recurente pe o perioada data, cu sau fara dobanda.",
+    intro: "Calculatorul de economii lunare este util cand vrei sa transformi un obicei de economisire intr-o suma finala concreta si usor de urmarit.",
+    interpretationNotes: "Rezultatul depinde mult de disciplina lunara si de randamentul ales. Daca randamentul este variabil, foloseste-l ca reper, nu ca promisiune.",
+    isFeatured: true,
+    sortOrder: 380,
+    example: "La 500 lei economisiti lunar, 5% pe an si 5 ani, suma finala depaseste simpla adunare a contributiilor lunare.",
+    faq: [
+      { question: "Ce se intampla daca dobanda este zero?", answer: "Calculatorul reduce scenariul la suma simpla a contributiilor lunare pe toata perioada." },
+      { question: "Pot folosi acest calculator pentru un fond de urgenta?", answer: "Da, este foarte util pentru a vedea in cat timp poti construi un fond tinta." },
+    ],
+    relatedCalculatorKeys: ["savings-goal", "compound-interest", "loan-payment"],
+    relatedArticleSlugs: ["cum-planifici-economii-lunare"],
+  },
+  "savings-goal": {
+    shortDescription: "Calculeaza ce suma trebuie sa economisesti lunar ca sa ajungi la o tinta financiara intr-un termen fix.",
+    intro: "Calculatorul de obiectiv economisire este util cand pornesti de la o tinta clara, cum ar fi avans, vacanta, fond de urgenta sau achizitie mare, si vrei sa vezi ce ritm lunar iti trebuie.",
+    interpretationNotes: "Rezultatul este realist doar daca perioada si randamentul sunt credibile pentru contextul tau. O tinta prea agresiva poate cere o contributie lunara greu de sustinut.",
+    isFeatured: false,
+    sortOrder: 390,
+    example: "Pentru un obiectiv de 30.000 lei in 4 ani, cu 5% pe an, contributia lunara este semnificativ mai mica decat intr-un scenariu fara dobanda.",
+    faq: [
+      { question: "Este mai util decat calculatorul de economii lunare?", answer: "Da, atunci cand pleci de la tinta finala si vrei sa vezi ritmul lunar necesar, nu totalul pe care il obtii." },
+      { question: "Pot seta dobanda zero?", answer: "Da. In acel caz calculatorul imparte obiectivul la numarul total de luni." },
+    ],
+    relatedCalculatorKeys: ["monthly-savings", "compound-interest", "reverse-percentage"],
+    relatedArticleSlugs: ["cum-estimezi-un-obiectiv-de-economisire"],
+  },
+  "loan-payment": {
+    shortDescription: "Estimeaza rata lunara, costul total si dobanda totala pentru un credit cu rambursare in rate egale.",
+    intro: "Calculatorul de rata credit este util pentru simulari rapide atunci cand vrei sa compari sume, perioade si dobanzi inainte de o discutie cu banca sau IFN-ul.",
+    interpretationNotes: "Rezultatul este orientativ si nu include automat toate comisioanele, asigurarile sau particularitatile contractuale care pot modifica costul total real.",
+    isFeatured: true,
+    sortOrder: 400,
+    example: "La 250.000 lei, 8.5% pe an si 30 de ani, rata lunara poate fi estimata rapid, impreuna cu costul total si dobanda platita.",
+    faq: [
+      { question: "Calculatorul arata costul total real al creditului?", answer: "Arata scenariul pe baza dobanzii si perioadei, dar costul real poate include si comisioane sau asigurari." },
+      { question: "Este util si pentru comparatii intre oferte?", answer: "Da. Te ajuta sa vezi rapid cum se schimba rata si costul total cand modifici dobanda sau durata." },
+    ],
+    relatedCalculatorKeys: ["compound-interest", "monthly-savings", "savings-goal"],
+    relatedArticleSlugs: ["cum-citesti-rata-lunara-la-un-credit"],
   },
   "room-area": {
     shortDescription: "Calculeaza rapid suprafata si perimetrul unei camere pentru renovari, finisaje si estimari de materiale.",
@@ -1234,6 +1438,94 @@ const articleSeeds: ArticleSeed[] = [
     relatedCategorySlug: "business",
     relatedCalculatorKeys: ["roi", "break-even", "profit-margin"],
     relatedArticleSlugs: ["cum-calculezi-pragul-de-rentabilitate"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-procentele-corect",
+    title: "Cum calculezi procentele corect fara sa incurci baza, diferenta si rezultatul final",
+    excerpt: "Procentele par simple, dar cele mai multe erori apar cand aplici formula la valoarea gresita.",
+    content: "Procentele apar peste tot: la discounturi, TVA, bonusuri, cresterea preturilor sau comparatii intre perioade. Tocmai pentru ca par atat de familiare, multi utilizatori sar direct la rezultat si aplica formula pe baza gresita.\n\nPrima intrebare importanta este intotdeauna: procent din ce? Uneori cauti procent dintr-o suma, alteori vrei diferenta procentuala intre doua valori, iar alteori vrei sa afli valoarea initiala dintr-un rezultat final. Toate par apropiate, dar nu folosesc aceeasi logica.\n\nUn calculator bun de procente nu inseamna doar o operatie matematica. Inseamna si claritate: unde este baza, ce reprezinta procentul si ce vrei sa obtii efectiv din calcul. Cand aceste trei lucruri sunt clare, restul devine usor.\n\nPentru utilizatorii de pe toolnet, zona de procente este si o poarta foarte buna spre alte calcule financiare: TVA, discount, economii sau comparatii de pret. De aceea merita tratata ca hub util, nu doar ca o pagina izolata.\n\nDaca vrei rezultate curate, regula simpla este asta: verifica mai intai baza si abia apoi procentul. Cele mai multe greseli se rezolva exact aici.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["percentage-of-number", "percentage-change", "reverse-percentage"],
+    relatedArticleSlugs: ["procent-din-numar-vs-diferenta-procentuala"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "procent-din-numar-vs-diferenta-procentuala",
+    title: "Procent din numar vs diferenta procentuala: doua calcule care par la fel, dar raspund la intrebari diferite",
+    excerpt: "Unul iti spune cat inseamna un procent aplicat unei valori, iar celalalt iti arata cu cat s-a schimbat o valoare fata de baza initiala.",
+    content: "Confuzia dintre procent din numar si diferenta procentuala este una dintre cele mai frecvente in calculele de zi cu zi. La prima vedere, ambele implica procente si doua valori, dar intrebarea la care raspund este diferita.\n\nCand calculezi procent din numar, aplici o pondere peste o valoare de baza. Exemplul clasic este TVA-ul sau un comision: 19% din 1.500 lei inseamna 285 lei. Cand calculezi diferenta procentuala, compari o valoare noua cu una initiala si vrei sa vezi ritmul de crestere sau scadere.\n\nAici apare eroarea tipica: oamenii amesteca intre ele baza si rezultatul. In practica, asta poate duce la promotii interpretate gresit, comparatii financiare slabe sau rapoarte care par mai bune ori mai rele decat sunt in realitate.\n\nPe un hub de calculatoare, aceste doua pagini trebuie sa stea una langa alta tocmai pentru ca utilizatorul se misca natural intre ele. Daca incepe cu procente simple, ajunge repede la discount, TVA sau procent invers.\n\nIn concluzie, intrebarea corecta este mai importanta decat formula. Daca stii daca vrei pondere, comparatie sau valoare initiala, alegi imediat calculatorul potrivit.",
+    articleType: "comparison",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["percentage-of-number", "percentage-change", "reverse-percentage"],
+    relatedArticleSlugs: ["cum-calculezi-procentele-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-discountul-real",
+    title: "Cum calculezi discountul real si de ce procentul afisat nu spune mereu toata povestea",
+    excerpt: "Promotiile suna bine in procente, dar decizia buna vine din pretul final si din comparatia cu baza reala.",
+    content: "Discountul este unul dintre cele mai cautate calcule comerciale pentru ca pare foarte simplu si foarte intuitiv. Totusi, in practica, utilizatorii se pot lasa pacaliti usor de felul in care este prezentat procentul.\n\nUn discount de 20% este relevant doar daca stii pretul initial real si poti compara pretul final cu alternativele. Daca baza initiala este umflata sau daca apar costuri suplimentare, procentul in sine devine mai putin important.\n\nCalculatorul de discount are rolul bun de a transforma procentul intr-o suma concreta. Asta ajuta mult in achizitii, oferte, pricing intern si verificarea rapida a unei promotii. Pentru firme mici, utilitatea este la fel de clara in negociere sau in scenarii de marja.\n\nLegatura cu procent invers si TVA este fireasca. Uneori nu vrei doar pretul final, ci si pretul de plecare sau comparatia intre net si brut. De aceea acest calculator sta bine intr-un cluster financiar mai larg.\n\nPe scurt, discountul real nu se judeca doar dupa procentul afisat. Se judeca dupa baza folosita, suma economisita si pretul final obtinut.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["discount", "reverse-percentage", "percentage-of-number"],
+    relatedArticleSlugs: ["cum-calculezi-procentele-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "tva-inclus-vs-tva-exclus",
+    title: "TVA inclus vs TVA exclus: cum gandesti corect cand treci de la net la brut si inapoi",
+    excerpt: "TVA-ul pare banal pana cand lucrezi cu suma gresita. Diferenta dintre net si brut merita inteleasa clar.",
+    content: "TVA-ul este un calcul simplu doar pana in momentul in care nu mai stii daca suma de la care pleci este neta sau bruta. Exact aici apar multe erori practice, mai ales in oferte, facturi si comparatii rapide de pret.\n\nDaca pleci de la suma fara TVA, ai nevoie de calculatorul clasic de TVA. Daca pleci de la totalul cu TVA inclus, trebuie sa lucrezi invers si sa separi componenta fiscala de baza neta. Cele doua scenarii folosesc formule diferite si nu se pot amesteca.\n\nPentru utilizatori individuali, asta inseamna preturi si comparatii mai curate. Pentru firme mici, inseamna verificari mai rapide si mai putine confuzii in lucru zilnic.\n\nCa produs editorial, TVA-ul este o pagina foarte bună pentru ca uneste intentia answer-first cu nevoia de clarificare. Utilizatorul nu vrea doar o cifră, ci și certitudinea că lucrează cu suma corectă.\n\nDe aceea merită să tratăm netul și brutul ca două pagini surori și să le legăm natural de procente, discount și calcule comerciale.",
+    articleType: "comparison",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["vat", "reverse-vat", "percentage-of-number"],
+    relatedArticleSlugs: ["cum-calculezi-procentele-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-functioneaza-dobanda-compusa",
+    title: "Cum functioneaza dobanda compusa si de ce timpul este mai important decat pare la prima vedere",
+    excerpt: "Dobanda compusa nu inseamna doar randament. Inseamna si timp, constanta si reinvestirea castigurilor.",
+    content: "Dobanda compusa este unul dintre conceptele financiare care par simple in formulă, dar capătă cu adevărat sens abia când vezi efectul lor în timp. Ideea de bază este că nu câștigi doar dobândă la suma inițială, ci și la dobânda deja acumulată.\n\nDe aici vine puterea reală a capitalizării. O diferență mică de rată sau de perioadă poate schimba semnificativ valoarea finală, mai ales când vorbim despre mulți ani. Tocmai de aceea timpul contează uneori mai mult decât pare la început.\n\nCalculatorul de dobândă compusă este util pentru investiții, depozite sau planificări orientative. El nu promite un rezultat real, ci un model matematic curat pentru a înțelege mai bine scenariul.\n\nÎn practică, merită legat de economii lunare și obiective financiare. Mulți utilizatori nu investesc o sumă unică, ci construiesc treptat un plan. Iar acolo dobânda compusă devine și mai interesantă.\n\nPe scurt, randamentul contează, dar constanța și timpul fac diferența mare. Asta este ideea centrală pe care calculatorul trebuie să o lase clară.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["compound-interest", "monthly-savings", "savings-goal"],
+    relatedArticleSlugs: ["cum-planifici-economii-lunare"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-planifici-economii-lunare",
+    title: "Cum planifici economii lunare fara sa iti setezi o tinta frumoasa, dar imposibil de sustinut",
+    excerpt: "Economisirea buna nu inseamna doar ambitie, ci si un ritm lunar realist pe care il poti tine luni sau ani.",
+    content: "Economiile lunare par ușor de planificat până când încerci să le ții constant în viața reală. De aceea, primul pas util nu este o cifră spectaculoasă, ci un ritm care poate fi susținut pe termen lung.\n\nCalculatorul de economii lunare ajută exact aici: transformă o contribuție recurentă și un orizont de timp într-un total concret. Asta îl face foarte bun pentru obiective intermediare, fond de urgență sau achiziții planificate.\n\nCând adaugi și dobândă, apare motivația suplimentară. Utilizatorul vede că timpul și consistența produc efect cumulativ, nu doar simpla adunare a sumelor depuse.\n\nÎn același timp, nu merită să supraestimezi randamentul sau să subestimezi cât de greu este să economisești aceeași sumă în fiecare lună. Un scenariu moderat este adesea mai util decât unul optimist, dar greu de menținut.\n\nDe aceea pagina de economii lunare trebuie legată firesc de dobândă compusă și de obiectiv economisire. Împreună formează un traseu bun de planificare personală.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["monthly-savings", "savings-goal", "compound-interest"],
+    relatedArticleSlugs: ["cum-functioneaza-dobanda-compusa"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-estimezi-un-obiectiv-de-economisire",
+    title: "Cum estimezi un obiectiv de economisire pornind de la termen, nu doar de la suma dorita",
+    excerpt: "Tinta finala este doar o parte din calcul. Ritmul lunar si termenul schimba complet fezabilitatea planului.",
+    content: "Mulți utilizatori pornesc de la suma pe care vor să o strângă și abia apoi descoperă că termenul ales face diferența dintre un plan realist și unul foarte tensionat. De aceea calculatorul de obiectiv economisire este util tocmai pentru această verificare rapidă.\n\nDacă știi suma finală și perioada, poți vedea imediat ritmul lunar necesar. Apoi poți ajusta termenul, dobânda sau valoarea țintei până când planul devine sustenabil.\n\nAici apare și valoarea editorială a paginii: nu afișează doar o contribuție lunară, ci te ajută să gândești mai realist relația dintre dorință, timp și disciplină financiară. Pentru un avans, un fond de urgență sau o achiziție mare, asta contează mult.\n\nLegătura cu economiile lunare și dobânda compusă este naturală. Uneori pleci de la ritmul lunar și vezi unde ajungi; alteori pleci de la țintă și vezi cât trebuie să pui deoparte.\n\nAcesta este motivul pentru care pagina merită construită ca parte dintr-un mini-cluster financiar, nu ca un calculator izolat.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["savings-goal", "monthly-savings", "compound-interest"],
+    relatedArticleSlugs: ["cum-planifici-economii-lunare"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-citesti-rata-lunara-la-un-credit",
+    title: "Cum citesti rata lunara la un credit fara sa te uiti doar la suma de plata din fiecare luna",
+    excerpt: "Rata lunara spune ceva important, dar costul total si dobanda acumulata spun de obicei si mai mult.",
+    content: "Rata lunară este de obicei primul număr la care se uită cineva când compară un credit. Este firesc, pentru că afectează direct bugetul lunar. Dar dacă te oprești doar aici, riști să ratezi costul total al deciziei.\n\nCalculatorul de rată credit este util pentru că pune împreună trei lucruri: suma împrumutată, perioada și dobânda. Din ele rezultă nu doar rata lunară, ci și costul total și dobânda plătită în timp.\n\nAsta schimbă perspectiva. Uneori o rată lunară mai mică poate ascunde un cost total mult mai mare dacă perioada este foarte lungă. De aceea comparația bună nu se face pe un singur număr.\n\nÎn plus, utilizatorul câștigă context și pentru alte decizii: merită să scurteze perioada, să crească avansul sau să economisească mai mult înainte de credit? Aici apar legăturile naturale cu obiectivele de economisire și cu dobânda compusă.\n\nUn calculator bun de rată nu înlocuiește oferta concretă a băncii, dar este excelent ca filtru rapid și ca instrument de claritate înainte de pasul următor.",
+    articleType: "guide",
+    relatedCategorySlug: "finante",
+    relatedCalculatorKeys: ["loan-payment", "monthly-savings", "compound-interest"],
+    relatedArticleSlugs: ["cum-estimezi-un-obiectiv-de-economisire"],
     launchWave: "backlog",
   },
 ];

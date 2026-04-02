@@ -19,6 +19,16 @@ export type CalculatorKey =
   | "kg-lb"
   | "cm-inch"
   | "temperature-converter"
+  | "percentage-of-number"
+  | "percentage-change"
+  | "reverse-percentage"
+  | "discount"
+  | "vat"
+  | "reverse-vat"
+  | "compound-interest"
+  | "monthly-savings"
+  | "savings-goal"
+  | "loan-payment"
   | "room-area"
   | "concrete-volume"
   | "paint-coverage"
@@ -1377,6 +1387,623 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         mode === "f-to-c" ? ((value - 32) * 5) / 9 : (value * 9) / 5 + 32;
       return {
         convertedValue: round(convertedValue, 2),
+      };
+    },
+  },
+  "percentage-of-number": {
+    key: "percentage-of-number",
+    title: "Calculator procent din numar",
+    slug: "calculator-procent-din-numar",
+    categorySlug: "finante",
+    summary:
+      "Calculeaza rapid cat inseamna un procent dintr-o valoare data.",
+    formulaName: "Procent din numar",
+    formulaExpression: "Rezultat = valoare x procent / 100",
+    formulaDescription:
+      "Formula standard pentru procent din numar inmulteste valoarea de baza cu procentul si imparte rezultatul la 100.",
+    howToSteps: [
+      "Introdu valoarea de baza.",
+      "Introdu procentul pe care vrei sa il aplici.",
+      "Citeste imediat suma rezultata.",
+    ],
+    inputs: [
+      {
+        name: "baseValue",
+        label: "Valoare de baza",
+        type: "number",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 1500,
+      },
+      {
+        name: "percentage",
+        label: "Procent",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 10000,
+        step: 0.01,
+        required: true,
+        defaultValue: 19,
+      },
+    ],
+    outputs: [
+      { name: "result", label: "Rezultat", decimals: 2 },
+    ],
+    compute: (values) => ({
+      result: round((parseNumber(values.baseValue) * parseNumber(values.percentage)) / 100, 2),
+    }),
+  },
+  "percentage-change": {
+    key: "percentage-change",
+    title: "Calculator diferenta procentuala",
+    slug: "calculator-diferenta-procentuala",
+    categorySlug: "finante",
+    summary:
+      "Arata cu cat a crescut sau a scazut o valoare in procente intre doua momente.",
+    formulaName: "Diferenta procentuala",
+    formulaExpression: "Variatie (%) = (valoare noua - valoare veche) / valoare veche x 100",
+    formulaDescription:
+      "Diferenta procentuala compara valoarea noua cu cea initiala si arata ritmul de crestere sau scadere in procente.",
+    howToSteps: [
+      "Introdu valoarea initiala.",
+      "Introdu valoarea noua.",
+      "Citeste diferenta absoluta si variatia procentuala.",
+    ],
+    inputs: [
+      {
+        name: "initialValue",
+        label: "Valoare initiala",
+        type: "number",
+        min: 0.01,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 100,
+      },
+      {
+        name: "newValue",
+        label: "Valoare noua",
+        type: "number",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 125,
+      },
+    ],
+    outputs: [
+      { name: "absoluteChange", label: "Diferenta absoluta", decimals: 2 },
+      { name: "percentageChange", label: "Diferenta procentuala", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const initialValue = Math.max(parseNumber(values.initialValue), 0.01);
+      const newValue = parseNumber(values.newValue);
+      const absoluteChange = newValue - initialValue;
+      return {
+        absoluteChange: round(absoluteChange, 2),
+        percentageChange: round((absoluteChange / initialValue) * 100, 2),
+      };
+    },
+  },
+  "reverse-percentage": {
+    key: "reverse-percentage",
+    title: "Calculator procent invers",
+    slug: "calculator-procent-invers",
+    categorySlug: "finante",
+    summary:
+      "Afla valoarea initiala atunci cand stii rezultatul final si procentul de crestere sau reducere.",
+    formulaName: "Procent invers",
+    formulaExpression:
+      "Valoare initiala = valoare finala / (1 +/- procent / 100)",
+    formulaDescription:
+      "Calculatorul inverseaza o crestere sau o reducere procentuala pentru a estima valoarea de pornire.",
+    howToSteps: [
+      "Alege daca procentul a fost aplicat ca reducere sau ca majorare.",
+      "Introdu valoarea finala si procentul folosit.",
+      "Citeste valoarea initiala estimata.",
+    ],
+    inputs: [
+      {
+        name: "mode",
+        label: "Tip procent",
+        type: "select",
+        required: true,
+        defaultValue: "decrease",
+        options: [
+          { label: "Reducere", value: "decrease" },
+          { label: "Majorare", value: "increase" },
+        ],
+      },
+      {
+        name: "finalValue",
+        label: "Valoare finala",
+        type: "number",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 81,
+      },
+      {
+        name: "percentage",
+        label: "Procent aplicat",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 10000,
+        step: 0.01,
+        required: true,
+        defaultValue: 10,
+      },
+    ],
+    outputs: [
+      { name: "initialValue", label: "Valoare initiala", decimals: 2 },
+    ],
+    compute: (values) => {
+      const mode = parseText(values.mode);
+      const finalValue = parseNumber(values.finalValue);
+      const percentage = parseNumber(values.percentage) / 100;
+      const divisor = mode === "increase" ? 1 + percentage : 1 - percentage;
+      return {
+        initialValue: divisor > 0 ? round(finalValue / divisor, 2) : 0,
+      };
+    },
+  },
+  discount: {
+    key: "discount",
+    title: "Calculator discount",
+    slug: "calculator-discount",
+    categorySlug: "finante",
+    summary:
+      "Calculeaza valoarea reducerii si pretul final dupa aplicarea unui discount procentual.",
+    formulaName: "Discount procentual",
+    formulaExpression: "Reducere = pret initial x procent / 100; pret final = pret initial - reducere",
+    formulaDescription:
+      "Discountul procentual porneste de la pretul initial si scade procentul selectat pentru a obtine reducerea si pretul final.",
+    howToSteps: [
+      "Introdu pretul initial.",
+      "Introdu procentul de discount.",
+      "Citeste reducerea si pretul final.",
+    ],
+    inputs: [
+      {
+        name: "initialPrice",
+        label: "Pret initial",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 299.99,
+      },
+      {
+        name: "discountPercent",
+        label: "Discount",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 15,
+      },
+    ],
+    outputs: [
+      { name: "discountAmount", label: "Reducere", unit: "lei", decimals: 2 },
+      { name: "finalPrice", label: "Pret final", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const initialPrice = parseNumber(values.initialPrice);
+      const discountAmount = (initialPrice * parseNumber(values.discountPercent)) / 100;
+      return {
+        discountAmount: round(discountAmount, 2),
+        finalPrice: round(initialPrice - discountAmount, 2),
+      };
+    },
+  },
+  vat: {
+    key: "vat",
+    title: "Calculator TVA",
+    slug: "calculator-tva",
+    categorySlug: "finante",
+    summary:
+      "Adauga TVA peste o suma neta si afiseaza separat baza, TVA-ul si totalul.",
+    formulaName: "TVA adaugat peste net",
+    formulaExpression: "TVA = baza neta x cota TVA / 100; total = baza neta + TVA",
+    formulaDescription:
+      "Calculatorul TVA porneste de la suma neta si aplica cota de TVA pentru a obtine valoarea taxei si totalul cu TVA inclus.",
+    howToSteps: [
+      "Introdu suma neta.",
+      "Alege sau introdu cota TVA.",
+      "Citeste TVA-ul si suma totala cu TVA.",
+    ],
+    inputs: [
+      {
+        name: "netAmount",
+        label: "Suma fara TVA",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 1000,
+      },
+      {
+        name: "vatRate",
+        label: "Cota TVA",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 19,
+      },
+    ],
+    outputs: [
+      { name: "vatAmount", label: "TVA", unit: "lei", decimals: 2 },
+      { name: "grossAmount", label: "Total cu TVA", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const netAmount = parseNumber(values.netAmount);
+      const vatAmount = (netAmount * parseNumber(values.vatRate)) / 100;
+      return {
+        vatAmount: round(vatAmount, 2),
+        grossAmount: round(netAmount + vatAmount, 2),
+      };
+    },
+  },
+  "reverse-vat": {
+    key: "reverse-vat",
+    title: "Calculator TVA invers",
+    slug: "calculator-tva-invers",
+    categorySlug: "finante",
+    summary:
+      "Scoate TVA-ul dintr-o suma bruta si afiseaza baza neta si taxa corespunzatoare.",
+    formulaName: "TVA scos din brut",
+    formulaExpression: "Baza neta = suma bruta / (1 + cota TVA / 100); TVA = suma bruta - baza neta",
+    formulaDescription:
+      "Calculatorul TVA invers porneste de la totalul cu TVA inclus si separa baza neta de componenta fiscala.",
+    howToSteps: [
+      "Introdu suma cu TVA inclus.",
+      "Alege sau introdu cota TVA.",
+      "Citeste baza neta si valoarea TVA-ului inclus.",
+    ],
+    inputs: [
+      {
+        name: "grossAmount",
+        label: "Suma cu TVA",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 1190,
+      },
+      {
+        name: "vatRate",
+        label: "Cota TVA",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 19,
+      },
+    ],
+    outputs: [
+      { name: "netAmount", label: "Suma fara TVA", unit: "lei", decimals: 2 },
+      { name: "vatAmount", label: "TVA inclus", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const grossAmount = parseNumber(values.grossAmount);
+      const divisor = 1 + parseNumber(values.vatRate) / 100;
+      const netAmount = divisor > 0 ? grossAmount / divisor : 0;
+      return {
+        netAmount: round(netAmount, 2),
+        vatAmount: round(grossAmount - netAmount, 2),
+      };
+    },
+  },
+  "compound-interest": {
+    key: "compound-interest",
+    title: "Calculator dobanda compusa",
+    slug: "calculator-dobanda-compusa",
+    categorySlug: "finante",
+    summary:
+      "Estimeaza valoarea viitoare a unei sume investite cu dobanda compusa.",
+    formulaName: "Dobanda compusa",
+    formulaExpression: "FV = principal x (1 + rata / capitalizari)^ (capitalizari x ani)",
+    formulaDescription:
+      "Dobanda compusa creste capitalul initial prin reinvestirea castigurilor la fiecare perioada de capitalizare.",
+    howToSteps: [
+      "Introdu suma initiala.",
+      "Introdu rata anuala, numarul de ani si frecventa capitalizarii.",
+      "Citeste valoarea finala si castigul total.",
+    ],
+    inputs: [
+      {
+        name: "principal",
+        label: "Suma initiala",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "annualRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 7,
+      },
+      {
+        name: "years",
+        label: "Perioada",
+        type: "number",
+        unit: "ani",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 10,
+      },
+      {
+        name: "compoundsPerYear",
+        label: "Capitalizari pe an",
+        type: "number",
+        min: 1,
+        max: 365,
+        step: 1,
+        required: true,
+        defaultValue: 12,
+      },
+    ],
+    outputs: [
+      { name: "futureValue", label: "Valoare viitoare", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const principal = parseNumber(values.principal);
+      const annualRate = parseNumber(values.annualRate) / 100;
+      const years = parseNumber(values.years);
+      const compoundsPerYear = Math.max(parseNumber(values.compoundsPerYear), 1);
+      const futureValue =
+        principal * (1 + annualRate / compoundsPerYear) ** (compoundsPerYear * years);
+      return {
+        futureValue: round(futureValue, 2),
+        interestEarned: round(futureValue - principal, 2),
+      };
+    },
+  },
+  "monthly-savings": {
+    key: "monthly-savings",
+    title: "Calculator economii lunare",
+    slug: "calculator-economii-lunare",
+    categorySlug: "finante",
+    summary:
+      "Estimeaza cat se aduna in timp din economii lunare recurente, cu sau fara dobanda.",
+    formulaName: "Valoare viitoare a unei anuitati",
+    formulaExpression:
+      "FV = contributie lunara x [((1 + rata lunara)^luni - 1) / rata lunara]",
+    formulaDescription:
+      "Economiile lunare recurente pot fi proiectate in timp folosind rata lunara a dobanzii si numarul total de luni.",
+    howToSteps: [
+      "Introdu suma economisita lunar.",
+      "Introdu dobanda anuala si numarul de ani.",
+      "Citeste totalul acumulat si contributia proprie.",
+    ],
+    inputs: [
+      {
+        name: "monthlyContribution",
+        label: "Economisire lunara",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 500,
+      },
+      {
+        name: "annualRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 5,
+      },
+      {
+        name: "years",
+        label: "Perioada",
+        type: "number",
+        unit: "ani",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 5,
+      },
+    ],
+    outputs: [
+      { name: "futureValue", label: "Total acumulat", unit: "lei", decimals: 2 },
+      { name: "totalContributions", label: "Contributii proprii", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyContribution = parseNumber(values.monthlyContribution);
+      const annualRate = parseNumber(values.annualRate) / 100;
+      const months = Math.round(parseNumber(values.years) * 12);
+      const monthlyRate = annualRate / 12;
+      const futureValue =
+        monthlyRate > 0
+          ? monthlyContribution * (((1 + monthlyRate) ** months - 1) / monthlyRate)
+          : monthlyContribution * months;
+      const totalContributions = monthlyContribution * months;
+      return {
+        futureValue: round(futureValue, 2),
+        totalContributions: round(totalContributions, 2),
+        interestEarned: round(futureValue - totalContributions, 2),
+      };
+    },
+  },
+  "savings-goal": {
+    key: "savings-goal",
+    title: "Calculator obiectiv economisire",
+    slug: "calculator-obiectiv-economisire",
+    categorySlug: "finante",
+    summary:
+      "Arata cati bani trebuie sa pui lunar pentru a atinge o tinta financiara intr-un anumit termen.",
+    formulaName: "Contributie lunara pentru obiectiv",
+    formulaExpression:
+      "Contributie = tinta x rata lunara / ((1 + rata lunara)^luni - 1)",
+    formulaDescription:
+      "Calculatorul inverseaza formula valorii viitoare pentru a estima economisirea lunara necesara catre o tinta finala.",
+    howToSteps: [
+      "Introdu suma pe care vrei sa o strangi.",
+      "Introdu dobanda anuala si perioada.",
+      "Citeste contributia lunara necesara.",
+    ],
+    inputs: [
+      {
+        name: "targetAmount",
+        label: "Obiectiv final",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 30000,
+      },
+      {
+        name: "annualRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 5,
+      },
+      {
+        name: "years",
+        label: "Perioada",
+        type: "number",
+        unit: "ani",
+        min: 0.1,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 4,
+      },
+    ],
+    outputs: [
+      { name: "monthlyContribution", label: "Economisire lunara necesara", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const targetAmount = parseNumber(values.targetAmount);
+      const annualRate = parseNumber(values.annualRate) / 100;
+      const months = Math.max(Math.round(parseNumber(values.years) * 12), 1);
+      const monthlyRate = annualRate / 12;
+      const monthlyContribution =
+        monthlyRate > 0
+          ? (targetAmount * monthlyRate) / ((1 + monthlyRate) ** months - 1)
+          : targetAmount / months;
+      return {
+        monthlyContribution: round(monthlyContribution, 2),
+      };
+    },
+  },
+  "loan-payment": {
+    key: "loan-payment",
+    title: "Calculator rata credit",
+    slug: "calculator-rata-credit",
+    categorySlug: "finante",
+    summary:
+      "Estimeaza rata lunara, costul total si dobanda totala pentru un credit cu rambursare in rate egale.",
+    formulaName: "Rata lunara anuitate",
+    formulaExpression:
+      "Rata = credit x rata lunara / (1 - (1 + rata lunara)^-luni)",
+    formulaDescription:
+      "Pentru creditele cu rate egale, rata lunara se calculeaza pornind de la suma imprumutata, dobanda anuala si numarul total de luni.",
+    howToSteps: [
+      "Introdu suma imprumutata.",
+      "Introdu dobanda anuala si perioada creditului.",
+      "Citeste rata lunara, costul total si dobanda platita.",
+    ],
+    inputs: [
+      {
+        name: "loanAmount",
+        label: "Suma credit",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 250000,
+      },
+      {
+        name: "annualRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 8.5,
+      },
+      {
+        name: "years",
+        label: "Perioada",
+        type: "number",
+        unit: "ani",
+        min: 0.1,
+        max: 50,
+        step: 0.1,
+        required: true,
+        defaultValue: 30,
+      },
+    ],
+    outputs: [
+      { name: "monthlyPayment", label: "Rata lunara", unit: "lei", decimals: 2 },
+      { name: "totalCost", label: "Cost total", unit: "lei", decimals: 2 },
+      { name: "totalInterest", label: "Dobanda totala", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const loanAmount = parseNumber(values.loanAmount);
+      const annualRate = parseNumber(values.annualRate) / 100;
+      const months = Math.max(Math.round(parseNumber(values.years) * 12), 1);
+      const monthlyRate = annualRate / 12;
+      const monthlyPayment =
+        monthlyRate > 0
+          ? (loanAmount * monthlyRate) / (1 - (1 + monthlyRate) ** -months)
+          : loanAmount / months;
+      const totalCost = monthlyPayment * months;
+      return {
+        monthlyPayment: round(monthlyPayment, 2),
+        totalCost: round(totalCost, 2),
+        totalInterest: round(totalCost - loanAmount, 2),
       };
     },
   },

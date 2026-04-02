@@ -120,15 +120,47 @@ Obiective:
 
 ## Batch 04
 
-Batch rezervat pentru extinderea clusterului `conversii` si pentru utilitare answer-first cu volum mare.
+Primul lot dedicat clusterului `finante`, cu accent pe procente, TVA, discount, economii si credite.
 
-Directii candidate:
+Calculatoare:
 
-1. `discount`
-2. `tva`
-3. `procente`
-4. `dobanda-compusa`
-5. `economii-lunare`
+1. `percentage-of-number`
+2. `percentage-change`
+3. `reverse-percentage`
+4. `discount`
+5. `vat`
+6. `reverse-vat`
+7. `compound-interest`
+8. `monthly-savings`
+9. `savings-goal`
+10. `loan-payment`
+
+Articole suport:
+
+1. `cum-calculezi-procentele-corect`
+2. `procent-din-numar-vs-diferenta-procentuala`
+3. `cum-calculezi-discountul-real`
+4. `tva-inclus-vs-tva-exclus`
+5. `cum-functioneaza-dobanda-compusa`
+6. `cum-planifici-economii-lunare`
+7. `cum-estimezi-un-obiectiv-de-economisire`
+8. `cum-citesti-rata-lunara-la-un-credit`
+
+Obiective:
+
+- deschidem categoria noua `finante`
+- acoperim cautari answer-first cu volum mare pentru persoane si firme mici
+- legam organic procentele de discount, TVA, economii si rata de credit
+
+## Batch 05
+
+Rezervat pentru extinderea clusterului `business` si `e-commerce`, cu directii candidate precum:
+
+1. `cac`
+2. `roas`
+3. `aov`
+4. `cash-flow`
+5. `stoc-minim`
 
 ## Regula de operare
 
