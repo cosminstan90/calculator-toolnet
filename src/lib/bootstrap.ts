@@ -9,6 +9,33 @@ import type { Payload } from "payload";
 type BootstrapOptions = { force?: boolean };
 type SeedStatus = "created" | "updated" | "skipped";
 type SeedItemResult = { key: string; status: SeedStatus };
+type ReleaseBatch =
+  | "batch-01"
+  | "batch-02"
+  | "batch-03"
+  | "batch-04"
+  | "batch-05"
+  | "batch-06"
+  | "batch-07"
+  | "batch-08"
+  | "batch-09"
+  | "batch-10"
+  | "batch-11"
+  | "batch-12"
+  | "batch-13"
+  | "batch-14"
+  | "batch-15"
+  | "batch-16"
+  | "batch-17"
+  | "batch-18";
+type EditorialStatus =
+  | "draft"
+  | "formula_validated"
+  | "content_in_progress"
+  | "ready_for_review"
+  | "approved"
+  | "scheduled"
+  | "published";
 type CounterSummary = {
   created: number;
   updated: number;
@@ -39,6 +66,9 @@ type CalculatorMeta = {
   interpretationNotes: string;
   isFeatured: boolean;
   sortOrder: number;
+  releaseBatch?: ReleaseBatch;
+  editorialStatus?: EditorialStatus;
+  publishByDefault?: boolean;
   example: string;
   faq: Array<{ question: string; answer: string }>;
   relatedCalculatorKeys?: CalculatorKey[];
@@ -55,8 +85,54 @@ type ArticleSeed = {
   relatedCalculatorKeys?: CalculatorKey[];
   relatedArticleSlugs?: string[];
   launchWave?: "wave-1" | "wave-2" | "backlog";
+  releaseBatch?: ReleaseBatch;
+  editorialStatus?: EditorialStatus;
   publishByDefault?: boolean;
 };
+
+const BATCH_01_CALCULATORS: CalculatorKey[] = [
+  "bmi",
+  "bmr",
+  "tdee",
+  "calorie-deficit",
+  "protein-intake",
+  "body-fat-us-navy",
+  "fuel-consumption",
+  "trip-fuel-cost",
+  "kw-cp",
+  "electricity-cost",
+];
+
+const BATCH_01_ARTICLES = [
+  "cum-interpretezi-bmi-corect",
+  "bmr-vs-tdee-diferente",
+  "cum-setezi-un-deficit-caloric",
+  "cate-proteine-ai-nevoie-zilnic",
+];
+
+const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
+  BATCH_01_CALCULATORS.includes(key) ? "batch-01" : "batch-02";
+
+const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
+  BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
+
+const shouldPublishCalculator = (key: CalculatorKey, meta: CalculatorMeta) =>
+  meta.publishByDefault === true || BATCH_01_CALCULATORS.includes(key);
+
+const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
+  if (BATCH_01_ARTICLES.includes(seed.slug)) {
+    return "batch-01";
+  }
+
+  if (seed.launchWave === "wave-2") {
+    return "batch-02";
+  }
+
+  return seed.relatedCategorySlug === "conversii" ? "batch-04" : "batch-03";
+};
+
+const defaultEditorialStatusForArticle = (seed: ArticleSeed): EditorialStatus =>
+  BATCH_01_ARTICLES.includes(seed.slug) ? "approved" : "draft";
 
 const categoryFrames = {
   fitness: {
@@ -170,6 +246,9 @@ const buildFallbackCalculatorMeta = (
     interpretationNotes: `${categoryFrame.caution} Rezultatul trebuie verificat in functie de datele introduse si de scenariul real in care folosesti calculatorul.`,
     isFeatured: false,
     sortOrder: 200 + CALCULATOR_KEYS.indexOf(key),
+    releaseBatch: defaultReleaseBatchForCalculator(key),
+    editorialStatus: defaultEditorialStatusForCalculator(key),
+    publishByDefault: BATCH_01_CALCULATORS.includes(key),
     example: `Exemplu orientativ pentru ${definition.title.toLowerCase()}, pornind de la valorile standard afisate in formular si ajustat apoi dupa scenariul tau real.`,
     faq: [
       {
@@ -566,6 +645,8 @@ const articleSeeds: ArticleSeed[] = [
     relatedCalculatorKeys: ["bmi", "bmr", "tdee"],
     relatedArticleSlugs: ["bmr-vs-tdee-diferente"],
     launchWave: "wave-1",
+    releaseBatch: "batch-01",
+    editorialStatus: "approved",
   },
   {
     slug: "bmr-vs-tdee-diferente",
@@ -577,6 +658,8 @@ const articleSeeds: ArticleSeed[] = [
     relatedCalculatorKeys: ["bmr", "tdee", "calorie-deficit"],
     relatedArticleSlugs: ["cum-setezi-un-deficit-caloric"],
     launchWave: "wave-1",
+    releaseBatch: "batch-01",
+    editorialStatus: "approved",
   },
   {
     slug: "cum-setezi-un-deficit-caloric",
@@ -588,6 +671,8 @@ const articleSeeds: ArticleSeed[] = [
     relatedCalculatorKeys: ["calorie-deficit", "tdee", "protein-intake"],
     relatedArticleSlugs: ["cate-proteine-ai-nevoie-zilnic"],
     launchWave: "wave-1",
+    releaseBatch: "batch-01",
+    editorialStatus: "approved",
   },
   {
     slug: "cate-proteine-ai-nevoie-zilnic",
@@ -599,6 +684,8 @@ const articleSeeds: ArticleSeed[] = [
     relatedCalculatorKeys: ["protein-intake", "calorie-deficit", "tdee"],
     relatedArticleSlugs: ["cum-setezi-un-deficit-caloric"],
     launchWave: "wave-1",
+    releaseBatch: "batch-01",
+    editorialStatus: "approved",
   },
   {
     slug: "cum-calculezi-consumul-real-la-masina",
@@ -712,7 +799,8 @@ const articleSeeds: ArticleSeed[] = [
   },
 ];
 
-const shouldPublishArticle = (seed: ArticleSeed) => seed.publishByDefault === true;
+const shouldPublishArticle = (seed: ArticleSeed) =>
+  seed.publishByDefault === true || BATCH_01_ARTICLES.includes(seed.slug);
 
 const buildCalculatorSeoBody = (
   definition: ReturnType<typeof getCalculatorDefinition>,
@@ -962,6 +1050,7 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
     const definition = getCalculatorDefinition(key);
     const meta: CalculatorMeta =
       calculatorMeta[key] ?? buildFallbackCalculatorMeta(key, definition);
+    const publishCalculator = shouldPublishCalculator(key, meta);
     const existing = await payload.find({
       collection: "calculators",
       depth: 0,
@@ -986,13 +1075,17 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       howToSteps: definition.howToSteps.map((step) => ({ step })),
       isFeatured: meta.isFeatured,
       sortOrder: meta.sortOrder,
+      releaseBatch: meta.releaseBatch ?? defaultReleaseBatchForCalculator(key),
+      editorialStatus: publishCalculator
+        ? "published"
+        : meta.editorialStatus ?? defaultEditorialStatusForCalculator(key),
       contentBlocks: buildCalculatorBlocks(definition, meta),
       seo: buildSeoPayload({
         metaTitle: `${definition.title} online`,
         metaDescription: meta.shortDescription,
         canonicalPath: `/calculatoare/${definition.categorySlug}/${definition.slug}`,
       }),
-      _status: "published",
+      _status: publishCalculator ? "published" : "draft",
     };
 
     if (existing.docs[0]) {
@@ -1070,6 +1163,10 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
       relatedCategory: seed.relatedCategorySlug ? categoryMap.get(seed.relatedCategorySlug) : undefined,
       relatedCalculators: (seed.relatedCalculatorKeys ?? []).map((item) => calculatorMap.get(item)).filter(Boolean),
       launchWave: seed.launchWave ?? "backlog",
+      releaseBatch: seed.releaseBatch ?? defaultReleaseBatchForArticle(seed),
+      editorialStatus: publishArticle
+        ? "published"
+        : seed.editorialStatus ?? defaultEditorialStatusForArticle(seed),
       author: authorID,
       publishedAt: publishArticle ? new Date().toISOString() : undefined,
       aiDraft: { reviewStatus: publishArticle ? "reviewed" : "draft" },

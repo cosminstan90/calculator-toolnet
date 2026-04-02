@@ -67,7 +67,15 @@ export const Articles: CollectionConfig = {
   slug: "articles",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "launchWave", "articleType", "_status", "publishedAt"],
+    defaultColumns: [
+      "title",
+      "releaseBatch",
+      "launchWave",
+      "editorialStatus",
+      "articleType",
+      "_status",
+      "publishedAt",
+    ],
   },
   access: {
     read: publishedOnlyForGuests,
@@ -127,6 +135,30 @@ export const Articles: CollectionConfig = {
         { label: "Wave 1", value: "wave-1" },
         { label: "Wave 2", value: "wave-2" },
         { label: "Backlog", value: "backlog" },
+      ],
+    },
+    {
+      name: "releaseBatch",
+      type: "text",
+      index: true,
+      admin: {
+        description: "Lotul editorial din care face parte articolul, ex. batch-01.",
+      },
+    },
+    {
+      name: "editorialStatus",
+      type: "select",
+      required: true,
+      defaultValue: "draft",
+      index: true,
+      options: [
+        { label: "Draft", value: "draft" },
+        { label: "Formula validated", value: "formula_validated" },
+        { label: "Content in progress", value: "content_in_progress" },
+        { label: "Ready for review", value: "ready_for_review" },
+        { label: "Approved", value: "approved" },
+        { label: "Scheduled", value: "scheduled" },
+        { label: "Published", value: "published" },
       ],
     },
     { name: "coverImageURL", type: "text" },
