@@ -11,6 +11,7 @@ export function GET() {
   const xml = wrapSitemapIndex(
     [
       asSitemapNode("/sitemaps/pages.xml", now),
+      asSitemapNode("/sitemaps/authors.xml", now),
       asSitemapNode("/sitemaps/categories.xml", now),
       asSitemapNode("/sitemaps/calculators.xml", now),
       asSitemapNode("/sitemaps/articles.xml", now),

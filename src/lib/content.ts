@@ -738,6 +738,24 @@ export const getPublicAuthorBySlug = async (slug: string): Promise<PublicAuthor 
   }, null);
 };
 
+export const listAllPublicAuthorsForSitemap = async (): Promise<PublicAuthor[]> => {
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "users",
+      depth: 0,
+      overrideAccess: true,
+      pagination: false,
+      limit: 10000,
+      sort: "updatedAt",
+    });
+
+    return result.docs
+      .map((doc) => mapPublicAuthor(doc as RawDoc))
+      .filter((author): author is PublicAuthor => Boolean(author));
+  }, []);
+};
+
 export const listAllCategoriesForSitemap = async (): Promise<CalculatorCategory[]> => {
   return safeRun(async () => {
     const payload = await getPayloadClient();

@@ -50,6 +50,13 @@ Platforma SSR/ISR pentru calculatoare online si continut explicativ SEO-first, c
 - `GOOGLE_SITE_VERIFICATION` injecteaza meta tag-ul pentru Google Search Console
 - `BING_SITE_VERIFICATION` injecteaza meta tag-ul `msvalidate.01` pentru Bing Webmaster Tools
 - `robots.txt` si `sitemap_index.xml` sunt deja pregatite pentru Search Console si Bing
+- sitemap-uri dedicate pentru:
+  - `pages.xml`
+  - `authors.xml`
+  - `categories.xml`
+  - `calculators.xml`
+  - `articles.xml`
+- `llms.txt` este disponibil ca ghid lightweight pentru sisteme AI / retrieval
 
 ## AdSense si toggle reclame
 
