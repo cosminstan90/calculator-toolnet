@@ -14,7 +14,7 @@ Stack-ul ramane clasic, fara Docker:
 3. Cloneaza proiectul in `/srv/calculatoare-online`.
 4. Copiaza `.env.example` in `.env` si seteaza:
    - `PORT=3015`
-   - `NEXT_PUBLIC_SERVER_URL=https://calculatoare.domeniul-tau.ro`
+   - `NEXT_PUBLIC_SERVER_URL=https://toolnet.ro`
    - `DATABASE_URI=postgresql://user:parola@127.0.0.1:5432/calculatoare_online`
    - `PAYLOAD_SECRET`
    - `BOOTSTRAP_TOKEN`
@@ -24,6 +24,10 @@ Stack-ul ramane clasic, fara Docker:
    - optional `NEXT_PUBLIC_GA_MEASUREMENT_ID`
    - optional `GOOGLE_SITE_VERIFICATION`
    - optional `BING_SITE_VERIFICATION`
+   - optional `NEXT_PUBLIC_ADS_ENABLED`
+   - optional `NEXT_PUBLIC_SHOW_ADS_TOGGLE`
+   - optional `NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT`
+   - optional sloturile `NEXT_PUBLIC_ADSENSE_SLOT_*`
 5. Instaleaza dependintele si construieste aplicatia:
 
 ```bash
@@ -77,6 +81,32 @@ npm run ops:import-content -- --input=imports/content.json
 3. Rebuild + restart PM2.
 4. Trimite sitemap-ul principal:
    - `https://domeniu.ro/sitemap_index.xml`
+
+## GA4 si AdSense
+
+Set minim recomandat pentru productie:
+
+```env
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+GOOGLE_SITE_VERIFICATION=google-site-verification-code
+BING_SITE_VERIFICATION=bing-verification-code
+
+NEXT_PUBLIC_ADS_ENABLED=false
+NEXT_PUBLIC_SHOW_ADS_TOGGLE=true
+NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT=ca-pub-XXXXXXXXXXXXXXXX
+NEXT_PUBLIC_ADSENSE_SLOT_HOME_INLINE=1234567890
+NEXT_PUBLIC_ADSENSE_SLOT_CALCULATORS_HUB_INLINE=1234567891
+NEXT_PUBLIC_ADSENSE_SLOT_CATEGORY_INLINE=1234567892
+NEXT_PUBLIC_ADSENSE_SLOT_CALCULATOR_INLINE=1234567893
+NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_INLINE=1234567894
+```
+
+Observatii:
+
+- porneste cu `NEXT_PUBLIC_ADS_ENABLED=false`
+- valideaza layout-ul si Core Web Vitals inainte sa pornesti reclamele
+- butonul `Ads: ON/OFF` ramane vizibil pentru verificare si poate fi ascuns ulterior cu `NEXT_PUBLIC_SHOW_ADS_TOGGLE=false`
+- placement-urile actuale sunt dupa primul bloc important de continut, nu in hero si nu in admin
 
 Cron recomandat pentru health check la 6 ore:
 

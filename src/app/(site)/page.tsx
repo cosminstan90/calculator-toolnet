@@ -1,3 +1,4 @@
+import { AdSlot } from "@/components/ad-slot";
 import { ArticleCard } from "@/components/article-card";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CategoryCard } from "@/components/category-card";
@@ -10,6 +11,7 @@ import {
   listFeaturedCalculators,
   listRecentArticles,
 } from "@/lib/content";
+import { adsConfig } from "@/lib/ads";
 import {
   fallbackArticles,
   fallbackCalculators,
@@ -146,6 +148,17 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
+
+        {adsConfig.slots.homeInline ? (
+          <section className="mt-14">
+            <AdSlot
+              slot={adsConfig.slots.homeInline}
+              label="Sustinere platforma"
+              className="mx-auto max-w-[980px]"
+              minHeightClassName="min-h-[160px]"
+            />
+          </section>
+        ) : null}
 
         {homepage?.contentBlocks.length ? (
           <section className="mt-24">

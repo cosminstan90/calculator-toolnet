@@ -1,11 +1,20 @@
+import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CategoryCard } from "@/components/category-card";
+import { JsonLd } from "@/components/json-ld";
 import {
+  buildCalculatorPath,
   listCalculators,
   listCategories,
 } from "@/lib/content";
 import { fallbackCalculators, fallbackCategories } from "@/lib/frontend-fallbacks";
-import { buildMetadata } from "@/lib/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildCollectionJsonLd,
+  buildItemListJsonLd,
+  buildMetadata,
+} from "@/lib/seo";
+import { adsConfig } from "@/lib/ads";
 
 export const revalidate = 900;
 
@@ -34,6 +43,28 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
+      <JsonLd
+        data={[
+          buildCollectionJsonLd({
+            name: "Calculatoare online pe categorii",
+            description:
+              "Index complet de calculatoare online pentru fitness, auto, energie si conversii.",
+            path: "/calculatoare",
+          }),
+          buildBreadcrumbJsonLd([
+            { name: "Acasa", path: "/" },
+            { name: "Calculatoare", path: "/calculatoare" },
+          ]),
+          buildItemListJsonLd({
+            name: query ? `Rezultate pentru ${q}` : "Calculatoare disponibile",
+            path: query ? `/calculatoare?q=${encodeURIComponent(q ?? "")}` : "/calculatoare",
+            items: filteredCalculators.map((calculator) => ({
+              name: calculator.title,
+              path: buildCalculatorPath(calculator),
+            })),
+          }),
+        ]}
+      />
       <section className="relative overflow-hidden rounded-[2.4rem] border border-white/10 bg-slate-950 px-6 py-8 text-white shadow-[0_35px_100px_-60px_rgba(15,23,42,0.9)] sm:px-8 sm:py-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(124,227,189,0.24),transparent_28%),radial-gradient(circle_at_90%_20%,rgba(244,184,96,0.16),transparent_24%),linear-gradient(135deg,rgba(4,11,20,0.96)_0%,rgba(10,23,37,0.96)_54%,rgba(16,34,53,0.92)_100%)]" />
         <div className="relative grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-end">
@@ -104,6 +135,16 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
           ))}
         </div>
       </section>
+
+      {adsConfig.slots.calculatorsHubInline ? (
+        <section className="mt-10">
+          <AdSlot
+            slot={adsConfig.slots.calculatorsHubInline}
+            label="Mesaj sponsorizat"
+            className="mx-auto max-w-[980px]"
+          />
+        </section>
+      ) : null}
     </div>
   );
 }

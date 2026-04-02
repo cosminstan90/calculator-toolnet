@@ -1,12 +1,20 @@
+import { AdSlot } from "@/components/ad-slot";
 import { JsonLd } from "@/components/json-ld";
-import { getArticleBySlug, listArticlesByCategory } from "@/lib/content";
+import {
+  buildArticlePath,
+  buildAuthorPath,
+  getArticleBySlug,
+  listArticlesByCategory,
+} from "@/lib/content";
 import {
   buildArticleJsonLd,
   buildBreadcrumbJsonLd,
   buildMetadata,
+  buildPersonJsonLd,
   buildWebPageJsonLd,
 } from "@/lib/seo";
 import { recordNotFoundEvent } from "@/lib/routing";
+import { adsConfig } from "@/lib/ads";
 import { organizationConfig } from "@/lib/site";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -74,7 +82,31 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
             description: article.excerpt,
             path: `/blog/${article.slug}`,
             publishedAt: article.publishedAt,
+            modifiedAt: article.updatedAt,
+            imageURL: article.coverImageURL,
+            articleSection: article.relatedCategory?.name ?? article.articleType,
+            author: article.author
+              ? {
+                  name: article.author.name,
+                  path: buildAuthorPath(article.author),
+                  description: article.author.bio,
+                  jobTitle: article.author.jobTitle,
+                  imageURL: article.author.avatarURL,
+                }
+              : undefined,
           }),
+          ...(article.author
+            ? [
+                buildPersonJsonLd({
+                  name: article.author.name,
+                  path: buildAuthorPath(article.author),
+                  description: article.author.bio,
+                  jobTitle: article.author.jobTitle,
+                  imageURL: article.author.avatarURL,
+                  expertise: article.author.expertise,
+                }),
+              ]
+            : []),
           buildBreadcrumbJsonLd([
             { name: "Acasa", path: "/" },
             { name: "Blog", path: "/blog" },
@@ -90,6 +122,14 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
           {article.publishedAt ? (
             <span>Publicat: {new Date(article.publishedAt).toLocaleDateString("ro-RO")}</span>
           ) : null}
+          {article.updatedAt && article.updatedAt !== article.publishedAt ? (
+            <span>Actualizat: {new Date(article.updatedAt).toLocaleDateString("ro-RO")}</span>
+          ) : null}
+          {article.author ? (
+            <Link href={buildAuthorPath(article.author)} className="font-medium text-emerald-700 hover:underline">
+              Autor: {article.author.name}
+            </Link>
+          ) : null}
           <span>{organizationConfig.projectName}</span>
         </div>
         <p className="mt-5 text-base leading-8 text-slate-700">{article.excerpt}</p>
@@ -104,6 +144,16 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
           )}
         </div>
       </article>
+
+      {adsConfig.slots.articleInline ? (
+        <section className="mt-8">
+          <AdSlot
+            slot={adsConfig.slots.articleInline}
+            label="Publicitate relevanta"
+            className="mx-auto max-w-[980px]"
+          />
+        </section>
+      ) : null}
 
       {article.relatedCalculators.length > 0 ? (
         <section className="paper-panel mt-8 rounded-[2rem] p-6">
@@ -135,7 +185,7 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
             {relatedArticles.map((related) => (
               <Link
                 key={related.id}
-                href={`/blog/${related.slug}`}
+                href={buildArticlePath(related.slug ?? "")}
                 className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 transition-colors hover:border-emerald-300 hover:bg-emerald-50/60"
               >
                 <h3 className="text-base font-bold text-slate-950">{related.title ?? related.slug}</h3>

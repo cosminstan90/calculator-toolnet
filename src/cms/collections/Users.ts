@@ -7,7 +7,7 @@ export const Users: CollectionConfig = {
   auth: true,
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["name", "email", "roles"],
+    defaultColumns: ["name", "email", "jobTitle", "roles"],
   },
   access: {
     create: isAdmin,
@@ -47,6 +47,36 @@ export const Users: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+    },
+    {
+      name: "profileSlug",
+      type: "text",
+      admin: {
+        description: "Slug public pentru pagina de autor. Daca lipseste, folosim un fallback stabil.",
+      },
+    },
+    {
+      name: "jobTitle",
+      type: "text",
+    },
+    {
+      name: "bio",
+      type: "textarea",
+    },
+    {
+      name: "avatarURL",
+      type: "text",
+    },
+    {
+      name: "expertise",
+      type: "array",
+      fields: [
+        {
+          name: "label",
+          type: "text",
+          required: true,
+        },
+      ],
     },
     {
       name: "roles",

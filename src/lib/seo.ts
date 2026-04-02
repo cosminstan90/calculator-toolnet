@@ -131,6 +131,23 @@ export const buildCollectionJsonLd = (args: {
   url: absoluteURL(args.path),
 });
 
+export const buildItemListJsonLd = (args: {
+  name: string;
+  path: string;
+  items: Array<{ name: string; path: string }>;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: args.name,
+  url: absoluteURL(args.path),
+  itemListElement: args.items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.name,
+    url: absoluteURL(item.path),
+  })),
+});
+
 export const buildWebPageJsonLd = (args: {
   name: string;
   description: string;
@@ -138,6 +155,41 @@ export const buildWebPageJsonLd = (args: {
 }) => ({
   "@context": "https://schema.org",
   "@type": "WebPage",
+  name: args.name,
+  description: args.description,
+  url: absoluteURL(args.path),
+});
+
+export const buildPersonJsonLd = (args: {
+  name: string;
+  path: string;
+  description?: string;
+  jobTitle?: string;
+  imageURL?: string;
+  expertise?: string[];
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: args.name,
+  description: args.description,
+  url: absoluteURL(args.path),
+  image: args.imageURL,
+  jobTitle: args.jobTitle,
+  knowsAbout: args.expertise?.length ? args.expertise : undefined,
+  worksFor: {
+    "@type": "Organization",
+    name: siteConfig.name,
+    url: absoluteURL("/"),
+  },
+});
+
+export const buildProfilePageJsonLd = (args: {
+  name: string;
+  description: string;
+  path: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
   name: args.name,
   description: args.description,
   url: absoluteURL(args.path),
@@ -170,20 +222,39 @@ export const buildArticleJsonLd = (args: {
   description: string;
   path: string;
   publishedAt?: string;
+  modifiedAt?: string;
   imageURL?: string;
+  author?: {
+    name: string;
+    path: string;
+    description?: string;
+    jobTitle?: string;
+    imageURL?: string;
+  };
+  articleSection?: string;
 }) => ({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: args.title,
   description: args.description,
   datePublished: args.publishedAt,
-  dateModified: args.publishedAt,
+  dateModified: args.modifiedAt ?? args.publishedAt,
   image: args.imageURL ? [args.imageURL] : undefined,
   mainEntityOfPage: absoluteURL(args.path),
-  author: {
-    "@type": "Organization",
-    name: siteConfig.name,
-  },
+  articleSection: args.articleSection,
+  author: args.author
+    ? {
+        "@type": "Person",
+        name: args.author.name,
+        url: absoluteURL(args.author.path),
+        description: args.author.description,
+        jobTitle: args.author.jobTitle,
+        image: args.author.imageURL,
+      }
+    : {
+        "@type": "Organization",
+        name: siteConfig.name,
+      },
   publisher: {
     "@type": "Organization",
     name: siteConfig.name,

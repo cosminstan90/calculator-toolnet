@@ -1,7 +1,14 @@
 import { ArticleCard } from "@/components/article-card";
+import { JsonLd } from "@/components/json-ld";
+import { buildArticlePath } from "@/lib/content";
 import { listRecentArticles } from "@/lib/content";
 import { fallbackArticles } from "@/lib/frontend-fallbacks";
-import { buildMetadata } from "@/lib/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildCollectionJsonLd,
+  buildItemListJsonLd,
+  buildMetadata,
+} from "@/lib/seo";
 
 export const revalidate = 900;
 
@@ -18,6 +25,28 @@ export default async function BlogIndexPage() {
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
+      <JsonLd
+        data={[
+          buildCollectionJsonLd({
+            name: "Blog calculatoare online",
+            description:
+              "Ghiduri si explicatii care completeaza calculatoarele online cu exemple, context si interpretari clare.",
+            path: "/blog",
+          }),
+          buildBreadcrumbJsonLd([
+            { name: "Acasa", path: "/" },
+            { name: "Blog", path: "/blog" },
+          ]),
+          buildItemListJsonLd({
+            name: "Articole recente",
+            path: "/blog",
+            items: displayArticles.map((article) => ({
+              name: article.title,
+              path: buildArticlePath(article.slug),
+            })),
+          }),
+        ]}
+      />
       <section className="relative overflow-hidden rounded-[2.4rem] border border-white/10 bg-slate-950 px-6 py-8 text-white shadow-[0_35px_100px_-60px_rgba(15,23,42,0.9)] sm:px-8 sm:py-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(124,227,189,0.22),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(244,184,96,0.14),transparent_24%),linear-gradient(135deg,rgba(5,11,20,0.98)_0%,rgba(9,20,33,0.96)_52%,rgba(19,35,49,0.94)_100%)]" />
         <div className="relative grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-end">

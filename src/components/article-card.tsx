@@ -2,7 +2,10 @@ import type { Article } from "@/lib/content";
 import { buildArticlePath } from "@/lib/content";
 import Link from "next/link";
 
-type ArticleCardDoc = Pick<Article, "id" | "slug" | "title" | "excerpt" | "articleType">;
+type ArticleCardDoc = Pick<
+  Article,
+  "id" | "slug" | "title" | "excerpt" | "articleType" | "publishedAt" | "author"
+>;
 
 type ArticleCardProps = {
   article: ArticleCardDoc;
@@ -19,6 +22,14 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
       </p>
       <h3 className="mt-3 text-[1.9rem] font-black leading-tight text-slate-950">{article.title}</h3>
       <p className="mt-4 text-sm leading-7 text-slate-700">{article.excerpt}</p>
+      {article.publishedAt || article.author ? (
+        <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium text-slate-600">
+          {article.publishedAt ? (
+            <span>{new Date(article.publishedAt).toLocaleDateString("ro-RO")}</span>
+          ) : null}
+          {article.author?.name ? <span>{article.author.name}</span> : null}
+        </div>
+      ) : null}
       <div className="mt-8 border-t border-slate-300/70 pt-4 text-sm font-semibold text-slate-700 transition-colors group-hover:text-emerald-700">
         Citeste ghidul
       </div>

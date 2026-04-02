@@ -6,6 +6,17 @@ type RelationDoc = {
   slug?: string;
   name?: string;
   title?: string;
+  profileSlug?: string;
+};
+
+export type PublicAuthor = {
+  id: string;
+  name: string;
+  profileSlug: string;
+  bio?: string;
+  jobTitle?: string;
+  expertise: string[];
+  avatarURL?: string;
 };
 
 export type SeoData = {
@@ -115,6 +126,8 @@ export type Article = {
   launchWave?: string;
   coverImageURL?: string;
   publishedAt?: string;
+  updatedAt?: string;
+  author?: PublicAuthor;
   relatedCategory?: RelationDoc;
   relatedCalculators: RelationDoc[];
   relatedArticles: RelationDoc[];
@@ -260,7 +273,40 @@ const mapRelation = (value: unknown): RelationDoc | undefined => {
     slug: asString(relation.slug),
     name: asString(relation.name),
     title: asString(relation.title),
+    profileSlug: asString(relation.profileSlug),
   };
+};
+
+const mapPublicAuthor = (doc: RawDoc): PublicAuthor | undefined => {
+  if (!doc.id) {
+    return undefined;
+  }
+
+  const name = asString(doc.name) ?? "Echipa editoriala";
+  const fallbackSlug = `autor-${String(doc.id)}`;
+  return {
+    id: String(doc.id),
+    name,
+    profileSlug: asString(doc.profileSlug) ?? fallbackSlug,
+    bio: asString(doc.bio),
+    jobTitle: asString(doc.jobTitle),
+    expertise: Array.isArray(doc.expertise)
+      ? doc.expertise
+          .map((item) => asObject<RawDoc>(item))
+          .map((item) => asString(item?.label) ?? "")
+          .filter(Boolean)
+      : [],
+    avatarURL: asString(doc.avatarURL),
+  };
+};
+
+const extractRelationID = (value: unknown): string | undefined => {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  const relation = asObject<RawDoc>(value);
+  return relation?.id ? String(relation.id) : undefined;
 };
 
 const mapHomepage = (doc: RawDoc): HomepageContent => {
@@ -367,6 +413,8 @@ const mapArticle = (doc: RawDoc): Article => ({
   launchWave: asString(doc.launchWave),
   coverImageURL: asString(doc.coverImageURL),
   publishedAt: asString(doc.publishedAt),
+  updatedAt: asString(doc.updatedAt),
+  author: mapPublicAuthor(asObject<RawDoc>(doc.author) ?? {}),
   relatedCategory: mapRelation(doc.relatedCategory),
   relatedCalculators: Array.isArray(doc.relatedCalculators)
     ? doc.relatedCalculators.map((item) => mapRelation(item)).filter(Boolean) as RelationDoc[]
@@ -376,6 +424,47 @@ const mapArticle = (doc: RawDoc): Article => ({
     : [],
   seo: mapSEO(doc),
 });
+
+const attachAuthorsToArticles = async (docs: RawDoc[]): Promise<Article[]> => {
+  const articles = docs.map((doc) => mapArticle(doc));
+  const authorIDs = Array.from(
+    new Set(docs.map((doc) => extractRelationID(doc.author)).filter(Boolean) as string[])
+  );
+
+  if (authorIDs.length === 0) {
+    return articles;
+  }
+
+  const payload = await getPayloadClient();
+  const authorResult = await payload.find({
+    collection: "users",
+    depth: 0,
+    limit: authorIDs.length,
+    overrideAccess: true,
+    pagination: false,
+    where: {
+      id: {
+        in: authorIDs,
+      },
+    },
+  });
+
+  const authorMap = new Map(
+    authorResult.docs
+      .map((doc) => mapPublicAuthor(doc as RawDoc))
+      .filter((author): author is PublicAuthor => Boolean(author))
+      .map((author) => [author.id, author] as const)
+  );
+
+  return articles.map((article, index) => {
+    if (article.author) {
+      return article;
+    }
+
+    const authorID = extractRelationID(docs[index]?.author);
+    return authorID ? { ...article, author: authorMap.get(authorID) } : article;
+  });
+};
 
 const safeRun = async <T>(action: () => Promise<T>, fallback: T): Promise<T> => {
   try {
@@ -392,6 +481,8 @@ export const buildCalculatorPath = (calculator: { category?: RelationDoc; slug: 
   return categorySlug ? `/calculatoare/${categorySlug}/${calculator.slug}` : "/calculatoare";
 };
 export const buildArticlePath = (articleSlug: string) => `/blog/${articleSlug}`;
+export const buildAuthorPath = (author: Pick<PublicAuthor, "profileSlug">) =>
+  `/autori/${author.profileSlug}`;
 
 export const getHomepageContent = async (): Promise<HomepageContent | null> => {
   return safeRun(async () => {
@@ -558,7 +649,29 @@ export const listRecentArticles = async (limit = 8): Promise<Article[]> => {
       limit,
       sort: "-publishedAt",
     });
-    return result.docs.map((doc) => mapArticle(doc as RawDoc));
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  }, []);
+};
+
+export const listArticlesByAuthor = async (args: {
+  authorID: string;
+  limit?: number;
+}): Promise<Article[]> => {
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 2,
+      limit: args.limit ?? 12,
+      sort: "-publishedAt",
+      where: {
+        author: {
+          equals: args.authorID,
+        },
+      },
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
   }, []);
 };
 
@@ -581,7 +694,7 @@ export const listArticlesByCategory = async (args: {
       sort: "-publishedAt",
       where: whereAnd.length > 0 ? { and: whereAnd } : undefined,
     });
-    return result.docs.map((doc) => mapArticle(doc as RawDoc));
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
   }, []);
 };
 
@@ -595,7 +708,33 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
       limit: 1,
       where: { slug: { equals: slug } },
     });
-    return result.docs[0] ? mapArticle(result.docs[0] as RawDoc) : null;
+    if (!result.docs[0]) {
+      return null;
+    }
+
+    const [article] = await attachAuthorsToArticles([result.docs[0] as RawDoc]);
+    return article ?? null;
+  }, null);
+};
+
+export const getPublicAuthorBySlug = async (slug: string): Promise<PublicAuthor | null> => {
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "users",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      pagination: false,
+      where: {
+        or: [
+          { profileSlug: { equals: slug } },
+          { id: { equals: slug } },
+        ],
+      },
+    });
+
+    return result.docs[0] ? mapPublicAuthor(result.docs[0] as RawDoc) ?? null : null;
   }, null);
 };
 
@@ -640,7 +779,7 @@ export const listAllArticlesForSitemap = async (): Promise<Article[]> => {
       limit: 10000,
       sort: "updatedAt",
     });
-    return result.docs.map((doc) => mapArticle(doc as RawDoc));
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
   }, []);
 };
 

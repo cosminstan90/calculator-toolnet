@@ -51,6 +51,20 @@ Platforma SSR/ISR pentru calculatoare online si continut explicativ SEO-first, c
 - `BING_SITE_VERIFICATION` injecteaza meta tag-ul `msvalidate.01` pentru Bing Webmaster Tools
 - `robots.txt` si `sitemap_index.xml` sunt deja pregatite pentru Search Console si Bing
 
+## AdSense si toggle reclame
+
+- `NEXT_PUBLIC_ADS_ENABLED=true|false` controleaza starea initiala a reclamelor
+- `NEXT_PUBLIC_SHOW_ADS_TOGGLE=true|false` afiseaza butonul vizibil `Ads: ON/OFF`
+- `NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT=ca-pub-xxxxxxxxxxxxxxxx`
+- sloturi recomandate:
+  - `NEXT_PUBLIC_ADSENSE_SLOT_HOME_INLINE`
+  - `NEXT_PUBLIC_ADSENSE_SLOT_CALCULATORS_HUB_INLINE`
+  - `NEXT_PUBLIC_ADSENSE_SLOT_CATEGORY_INLINE`
+  - `NEXT_PUBLIC_ADSENSE_SLOT_CALCULATOR_INLINE`
+  - `NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE_INLINE`
+
+Cand toggle-ul este pe `OFF`, scriptul AdSense nu se mai injecteaza si sloturile nu se randaza.
+
 ## Comenzi utile
 
 ```bash

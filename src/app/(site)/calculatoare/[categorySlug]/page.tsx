@@ -1,8 +1,10 @@
+import { AdSlot } from "@/components/ad-slot";
 import { ArticleCard } from "@/components/article-card";
 import { CalculatorCard } from "@/components/calculator-card";
 import { EditorialBlocks } from "@/components/editorial-blocks";
 import { JsonLd } from "@/components/json-ld";
 import {
+  buildCalculatorPath,
   getCategoryBySlug,
   listArticlesByCategory,
   listCalculatorsByCategory,
@@ -10,8 +12,10 @@ import {
 import {
   buildBreadcrumbJsonLd,
   buildCollectionJsonLd,
+  buildItemListJsonLd,
   buildMetadata,
 } from "@/lib/seo";
+import { adsConfig } from "@/lib/ads";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -76,6 +80,14 @@ export default async function CategoryPage({ params }: { params: Params }) {
             { name: "Calculatoare", path: "/calculatoare" },
             { name: category.name, path: `/calculatoare/${category.slug}` },
           ]),
+          buildItemListJsonLd({
+            name: `Calculatoare din ${category.name}`,
+            path: `/calculatoare/${category.slug}`,
+            items: calculators.map((calculator) => ({
+              name: calculator.title,
+              path: buildCalculatorPath(calculator),
+            })),
+          }),
         ]}
       />
 
@@ -124,6 +136,16 @@ export default async function CategoryPage({ params }: { params: Params }) {
           ))}
         </div>
       </section>
+
+      {adsConfig.slots.categoryInline ? (
+        <section className="mt-10">
+          <AdSlot
+            slot={adsConfig.slots.categoryInline}
+            label="Publicitate"
+            className="mx-auto max-w-[980px]"
+          />
+        </section>
+      ) : null}
 
       {articles.length > 0 ? (
         <section className="mt-14 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">

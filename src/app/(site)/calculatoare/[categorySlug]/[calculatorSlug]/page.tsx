@@ -1,3 +1,4 @@
+import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CalculatorRunner } from "@/components/calculator-runner";
 import { EditorialBlocks } from "@/components/editorial-blocks";
@@ -15,6 +16,7 @@ import {
   buildMetadata,
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
+import { adsConfig } from "@/lib/ads";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -133,6 +135,16 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       <div className="mt-8">
         <CalculatorRunner calculatorKey={calculator.calculatorKey} />
       </div>
+
+      {adsConfig.slots.calculatorInline ? (
+        <section className="mt-8">
+          <AdSlot
+            slot={adsConfig.slots.calculatorInline}
+            label="Publicitate"
+            className="mx-auto max-w-[980px]"
+          />
+        </section>
+      ) : null}
 
       <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Formula explicata</p>
