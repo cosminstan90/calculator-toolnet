@@ -18,7 +18,17 @@ export type CalculatorKey =
   | "watts-to-kwh"
   | "kg-lb"
   | "cm-inch"
-  | "temperature-converter";
+  | "temperature-converter"
+  | "room-area"
+  | "concrete-volume"
+  | "paint-coverage"
+  | "tile-coverage"
+  | "laminate-flooring"
+  | "food-cost"
+  | "profit-margin"
+  | "markup"
+  | "break-even"
+  | "roi";
 
 export type CalculatorInputOption = {
   label: string;
@@ -1315,7 +1325,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       const convertedValue = mode === "inch-to-cm" ? value * 2.54 : value / 2.54;
       return { convertedValue: round(convertedValue, 2) };
     },
-  },  "temperature-converter": {
+  },
+  "temperature-converter": {
     key: "temperature-converter",
     title: "Convertor Celsius Fahrenheit",
     slug: "convertor-celsius-fahrenheit",
@@ -1366,6 +1377,604 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         mode === "f-to-c" ? ((value - 32) * 5) / 9 : (value * 9) / 5 + 32;
       return {
         convertedValue: round(convertedValue, 2),
+      };
+    },
+  },
+  "room-area": {
+    key: "room-area",
+    title: "Calculator suprafata camera",
+    slug: "calculator-suprafata-camera",
+    categorySlug: "constructii",
+    summary:
+      "Calculeaza suprafata si perimetrul unei camere pornind de la lungime si latime.",
+    formulaName: "Suprafata si perimetru dreptunghi",
+    formulaExpression: "Suprafata = lungime x latime; Perimetru = 2 x (lungime + latime)",
+    formulaDescription:
+      "Formula standard pentru o camera dreptunghiulara foloseste lungimea si latimea pentru a estima suprafata utila si perimetrul.",
+    howToSteps: [
+      "Introdu lungimea camerei in metri.",
+      "Introdu latimea camerei in metri.",
+      "Citeste suprafata si perimetrul rezultate.",
+    ],
+    inputs: [
+      {
+        name: "lengthM",
+        label: "Lungime",
+        type: "number",
+        unit: "m",
+        min: 0.1,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 5,
+      },
+      {
+        name: "widthM",
+        label: "Latime",
+        type: "number",
+        unit: "m",
+        min: 0.1,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 4,
+      },
+    ],
+    outputs: [
+      { name: "areaSqm", label: "Suprafata", unit: "mp", decimals: 2 },
+      { name: "perimeterM", label: "Perimetru", unit: "m", decimals: 2 },
+    ],
+    compute: (values) => {
+      const lengthM = parseNumber(values.lengthM);
+      const widthM = parseNumber(values.widthM);
+      return {
+        areaSqm: round(lengthM * widthM, 2),
+        perimeterM: round(2 * (lengthM + widthM), 2),
+      };
+    },
+  },
+  "concrete-volume": {
+    key: "concrete-volume",
+    title: "Calculator volum beton",
+    slug: "calculator-volum-beton",
+    categorySlug: "constructii",
+    summary:
+      "Estimeaza volumul de beton necesar pentru fundatii, placi sau alte turnari simple.",
+    formulaName: "Volum dreptunghiular",
+    formulaExpression: "Volum = lungime x latime x grosime",
+    formulaDescription:
+      "Volumul de beton pentru o forma simpla se estimeaza inmultind lungimea si latimea in metri cu grosimea exprimata in metri.",
+    howToSteps: [
+      "Introdu lungimea si latimea zonei in metri.",
+      "Introdu grosimea stratului in centimetri.",
+      "Citeste volumul rezultat in metri cubi si litri.",
+    ],
+    inputs: [
+      {
+        name: "lengthM",
+        label: "Lungime",
+        type: "number",
+        unit: "m",
+        min: 0.1,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 10,
+      },
+      {
+        name: "widthM",
+        label: "Latime",
+        type: "number",
+        unit: "m",
+        min: 0.1,
+        max: 1000,
+        step: 0.01,
+        required: true,
+        defaultValue: 0.4,
+      },
+      {
+        name: "depthCm",
+        label: "Grosime",
+        type: "number",
+        unit: "cm",
+        min: 1,
+        max: 500,
+        step: 0.1,
+        required: true,
+        defaultValue: 80,
+      },
+    ],
+    outputs: [
+      { name: "volumeM3", label: "Volum beton", unit: "m3", decimals: 3 },
+      { name: "volumeLiters", label: "Volum beton", unit: "l", decimals: 0 },
+    ],
+    compute: (values) => {
+      const volumeM3 =
+        parseNumber(values.lengthM) *
+        parseNumber(values.widthM) *
+        (parseNumber(values.depthCm) / 100);
+      return {
+        volumeM3: round(volumeM3, 3),
+        volumeLiters: round(volumeM3 * 1000, 0),
+      };
+    },
+  },
+  "paint-coverage": {
+    key: "paint-coverage",
+    title: "Calculator necesar vopsea",
+    slug: "calculator-necesar-vopsea",
+    categorySlug: "constructii",
+    summary:
+      "Estimeaza cata vopsea iti trebuie in functie de suprafata, numarul de straturi si acoperirea declarata.",
+    formulaName: "Necesar vopsea",
+    formulaExpression: "Litri necesari = (suprafata x straturi) / acoperire pe litru",
+    formulaDescription:
+      "Necesarul de vopsea se estimeaza impartind suprafata totala ajustata cu numarul de straturi la acoperirea declarata de produs.",
+    howToSteps: [
+      "Introdu suprafata de vopsit in metri patrati.",
+      "Alege cate straturi vrei sa aplici si acoperirea produsului.",
+      "Citeste litrii necesari si numarul estimat de galeti de 10 litri.",
+    ],
+    inputs: [
+      {
+        name: "areaSqm",
+        label: "Suprafata",
+        type: "number",
+        unit: "mp",
+        min: 0.1,
+        max: 100000,
+        step: 0.1,
+        required: true,
+        defaultValue: 48,
+      },
+      {
+        name: "coats",
+        label: "Numar straturi",
+        type: "number",
+        min: 1,
+        max: 10,
+        step: 1,
+        required: true,
+        defaultValue: 2,
+      },
+      {
+        name: "coverageSqmPerLiter",
+        label: "Acoperire produs",
+        type: "number",
+        unit: "mp/l",
+        min: 0.1,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 10,
+      },
+    ],
+    outputs: [
+      { name: "litersNeeded", label: "Vopsea necesara", unit: "l", decimals: 2 },
+      { name: "buckets10L", label: "Galeti de 10 l", decimals: 0 },
+    ],
+    compute: (values) => {
+      const litersNeeded =
+        (parseNumber(values.areaSqm) * parseNumber(values.coats)) /
+        Math.max(parseNumber(values.coverageSqmPerLiter), 0.01);
+      return {
+        litersNeeded: round(litersNeeded, 2),
+        buckets10L: Math.ceil(litersNeeded / 10),
+      };
+    },
+  },
+  "tile-coverage": {
+    key: "tile-coverage",
+    title: "Calculator necesar gresie si faianta",
+    slug: "calculator-necesar-gresie-faianta",
+    categorySlug: "constructii",
+    summary:
+      "Estimeaza suprafata cu pierderi si numarul de cutii pentru gresie sau faianta.",
+    formulaName: "Necesar finisaj cu pierderi",
+    formulaExpression: "Suprafata necesara = suprafata x (1 + pierderi); cutii = suprafata necesara / acoperire cutie",
+    formulaDescription:
+      "Necesarul de gresie sau faianta se estimeaza adaugand un procent de pierderi peste suprafata utila si impartind apoi la acoperirea unei cutii.",
+    howToSteps: [
+      "Introdu suprafata totala de acoperit.",
+      "Alege procentul de pierderi si acoperirea unei cutii.",
+      "Citeste suprafata ajustata si numarul de cutii necesare.",
+    ],
+    inputs: [
+      {
+        name: "areaSqm",
+        label: "Suprafata",
+        type: "number",
+        unit: "mp",
+        min: 0.1,
+        max: 100000,
+        step: 0.1,
+        required: true,
+        defaultValue: 24,
+      },
+      {
+        name: "wastePercent",
+        label: "Pierderi",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 10,
+      },
+      {
+        name: "boxCoverageSqm",
+        label: "Acoperire cutie",
+        type: "number",
+        unit: "mp",
+        min: 0.1,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 1.44,
+      },
+    ],
+    outputs: [
+      { name: "requiredAreaSqm", label: "Suprafata ajustata", unit: "mp", decimals: 2 },
+      { name: "boxesNeeded", label: "Cutii necesare", decimals: 0 },
+    ],
+    compute: (values) => {
+      const requiredAreaSqm =
+        parseNumber(values.areaSqm) * (1 + parseNumber(values.wastePercent) / 100);
+      return {
+        requiredAreaSqm: round(requiredAreaSqm, 2),
+        boxesNeeded: Math.ceil(
+          requiredAreaSqm / Math.max(parseNumber(values.boxCoverageSqm), 0.01),
+        ),
+      };
+    },
+  },
+  "laminate-flooring": {
+    key: "laminate-flooring",
+    title: "Calculator necesar parchet",
+    slug: "calculator-necesar-parchet",
+    categorySlug: "constructii",
+    summary:
+      "Estimeaza numarul de pachete de parchet necesare pentru o camera sau o zona de lucru.",
+    formulaName: "Necesar parchet cu rezerva",
+    formulaExpression: "Suprafata necesara = suprafata x (1 + rezerva); pachete = suprafata necesara / acoperire pachet",
+    formulaDescription:
+      "Necesarul de parchet se calculeaza pe baza suprafetei, a rezervei pentru taieturi si a acoperirii declarate pe pachet.",
+    howToSteps: [
+      "Introdu suprafata de acoperit.",
+      "Introdu procentul de rezerva si acoperirea pe pachet.",
+      "Citeste suprafata ajustata si numarul de pachete necesare.",
+    ],
+    inputs: [
+      {
+        name: "areaSqm",
+        label: "Suprafata",
+        type: "number",
+        unit: "mp",
+        min: 0.1,
+        max: 100000,
+        step: 0.1,
+        required: true,
+        defaultValue: 18,
+      },
+      {
+        name: "wastePercent",
+        label: "Rezerva pentru taieturi",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 8,
+      },
+      {
+        name: "packageCoverageSqm",
+        label: "Acoperire pachet",
+        type: "number",
+        unit: "mp",
+        min: 0.1,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 2.22,
+      },
+    ],
+    outputs: [
+      { name: "requiredAreaSqm", label: "Suprafata ajustata", unit: "mp", decimals: 2 },
+      { name: "packagesNeeded", label: "Pachete necesare", decimals: 0 },
+    ],
+    compute: (values) => {
+      const requiredAreaSqm =
+        parseNumber(values.areaSqm) * (1 + parseNumber(values.wastePercent) / 100);
+      return {
+        requiredAreaSqm: round(requiredAreaSqm, 2),
+        packagesNeeded: Math.ceil(
+          requiredAreaSqm / Math.max(parseNumber(values.packageCoverageSqm), 0.01),
+        ),
+      };
+    },
+  },
+  "food-cost": {
+    key: "food-cost",
+    title: "Calculator food cost",
+    slug: "calculator-food-cost",
+    categorySlug: "business",
+    summary:
+      "Calculeaza food cost-ul si profitul brut pe portie pornind de la costul ingredientelor si pretul de vanzare.",
+    formulaName: "Food cost",
+    formulaExpression: "Food cost (%) = cost ingrediente / pret vanzare x 100",
+    formulaDescription:
+      "Food cost-ul raporteaza costul ingredientelor la pretul de vanzare pentru a arata ce pondere consuma materia prima din pretul final.",
+    howToSteps: [
+      "Introdu costul ingredientelor pentru o portie.",
+      "Introdu pretul de vanzare al portiei.",
+      "Citeste procentul de food cost si profitul brut rezultat.",
+    ],
+    inputs: [
+      {
+        name: "ingredientCost",
+        label: "Cost ingrediente",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 12.5,
+      },
+      {
+        name: "sellingPrice",
+        label: "Pret de vanzare",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 35,
+      },
+    ],
+    outputs: [
+      { name: "foodCostPercent", label: "Food cost", unit: "%", decimals: 2 },
+      { name: "grossProfit", label: "Profit brut", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const ingredientCost = parseNumber(values.ingredientCost);
+      const sellingPrice = Math.max(parseNumber(values.sellingPrice), 0.01);
+      return {
+        foodCostPercent: round((ingredientCost / sellingPrice) * 100, 2),
+        grossProfit: round(sellingPrice - ingredientCost, 2),
+      };
+    },
+  },
+  "profit-margin": {
+    key: "profit-margin",
+    title: "Calculator marja profit",
+    slug: "calculator-marja-profit",
+    categorySlug: "business",
+    summary:
+      "Calculeaza marja de profit si profitul brut pornind de la cost si pretul de vanzare.",
+    formulaName: "Marja profit",
+    formulaExpression: "Marja (%) = (pret vanzare - cost) / pret vanzare x 100",
+    formulaDescription:
+      "Marja de profit arata ce procent din pretul de vanzare ramane dupa ce scazi costul direct.",
+    howToSteps: [
+      "Introdu costul produsului sau serviciului.",
+      "Introdu pretul de vanzare.",
+      "Citeste profitul brut si marja rezultata.",
+    ],
+    inputs: [
+      {
+        name: "costPrice",
+        label: "Cost",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 70,
+      },
+      {
+        name: "sellingPrice",
+        label: "Pret de vanzare",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 100,
+      },
+    ],
+    outputs: [
+      { name: "grossProfit", label: "Profit brut", unit: "lei", decimals: 2 },
+      { name: "marginPercent", label: "Marja", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const costPrice = parseNumber(values.costPrice);
+      const sellingPrice = Math.max(parseNumber(values.sellingPrice), 0.01);
+      const grossProfit = sellingPrice - costPrice;
+      return {
+        grossProfit: round(grossProfit, 2),
+        marginPercent: round((grossProfit / sellingPrice) * 100, 2),
+      };
+    },
+  },
+  markup: {
+    key: "markup",
+    title: "Calculator markup",
+    slug: "calculator-markup",
+    categorySlug: "business",
+    summary:
+      "Calculeaza markup-ul comercial pornind de la cost si pretul de vanzare.",
+    formulaName: "Markup comercial",
+    formulaExpression: "Markup (%) = (pret vanzare - cost) / cost x 100",
+    formulaDescription:
+      "Markup-ul arata cu cat ai crescut costul de baza pentru a ajunge la pretul de vanzare.",
+    howToSteps: [
+      "Introdu costul direct.",
+      "Introdu pretul de vanzare.",
+      "Citeste markup-ul si profitul brut rezultat.",
+    ],
+    inputs: [
+      {
+        name: "costPrice",
+        label: "Cost",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 70,
+      },
+      {
+        name: "sellingPrice",
+        label: "Pret de vanzare",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 100,
+      },
+    ],
+    outputs: [
+      { name: "grossProfit", label: "Profit brut", unit: "lei", decimals: 2 },
+      { name: "markupPercent", label: "Markup", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const costPrice = Math.max(parseNumber(values.costPrice), 0.01);
+      const sellingPrice = parseNumber(values.sellingPrice);
+      const grossProfit = sellingPrice - costPrice;
+      return {
+        grossProfit: round(grossProfit, 2),
+        markupPercent: round((grossProfit / costPrice) * 100, 2),
+      };
+    },
+  },
+  "break-even": {
+    key: "break-even",
+    title: "Calculator break-even",
+    slug: "calculator-break-even",
+    categorySlug: "business",
+    summary:
+      "Estimeaza pragul de rentabilitate in unitati pornind de la costuri fixe, cost variabil si pret de vanzare.",
+    formulaName: "Prag de rentabilitate",
+    formulaExpression: "Break-even unitati = costuri fixe / (pret de vanzare - cost variabil/unitate)",
+    formulaDescription:
+      "Pragul de rentabilitate arata cate unitati trebuie sa vinzi pana cand acoperi costurile fixe si nu mai esti pe pierdere.",
+    howToSteps: [
+      "Introdu costurile fixe totale.",
+      "Introdu pretul de vanzare si costul variabil per unitate.",
+      "Citeste contributia pe unitate si pragul de rentabilitate estimat.",
+    ],
+    inputs: [
+      {
+        name: "fixedCosts",
+        label: "Costuri fixe",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "sellingPrice",
+        label: "Pret de vanzare/unitate",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 75,
+      },
+      {
+        name: "variableCost",
+        label: "Cost variabil/unitate",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 40,
+      },
+    ],
+    outputs: [
+      { name: "contributionPerUnit", label: "Contributie/unitate", unit: "lei", decimals: 2 },
+      { name: "breakEvenUnits", label: "Prag rentabilitate", unit: "unitati", decimals: 0 },
+    ],
+    compute: (values) => {
+      const contributionPerUnit =
+        parseNumber(values.sellingPrice) - parseNumber(values.variableCost);
+      const safeContribution = Math.max(contributionPerUnit, 0);
+      return {
+        contributionPerUnit: round(contributionPerUnit, 2),
+        breakEvenUnits:
+          safeContribution > 0
+            ? Math.ceil(parseNumber(values.fixedCosts) / safeContribution)
+            : 0,
+      };
+    },
+  },
+  roi: {
+    key: "roi",
+    title: "Calculator ROI",
+    slug: "calculator-roi",
+    categorySlug: "business",
+    summary:
+      "Calculeaza rentabilitatea unei investitii pornind de la costul investitiei si castigul obtinut.",
+    formulaName: "Return on Investment",
+    formulaExpression: "ROI (%) = (castig net / investitie) x 100",
+    formulaDescription:
+      "ROI-ul compara castigul net ramas dupa recuperarea investitiei cu suma investita initial.",
+    howToSteps: [
+      "Introdu costul investitiei.",
+      "Introdu incasarile sau valoarea obtinuta.",
+      "Citeste profitul net si ROI-ul rezultat.",
+    ],
+    inputs: [
+      {
+        name: "investmentCost",
+        label: "Investitie",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 100000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "returnValue",
+        label: "Valoare obtinuta",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 0.01,
+        required: true,
+        defaultValue: 13500,
+      },
+    ],
+    outputs: [
+      { name: "netProfit", label: "Profit net", unit: "lei", decimals: 2 },
+      { name: "roiPercent", label: "ROI", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const investmentCost = Math.max(parseNumber(values.investmentCost), 0.01);
+      const returnValue = parseNumber(values.returnValue);
+      const netProfit = returnValue - investmentCost;
+      return {
+        netProfit: round(netProfit, 2),
+        roiPercent: round((netProfit / investmentCost) * 100, 2),
       };
     },
   },

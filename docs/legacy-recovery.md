@@ -7,6 +7,7 @@ Lista de mai jos ne ajuta sa recuperam semnalul SEO de pe URL-uri istorice deja 
 1. `/calculator-imc` -> `/calculatoare/fitness/calculator-bmi-imc`
 2. `/calculator-combustibil-consum-auto` -> `/calculatoare/auto/calculator-consum-combustibil`
 3. `/calculator-kw-cp` -> `/calculatoare/energie/convertor-kw-in-cp`
+4. `/calculator-beton-fundatie-volum` -> `/calculatoare/constructii/calculator-volum-beton`
 
 Aceste redirect-uri se pot crea automat prin:
 
@@ -18,9 +19,8 @@ npm run ops:bootstrap-cms -- --force
 
 Aceste URL-uri merita evaluate separat. Nu trebuie redirectate spre o pagina partial relevanta doar pentru a evita un 404.
 
-1. `/calculator-beton-fundatie-volum`
-2. `/calculator-gestatie-caini`
-3. `/zile-libere-2026`
+1. `/calculator-gestatie-caini`
+2. `/zile-libere-2026`
 
 ## Regula de lucru
 

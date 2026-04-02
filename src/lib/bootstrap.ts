@@ -150,6 +150,30 @@ const BATCH_02_ARTICLES = [
   "cum-transformi-amperii-in-wati-si-wati-in-kwh",
 ];
 
+const BATCH_03_CALCULATORS: CalculatorKey[] = [
+  "room-area",
+  "concrete-volume",
+  "paint-coverage",
+  "tile-coverage",
+  "laminate-flooring",
+  "food-cost",
+  "profit-margin",
+  "markup",
+  "break-even",
+  "roi",
+];
+
+const BATCH_03_ARTICLES = [
+  "cum-calculezi-suprafata-unei-camere-corect",
+  "cum-calculezi-volumul-de-beton-pentru-fundatie",
+  "cum-estimezi-necesarul-de-vopsea",
+  "cum-calculezi-necesarul-de-gresie-si-faianta",
+  "food-cost-explicat-pentru-horeca",
+  "marja-vs-markup-explicate-simplu",
+  "cum-calculezi-pragul-de-rentabilitate",
+  "cum-evaluezi-un-roi-fara-sa-fortezi-cifrele",
+];
+
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   {
     key: "legacy-bmi",
@@ -178,6 +202,15 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
       "Legacy SEO recovery pentru pagina istorica de conversie KW in CP.",
     publishByDefault: true,
   },
+  {
+    key: "legacy-concrete-volume",
+    sourcePath: "/calculator-beton-fundatie-volum",
+    destinationPath: "/calculatoare/constructii/calculator-volum-beton",
+    statusCode: "308",
+    notes:
+      "Legacy SEO recovery pentru calculatorul istoric de volum beton / fundatie.",
+    publishByDefault: true,
+  },
 ];
 
 const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
@@ -185,7 +218,9 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
     ? "batch-01"
     : BATCH_02_CALCULATORS.includes(key)
       ? "batch-02"
-      : "batch-18";
+      : BATCH_03_CALCULATORS.includes(key)
+        ? "batch-03"
+        : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
@@ -200,6 +235,10 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
 
   if (BATCH_02_ARTICLES.includes(seed.slug)) {
     return "batch-02";
+  }
+
+  if (BATCH_03_ARTICLES.includes(seed.slug)) {
+    return "batch-03";
   }
 
   if (seed.launchWave === "wave-2") {
@@ -244,6 +283,22 @@ const categoryFrames = {
       "La conversii simple, avantajul competitiv nu vine doar din formula, ci din claritatea explicatiei si din contextul util oferit pe pagina.",
     linkingLead:
       "Conversiile tind sa capteze cautari answer-first, asa ca merita sustinute prin linkuri spre alte conversii si spre pagini explicative.",
+  },
+  constructii: {
+    audience:
+      "cand estimezi materiale, suprafete sau volume pentru renovari, finisaje sau lucrari simple de santier",
+    caution:
+      "In constructii si amenajari, pierderile de material, neregularitatile si specificatiile reale ale produselor pot schimba necesarul final.",
+    linkingLead:
+      "Pagini de constructii functioneaza bine cand le legi intre ele: suprafata, volum, vopsea, gresie sau parchet fac parte din acelasi traseu de decizie.",
+  },
+  business: {
+    audience:
+      "cand vrei sa estimezi rapid costuri, marje, rentabilitate sau preturi de vanzare pentru decizii comerciale",
+    caution:
+      "In business, formula este utila ca reper rapid, dar rezultatul trebuie completat cu taxe, comisioane, discounturi si contextul real al pietei.",
+    linkingLead:
+      "Internal linking-ul este valoros aici pentru ca utilizatorul cauta de obicei mai multe unghiuri ale aceleiasi decizii: marja, markup, profit si ROI.",
   },
 } as const;
 
@@ -309,6 +364,14 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames.conversii;
   }
 
+  if (categorySlug === "constructii") {
+    return categoryFrames.constructii;
+  }
+
+  if (categorySlug === "business") {
+    return categoryFrames.business;
+  }
+
   return categoryFrames.fitness;
 };
 
@@ -350,12 +413,12 @@ const homepageSeed = {
   heroBadge: "Calculatoare online clare si utile",
   heroTitle: "Calcule utile, explicate pe inteles si gata de folosit.",
   heroDescription:
-    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie si conversii, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
+    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, conversii, constructii si business, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "20", label: "calculatoare disponibile in primul hub" },
-    { value: "4", label: "categorii principale de cautare" },
+    { value: "30", label: "calculatoare disponibile in primele trei loturi" },
+    { value: "6", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
   contentBlocks: [
@@ -379,13 +442,15 @@ const homepageSeed = {
         { value: "Auto", label: "consum, cost de drum si timp de calatorie" },
         { value: "Energie", label: "kW in CP, cost electric si conversii utile" },
         { value: "Conversii", label: "temperatura, greutate, lungime si unitati uzuale" },
+        { value: "Constructii", label: "suprafata, beton, vopsea, gresie si parchet" },
+        { value: "Business", label: "food cost, marja, markup, break-even si ROI" },
       ],
     },
   ],
   seo: buildSeoPayload({
-    metaTitle: "Calculatoare Online - BMI, calorii, consum, kW in CP si alte tool-uri utile",
+    metaTitle: "Calculatoare Online - fitness, auto, business si constructii",
     metaDescription:
-      "Hub de calculatoare online pentru fitness, auto, energie si conversii, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
+      "Hub de calculatoare online pentru fitness, auto, energie, conversii, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
   }),
 };
@@ -426,6 +491,24 @@ const categorySeeds: CategorySeed[] = [
       "Categoria Conversii este construita pentru cautari recurente si answer-first, dar fiecare pagina merge dincolo de formula simpla si adauga exemple, explicatii si legaturi catre alte conversii utile.",
     sortOrder: 40,
     isFeatured: false,
+  },
+  {
+    name: "Constructii",
+    slug: "constructii",
+    summary: "Tool-uri pentru suprafete, volume si estimari de materiale in amenajari si lucrari simple.",
+    introContent:
+      "Categoria Constructii reuneste calculatoare pentru suprafete, volum de beton, vopsea, gresie, faianta si parchet. Scopul lor este sa transforme formulele simple in estimari utile pentru buget, achizitii si organizarea lucrarii.",
+    sortOrder: 50,
+    isFeatured: true,
+  },
+  {
+    name: "Business",
+    slug: "business",
+    summary: "Calculatoare pentru food cost, marja, markup, break-even si ROI.",
+    introContent:
+      "Categoria Business aduna calcule simple, dar foarte cautate in vanzari, horeca si management: marja, markup, rentabilitate, ROI si alte repere care ajuta la decizii rapide. Fiecare pagina explica formula si limitele interpretarii ei in practica.",
+    sortOrder: 60,
+    isFeatured: true,
   },
 ];
 
@@ -710,6 +793,146 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedCalculatorKeys: ["kg-lb", "ideal-weight", "temperature-converter"],
     relatedArticleSlugs: ["ghid-conversii-kg-lb-cm-inch"],
   },
+  "room-area": {
+    shortDescription: "Calculeaza rapid suprafata si perimetrul unei camere pentru renovari, finisaje si estimari de materiale.",
+    intro: "Calculatorul de suprafata camera este punctul de plecare pentru multe alte estimari din amenajari: vopsea, parchet, gresie sau buget de materiale.",
+    interpretationNotes: "Rezultatul este corect pentru camere dreptunghiulare. Pentru forme neregulate, imparte spatiul in mai multe zone si calculeaza separat.",
+    isFeatured: true,
+    sortOrder: 110,
+    example: "La 5 m lungime si 4 m latime, suprafata este 20 mp, iar perimetrul este 18 m.",
+    faq: [
+      { question: "Cand este util perimetrul?", answer: "Perimetrul este util pentru plinte, baghete, brauri sau pentru verificari rapide inainte de comanda." },
+      { question: "Cum calculez o camera neregulata?", answer: "Imparte camera in dreptunghiuri mai mici, calculeaza fiecare suprafata separat si apoi aduna rezultatele." },
+    ],
+    relatedCalculatorKeys: ["paint-coverage", "tile-coverage", "laminate-flooring"],
+    relatedArticleSlugs: ["cum-calculezi-suprafata-unei-camere-corect"],
+  },
+  "concrete-volume": {
+    shortDescription: "Estimeaza volumul de beton necesar pentru fundatii, placi si alte turnari simple pornind de la dimensiuni.",
+    intro: "Calculatorul de volum beton este util cand vrei un reper rapid in metri cubi inainte sa comanzi material sau sa compari mai multe variante de lucrare.",
+    interpretationNotes: "In practica merita sa iei si o rezerva rezonabila pentru pierderi, cofraje neregulate si diferente fata de dimensiunile teoretice.",
+    isFeatured: true,
+    sortOrder: 120,
+    example: "Pentru 10 m lungime, 0.4 m latime si 80 cm grosime, volumul este 3.2 m3, adica aproximativ 3200 l.",
+    faq: [
+      { question: "Rezultatul include pierderi?", answer: "Nu. Calculatorul afiseaza volumul geometric, iar pierderile se adauga separat in functie de santier." },
+      { question: "Pot folosi calculatorul si pentru placa?", answer: "Da, daca introduci dimensiunile corecte ale suprafetei si grosimea turnarii." },
+    ],
+    relatedCalculatorKeys: ["room-area", "paint-coverage", "tile-coverage"],
+    relatedArticleSlugs: ["cum-calculezi-volumul-de-beton-pentru-fundatie"],
+  },
+  "paint-coverage": {
+    shortDescription: "Estimeaza cata vopsea iti trebuie in functie de suprafata, numarul de straturi si acoperirea declarata.",
+    intro: "Calculatorul de necesar vopsea este util cand vrei sa transformi rapid suprafata de lucru intr-o cantitate orientativa de material.",
+    interpretationNotes: "Absorbtia suportului, trafaletul folosit si calitatea stratului de baza pot schimba necesarul real fata de eticheta produsului.",
+    isFeatured: false,
+    sortOrder: 130,
+    example: "Pentru 48 mp, 2 straturi si o acoperire de 10 mp/l, necesarul este de aproximativ 9.6 l.",
+    faq: [
+      { question: "De ce conteaza numarul de straturi?", answer: "Pentru ca fiecare strat consuma material separat, iar suprafata trebuie inmultita cu numarul de aplicari." },
+      { question: "Acoperirea de pe cutie este exacta?", answer: "Este orientativa. In practica, suportul si modul de aplicare pot schimba consumul." },
+    ],
+    relatedCalculatorKeys: ["room-area", "tile-coverage", "laminate-flooring"],
+    relatedArticleSlugs: ["cum-estimezi-necesarul-de-vopsea"],
+  },
+  "tile-coverage": {
+    shortDescription: "Calculeaza suprafata ajustata cu pierderi si numarul de cutii pentru gresie sau faianta.",
+    intro: "Calculatorul de gresie si faianta este util cand vrei sa stii nu doar suprafata utila, ci si rezerva realista pentru taieturi si pierderi.",
+    interpretationNotes: "Modelele cu montaj diagonal, camerele cu multe colturi sau placile cu dimensiuni speciale pot cere un procent mai mare de pierderi.",
+    isFeatured: false,
+    sortOrder: 140,
+    example: "Pentru 24 mp, 10% pierderi si 1.44 mp/cutie, ajungi la circa 26.4 mp si 19 cutii.",
+    faq: [
+      { question: "Ce procent de pierderi aleg?", answer: "Pentru montaj drept procentul poate fi mai mic, iar pentru diagonal sau multe decupaje merita mai mult." },
+      { question: "Se aplica la gresie si faianta in acelasi fel?", answer: "Formula de baza este aceeasi; difera doar contextul si procentul de rezerva ales." },
+    ],
+    relatedCalculatorKeys: ["room-area", "laminate-flooring", "paint-coverage"],
+    relatedArticleSlugs: ["cum-calculezi-necesarul-de-gresie-si-faianta"],
+  },
+  "laminate-flooring": {
+    shortDescription: "Estimeaza cate pachete de parchet iti trebuie dupa ce adaugi rezerva pentru taieturi.",
+    intro: "Calculatorul de necesar parchet iti ofera un reper rapid pentru comanda de materiale si te ajuta sa eviti atat surplusul mare, cat si lipsa de material.",
+    interpretationNotes: "Rezerva depinde de modelul de montaj, de forma camerei si de cat de mult material se pierde la taieturi.",
+    isFeatured: false,
+    sortOrder: 150,
+    example: "Pentru 18 mp, 8% rezerva si 2.22 mp/pachet, ajungi la aproximativ 19.44 mp si 9 pachete.",
+    faq: [
+      { question: "De ce am nevoie de rezerva?", answer: "Pentru ca montajul produce inevitabil taieturi, iar o parte din material nu mai poate fi refolosit eficient." },
+      { question: "Calculatorul merge si pentru SPC sau vinyl?", answer: "Da, daca stii acoperirea pe pachet si vrei doar o estimare de suprafata si pachete." },
+    ],
+    relatedCalculatorKeys: ["room-area", "tile-coverage", "paint-coverage"],
+    relatedArticleSlugs: ["cum-calculezi-necesarul-de-gresie-si-faianta"],
+  },
+  "food-cost": {
+    shortDescription: "Calculeaza food cost-ul si profitul brut pe portie pentru meniuri, cafenele si alte operatiuni horeca.",
+    intro: "Calculatorul de food cost este util cand vrei sa vezi rapid daca pretul de vanzare lasa suficient spatiu pentru profit si pentru restul costurilor operationale.",
+    interpretationNotes: "Food cost-ul este doar un reper. Pentru decizii bune trebuie completat cu personal, chirie, livrare, ambalaje si alte costuri indirecte.",
+    isFeatured: true,
+    sortOrder: 210,
+    example: "La ingrediente de 12.5 lei si pret de vanzare 35 lei, food cost-ul este de aproximativ 35.71%, iar profitul brut 22.5 lei.",
+    faq: [
+      { question: "Un food cost mic inseamna automat produs bun?", answer: "Nu. Trebuie echilibrat cu volum, perceptia clientului si costurile totale ale operatiei." },
+      { question: "Pot folosi calculatorul si pentru bauturi?", answer: "Da, formula este aceeasi daca introduci costul direct si pretul de vanzare." },
+    ],
+    relatedCalculatorKeys: ["profit-margin", "markup", "break-even"],
+    relatedArticleSlugs: ["food-cost-explicat-pentru-horeca"],
+  },
+  "profit-margin": {
+    shortDescription: "Calculeaza marja de profit si profitul brut pornind de la cost si pretul de vanzare.",
+    intro: "Calculatorul de marja profit te ajuta sa vezi ce procent din pretul final ramane dupa costul direct si este util pentru pricing si comparatii rapide.",
+    interpretationNotes: "Marja este utila ca indicator de decizie, dar nu trebuie confundata cu markup-ul, care raporteaza profitul la cost, nu la pretul final.",
+    isFeatured: true,
+    sortOrder: 220,
+    example: "La cost 70 lei si pret de vanzare 100 lei, profitul brut este 30 lei, iar marja 30%.",
+    faq: [
+      { question: "Care este diferenta dintre marja si markup?", answer: "Marja raporteaza profitul la pretul de vanzare, iar markup-ul il raporteaza la cost." },
+      { question: "De ce conteaza marja in business?", answer: "Pentru ca ajuta la pricing, comparatii intre produse si la evaluarea sustenabilitatii comerciale." },
+    ],
+    relatedCalculatorKeys: ["markup", "break-even", "roi"],
+    relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
+  },
+  markup: {
+    shortDescription: "Calculeaza markup-ul comercial pentru a vedea cu cat ai crescut costul de baza pana la pretul de vanzare.",
+    intro: "Calculatorul de markup este util cand lucrezi direct cu procente aplicate peste cost si vrei sa compari rapid politica de pret intre produse sau scenarii.",
+    interpretationNotes: "Markup-ul nu spune direct cat la suta din pret reprezinta profit. Pentru asta trebuie sa te uiti si la marja.",
+    isFeatured: false,
+    sortOrder: 230,
+    example: "La cost 70 lei si pret 100 lei, profitul brut este 30 lei, iar markup-ul este aproximativ 42.86%.",
+    faq: [
+      { question: "Pot avea markup mare si marja mica?", answer: "Da, pentru ca cele doua procente se raporteaza la baze diferite." },
+      { question: "Cand este util markup-ul?", answer: "Cand construiesti pretul pornind de la cost si vrei o regula simpla de pricing." },
+    ],
+    relatedCalculatorKeys: ["profit-margin", "food-cost", "break-even"],
+    relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
+  },
+  "break-even": {
+    shortDescription: "Estimeaza cate unitati trebuie sa vinzi ca sa acoperi costurile fixe si sa atingi pragul de rentabilitate.",
+    intro: "Calculatorul break-even este util pentru scenarii de pricing, planificare si evaluarea rapida a volumului minim necesar pentru a nu ramane pe pierdere.",
+    interpretationNotes: "Pragul de rentabilitate depinde mult de costurile reale si de variatia lor. Daca pretul sau costul variabil se schimba, recalcularea este obligatorie.",
+    isFeatured: true,
+    sortOrder: 240,
+    example: "La 10.000 lei costuri fixe, 75 lei pret si 40 lei cost variabil, contributia este 35 lei/unitate, iar pragul este de aproximativ 286 unitati.",
+    faq: [
+      { question: "Ce se intampla daca contributia pe unitate este prea mica?", answer: "Pragul de rentabilitate urca mult si modelul poate deveni dificil de sustinut." },
+      { question: "Calculatorul include taxe si reduceri?", answer: "Nu automat. Pentru scenarii reale, acestea trebuie integrate in costuri sau in pretul net folosit." },
+    ],
+    relatedCalculatorKeys: ["profit-margin", "markup", "roi"],
+    relatedArticleSlugs: ["cum-calculezi-pragul-de-rentabilitate"],
+  },
+  roi: {
+    shortDescription: "Calculeaza ROI-ul unei investitii pornind de la costul investitiei si valoarea obtinuta.",
+    intro: "Calculatorul ROI este util pentru a evalua rapid daca o investitie merita comparativ cu alte optiuni sau scenarii de alocare a bugetului.",
+    interpretationNotes: "ROI-ul simplifica realitatea si nu surprinde intotdeauna timpul, riscul sau costul capitalului. Este bun ca reper comparativ, nu ca verdict unic.",
+    isFeatured: true,
+    sortOrder: 250,
+    example: "La o investitie de 10.000 lei si o valoare obtinuta de 13.500 lei, profitul net este 3.500 lei, iar ROI-ul 35%.",
+    faq: [
+      { question: "ROI mare inseamna automat investitie buna?", answer: "Nu. Conteaza si timpul in care obtii rezultatul, riscul si alternativele disponibile." },
+      { question: "Pot compara doua proiecte doar prin ROI?", answer: "Este un punct de plecare bun, dar merita sa compari si durata, cash flow-ul si incertitudinea." },
+    ],
+    relatedCalculatorKeys: ["break-even", "profit-margin", "markup"],
+    relatedArticleSlugs: ["cum-evaluezi-un-roi-fara-sa-fortezi-cifrele"],
+  },
 };
 
 const articleSeeds: ArticleSeed[] = [
@@ -873,6 +1096,94 @@ const articleSeeds: ArticleSeed[] = [
     relatedCategorySlug: "energie",
     relatedCalculatorKeys: ["amps-to-watts", "watts-to-kwh", "electricity-cost"],
     relatedArticleSlugs: ["cum-calculezi-consumul-electric-al-unui-aparat"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-suprafata-unei-camere-corect",
+    title: "Cum calculezi suprafata unei camere corect inainte de renovare sau amenajare",
+    excerpt: "Suprafata unei camere este baza pentru vopsea, gresie, parchet si multe alte estimari de materiale.",
+    content: "Suprafata unei camere pare un calcul simplu, dar in practica este una dintre cele mai importante valori pentru orice renovare. Daca pleci de la o suprafata gresita, toate estimarile urmatoare risca sa fie prea mici sau prea mari.\n\nPentru camerele dreptunghiulare, formula de baza este simpla: lungime inmultita cu latime. Problemele apar atunci cand incaperea are nise, retrageri, colturi atipice sau zone care nu trebuie incluse in acelasi calcul. In aceste situatii, cea mai buna metoda este sa imparti spatiul in forme mai mici si sa aduni apoi suprafetele.\n\nPerimetrul este si el util, chiar daca multi il ignora. Te ajuta la plinte, baghete sau estimari laterale, iar impreuna cu suprafata ofera o imagine mult mai clara asupra camerei.\n\nOdata ce ai suprafata corecta, restul calculelor devin mai fiabile: vopsea, gresie, faianta, parchet sau chiar bugete orientative pentru materiale. Exact de aceea pagina merita legata de alte calculatoare din acelasi cluster si nu tratata ca un tool izolat.\n\nPrivita corect, suprafata unei camere nu este doar o cifra. Este baza de lucru pentru aproape orice estimare practica din amenajari.",
+    articleType: "guide",
+    relatedCategorySlug: "constructii",
+    relatedCalculatorKeys: ["room-area", "paint-coverage", "laminate-flooring"],
+    relatedArticleSlugs: ["cum-estimezi-necesarul-de-vopsea"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-volumul-de-beton-pentru-fundatie",
+    title: "Cum calculezi volumul de beton pentru fundatie fara sa subestimezi comanda",
+    excerpt: "Volumul de beton este simplu geometric, dar merita citit cu rezerva practica pentru pierderi si neregularitati.",
+    content: "Volumul de beton este unul dintre calculele pe care multi utilizatori vor sa le rezolve rapid, mai ales inainte de o comanda sau de o discutie cu echipa de executie. Formula de baza este geometrica: lungime ori latime ori grosime.\n\nTotusi, santierul real nu arata mereu perfect ca in schita. Pot exista diferente mici de nivel, cofraje neregulate, zone de completat sau pierderi care fac ca volumul final comandat sa fie usor mai mare decat volumul matematic strict.\n\nDe aceea calculatorul trebuie folosit ca punct de plecare clar, nu ca estimare absoluta. Mai intai obtii volumul geometric in metri cubi, apoi adaugi rezerva practica potrivita contextului tau.\n\nUn alt avantaj este ca acelasi calcul poate fi folosit si pentru placi, sape sau alte turnari simple, atat timp cat dimensiunile sunt introduse corect. Pagina devine astfel utila nu doar pentru un singur caz, ci pentru mai multe scenarii de constructii usoare.\n\nCand legi volumul de beton de calculatorul de suprafata sau de estimarile de finisaje, incepi sa obtii un mini-hub coerent pentru lucrari si bugete.",
+    articleType: "guide",
+    relatedCategorySlug: "constructii",
+    relatedCalculatorKeys: ["concrete-volume", "room-area"],
+    relatedArticleSlugs: ["cum-calculezi-suprafata-unei-camere-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-estimezi-necesarul-de-vopsea",
+    title: "Cum estimezi necesarul de vopsea fara sa ramai in mijlocul lucrarii fara material",
+    excerpt: "Suprafata, numarul de straturi si acoperirea produsului fac diferenta dintre o estimare buna si una prea optimista.",
+    content: "Necesarul de vopsea pare un calcul simplu, dar in practica este afectat de mai multi factori decat pare la prima vedere. Suprafata este punctul de plecare, dar nu este singura variabila care conteaza.\n\nNumarul de straturi influenteaza direct consumul, iar acoperirea de pe ambalaj este de obicei o valoare orientativa, nu o promisiune absoluta pentru orice tip de perete. Tencuiala, absorbtia, culoarea anterioara si modul de aplicare pot muta necesarul real destul de mult.\n\nDe aceea merita sa folosesti calculatorul ca estimare de lucru si sa pastrezi o marja rezonabila, mai ales daca suprafata este mare sau daca suportul nu este uniform. Un calcul prea strans poate duce la intreruperi si la diferente de lot.\n\nCand suprafata este deja calculata corect, restul procesului devine mult mai simplu. Iar daca legi pagina de alte estimari precum parchetul sau gresia, ai un flux editorial natural pentru utilizatorul care tocmai planifica o renovare.\n\nUn calculator bun de vopsea nu trebuie doar sa afiseze litri. Trebuie sa te ajute sa iei o decizie mai sigura inainte de comanda.",
+    articleType: "guide",
+    relatedCategorySlug: "constructii",
+    relatedCalculatorKeys: ["paint-coverage", "room-area"],
+    relatedArticleSlugs: ["cum-calculezi-suprafata-unei-camere-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-necesarul-de-gresie-si-faianta",
+    title: "Cum calculezi necesarul de gresie si faianta fara sa ignori pierderile reale",
+    excerpt: "Suprafata utila nu este suficienta. Pentru o comanda buna conteaza si pierderile, taieturile si tipul de montaj.",
+    content: "Necesarul de gresie si faianta nu inseamna doar sa imparti suprafata la acoperirea unei cutii. In practica, pierderile fac o diferenta reala, iar ele pot varia mult in functie de montaj, model si forma spatiului.\n\nUn montaj drept pe o camera simpla poate avea pierderi moderate, in timp ce un montaj diagonal sau o zona cu multe colturi si decupaje cere de obicei mai multa rezerva. Exact aici calculatorul devine util: pleaca de la suprafata, dar introduce si procentul de pierderi.\n\nAcest lucru este important mai ales pentru comenzi, unde lipsa unei singure cutii poate crea intarzieri, diferente de lot sau costuri suplimentare. O estimare putin mai prudenta este de multe ori mai utila decat una perfect optimista.\n\nPagina functioneaza cel mai bine cand este legata de calculatorul de suprafata si de alte tool-uri de finisaje. Asa utilizatorul poate trece natural de la o nevoie la alta fara sa se intoarca la cautare de fiecare data.\n\nCa produs editorial, acest tip de calculator performeaza bine tocmai pentru ca raspunde unei intrebari foarte practice si repetabile.",
+    articleType: "guide",
+    relatedCategorySlug: "constructii",
+    relatedCalculatorKeys: ["tile-coverage", "laminate-flooring", "room-area"],
+    relatedArticleSlugs: ["cum-calculezi-suprafata-unei-camere-corect"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "food-cost-explicat-pentru-horeca",
+    title: "Food cost explicat simplu pentru horeca: ce iti spune si ce nu iti spune",
+    excerpt: "Food cost-ul este un indicator foarte util, dar nu trebuie confundat cu profitul final al business-ului.",
+    content: "Food cost-ul este unul dintre cele mai cautate calcule din horeca pentru ca ofera rapid un reper usor de inteles. Practic, iti arata ce procent din pretul de vanzare este consumat de ingredientele directe.\n\nValoarea lui este mare mai ales in comparatii: intre produse, intre perioade sau intre doua variante de reteta. Tocmai de aceea calculatorul este util pentru decizii rapide de meniu si pricing.\n\nTotusi, food cost-ul nu spune singur intreaga poveste. Chiria, personalul, livrarea, pierderile, ambalajele si costurile operationale pot schimba radical imaginea finala. De aceea un food cost bun nu inseamna automat si un produs foarte profitabil.\n\nCea mai buna utilizare este sa il pui alaturi de marja, markup si, in anumite cazuri, break-even. Atunci incepi sa vezi nu doar costul ingredientelor, ci si sustenabilitatea comerciala a produsului.\n\nPentru `toolnet.ro`, pagina asta este un punct foarte bun de intrare in clusterul business si horeca.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["food-cost", "profit-margin", "markup"],
+    relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "marja-vs-markup-explicate-simplu",
+    title: "Marja vs markup explicate simplu: de ce par apropiate, dar nu sunt acelasi lucru",
+    excerpt: "Marja si markup-ul pleaca de la aceleasi doua valori, dar raspund la intrebari diferite.",
+    content: "Marja si markup-ul sunt confundate frecvent pentru ca folosesc aceleasi componente: costul si pretul de vanzare. Diferenta reala vine din baza la care raportezi profitul.\n\nMarja iti spune ce procent din pretul final ramane dupa costul direct. Markup-ul iti spune cu cat ai crescut costul ca sa ajungi la pret. Tocmai de aceea cele doua procente nu vor avea aceeasi valoare chiar daca pleaca de la aceleasi cifre.\n\nIn practica, marja este adesea mai utila pentru analiza performantei comerciale, in timp ce markup-ul este foarte folosit in pricing atunci cand pretul se construieste pornind de la cost. Daca le amesteci, poti lua decizii gresite sau poti compara incorect produse si oferte.\n\nDe aceea cele doua calculatoare merita sa stea impreuna in acelasi cluster. Utilizatorul cauta de multe ori exact aceasta diferenta si are nevoie de o explicatie simpla, nu doar de formula.\n\nCand adaugi si break-even sau ROI in acelasi traseu, hub-ul business incepe sa capete consistenta reala.",
+    articleType: "comparison",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["profit-margin", "markup", "break-even"],
+    relatedArticleSlugs: ["food-cost-explicat-pentru-horeca"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-pragul-de-rentabilitate",
+    title: "Cum calculezi pragul de rentabilitate si de ce merita sa-l verifici inainte de orice forecast optimist",
+    excerpt: "Break-even-ul iti arata cand nu mai esti pe pierdere, iar asta il face extrem de util in orice scenariu comercial simplu.",
+    content: "Pragul de rentabilitate este unul dintre acele calcule care simplifica foarte bine o intrebare importanta: cate unitati trebuie sa vinzi pana cand iti acoperi costurile fixe. Din acest motiv este util in business, dar si in proiecte mici sau produse noi.\n\nFormula de baza porneste de la contributia pe unitate, adica diferenta dintre pretul de vanzare si costul variabil direct. Cand aceasta contributie este mica, pragul urca repede si modelul devine mai greu de sustinut.\n\nBreak-even-ul nu spune totul despre business, dar este foarte bun ca filtru rapid. Iti arata daca un scenariu are macar o baza rezonabila inainte sa mergi mai departe in forecast-uri optimiste.\n\nIn combinatie cu marja si ROI-ul, calculatorul devine si mai util. Un produs poate avea marja acceptabila, dar sa aiba nevoie de un volum greu de atins ca sa iasa din pierdere.\n\nDe aceea, pentru clusterul business, break-even-ul este una dintre piesele centrale.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["break-even", "profit-margin", "roi"],
+    relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
+    launchWave: "backlog",
+  },
+  {
+    slug: "cum-evaluezi-un-roi-fara-sa-fortezi-cifrele",
+    title: "Cum evaluezi un ROI fara sa fortezi cifrele doar ca sa iasa bine pe hartie",
+    excerpt: "ROI-ul este foarte util pentru comparatii rapide, dar devine periculos daca ignori timpul, riscul si costurile ascunse.",
+    content: "ROI-ul este popular pentru ca rezuma repede rentabilitatea unei investitii intr-un singur procent. Tocmai de aceea este foarte util pentru comparatii rapide intre scenarii sau proiecte.\n\nProblema apare atunci cand procentul este folosit fara context. Doua investitii pot avea acelasi ROI, dar una poate cere mult mai mult timp, risc sau capital blocat. In aceste cazuri, procentul singur devine prea simplificator.\n\nTotusi, ca prim filtru, ROI-ul este excelent. Iti arata profitul net raportat la suma investita si te ajuta sa respingi rapid scenarii slabe sau sa compari optiuni apropiate.\n\nPentru decizii mai bune, merita sa il folosesti alaturi de marja, break-even si, uneori, cash flow. Asa obtii nu doar un procent frumos, ci si o imagine mai stabila asupra investitiei.\n\nIn produsul nostru, ROI-ul este un calculator foarte bun pentru a ancora clusterul business spre cautari mai strategice si mai comerciale.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["roi", "break-even", "profit-margin"],
+    relatedArticleSlugs: ["cum-calculezi-pragul-de-rentabilitate"],
     launchWave: "backlog",
   },
 ];

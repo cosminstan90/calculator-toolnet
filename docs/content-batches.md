@@ -86,19 +86,49 @@ URL-uri legacy recuperate in bootstrap:
 
 ## Batch 03
 
-Batch rezervat pentru calculatoare noi, nu pentru cele deja existente in registry.
+Primul lot de calculatoare complet noi dupa inchiderea registry-ului initial.
 
-Directii candidate:
+Calculatoare:
 
-1. `beton-fundatie-volum`
-2. `gestatie-caini`
-3. `zile-libere`
-4. `food-cost`
-5. `marja-profit`
+1. `room-area`
+2. `concrete-volume`
+3. `paint-coverage`
+4. `tile-coverage`
+5. `laminate-flooring`
+6. `food-cost`
+7. `profit-margin`
+8. `markup`
+9. `break-even`
+10. `roi`
+
+Articole suport:
+
+1. `cum-calculezi-suprafata-unei-camere-corect`
+2. `cum-calculezi-volumul-de-beton-pentru-fundatie`
+3. `cum-estimezi-necesarul-de-vopsea`
+4. `cum-calculezi-necesarul-de-gresie-si-faianta`
+5. `food-cost-explicat-pentru-horeca`
+6. `marja-vs-markup-explicate-simplu`
+7. `cum-calculezi-pragul-de-rentabilitate`
+8. `cum-evaluezi-un-roi-fara-sa-fortezi-cifrele`
+
+Obiective:
+
+- deschidem doua clustere noi: `constructii` si `business`
+- introducem tool-uri utile atat pentru persoane, cat si pentru firme mici
+- sustinem lotul cu redirect pentru calculatorul legacy de beton deja vazut live
 
 ## Batch 04
 
 Batch rezervat pentru extinderea clusterului `conversii` si pentru utilitare answer-first cu volum mare.
+
+Directii candidate:
+
+1. `discount`
+2. `tva`
+3. `procente`
+4. `dobanda-compusa`
+5. `economii-lunare`
 
 ## Regula de operare
 
