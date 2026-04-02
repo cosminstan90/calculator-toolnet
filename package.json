@@ -13,6 +13,7 @@
     "ops:generate-import-map": "node --import tsx scripts/generate-import-map.mjs",
     "ops:init-db": "node --import tsx scripts/init-db.mjs",
     "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
+    "ops:publish-scheduled": "node scripts/publish-scheduled.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
     "ops:seo-audit": "node scripts/seo-audit.mjs",
     "ops:import-content": "node scripts/import-content.mjs"

@@ -12,6 +12,7 @@ import {
   buildEditorialChecklistField,
   editorialCompletionField,
 } from "../fields/editorialChecklist.ts";
+import { buildPublishingScheduleField } from "../fields/publishingSchedule.ts";
 import { seoFieldGroup } from "../fields/seo.ts";
 import { slugField } from "../fields/slug.ts";
 
@@ -53,6 +54,10 @@ const setPublishedAt: CollectionBeforeChangeHook = async ({
     data.publishedAt = new Date().toISOString();
   }
 
+  if (nextDocumentStatus === "published") {
+    data.editorialStatus = "published";
+  }
+
   if (
     reviewedStatuses.has(nextReviewStatus) &&
     nextReviewStatus !== previousReviewStatus &&
@@ -80,6 +85,7 @@ export const Articles: CollectionConfig = {
     defaultColumns: [
       "title",
       "releaseBatch",
+      "publishingSchedule.slot",
       "editorialCompletion",
       "launchWave",
       "editorialStatus",
@@ -172,6 +178,7 @@ export const Articles: CollectionConfig = {
         { label: "Published", value: "published" },
       ],
     },
+    buildPublishingScheduleField("articol"),
     editorialCompletionField,
     buildEditorialChecklistField("article"),
     { name: "coverImageURL", type: "text" },

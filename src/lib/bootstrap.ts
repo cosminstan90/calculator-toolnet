@@ -40,6 +40,12 @@ type EditorialStatus =
   | "approved"
   | "scheduled"
   | "published";
+type PublishingSlot = "none" | "morning" | "evening";
+type PublishingScheduleSeed = {
+  slot: PublishingSlot;
+  priority: number;
+  earliestAt?: string;
+};
 type CounterSummary = {
   created: number;
   updated: number;
@@ -74,6 +80,7 @@ type CalculatorMeta = {
   releaseBatch?: ReleaseBatch;
   editorialStatus?: EditorialStatus;
   publishByDefault?: boolean;
+  publishingSchedule?: PublishingScheduleSeed;
   example: string;
   faq: Array<{ question: string; answer: string }>;
   relatedCalculatorKeys?: CalculatorKey[];
@@ -93,6 +100,7 @@ type ArticleSeed = {
   releaseBatch?: ReleaseBatch;
   editorialStatus?: EditorialStatus;
   publishByDefault?: boolean;
+  publishingSchedule?: PublishingScheduleSeed;
 };
 
 type RedirectSeed = {
@@ -250,6 +258,48 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
 
 const defaultEditorialStatusForArticle = (seed: ArticleSeed): EditorialStatus =>
   BATCH_01_ARTICLES.includes(seed.slug) ? "approved" : "draft";
+
+const calculatorDraftQueue = [...BATCH_02_CALCULATORS, ...BATCH_03_CALCULATORS];
+const articleDraftQueue = [...BATCH_02_ARTICLES, ...BATCH_03_ARTICLES];
+
+const defaultPublishingScheduleForCalculator = (
+  key: CalculatorKey,
+  meta: CalculatorMeta,
+): PublishingScheduleSeed => {
+  if (shouldPublishCalculator(key, meta)) {
+    return { slot: "none", priority: 0 };
+  }
+
+  const queueIndex = calculatorDraftQueue.indexOf(key);
+
+  if (queueIndex === -1) {
+    return { slot: "none", priority: 999 };
+  }
+
+  return {
+    slot: queueIndex % 2 === 0 ? "morning" : "evening",
+    priority: queueIndex + 1,
+  };
+};
+
+const defaultPublishingScheduleForArticle = (
+  seed: ArticleSeed,
+): PublishingScheduleSeed => {
+  if (seed.publishByDefault === true || BATCH_01_ARTICLES.includes(seed.slug)) {
+    return { slot: "none", priority: 0 };
+  }
+
+  const queueIndex = articleDraftQueue.indexOf(seed.slug);
+
+  if (queueIndex === -1) {
+    return { slot: "none", priority: 999 };
+  }
+
+  return {
+    slot: "morning",
+    priority: queueIndex + 1,
+  };
+};
 
 const categoryFrames = {
   fitness: {
@@ -1520,6 +1570,8 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       isFeatured: meta.isFeatured,
       sortOrder: meta.sortOrder,
       releaseBatch: meta.releaseBatch ?? defaultReleaseBatchForCalculator(key),
+      publishingSchedule:
+        meta.publishingSchedule ?? defaultPublishingScheduleForCalculator(key, meta),
       editorialStatus: publishCalculator
         ? "published"
         : meta.editorialStatus ?? defaultEditorialStatusForCalculator(key),
@@ -1614,6 +1666,8 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
       relatedCalculators: (seed.relatedCalculatorKeys ?? []).map((item) => calculatorMap.get(item)).filter(Boolean),
       launchWave: seed.launchWave ?? "backlog",
       releaseBatch: seed.releaseBatch ?? defaultReleaseBatchForArticle(seed),
+      publishingSchedule:
+        seed.publishingSchedule ?? defaultPublishingScheduleForArticle(seed),
       editorialStatus: publishArticle
         ? "published"
         : seed.editorialStatus ?? defaultEditorialStatusForArticle(seed),

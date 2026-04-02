@@ -11,6 +11,7 @@ import {
   buildEditorialChecklistField,
   editorialCompletionField,
 } from "../fields/editorialChecklist.ts";
+import { buildPublishingScheduleField } from "../fields/publishingSchedule.ts";
 
 import {
   isAdmin,
@@ -84,6 +85,10 @@ const syncCalculatorRegistry: CollectionBeforeChangeHook = async ({
     data.publishedAt = new Date().toISOString();
   }
 
+  if (nextStatus === "published") {
+    data.editorialStatus = "published";
+  }
+
   const nextChecklist =
     (data.editorialChecklist as Record<string, unknown> | undefined) ??
     (originalDoc?.editorialChecklist as Record<string, unknown> | undefined);
@@ -101,6 +106,7 @@ export const Calculators: CollectionConfig = {
       "calculatorKey",
       "category",
       "releaseBatch",
+      "publishingSchedule.slot",
       "editorialCompletion",
       "editorialStatus",
       "_status",
@@ -162,6 +168,7 @@ export const Calculators: CollectionConfig = {
         { label: "Published", value: "published" },
       ],
     },
+    buildPublishingScheduleField("calculator"),
     editorialCompletionField,
     buildEditorialChecklistField("calculator"),
     {

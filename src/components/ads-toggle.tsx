@@ -1,7 +1,7 @@
 "use client";
 
 import { adsConfig, ADS_TOGGLE_STORAGE_KEY } from "@/lib/ads";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const readAdsEnabled = () => {
   if (typeof window === "undefined") {
@@ -19,11 +19,7 @@ const readAdsEnabled = () => {
 };
 
 export const AdsToggle = () => {
-  const [enabled, setEnabled] = useState(adsConfig.enabledByDefault);
-
-  useEffect(() => {
-    setEnabled(readAdsEnabled());
-  }, []);
+  const [enabled, setEnabled] = useState(readAdsEnabled);
 
   if (!adsConfig.showToggle || !adsConfig.adsenseClient) {
     return null;

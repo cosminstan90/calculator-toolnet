@@ -20,11 +20,9 @@ const readAdsEnabled = () => {
 };
 
 export const GoogleAdSense = () => {
-  const [enabled, setEnabled] = useState(adsConfig.enabledByDefault);
+  const [enabled, setEnabled] = useState(readAdsEnabled);
 
   useEffect(() => {
-    setEnabled(readAdsEnabled());
-
     const syncState = () => setEnabled(readAdsEnabled());
     window.addEventListener("storage", syncState);
     window.addEventListener("toolnet-ads-toggle", syncState as EventListener);

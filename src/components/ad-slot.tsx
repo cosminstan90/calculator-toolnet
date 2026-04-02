@@ -37,12 +37,10 @@ export const AdSlot = ({
   className = "",
   minHeightClassName = "min-h-[180px]",
 }: AdSlotProps) => {
-  const [enabled, setEnabled] = useState(adsConfig.enabledByDefault);
+  const [enabled, setEnabled] = useState(readAdsEnabled);
   const slotKey = useMemo(() => `${slot}-${enabled}`, [slot, enabled]);
 
   useEffect(() => {
-    setEnabled(readAdsEnabled());
-
     const syncState = () => setEnabled(readAdsEnabled());
     window.addEventListener("storage", syncState);
     window.addEventListener("toolnet-ads-toggle", syncState as EventListener);
