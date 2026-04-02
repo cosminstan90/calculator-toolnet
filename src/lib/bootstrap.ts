@@ -98,6 +98,34 @@ const readStringField = (doc: { [key: string]: unknown }, field: string): string
   return typeof value === "string" ? value : "";
 };
 
+const clampSeoValue = (value: string, maxLength: number) => {
+  const normalized = value.trim().replace(/\s+/g, " ");
+
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+
+  if (maxLength <= 3) {
+    return normalized.slice(0, maxLength);
+  }
+
+  return `${normalized.slice(0, maxLength - 3).trimEnd()}...`;
+};
+
+const buildSeoPayload = ({
+  canonicalPath,
+  metaDescription,
+  metaTitle,
+}: {
+  canonicalPath: string;
+  metaDescription: string;
+  metaTitle: string;
+}) => ({
+  canonicalPath,
+  metaDescription: clampSeoValue(metaDescription, 170),
+  metaTitle: clampSeoValue(metaTitle, 70),
+});
+
 const toSentenceList = (items: string[]) => {
   if (items.length === 0) {
     return "";
@@ -197,12 +225,12 @@ const homepageSeed = {
       ],
     },
   ],
-  seo: {
+  seo: buildSeoPayload({
     metaTitle: "Calculatoare Online - BMI, calorii, consum, kW in CP si alte tool-uri utile",
     metaDescription:
       "Hub de calculatoare online pentru fitness, auto, energie si conversii, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
-  },
+  }),
 };
 
 const categorySeeds: CategorySeed[] = [
@@ -855,11 +883,11 @@ const bootstrapCategories = async (payload: Payload, force: boolean) => {
     const data = {
       ...seed,
       contentBlocks: buildCategoryBlocks(seed),
-      seo: {
+      seo: buildSeoPayload({
         metaTitle: `${seed.name} - calculatoare online utile`,
         metaDescription: seed.summary,
         canonicalPath: `/calculatoare/${seed.slug}`,
-      },
+      }),
     };
 
     if (existing.docs[0]) {
@@ -959,11 +987,11 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       isFeatured: meta.isFeatured,
       sortOrder: meta.sortOrder,
       contentBlocks: buildCalculatorBlocks(definition, meta),
-      seo: {
+      seo: buildSeoPayload({
         metaTitle: `${definition.title} online`,
         metaDescription: meta.shortDescription,
         canonicalPath: `/calculatoare/${definition.categorySlug}/${definition.slug}`,
-      },
+      }),
       _status: "published",
     };
 
@@ -1045,11 +1073,11 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
       author: authorID,
       publishedAt: publishArticle ? new Date().toISOString() : undefined,
       aiDraft: { reviewStatus: publishArticle ? "reviewed" : "draft" },
-      seo: {
+      seo: buildSeoPayload({
         metaTitle: seed.title,
         metaDescription: seed.excerpt,
         canonicalPath: `/blog/${seed.slug}`,
-      },
+      }),
       _status: publishArticle ? "published" : "draft",
     };
 
