@@ -104,6 +104,8 @@ Batch rezervat pentru extinderea clusterului `conversii` si pentru utilitare ans
 
 - `releaseBatch` marcheaza lotul editorial
 - `editorialStatus` descrie progresul real al paginii
+- `editorialChecklist` arata concret ce este gata si ce mai lipseste
+- `editorialCompletion` ofera un procent rapid de completare in admin
 - doar `batch-01` este setat pentru publicare automata in seed-ul initial
 - loturile urmatoare raman draft pana la review si aprobare
 - redirect-urile legacy se pot publica direct atunci cand exista un inlocuitor clar si relevant

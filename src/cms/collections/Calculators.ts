@@ -4,7 +4,13 @@ import {
   type CalculatorKey,
 } from "../../lib/calculator-registry.ts";
 import { buildDefaultCalculatorFaq } from "../../lib/calculator-content.ts";
+import { computeEditorialCompletion as computeChecklistCompletion } from "../../lib/editorial-checklist.ts";
 import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
+
+import {
+  buildEditorialChecklistField,
+  editorialCompletionField,
+} from "../fields/editorialChecklist.ts";
 
 import {
   isAdmin,
@@ -78,6 +84,11 @@ const syncCalculatorRegistry: CollectionBeforeChangeHook = async ({
     data.publishedAt = new Date().toISOString();
   }
 
+  const nextChecklist =
+    (data.editorialChecklist as Record<string, unknown> | undefined) ??
+    (originalDoc?.editorialChecklist as Record<string, unknown> | undefined);
+  data.editorialCompletion = computeChecklistCompletion(nextChecklist);
+
   return data;
 };
 
@@ -90,6 +101,7 @@ export const Calculators: CollectionConfig = {
       "calculatorKey",
       "category",
       "releaseBatch",
+      "editorialCompletion",
       "editorialStatus",
       "_status",
       "updatedAt",
@@ -150,6 +162,8 @@ export const Calculators: CollectionConfig = {
         { label: "Published", value: "published" },
       ],
     },
+    editorialCompletionField,
+    buildEditorialChecklistField("calculator"),
     {
       name: "formulaReference",
       type: "relationship",

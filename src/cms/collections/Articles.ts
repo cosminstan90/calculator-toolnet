@@ -1,5 +1,6 @@
-﻿import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
+import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
 
+import { computeEditorialCompletion } from "../../lib/editorial-checklist.ts";
 import {
   cmsStaffFieldAccess,
   isAdmin,
@@ -7,6 +8,10 @@ import {
   isAdminOrEditor,
   publishedOnlyForGuests,
 } from "../access.ts";
+import {
+  buildEditorialChecklistField,
+  editorialCompletionField,
+} from "../fields/editorialChecklist.ts";
 import { seoFieldGroup } from "../fields/seo.ts";
 import { slugField } from "../fields/slug.ts";
 
@@ -40,7 +45,7 @@ const setPublishedAt: CollectionBeforeChangeHook = async ({
 
   if (nextDocumentStatus === "published" && !reviewedStatuses.has(nextReviewStatus)) {
     throw new Error(
-      "Articolul nu poate fi publicat inainte ca review-ul editorial sa fie finalizat."
+      "Articolul nu poate fi publicat inainte ca review-ul editorial sa fie finalizat.",
     );
   }
 
@@ -60,6 +65,11 @@ const setPublishedAt: CollectionBeforeChangeHook = async ({
     };
   }
 
+  const nextChecklist =
+    (data.editorialChecklist as Record<string, unknown> | undefined) ??
+    (originalDoc?.editorialChecklist as Record<string, unknown> | undefined);
+  data.editorialCompletion = computeEditorialCompletion(nextChecklist);
+
   return data;
 };
 
@@ -70,6 +80,7 @@ export const Articles: CollectionConfig = {
     defaultColumns: [
       "title",
       "releaseBatch",
+      "editorialCompletion",
       "launchWave",
       "editorialStatus",
       "articleType",
@@ -161,6 +172,8 @@ export const Articles: CollectionConfig = {
         { label: "Published", value: "published" },
       ],
     },
+    editorialCompletionField,
+    buildEditorialChecklistField("article"),
     { name: "coverImageURL", type: "text" },
     {
       name: "author",

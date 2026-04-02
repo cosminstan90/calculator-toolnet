@@ -3,6 +3,10 @@ import {
   getCalculatorDefinition,
   type CalculatorKey,
 } from "./calculator-registry.ts";
+import {
+  buildEditorialChecklistSeed,
+  computeEditorialCompletion,
+} from "./editorial-checklist.ts";
 import { ensureCalculatorFaq } from "./calculator-content.ts";
 import type { Payload } from "payload";
 
@@ -1208,6 +1212,12 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       editorialStatus: publishCalculator
         ? "published"
         : meta.editorialStatus ?? defaultEditorialStatusForCalculator(key),
+      editorialChecklist: buildEditorialChecklistSeed(
+        publishCalculator ? "published" : "ready_for_review",
+      ),
+      editorialCompletion: computeEditorialCompletion(
+        buildEditorialChecklistSeed(publishCalculator ? "published" : "ready_for_review"),
+      ),
       contentBlocks: buildCalculatorBlocks(definition, meta),
       seo: buildSeoPayload({
         metaTitle: `${definition.title} online`,
@@ -1296,6 +1306,12 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
       editorialStatus: publishArticle
         ? "published"
         : seed.editorialStatus ?? defaultEditorialStatusForArticle(seed),
+      editorialChecklist: buildEditorialChecklistSeed(
+        publishArticle ? "published" : "ready_for_review",
+      ),
+      editorialCompletion: computeEditorialCompletion(
+        buildEditorialChecklistSeed(publishArticle ? "published" : "ready_for_review"),
+      ),
       author: authorID,
       publishedAt: publishArticle ? new Date().toISOString() : undefined,
       aiDraft: { reviewStatus: publishArticle ? "reviewed" : "draft" },
