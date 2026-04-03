@@ -206,6 +206,19 @@ const BATCH_05_CALCULATORS: CalculatorKey[] = [
   "effective-tax-rate",
 ];
 
+const BATCH_06_CALCULATORS: CalculatorKey[] = [
+  "credit-affordability",
+  "debt-to-income",
+  "loan-total-cost",
+  "refinance-savings",
+  "emergency-fund",
+  "savings-interest",
+  "retirement-savings",
+  "goal-timeline",
+  "lease-vs-loan",
+  "down-payment",
+];
+
 const BATCH_04_ARTICLES = [
   "cum-calculezi-procentele-corect",
   "procent-din-numar-vs-diferenta-procentuala",
@@ -223,6 +236,15 @@ const BATCH_05_ARTICLES = [
   "cate-ore-lucrezi-intr-o-luna-de-fapt",
   "cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva",
   "cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul",
+];
+
+const BATCH_06_ARTICLES = [
+  "cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul",
+  "cum-citesti-costul-total-al-unui-credit",
+  "cand-merita-refinantarea-si-cand-doar-pare-o-idee-buna",
+  "cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati",
+  "cum-planifici-economii-pe-termen-lung-pentru-obiective-mari",
+  "leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare",
 ];
 
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
@@ -275,6 +297,8 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
           ? "batch-04"
           : BATCH_05_CALCULATORS.includes(key)
             ? "batch-05"
+            : BATCH_06_CALCULATORS.includes(key)
+              ? "batch-06"
           : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
@@ -323,12 +347,18 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-05";
   }
 
+  if (BATCH_06_ARTICLES.includes(seed.slug)) {
+    return "batch-06";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
 
   return seed.relatedCategorySlug === "finante"
     ? "batch-04"
+    : seed.relatedCategorySlug === "credite-si-economii"
+      ? "batch-06"
     : seed.relatedCategorySlug === "conversii"
       ? "batch-04"
       : "batch-03";
@@ -345,12 +375,14 @@ const calculatorDraftQueue = [
   ...BATCH_03_CALCULATORS,
   ...BATCH_04_CALCULATORS,
   ...BATCH_05_CALCULATORS,
+  ...BATCH_06_CALCULATORS,
 ];
 const articleDraftQueue = [
   ...BATCH_02_ARTICLES,
   ...BATCH_03_ARTICLES,
   ...BATCH_04_ARTICLES,
   ...BATCH_05_ARTICLES,
+  ...BATCH_06_ARTICLES,
 ];
 
 const defaultPublishingScheduleForCalculator = (
@@ -457,6 +489,14 @@ const categoryFrames = {
     linkingLead:
       "Leaga natural paginile de crestere salariala, tarif orar, venit anual si taxare efectiva pentru a sustine un traseu complet de decizie.",
   },
+  "credite-si-economii": {
+    audience:
+      "cand compari credite, rate, economii, refinantare sau obiective financiare pe termen mediu si lung",
+    caution:
+      "In credite si economii, formula este foarte utila pentru orientare, dar costul real depinde si de comisioane, asigurari, structura produsului si comportamentul tau financiar.",
+    linkingLead:
+      "Leaga intre ele paginile de rata maxima, cost total credit, refinantare, fond de urgenta si obiective de economisire pentru a sustine un traseu complet de decizie.",
+  },
 } as const;
 
 const readStringField = (doc: { [key: string]: unknown }, field: string): string => {
@@ -533,6 +573,14 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames.finante;
   }
 
+  if (categorySlug === "salarii-si-taxe") {
+    return categoryFrames["salarii-si-taxe"];
+  }
+
+  if (categorySlug === "credite-si-economii") {
+    return categoryFrames["credite-si-economii"];
+  }
+
   return categoryFrames.fitness;
 };
 
@@ -575,12 +623,12 @@ const homepageSeed = {
   heroBadge: "Calculatoare online clare si utile",
   heroTitle: "Calcule utile, explicate pe inteles si gata de folosit.",
   heroDescription:
-    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, conversii, constructii, business si finante, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
+    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, conversii, constructii, business, finante, salarii si credite, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "40", label: "calculatoare disponibile in primele patru loturi" },
-    { value: "7", label: "categorii principale de cautare" },
+    { value: "55", label: "calculatoare disponibile in primele sase loturi" },
+    { value: "9", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
   contentBlocks: [
@@ -607,13 +655,15 @@ const homepageSeed = {
         { value: "Constructii", label: "suprafata, beton, vopsea, gresie si parchet" },
         { value: "Business", label: "food cost, marja, markup, break-even si ROI" },
         { value: "Finante", label: "procente, TVA, economii, dobanzi si rate" },
+        { value: "Salarii", label: "crestere salariala, tarif orar, venit anual si taxare" },
+        { value: "Credite", label: "rata maxima, refinantare, fond de urgenta si avans" },
       ],
     },
   ],
   seo: buildSeoPayload({
-    metaTitle: "Calculatoare Online - procente, TVA, fitness si business",
+    metaTitle: "Calculatoare Online - finante, credite, fitness si business",
     metaDescription:
-      "Hub de calculatoare online pentru procente, TVA, fitness, auto, energie, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
+      "Hub de calculatoare online pentru finante, credite, economii, fitness, auto, energie, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
   }),
 };
@@ -689,6 +739,15 @@ const categorySeeds: CategorySeed[] = [
     introContent:
       "Categoria Salarii si taxe aduna calcule utile pentru compararea ofertelor salariale, transformarea venitului lunar in tarif orar, estimarea orelor lucrate, intelegerea diferentei dintre brut si net si planificarea venitului anual. Paginile sunt gandite ca instrumente de orientare rapida, completate de articole care clarifica decizia si limitele interpretarii.",
     sortOrder: 80,
+    isFeatured: true,
+  },
+  {
+    name: "Credite si economii",
+    slug: "credite-si-economii",
+    summary: "Calculatoare pentru rate, cost total credit, refinantare, fond de urgenta, economii si obiective financiare.",
+    introContent:
+      "Categoria Credite si economii aduna calculatoare pentru rata maxima suportabila, grad de indatorare, cost total credit, refinantare, fond de urgenta si planificarea obiectivelor financiare. Paginile sunt gandite ca instrumente de decizie, nu doar de calcul, astfel incat utilizatorul sa poata compara scenarii si sa inteleaga mai usor ce face mai departe.",
+    sortOrder: 90,
     isFeatured: true,
   },
 ];
@@ -1334,6 +1393,166 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedCalculatorKeys: ["salary-increase", "annual-income", "hourly-rate"],
     relatedArticleSlugs: ["cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva"],
   },
+  "credit-affordability": {
+    shortDescription: "Estimeaza rata maxima suportabila si suma finantabila pornind de la venit, grad de indatorare, dobanda si perioada.",
+    intro: "Calculatorul de rata maxima suportabila este util cand vrei sa vezi rapid ce imprumut poti sustine fara sa fortezi bugetul lunar.",
+    interpretationNotes: "Rezultatul este orientativ. Eligibilitatea reala depinde si de politica institutiei, comisioane, scoring si alte angajamente financiare.",
+    isFeatured: true,
+    sortOrder: 10,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La 8.500 lei venit, 40% grad de indatorare, fara alte rate, 7,5% dobanda si 240 luni, rata maxima trece de 3.000 lei si suma finantabila intra bine in zona locuintelor medii.",
+    faq: [
+      { question: "Este aceeasi cifra cu ce aproba banca?", answer: "Nu. Calculatorul ofera un reper rapid, dar aprobarea reala depinde si de scoring, comisioane, venituri eligibile si reguli interne." },
+      { question: "De ce conteaza gradul de indatorare?", answer: "Pentru ca te ajuta sa pastrezi rata lunara intr-o zona suportabila si comparabila intre scenarii." },
+    ],
+    relatedCalculatorKeys: ["debt-to-income", "loan-total-cost", "down-payment"],
+    relatedArticleSlugs: ["cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul"],
+  },
+  "debt-to-income": {
+    shortDescription: "Arata ce procent din venitul lunar este deja consumat de rate si plati recurente.",
+    intro: "Calculatorul de grad de indatorare este unul dintre cele mai utile repere cand vrei sa vezi daca bugetul tau suporta inca o rata sau are deja prea multe obligatii recurente.",
+    interpretationNotes: "Indicatorul este util doar daca venitul si platile lunare sunt comparabile intre ele. Bonusurile neregulate sau cheltuielile ocazionale trebuie tratate separat.",
+    isFeatured: false,
+    sortOrder: 20,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La 8.500 lei venit si 2.200 lei rate recurente, gradul de indatorare trece putin de 25%, iar bugetul ramas este inca relativ flexibil.",
+    faq: [
+      { question: "Include si cheltuielile uzuale ale casei?", answer: "Nu. Calculatorul compara in primul rand venitul cu platile recurente de datorii, nu cu toate cheltuielile lunare." },
+      { question: "Cand devine util acest procent?", answer: "Cand compari doua scenarii de creditare, refinantare sau buget si vrei un reper simplu si coerent." },
+    ],
+    relatedCalculatorKeys: ["credit-affordability", "loan-total-cost", "emergency-fund"],
+    relatedArticleSlugs: ["cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul"],
+  },
+  "loan-total-cost": {
+    shortDescription: "Calculeaza rata lunara, costul total si dobanda totala pentru un credit cu rate egale.",
+    intro: "Calculatorul de cost total credit este util cand vrei sa compari nu doar rata lunara, ci si pretul complet al unei decizii de finantare.",
+    interpretationNotes: "Costul real poate include si comisioane, asigurari sau alte taxe care nu intra automat in formula standard a ratei.",
+    isFeatured: true,
+    sortOrder: 30,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La 150.000 lei, 7,5% si 240 luni, rata lunara pare suportabila, dar costul total ajunge mult peste principalul imprumutat.",
+    faq: [
+      { question: "De ce nu este suficienta doar rata lunara?", answer: "Pentru ca o rata mai mica poate ascunde un cost total mult mai mare atunci cand perioada este foarte lunga." },
+      { question: "Calculatorul include toate costurile bancii?", answer: "Nu automat. El porneste de la dobanda si perioada, iar costurile suplimentare trebuie adaugate separat in analiza finala." },
+    ],
+    relatedCalculatorKeys: ["credit-affordability", "refinance-savings", "down-payment"],
+    relatedArticleSlugs: ["cum-citesti-costul-total-al-unui-credit"],
+  },
+  "refinance-savings": {
+    shortDescription: "Compara rata veche cu rata noua si estimeaza economia neta dupa costul refinantarii.",
+    intro: "Calculatorul de refinantare este util cand vrei sa vezi daca scaderea ratei lunare compenseaza cu adevarat costul mutarii creditului intr-un produs nou.",
+    interpretationNotes: "O refinantare pare atractiva la nivel de rata lunara, dar merita judecata si prin costul total ramas, comisioane si orizontul in care recuperezi costul initial.",
+    isFeatured: true,
+    sortOrder: 40,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "Daca noua rata scade cu 370 lei pe luna, dar refinantarea costa 3.500 lei, recuperezi costul in cateva luni si apoi economia devine net pozitiva.",
+    faq: [
+      { question: "Rata mai mica inseamna automat refinantare buna?", answer: "Nu. Merita sa verifici si costul total ramas, comisioanele si cate luni mai ai de plata." },
+      { question: "Cand e util pragul de recuperare?", answer: "Cand vrei sa vezi in cate luni acoperi costul refinantarii doar din diferenta dintre cele doua rate." },
+    ],
+    relatedCalculatorKeys: ["loan-total-cost", "credit-affordability", "debt-to-income"],
+    relatedArticleSlugs: ["cand-merita-refinantarea-si-cand-doar-pare-o-idee-buna"],
+  },
+  "emergency-fund": {
+    shortDescription: "Estimeaza suma-tinta pentru fondul de urgenta pornind de la cheltuielile lunare si numarul de luni de acoperire dorit.",
+    intro: "Calculatorul de fond de urgenta este util cand vrei sa transformi o regula generala intr-o suma clara si usor de urmarit in timp.",
+    interpretationNotes: "Fondul de urgenta nu este acelasi lucru cu economiile pentru obiective sau cu investitiile. El trebuie gandit in primul rand pentru lichiditate si stabilitate.",
+    isFeatured: true,
+    sortOrder: 50,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La 4.200 lei cheltuieli esentiale si 6 luni de acoperire, tinta fondului de urgenta ajunge la 25.200 lei.",
+    faq: [
+      { question: "De ce folosesc cheltuieli esentiale, nu toate cheltuielile?", answer: "Pentru ca fondul de urgenta este gandit in primul rand sa acopere functionarea minima a bugetului in perioade dificile." },
+      { question: "Unde ar trebui tinut fondul?", answer: "De obicei intr-o forma foarte lichida si usor accesibila, nu intr-un produs care blocheaza banii pe termen lung." },
+    ],
+    relatedCalculatorKeys: ["goal-timeline", "savings-interest", "debt-to-income"],
+    relatedArticleSlugs: ["cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati"],
+  },
+  "savings-interest": {
+    shortDescription: "Estimeaza evolutia economiilor din suma initiala, contributii lunare si dobanda.",
+    intro: "Calculatorul de dobanda economii te ajuta sa vezi cum se schimba o strategie simpla de economisire atunci cand adaugi capitalizare si timp.",
+    interpretationNotes: "Rezultatul este orientativ. In practica, randamentul poate varia, iar fiscalitatea sau comisioanele produsului folosit pot schimba valoarea finala.",
+    isFeatured: false,
+    sortOrder: 60,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "O suma initiala de 10.000 lei, plus 750 lei pe luna si 4,5% pe an, produce o diferenta semnificativa fata de simpla adunare liniara dupa cativa ani.",
+    faq: [
+      { question: "De ce conteaza asa mult timpul?", answer: "Pentru ca dobanda acumulata incepe sa lucreze la randul ei, iar efectul devine vizibil mai ales pe perioade mai lungi." },
+      { question: "Este acelasi lucru cu investitiile?", answer: "Nu neaparat. Formula poate fi folosita orientativ si pentru alte scenarii, dar randamentul real si riscul pot fi foarte diferite." },
+    ],
+    relatedCalculatorKeys: ["goal-timeline", "retirement-savings", "emergency-fund"],
+    relatedArticleSlugs: ["cum-planifici-economii-pe-termen-lung-pentru-obiective-mari"],
+  },
+  "retirement-savings": {
+    shortDescription: "Proiecteaza acumularea unei contributii lunare pe termen lung pentru obiective de pensie si independenta financiara.",
+    intro: "Calculatorul de economii pentru pensie este util cand vrei sa vezi ce poate produce consistenta pe termen lung, nu doar randamentul teoretic.",
+    interpretationNotes: "Orice proiectie pe zeci de ani este sensibilă la randament, inflatie si disciplina de contributie. Rezultatul merita citit ca scenariu, nu ca promisiune.",
+    isFeatured: false,
+    sortOrder: 70,
+    audience: "consumer",
+    releaseBatch: "batch-06",
+    example: "1.000 lei pe luna timp de 25 de ani, la un randament moderat, poate construi un capital surprinzator de mare fata de intuitia initiala.",
+    faq: [
+      { question: "De ce este util sa vad si totalul depus?", answer: "Pentru ca te ajuta sa separi clar ce vine din disciplina ta si ce vine din randamentul estimat." },
+      { question: "Pot folosi calculatorul si pentru alte obiective lungi?", answer: "Da. Formula este utila si pentru alte obiective pe termen lung, atata timp cat intelegi limitarile scenariului." },
+    ],
+    relatedCalculatorKeys: ["savings-interest", "goal-timeline", "emergency-fund"],
+    relatedArticleSlugs: ["cum-planifici-economii-pe-termen-lung-pentru-obiective-mari"],
+  },
+  "goal-timeline": {
+    shortDescription: "Estimeaza in cate luni sau ani poti ajunge la un obiectiv financiar pornind de la ritmul actual de economisire.",
+    intro: "Calculatorul de termen obiectiv economisire este util cand ai o tinta clara si vrei sa vezi cat de realist este calendarul pe care ti-l propui.",
+    interpretationNotes: "Rezultatul depinde puternic de constanta contributiilor si de randamentul presupus. Daca una dintre ele variaza mult, termenul real se muta.",
+    isFeatured: false,
+    sortOrder: 80,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La o tinta de 100.000 lei, 10.000 lei deja pusi deoparte si 1.200 lei economisiti lunar, termenul scade vizibil cand adaugi si o dobanda moderata.",
+    faq: [
+      { question: "Este mai bun decat calculatorul de economii?", answer: "Depinde de punctul de plecare. Aici pleci de la tinta finala si vrei sa afli timpul, nu suma pe care o vei strange." },
+      { question: "De ce foloseste simulare iterativa?", answer: "Pentru ca termenul depinde de acumulare progresiva, nu doar de o operatie simpla intr-un singur pas." },
+    ],
+    relatedCalculatorKeys: ["savings-interest", "emergency-fund", "down-payment"],
+    relatedArticleSlugs: ["cum-planifici-economii-pe-termen-lung-pentru-obiective-mari"],
+  },
+  "lease-vs-loan": {
+    shortDescription: "Compara costul total dintre doua scenarii de finantare: leasing si credit.",
+    intro: "Calculatorul de leasing vs credit este util cand vrei sa pui cele doua scenarii pe aceeasi masa si sa vezi rapid care este mai ieftin in forma lui cea mai simpla.",
+    interpretationNotes: "Comparatia este orientativa. Fiscalitatea, asigurarile, valoarea reziduala, comisioanele si deducerile pot schimba semnificativ rezultatul final.",
+    isFeatured: false,
+    sortOrder: 90,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "Doua scenarii care par apropiate la rata lunara pot avea cost total foarte diferit dupa ce adaugi avansul si valoarea finala.",
+    faq: [
+      { question: "Este suficient costul total ca sa aleg intre ele?", answer: "Nu mereu. Flexibilitatea, tratamentul fiscal, proprietatea finala si nevoia operationala conteaza la fel de mult." },
+      { question: "Pot folosi calculatorul si pentru masini, si pentru echipamente?", answer: "Da, daca lucrezi cu aceeasi logica de avans, rate lunare si cost final comparabil." },
+    ],
+    relatedCalculatorKeys: ["loan-total-cost", "down-payment", "credit-affordability"],
+    relatedArticleSlugs: ["leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare"],
+  },
+  "down-payment": {
+    shortDescription: "Transforma procentul de avans intr-o suma concreta si arata cat mai ramane de finantat.",
+    intro: "Calculatorul de avans este util cand vrei sa vezi imediat ce inseamna in bani un procent cerut pentru o locuinta, masina sau alta achizitie finantata.",
+    interpretationNotes: "Un procent mic de avans poate face finantarea mai usor accesibila pe termen scurt, dar poate creste presiunea pe rata lunara si pe costul total.",
+    isFeatured: true,
+    sortOrder: 100,
+    audience: "both",
+    releaseBatch: "batch-06",
+    example: "La 450.000 lei si 15% avans, suma initiala trece de 67.000 lei, iar restul ramane pentru finantare.",
+    faq: [
+      { question: "Avansul mai mare inseamna automat alegere mai buna?", answer: "Nu automat, dar de multe ori reduce suma finantata si poate imbunatati conditiile generale ale creditului." },
+      { question: "Cum il folosesc impreuna cu alte calculatoare?", answer: "Cel mai util este sa il legi de rata maxima suportabila si de costul total al creditului pentru acelasi scenariu." },
+    ],
+    relatedCalculatorKeys: ["credit-affordability", "loan-total-cost", "goal-timeline"],
+    relatedArticleSlugs: ["cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul"],
+  },
 };
 
 const articleSeeds: ArticleSeed[] = [
@@ -1738,6 +1957,84 @@ const articleSeeds: ArticleSeed[] = [
     relatedArticleSlugs: ["cum-calculezi-cresterea-salariala-corect"],
     launchWave: "backlog",
     releaseBatch: "batch-05",
+    audience: "both",
+  },
+  {
+    slug: "cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul",
+    title: "Cum afli ce rata iti permiti fara sa iti blochezi bugetul inca din prima luna",
+    excerpt: "Rata suportabila nu inseamna doar cat aproba banca, ci si cat poti duce realist fara sa-ti strangulezi restul bugetului.",
+    content: "Cand oamenii cauta ce rata isi permit, tentația fireasca este sa se uite direct la suma maxima pe care o pot obtine. In practica, ordinea buna este inversa: incepi de la bugetul lunar si abia apoi vezi ce suma finantabila rezulta.\n\nCalculatorul de rata maxima suportabila este util exact pentru acest pas. El iti arata rapid ce spatiu exista intre venit, ratele deja existente si pragul de indatorare pe care il consideri acceptabil.\n\nAsta conteaza mult pentru ca o rata aprobata nu este intotdeauna si o rata confortabila. Diferenta dintre cele doua se vede de obicei dupa cateva luni, cand apar cheltuieli neplanificate sau cand bugetul incepe sa devina prea rigid.\n\nDe aceea, pagina trebuie citita impreuna cu gradul de indatorare, cu avansul si cu costul total al creditului. Doar asa treci de la o cifra frumoasa pe hartie la o decizie sustenabila.\n\nPe scurt, intrebarea corecta nu este doar cate lei pot imprumuta, ci cat imi permit sa platesc lunar fara sa stric restul echilibrului financiar.",
+    articleType: "guide",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["credit-affordability", "debt-to-income", "down-payment"],
+    relatedArticleSlugs: ["cum-citesti-costul-total-al-unui-credit"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
+    audience: "both",
+  },
+  {
+    slug: "cum-citesti-costul-total-al-unui-credit",
+    title: "Cum citesti costul total al unui credit fara sa te uiti doar la rata lunara",
+    excerpt: "Rata lunara conteaza, dar costul total este cel care iti arata cat platesti de fapt pentru finantare.",
+    content: "Rata lunara este primul numar care atrage atentia atunci cand compari doua credite. Este firesc, pentru ca afecteaza direct bugetul din fiecare luna. Dar daca te opresti doar aici, poti rata imaginea de ansamblu.\n\nCalculatorul de cost total credit are exact rolul de a muta atentia de la cifra lunara la pretul complet al deciziei. El te ajuta sa vezi cat platesti in total si cat reprezinta dobanda acumulata in timp.\n\nAsta este important pentru ca o perioada mai lunga poate cobori rata lunara, dar poate ridica puternic costul final. De aceea, comparatia buna nu se face pe un singur numar, ci pe relatia dintre rata, perioada si suma totala platita.\n\nPagina merita legata de refinantare, avans si rata maxima suportabila. Asa utilizatorul poate trece de la o simpla simulare la un traseu mai realist de decizie.\n\nConcluzia utila este simpla: rata lunara iti spune daca poti intra in scenariu, dar costul total iti spune daca merita cu adevarat sa ramai in el.",
+    articleType: "guide",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["loan-total-cost", "credit-affordability", "refinance-savings"],
+    relatedArticleSlugs: ["cand-merita-refinantarea-si-cand-doar-pare-o-idee-buna"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
+    audience: "both",
+  },
+  {
+    slug: "cand-merita-refinantarea-si-cand-doar-pare-o-idee-buna",
+    title: "Cand merita refinantarea si cand doar pare o idee buna pentru ca rata lunara scade",
+    excerpt: "O rata noua mai mica nu inseamna automat refinantare buna. Merita sa vezi si costul mutarii si timpul de recuperare.",
+    content: "Refinantarea suna bine aproape de fiecare data cand rata lunara scade. Problema este ca o parte din atractivitatea ei vine din faptul ca ne uitam la un singur numar si ignoram restul contextului.\n\nCalculatorul de economie refinantare este util tocmai pentru ca pune in aceeasi imagine diferenta de rata, lunile ramase si costul refinantarii. Asta te ajuta sa vezi nu doar daca economisesti in teorie, ci si in cat timp recuperezi costul mutarii.\n\nUneori refinantarea merita clar. Alteori scaderea lunara este prea mica, perioada ramasa este prea scurta sau costul initial este prea mare ca sa mai faca sens.\n\nDe aceea pagina trebuie legata de cost total credit si de gradul de indatorare. O refinantare buna nu inseamna doar o rata mai mica, ci un echilibru mai bun intre bugetul lunar si costul total ramas.\n\nDaca vrei decizie buna, uita-te intotdeauna la trei lucruri: economia lunara, economia neta dupa costuri si lunile in care iti recuperezi mutarea.",
+    articleType: "guide",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["refinance-savings", "loan-total-cost", "debt-to-income"],
+    relatedArticleSlugs: ["cum-citesti-costul-total-al-unui-credit"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
+    audience: "both",
+  },
+  {
+    slug: "cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati",
+    title: "Cum iti construiesti fondul de urgenta fara sa ramai fara lichiditati pentru restul obiectivelor",
+    excerpt: "Fondul de urgenta trebuie sa-ti dea stabilitate, nu sa-ti blocheze complet restul planului financiar.",
+    content: "Fondul de urgenta este una dintre cele mai utile idei financiare simple, tocmai pentru ca transforma nesiguranta intr-o marja de respiratie. Problema apare atunci cand utilizatorul aude o regula generala, dar nu o traduce intr-o suma concreta si realista.\n\nCalculatorul de fond de urgenta face exact acest pas: porneste de la cheltuielile esentiale si iti arata ce suma are sens sa urmaresti in functie de numarul de luni de acoperire dorit.\n\nAsta conteaza pentru ca fondul de urgenta nu este acelasi lucru cu economiile pentru vacanta, avans sau investitii. Rolul lui este lichiditatea si stabilitatea, nu randamentul maxim.\n\nIn acelasi timp, nu merita sa construiesti fondul intr-un mod care sufoca complet restul planului financiar. De aceea merita legat de obiectivele de economisire si de evolutia economiilor in timp.\n\nPe scurt, fondul de urgenta bun este suficient de mare incat sa te ajute in perioade grele, dar suficient de bine planificat incat sa nu-ti blocheze complet celelalte decizii importante.",
+    articleType: "guide",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["emergency-fund", "goal-timeline", "savings-interest"],
+    relatedArticleSlugs: ["cum-planifici-economii-pe-termen-lung-pentru-obiective-mari"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
+    audience: "both",
+  },
+  {
+    slug: "cum-planifici-economii-pe-termen-lung-pentru-obiective-mari",
+    title: "Cum planifici economii pe termen lung pentru obiective mari fara sa te bazezi doar pe optimism",
+    excerpt: "Cand obiectivul este mare, ai nevoie de ritm, termen si un scenariu mai realist decat pare la prima vedere.",
+    content: "Obiectivele financiare mari par descurajante tocmai pentru ca distanta dintre situatia actuala si suma finala este mare. Din acest motiv, multi oameni ori nu incep deloc, ori pornesc cu un plan prea optimist ca sa fie sustenabil.\n\nCalculatorul de termen pentru obiectiv de economisire si cel de dobanda economii ajuta exact aici. Unul iti spune in cat timp ajungi la tinta, celalalt iti arata cum se schimba rezultatul cand adaugi constanta si randament.\n\nValoarea lor reala nu este doar in cifra finala, ci in faptul ca iti permit sa schimbi usor variabilele si sa vezi ce este realist. Poate ca nu trebuie sa dublezi contributia lunara; poate este suficient sa extinzi termenul sau sa separi mai clar obiectivele.\n\nPentru produsul nostru, aceste pagini merita sa formeze un mini-cluster coerent alaturi de fondul de urgenta si economiile pentru pensie. Acolo incepe cu adevarat zona de decision support financiar.\n\nUn plan bun de economisire pe termen lung nu este cel mai spectaculos din prima zi, ci cel pe care il poti tine si ajusta fara sa te rupi de realitate dupa primele luni.",
+    articleType: "guide",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["goal-timeline", "savings-interest", "retirement-savings"],
+    relatedArticleSlugs: ["cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
+    audience: "both",
+  },
+  {
+    slug: "leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare",
+    title: "Leasing vs credit: cum compari corect doua scenarii de finantare fara sa te blochezi in rata lunara",
+    excerpt: "Leasingul si creditul pot parea apropiate la nivel de rata, dar costul total si flexibilitatea conteaza la fel de mult.",
+    content: "Comparatia dintre leasing si credit este una dintre cele mai interesante pentru ca ambele produse pot rezolva aceeasi nevoie, dar o fac in moduri diferite. De aceea utilizatorul nu are nevoie doar de o formula, ci de o comparatie structurata bine.\n\nCalculatorul de leasing vs credit face un prim pas bun: pune in aceeasi imagine avansul, rata lunara, perioada si costul final. Astfel vezi rapid care scenariu este mai ieftin in forma lui cea mai simpla.\n\nTotusi, o decizie buna nu se opreste aici. In practica intervin fiscalitatea, proprietatea finala, valoarea reziduala, flexibilitatea operationala si profilul utilizatorului. Exact de aceea pagina trebuie construita ca instrument de comparatie initiala, nu ca verdict unic.\n\nValoarea editoriala mare vine din faptul ca utilizatorul ajunge natural apoi la cost total credit, la avans si la rata suportabila. Acolo se leaga frumos si clusterul credite-si-economii.\n\nDaca vrei sa compari corect doua scenarii de finantare, incepe cu costul total, dar nu uita sa citesti si ce tip de obligatie iti asumi pe toata perioada contractului.",
+    articleType: "comparison",
+    relatedCategorySlug: "credite-si-economii",
+    relatedCalculatorKeys: ["lease-vs-loan", "loan-total-cost", "down-payment"],
+    relatedArticleSlugs: ["cum-citesti-costul-total-al-unui-credit"],
+    launchWave: "backlog",
+    releaseBatch: "batch-06",
     audience: "both",
   },
 ];

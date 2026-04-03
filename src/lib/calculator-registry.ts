@@ -43,7 +43,17 @@ export type CalculatorKey =
   | "hourly-rate"
   | "monthly-work-hours"
   | "annual-income"
-  | "effective-tax-rate";
+  | "effective-tax-rate"
+  | "credit-affordability"
+  | "debt-to-income"
+  | "loan-total-cost"
+  | "refinance-savings"
+  | "emergency-fund"
+  | "savings-interest"
+  | "retirement-savings"
+  | "goal-timeline"
+  | "lease-vs-loan"
+  | "down-payment";
 
 export type CalculatorInputOption = {
   label: string;
@@ -2882,6 +2892,775 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       return {
         taxAmount: round(taxAmount, 2),
         effectiveTaxRate: round((taxAmount / grossIncome) * 100, 2),
+      };
+    },
+  },
+  "credit-affordability": {
+    key: "credit-affordability",
+    title: "Calculator rata maxima suportabila",
+    slug: "calculator-rata-maxima-suportabila",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza rata lunara maxima si suma finantabila pornind de la venit, cheltuieli, dobanda si perioada.",
+    formulaName: "Rata suportabila si suma finantabila",
+    formulaExpression:
+      "Rata maxima = venit net x grad de indatorare - alte rate; Suma finantabila = rata x [1 - (1 + i)^-n] / i",
+    formulaDescription:
+      "Calculatorul porneste de la un prag de indatorare ales de utilizator si transforma rata lunara maxima intr-o estimare a sumei care poate fi finantata.",
+    howToSteps: [
+      "Introdu venitul lunar net si ratele existente.",
+      "Alege pragul de indatorare, dobanda si perioada creditului.",
+      "Citeste rata maxima si suma finantabila estimata.",
+    ],
+    inputs: [
+      {
+        name: "monthlyIncome",
+        label: "Venit lunar net",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 8500,
+      },
+      {
+        name: "existingDebtPayments",
+        label: "Rate existente",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 0,
+      },
+      {
+        name: "debtRatio",
+        label: "Grad de indatorare",
+        type: "number",
+        unit: "%",
+        min: 1,
+        max: 80,
+        step: 1,
+        required: true,
+        defaultValue: 40,
+      },
+      {
+        name: "annualInterestRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 7.5,
+      },
+      {
+        name: "loanMonths",
+        label: "Perioada",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 480,
+        step: 1,
+        required: true,
+        defaultValue: 240,
+      },
+    ],
+    outputs: [
+      { name: "maxPayment", label: "Rata maxima", unit: "lei", decimals: 2 },
+      { name: "maxLoanAmount", label: "Suma finantabila", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyIncome = parseNumber(values.monthlyIncome);
+      const existingDebtPayments = parseNumber(values.existingDebtPayments);
+      const debtRatio = parseNumber(values.debtRatio) / 100;
+      const annualInterestRate = parseNumber(values.annualInterestRate);
+      const loanMonths = Math.max(parseNumber(values.loanMonths), 1);
+      const maxPayment = Math.max(monthlyIncome * debtRatio - existingDebtPayments, 0);
+      const monthlyRate = annualInterestRate / 100 / 12;
+      const maxLoanAmount =
+        monthlyRate > 0
+          ? maxPayment * (1 - (1 + monthlyRate) ** -loanMonths) / monthlyRate
+          : maxPayment * loanMonths;
+
+      return {
+        maxPayment: round(maxPayment, 2),
+        maxLoanAmount: round(maxLoanAmount, 2),
+      };
+    },
+  },
+  "debt-to-income": {
+    key: "debt-to-income",
+    title: "Calculator grad de indatorare",
+    slug: "calculator-grad-de-indatorare",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Arata ce procent din venitul lunar este deja consumat de rate si plati recurente.",
+    formulaName: "Debt-to-income",
+    formulaExpression: "Grad de indatorare = plati lunare recurente / venit lunar x 100",
+    formulaDescription:
+      "Gradul de indatorare compara toate platile recurente de datorii cu venitul disponibil intr-o luna obisnuita.",
+    howToSteps: [
+      "Introdu venitul lunar relevant pentru comparatie.",
+      "Introdu totalul ratelor sau platilor recurente.",
+      "Citeste procentul de indatorare rezultat.",
+    ],
+    inputs: [
+      {
+        name: "monthlyIncome",
+        label: "Venit lunar",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 8500,
+      },
+      {
+        name: "monthlyDebtPayments",
+        label: "Plati recurente",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 2200,
+      },
+    ],
+    outputs: [
+      { name: "debtToIncome", label: "Grad de indatorare", unit: "%", decimals: 2 },
+      { name: "remainingIncome", label: "Venit ramas", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyIncome = Math.max(parseNumber(values.monthlyIncome), 0.01);
+      const monthlyDebtPayments = parseNumber(values.monthlyDebtPayments);
+      return {
+        debtToIncome: round((monthlyDebtPayments / monthlyIncome) * 100, 2),
+        remainingIncome: round(monthlyIncome - monthlyDebtPayments, 2),
+      };
+    },
+  },
+  "loan-total-cost": {
+    key: "loan-total-cost",
+    title: "Calculator cost total credit",
+    slug: "calculator-cost-total-credit",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza rata lunara, suma totala platita si dobanda totala pentru un credit in rate egale.",
+    formulaName: "Cost total credit",
+    formulaExpression:
+      "Rata = credit x rata lunara / (1 - (1 + rata lunara)^-luni); Cost total = rata x luni",
+    formulaDescription:
+      "Calculatorul foloseste formula anuitatii pentru a transforma suma imprumutata, dobanda si perioada in cost lunar si cost total.",
+    howToSteps: [
+      "Introdu suma imprumutata.",
+      "Introdu dobanda anuala si perioada in luni.",
+      "Citeste rata lunara, costul total si dobanda totala.",
+    ],
+    inputs: [
+      {
+        name: "principal",
+        label: "Suma imprumutata",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 150000,
+      },
+      {
+        name: "annualInterestRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 7.5,
+      },
+      {
+        name: "loanMonths",
+        label: "Perioada",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 480,
+        step: 1,
+        required: true,
+        defaultValue: 240,
+      },
+    ],
+    outputs: [
+      { name: "monthlyPayment", label: "Rata lunara", unit: "lei", decimals: 2 },
+      { name: "totalCost", label: "Cost total", unit: "lei", decimals: 2 },
+      { name: "totalInterest", label: "Dobanda totala", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const principal = Math.max(parseNumber(values.principal), 0.01);
+      const annualInterestRate = parseNumber(values.annualInterestRate);
+      const loanMonths = Math.max(parseNumber(values.loanMonths), 1);
+      const monthlyRate = annualInterestRate / 100 / 12;
+      const monthlyPayment =
+        monthlyRate > 0
+          ? principal * monthlyRate / (1 - (1 + monthlyRate) ** -loanMonths)
+          : principal / loanMonths;
+      const totalCost = monthlyPayment * loanMonths;
+      const totalInterest = totalCost - principal;
+
+      return {
+        monthlyPayment: round(monthlyPayment, 2),
+        totalCost: round(totalCost, 2),
+        totalInterest: round(totalInterest, 2),
+      };
+    },
+  },
+  "refinance-savings": {
+    key: "refinance-savings",
+    title: "Calculator economie refinantare",
+    slug: "calculator-economie-refinantare",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Compara rata veche cu rata noua si estimeaza economia lunara, economia totala si pragul de recuperare a costurilor.",
+    formulaName: "Economii refinantare",
+    formulaExpression:
+      "Economie lunara = rata veche - rata noua; Economie neta = economie lunara x luni ramase - cost refinantare",
+    formulaDescription:
+      "Calculatorul compara direct cele doua scenarii de plata si arata in cat timp se recupereaza costul refinantarii.",
+    howToSteps: [
+      "Introdu rata veche, rata noua si lunile ramase.",
+      "Adauga costul refinantarii.",
+      "Citeste economia lunara, economia neta si pragul de recuperare.",
+    ],
+    inputs: [
+      {
+        name: "oldMonthlyPayment",
+        label: "Rata veche",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 2650,
+      },
+      {
+        name: "newMonthlyPayment",
+        label: "Rata noua",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 2280,
+      },
+      {
+        name: "remainingMonths",
+        label: "Luni ramase",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 480,
+        step: 1,
+        required: true,
+        defaultValue: 180,
+      },
+      {
+        name: "refinanceCost",
+        label: "Cost refinantare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 3500,
+      },
+    ],
+    outputs: [
+      { name: "monthlySavings", label: "Economie lunara", unit: "lei", decimals: 2 },
+      { name: "netSavings", label: "Economie neta", unit: "lei", decimals: 2 },
+      { name: "breakEvenMonths", label: "Recuperare cost", unit: "luni", decimals: 1 },
+    ],
+    compute: (values) => {
+      const oldMonthlyPayment = parseNumber(values.oldMonthlyPayment);
+      const newMonthlyPayment = parseNumber(values.newMonthlyPayment);
+      const remainingMonths = Math.max(parseNumber(values.remainingMonths), 1);
+      const refinanceCost = parseNumber(values.refinanceCost);
+      const monthlySavings = oldMonthlyPayment - newMonthlyPayment;
+      const netSavings = monthlySavings * remainingMonths - refinanceCost;
+      const breakEvenMonths =
+        monthlySavings > 0 ? refinanceCost / monthlySavings : 0;
+
+      return {
+        monthlySavings: round(monthlySavings, 2),
+        netSavings: round(netSavings, 2),
+        breakEvenMonths: round(breakEvenMonths, 1),
+      };
+    },
+  },
+  "emergency-fund": {
+    key: "emergency-fund",
+    title: "Calculator fond de urgenta",
+    slug: "calculator-fond-de-urgenta",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza marimea fondului de urgenta pornind de la cheltuielile lunare si numarul de luni de acoperire dorit.",
+    formulaName: "Fond de urgenta",
+    formulaExpression: "Fond de urgenta = cheltuieli lunare x luni de acoperire",
+    formulaDescription:
+      "Fondul de urgenta este estimat simplu, prin inmultirea cheltuielilor lunare esentiale cu perioada de acoperire dorita.",
+    howToSteps: [
+      "Introdu cheltuielile lunare esentiale.",
+      "Alege cate luni vrei sa acoperi.",
+      "Citeste suma-tinta pentru fondul de urgenta.",
+    ],
+    inputs: [
+      {
+        name: "monthlyExpenses",
+        label: "Cheltuieli lunare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 4200,
+      },
+      {
+        name: "coverageMonths",
+        label: "Luni de acoperire",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 24,
+        step: 1,
+        required: true,
+        defaultValue: 6,
+      },
+    ],
+    outputs: [
+      { name: "emergencyFundTarget", label: "Fond recomandat", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyExpenses = parseNumber(values.monthlyExpenses);
+      const coverageMonths = parseNumber(values.coverageMonths);
+      return {
+        emergencyFundTarget: round(monthlyExpenses * coverageMonths, 2),
+      };
+    },
+  },
+  "savings-interest": {
+    key: "savings-interest",
+    title: "Calculator dobanda economii",
+    slug: "calculator-dobanda-economii",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza valoarea finala a economiilor pornind de la suma initiala, contributie lunara, dobanda si perioada.",
+    formulaName: "Valoare viitoare economii",
+    formulaExpression:
+      "FV = suma initiala x (1 + i)^n + contributie lunara x [((1 + i)^n - 1) / i]",
+    formulaDescription:
+      "Calculatorul combina capitalul initial cu depunerile lunare si capitalizarea dobanzii pentru a estima evolutia economiilor.",
+    howToSteps: [
+      "Introdu suma initiala si contributia lunara.",
+      "Adauga dobanda anuala si perioada.",
+      "Citeste valoarea finala si castigul total din dobanda.",
+    ],
+    inputs: [
+      {
+        name: "initialAmount",
+        label: "Suma initiala",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "monthlyContribution",
+        label: "Contributie lunara",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 750,
+      },
+      {
+        name: "annualInterestRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 4.5,
+      },
+      {
+        name: "months",
+        label: "Perioada",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 600,
+        step: 1,
+        required: true,
+        defaultValue: 60,
+      },
+    ],
+    outputs: [
+      { name: "futureValue", label: "Valoare finala", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const initialAmount = parseNumber(values.initialAmount);
+      const monthlyContribution = parseNumber(values.monthlyContribution);
+      const annualInterestRate = parseNumber(values.annualInterestRate);
+      const months = Math.max(parseNumber(values.months), 1);
+      const monthlyRate = annualInterestRate / 100 / 12;
+      const futureValue =
+        monthlyRate > 0
+          ? initialAmount * (1 + monthlyRate) ** months +
+            monthlyContribution * (((1 + monthlyRate) ** months - 1) / monthlyRate)
+          : initialAmount + monthlyContribution * months;
+      const investedAmount = initialAmount + monthlyContribution * months;
+
+      return {
+        futureValue: round(futureValue, 2),
+        interestEarned: round(futureValue - investedAmount, 2),
+      };
+    },
+  },
+  "retirement-savings": {
+    key: "retirement-savings",
+    title: "Calculator economii pensie",
+    slug: "calculator-economii-pensie",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza cat se poate acumula pentru pensie dintr-o contributie lunara, un randament anual si un orizont lung de timp.",
+    formulaName: "Economii pentru pensie",
+    formulaExpression:
+      "FV = contributie lunara x [((1 + i)^n - 1) / i], cu capitalizare lunara",
+    formulaDescription:
+      "Calculatorul proiecteaza acumularea unei contributii lunare recurente pe termen lung, folosind o rata anuala de crestere aleasa de utilizator.",
+    howToSteps: [
+      "Introdu contributia lunara pe care o poti sustine.",
+      "Alege numarul de ani si randamentul anual orientativ.",
+      "Citeste suma finala estimata la finalul perioadei.",
+    ],
+    inputs: [
+      {
+        name: "monthlyContribution",
+        label: "Contributie lunara",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 1000,
+      },
+      {
+        name: "years",
+        label: "Ani pana la obiectiv",
+        type: "number",
+        unit: "ani",
+        min: 1,
+        max: 60,
+        step: 1,
+        required: true,
+        defaultValue: 25,
+      },
+      {
+        name: "annualReturn",
+        label: "Randament anual",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 6,
+      },
+    ],
+    outputs: [
+      { name: "retirementPot", label: "Capital estimat", unit: "lei", decimals: 2 },
+      { name: "investedAmount", label: "Total depus", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyContribution = parseNumber(values.monthlyContribution);
+      const years = Math.max(parseNumber(values.years), 1);
+      const annualReturn = parseNumber(values.annualReturn);
+      const months = years * 12;
+      const monthlyRate = annualReturn / 100 / 12;
+      const retirementPot =
+        monthlyRate > 0
+          ? monthlyContribution * (((1 + monthlyRate) ** months - 1) / monthlyRate)
+          : monthlyContribution * months;
+      return {
+        retirementPot: round(retirementPot, 2),
+        investedAmount: round(monthlyContribution * months, 2),
+      };
+    },
+  },
+  "goal-timeline": {
+    key: "goal-timeline",
+    title: "Calculator termen obiectiv economisire",
+    slug: "calculator-termen-obiectiv-economisire",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Estimeaza in cate luni poti ajunge la o tinta pornind de la suma initiala, contributie lunara si dobanda.",
+    formulaName: "Termen obiectiv economisire",
+    formulaExpression:
+      "Termenul se obtine iterativ pana cand suma acumulata depaseste tinta dorita.",
+    formulaDescription:
+      "Calculatorul simuleaza evolutia lunara a economiilor pana cand valoarea acumulata atinge sau depaseste obiectivul final.",
+    howToSteps: [
+      "Introdu tinta finala, suma initiala si contributia lunara.",
+      "Adauga dobanda anuala orientativa.",
+      "Citeste numarul de luni si anii necesari pentru a atinge obiectivul.",
+    ],
+    inputs: [
+      {
+        name: "targetAmount",
+        label: "Obiectiv final",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 100000,
+      },
+      {
+        name: "initialAmount",
+        label: "Suma initiala",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "monthlyContribution",
+        label: "Contributie lunara",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 1200,
+      },
+      {
+        name: "annualInterestRate",
+        label: "Dobanda anuala",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.01,
+        required: true,
+        defaultValue: 4,
+      },
+    ],
+    outputs: [
+      { name: "monthsToGoal", label: "Luni pana la obiectiv", unit: "luni", decimals: 0 },
+      { name: "yearsToGoal", label: "Ani pana la obiectiv", unit: "ani", decimals: 2 },
+    ],
+    compute: (values) => {
+      const targetAmount = Math.max(parseNumber(values.targetAmount), 0.01);
+      const initialAmount = parseNumber(values.initialAmount);
+      const monthlyContribution = parseNumber(values.monthlyContribution);
+      const annualInterestRate = parseNumber(values.annualInterestRate);
+      const monthlyRate = annualInterestRate / 100 / 12;
+      let balance = initialAmount;
+      let months = 0;
+
+      while (balance < targetAmount && months < 1200) {
+        balance = balance * (1 + monthlyRate) + monthlyContribution;
+        months += 1;
+      }
+
+      return {
+        monthsToGoal: months,
+        yearsToGoal: round(months / 12, 2),
+      };
+    },
+  },
+  "lease-vs-loan": {
+    key: "lease-vs-loan",
+    title: "Calculator leasing vs credit",
+    slug: "calculator-leasing-vs-credit",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Compara costul total al doua scenarii de finantare pornind de la avans, rate lunare si costuri finale.",
+    formulaName: "Comparatie leasing vs credit",
+    formulaExpression:
+      "Cost total = avans + rata lunara x luni + cost final; Diferenta = scenariul A - scenariul B",
+    formulaDescription:
+      "Calculatorul compara doua scenarii de finantare la nivel de cost total, folosind aceeasi perioada pentru o evaluare rapida.",
+    howToSteps: [
+      "Introdu avansul, rata si costul final pentru leasing.",
+      "Introdu aceleasi valori pentru credit.",
+      "Citeste costul total si diferenta dintre scenarii.",
+    ],
+    inputs: [
+      {
+        name: "leaseDownPayment",
+        label: "Avans leasing",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 30000,
+      },
+      {
+        name: "leaseMonthlyPayment",
+        label: "Rata leasing",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 2100,
+      },
+      {
+        name: "leaseResidualValue",
+        label: "Valoare reziduala",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 15000,
+      },
+      {
+        name: "loanDownPayment",
+        label: "Avans credit",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 30000,
+      },
+      {
+        name: "loanMonthlyPayment",
+        label: "Rata credit",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 2350,
+      },
+      {
+        name: "months",
+        label: "Perioada comparata",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 480,
+        step: 1,
+        required: true,
+        defaultValue: 60,
+      },
+    ],
+    outputs: [
+      { name: "leaseTotalCost", label: "Cost total leasing", unit: "lei", decimals: 2 },
+      { name: "loanTotalCost", label: "Cost total credit", unit: "lei", decimals: 2 },
+      { name: "difference", label: "Diferenta", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const leaseDownPayment = parseNumber(values.leaseDownPayment);
+      const leaseMonthlyPayment = parseNumber(values.leaseMonthlyPayment);
+      const leaseResidualValue = parseNumber(values.leaseResidualValue);
+      const loanDownPayment = parseNumber(values.loanDownPayment);
+      const loanMonthlyPayment = parseNumber(values.loanMonthlyPayment);
+      const months = Math.max(parseNumber(values.months), 1);
+      const leaseTotalCost =
+        leaseDownPayment + leaseMonthlyPayment * months + leaseResidualValue;
+      const loanTotalCost = loanDownPayment + loanMonthlyPayment * months;
+
+      return {
+        leaseTotalCost: round(leaseTotalCost, 2),
+        loanTotalCost: round(loanTotalCost, 2),
+        difference: round(leaseTotalCost - loanTotalCost, 2),
+      };
+    },
+  },
+  "down-payment": {
+    key: "down-payment",
+    title: "Calculator avans",
+    slug: "calculator-avans",
+    categorySlug: "credite-si-economii",
+    summary:
+      "Calculeaza avansul necesar si suma finantata pornind de la pretul total si procentul de avans.",
+    formulaName: "Avans si suma finantata",
+    formulaExpression: "Avans = pret total x procent avans; Suma finantata = pret total - avans",
+    formulaDescription:
+      "Calculatorul transforma un procent de avans intr-o suma concreta si arata ce parte ramane de finantat.",
+    howToSteps: [
+      "Introdu pretul total al achizitiei.",
+      "Introdu procentul de avans dorit sau cerut.",
+      "Citeste suma avansului si suma ramasa pentru finantare.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret total",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 450000,
+      },
+      {
+        name: "downPaymentPercent",
+        label: "Avans",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 15,
+      },
+    ],
+    outputs: [
+      { name: "downPaymentAmount", label: "Avans necesar", unit: "lei", decimals: 2 },
+      { name: "financedAmount", label: "Suma finantata", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
+      const downPaymentPercent = parseNumber(values.downPaymentPercent);
+      const downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
+      return {
+        downPaymentAmount: round(downPaymentAmount, 2),
+        financedAmount: round(purchasePrice - downPaymentAmount, 2),
       };
     },
   },

@@ -96,6 +96,15 @@ const categoryPlaybooks: Record<
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
   },
+  "credite-si-economii": {
+    audience: "Pentru persoane si firme mici care compara rate, credite, refinantare, avans si obiective de economisire.",
+    scenarios: [
+      "Porneste cu intrebarea principala: ce rata iti permiti, cat costa total creditul sau in cat timp ajungi la un obiectiv.",
+      "Compara apoi scenariul initial cu o varianta mai prudenta pentru a vedea cat de sensibila este decizia la schimbari mici.",
+      "Continua cu ghidurile cand ai nevoie de context despre cost total, refinantare, fond de urgenta sau leasing versus credit.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
 };
 
 export async function generateMetadata({ params }: { params: Params }) {

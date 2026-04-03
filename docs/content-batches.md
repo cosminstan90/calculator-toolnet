@@ -178,6 +178,38 @@ Obiective:
 - acoperim un cluster foarte bun atat pentru persoane, cat si pentru firme
 - construim pagini sigure, explicabile si usor de extins ulterior spre payroll si fiscalitate mai avansata
 
+## Batch 06
+
+Primul lot dedicat verticalei `credite-si-economii`, cu accent pe compararea ratelor, costului total, refinantarii si obiectivelor de economisire.
+
+Calculatoare:
+
+1. `credit-affordability`
+2. `debt-to-income`
+3. `loan-total-cost`
+4. `refinance-savings`
+5. `emergency-fund`
+6. `savings-interest`
+7. `retirement-savings`
+8. `goal-timeline`
+9. `lease-vs-loan`
+10. `down-payment`
+
+Articole suport:
+
+1. `cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul`
+2. `cum-citesti-costul-total-al-unui-credit`
+3. `cand-merita-refinantarea-si-cand-doar-pare-o-idee-buna`
+4. `cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati`
+5. `cum-planifici-economii-pe-termen-lung-pentru-obiective-mari`
+6. `leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare`
+
+Obiective:
+
+- deschidem categoria noua `credite-si-economii`
+- legam mai clar zona `finante` de decision support cu intentie mare
+- pregatim un cluster foarte bun pentru monetizare ulterioara prin ads si afiliere
+
 ## Regula de operare
 
 - `releaseBatch` marcheaza lotul editorial

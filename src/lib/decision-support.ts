@@ -316,6 +316,37 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       },
     ],
   },
+  "credite-si-economii": {
+    summary:
+      "In credite si economii, rezultatul are valoare cand te ajuta sa compari scenarii reale, nu doar sa obtii o cifra izolata despre rata sau obiectiv.",
+    checks: [
+      "Verifica daca toate valorile sunt exprimate in acelasi tip de suma: net, brut, fara comisioane sau cu costuri incluse.",
+      "Compara intotdeauna cel putin doua scenarii: conservator si optimist.",
+      "Leaga rezultatul de bugetul lunar, lichiditate si obiectivele pe termen mediu sau lung.",
+    ],
+    mistakes: [
+      "Sa te uiti doar la rata lunara si sa ignori costul total sau perioada.",
+      "Sa folosesti randamente optimiste ca si cum ar fi garantate.",
+      "Sa compari doua scenarii de finantare fara sa verifici avansul, costurile initiale si flexibilitatea reala.",
+    ],
+    nextSteps: [
+      "Continua cu un calculator complementar pentru validare: cost total, refinantare, fond de urgenta sau avans.",
+      "Testeaza un scenariu mai prudent inainte sa consideri rezultatul suficient.",
+      "Foloseste ghidurile asociate pentru a traduce cifra intr-o decizie financiara mai buna.",
+    ],
+    sections: [
+      {
+        title: "Ce decizie sustine",
+        body:
+          "Te ajuta sa compari credite, refinantare, obiective de economisire si bufferul financiar necesar pentru stabilitate.",
+      },
+      {
+        title: "Ce trebuie validat separat",
+        body:
+          "Comisioanele, conditiile produsului, fiscalitatea si comportamentul real al bugetului trebuie verificate separat fata de formula orientativa.",
+      },
+    ],
+  },
 };
 
 export const buildDecisionSupport = (calculator: Pick<

@@ -22,6 +22,7 @@ const categorySlugs = new Set([
   "energie",
   "conversii",
   "salarii-si-taxe",
+  "credite-si-economii",
 ]);
 
 export default async function BusinessHubPage() {
@@ -59,6 +60,13 @@ export default async function BusinessHubPage() {
           description:
             "Noua verticala salarii si taxe te ajuta sa compari cresterea salariala, tariful orar, venitul anual si taxarea efectiva intr-un flux coerent.",
           href: "/calculatoare/salarii-si-taxe",
+        },
+        {
+          label: "Finantare",
+          title: "Compara rata, costul total si structura scenariului de finantare",
+          description:
+            "Clusterul credite si economii este util si pentru firme mici care compara leasing, credit, refinantare sau disciplina de cash buffer.",
+          href: "/calculatoare/credite-si-economii",
         },
         {
           label: "Estimari operative",

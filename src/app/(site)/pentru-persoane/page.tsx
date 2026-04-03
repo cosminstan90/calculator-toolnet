@@ -22,6 +22,7 @@ const categorySlugs = new Set([
   "conversii",
   "finante",
   "salarii-si-taxe",
+  "credite-si-economii",
 ]);
 
 export default async function ConsumerHubPage() {
@@ -73,6 +74,13 @@ export default async function ConsumerHubPage() {
           description:
             "Pentru oferte noi, renegocieri sau claritate pe brut versus net, noua verticala salarii si taxe este un punct de pornire foarte bun.",
           href: "/calculatoare/salarii-si-taxe",
+        },
+        {
+          label: "Credite si economii",
+          title: "Leaga rata maxima, costul total si obiectivele de economisire",
+          description:
+            "Cand compari un credit, un avans sau un obiectiv mare, noua verticala credite si economii te ajuta sa pui scenariile in aceeasi imagine.",
+          href: "/calculatoare/credite-si-economii",
         },
       ]}
       categories={categories.filter((category) => categorySlugs.has(category.slug))}
