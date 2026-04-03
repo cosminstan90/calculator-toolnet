@@ -33,6 +33,13 @@ const splitParagraphs = (value: string) =>
     .map((item) => item.trim())
     .filter(Boolean);
 
+const formatDate = (value: string) =>
+  new Date(value).toLocaleDateString("ro-RO", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
 export async function generateMetadata({ params }: { params: Params }) {
   const { categorySlug, calculatorSlug } = await params;
   const calculator = await getCalculatorByRoute({ categorySlug, calculatorSlug });
@@ -117,6 +124,16 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             </p>
             <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">{calculator.title}</h1>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">{calculator.intro}</p>
+            {calculator.publishedAt || calculator.updatedAt ? (
+              <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-300/85">
+                {calculator.publishedAt ? (
+                  <span>Publicat: {formatDate(calculator.publishedAt)}</span>
+                ) : null}
+                {calculator.updatedAt && calculator.updatedAt !== calculator.publishedAt ? (
+                  <span>Actualizat: {formatDate(calculator.updatedAt)}</span>
+                ) : null}
+              </div>
+            ) : null}
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <article className="rounded-[1.7rem] border border-white/12 bg-white/6 p-5 backdrop-blur">

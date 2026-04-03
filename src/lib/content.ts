@@ -112,6 +112,7 @@ export type CalculatorDoc = {
   relatedCalculators: RelationDoc[];
   relatedArticles: RelationDoc[];
   publishedAt?: string;
+  updatedAt?: string;
   contentBlocks: EditorialBlock[];
   seo?: SeoData;
 };
@@ -399,6 +400,7 @@ const mapCalculator = (doc: RawDoc): CalculatorDoc => ({
     ? doc.relatedArticles.map((item) => mapRelation(item)).filter(Boolean) as RelationDoc[]
     : [],
   publishedAt: asString(doc.publishedAt),
+  updatedAt: asString(doc.updatedAt),
   contentBlocks: mapContentBlocks(doc.contentBlocks),
   seo: mapSEO(doc),
 });
