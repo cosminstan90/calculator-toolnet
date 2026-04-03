@@ -125,6 +125,9 @@ const formatDate = (value?: string) => {
   });
 };
 
+const formatDocType = (value: "article" | "calculator") =>
+  value === "article" ? "Articol" : "Calculator";
+
 async function DashboardHomeInner(
   props: AdminViewServerProps,
   templateProps: {
@@ -197,7 +200,7 @@ async function DashboardHomeInner(
               maxWidth: "60ch",
             }}
           >
-              Dashboard-ul implicit Payload a fost inlocuit cu o versiune mai sigura pentru
+            Dashboard-ul implicit Payload a fost inlocuit cu o versiune mai sigura pentru
             deploy-ul actual. Acum ai si reperele operationale care ne ajuta sa vedem ce publicam,
             ce lipseste si ce monetizare incepe sa miste.
           </p>
@@ -386,8 +389,8 @@ async function DashboardHomeInner(
                         }}
                       >
                         Prioritate {item.priority}
-                        {item.batch ? ` • ${item.batch}` : ""}
-                        {item.earliestAt ? ` • nu inainte de ${formatDate(item.earliestAt)}` : ""}
+                        {item.batch ? ` | ${item.batch}` : ""}
+                        {item.earliestAt ? ` | nu inainte de ${formatDate(item.earliestAt)}` : ""}
                       </p>
                     </>
                   ) : (
@@ -456,7 +459,7 @@ async function DashboardHomeInner(
                         margin: "0.35rem 0 0",
                       }}
                     >
-                      {item.hits} hituri • ultima data {formatDate(item.lastSeenAt)}
+                      {item.hits} hituri | ultima data {formatDate(item.lastSeenAt)}
                     </p>
                   </div>
                 ))
@@ -597,7 +600,266 @@ async function DashboardHomeInner(
             </div>
           </article>
         </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0369a1",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Publish-ready acum
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.readyToPublish.length > 0 ? (
+                data.readyToPublish.map((item) => (
+                  <a
+                    key={`${item.type}-${item.id}`}
+                    href={item.href}
+                    style={{
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "14px",
+                      color: "#0f172a",
+                      display: "block",
+                      padding: "0.85rem 0.95rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <strong style={{ display: "block", fontSize: "0.94rem" }}>
+                      {item.title}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#475569",
+                        display: "block",
+                        fontSize: "0.85rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {formatDocType(item.type)} | {item.completion}% | prioritate {item.priority}
+                      {item.batch ? ` | ${item.batch}` : ""}
+                    </span>
+                  </a>
+                ))
+              ) : (
+                <p
+                  style={{
+                    color: "#64748b",
+                    fontSize: "0.92rem",
+                    lineHeight: 1.5,
+                    margin: 0,
+                  }}
+                >
+                  Inca nu avem documente draft care sa fie complet publish-ready.
+                </p>
+              )}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#be123c",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Blocaje editoriale
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.blockerSummary.length > 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.5rem",
+                  }}
+                >
+                  {data.blockerSummary.map((item) => (
+                    <span
+                      key={item.label}
+                      style={{
+                        background: "#fff1f2",
+                        border: "1px solid #fecdd3",
+                        borderRadius: "999px",
+                        color: "#9f1239",
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        padding: "0.35rem 0.7rem",
+                      }}
+                    >
+                      {item.label}: {item.count}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              {data.blockedDrafts.length > 0 ? (
+                data.blockedDrafts.map((item) => (
+                  <a
+                    key={`${item.type}-${item.id}`}
+                    href={item.href}
+                    style={{
+                      borderBottom: "1px solid #e2e8f0",
+                      color: "#0f172a",
+                      display: "block",
+                      paddingBottom: "0.75rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <strong style={{ display: "block", fontSize: "0.94rem" }}>
+                      {item.title}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#475569",
+                        display: "block",
+                        fontSize: "0.85rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {formatDocType(item.type)} | {item.completion}% | {item.editorialStatus ?? "fara status"}
+                    </span>
+                    <span
+                      style={{
+                        color: "#9f1239",
+                        display: "block",
+                        fontSize: "0.84rem",
+                        lineHeight: 1.5,
+                        marginTop: "0.35rem",
+                      }}
+                    >
+                      Lipseste: {item.blockers.slice(0, 3).join(", ")}
+                    </span>
+                  </a>
+                ))
+              ) : (
+                <p
+                  style={{
+                    color: "#64748b",
+                    fontSize: "0.92rem",
+                    lineHeight: 1.5,
+                    margin: 0,
+                  }}
+                >
+                  Nu avem blocaje editoriale semnificative in drafturile cu progres bun.
+                </p>
+              )}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#1d4ed8",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Pagini cu intentie comerciala
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.topAffiliateSources.length > 0 ? (
+                data.topAffiliateSources.map((item) => (
+                  <div
+                    key={item.sourcePath}
+                    style={{
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "14px",
+                      padding: "0.85rem 0.95rem",
+                    }}
+                  >
+                    <strong
+                      style={{
+                        color: "#0f172a",
+                        display: "block",
+                        fontSize: "0.93rem",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {item.sourcePath}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#475569",
+                        display: "block",
+                        fontSize: "0.84rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {item.clicks} click-uri | {item.sourceType ?? "necunoscut"}
+                    </span>
+                    {item.offerKeys.length > 0 ? (
+                      <span
+                        style={{
+                          color: "#1d4ed8",
+                          display: "block",
+                          fontSize: "0.84rem",
+                          marginTop: "0.35rem",
+                        }}
+                      >
+                        Oferte: {item.offerKeys.join(", ")}
+                      </span>
+                    ) : null}
+                  </div>
+                ))
+              ) : (
+                <p
+                  style={{
+                    color: "#64748b",
+                    fontSize: "0.92rem",
+                    lineHeight: 1.5,
+                    margin: 0,
+                  }}
+                >
+                  Inca nu avem suficiente click-uri pentru a vedea paginile cele mai valoroase.
+                </p>
+              )}
+            </div>
+          </article>
+        </section>
       </div>
     </DefaultTemplate>
   );
 }
+

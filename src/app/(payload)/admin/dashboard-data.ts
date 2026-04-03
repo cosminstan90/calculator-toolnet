@@ -9,6 +9,20 @@ type QueueItem = {
   batch?: string;
 };
 
+type DraftInsight = {
+  id: string;
+  title: string;
+  href: string;
+  type: "article" | "calculator";
+  completion: number;
+  editorialStatus?: string;
+  slot?: string;
+  priority: number;
+  batch?: string;
+  earliestAt?: string;
+  blockers: string[];
+};
+
 export type DashboardData = {
   metrics: Array<{
     label: string;
@@ -27,6 +41,18 @@ export type DashboardData = {
   affiliateSummary: Array<{
     offerKey: string;
     clicks: number;
+  }>;
+  topAffiliateSources: Array<{
+    sourcePath: string;
+    clicks: number;
+    sourceType?: string;
+    offerKeys: string[];
+  }>;
+  readyToPublish: DraftInsight[];
+  blockedDrafts: DraftInsight[];
+  blockerSummary: Array<{
+    label: string;
+    count: number;
   }>;
   recentPublished: Array<{
     id: string;
@@ -47,6 +73,18 @@ const asNumber = (value: unknown) =>
 
 const asBoolean = (value: unknown) => value === true;
 
+const CHECKLIST_LABELS: Record<string, string> = {
+  strategyValidated: "Formula sau angle",
+  coreContentReady: "Continut principal",
+  examplesReady: "Exemple",
+  faqReady: "FAQ",
+  seoReady: "SEO",
+  internalLinksReady: "Linkuri interne",
+  schemaValidated: "Schema",
+  finalReviewDone: "Review final",
+  publishReady: "Publish ready",
+};
+
 const getNested = (value: unknown, path: string[]) => {
   let current = value;
   for (const segment of path) {
@@ -58,6 +96,49 @@ const getNested = (value: unknown, path: string[]) => {
   }
 
   return current;
+};
+
+const getChecklistBlockers = (doc: CollectionDoc) => {
+  const checklist = getNested(doc, ["editorialChecklist"]);
+  const blockers: string[] = [];
+
+  if (!checklist || typeof checklist !== "object") {
+    return ["Checklist lipsa"];
+  }
+
+  for (const [key, label] of Object.entries(CHECKLIST_LABELS)) {
+    if ((checklist as Record<string, unknown>)[key] !== true) {
+      blockers.push(label);
+    }
+  }
+
+  return blockers;
+};
+
+const getPublishBlockers = (doc: CollectionDoc, now: Date) => {
+  const blockers = getChecklistBlockers(doc);
+  const status = asString(doc.editorialStatus);
+  const slot = asString(getNested(doc, ["publishingSchedule", "slot"]));
+  const earliestAt = asString(getNested(doc, ["publishingSchedule", "earliestAt"]));
+  const draftStatus = asString(doc._status);
+
+  if (draftStatus !== "draft") {
+    blockers.unshift("Nu mai este draft");
+  }
+
+  if (status !== "approved" && status !== "scheduled") {
+    blockers.unshift("Status editorial");
+  }
+
+  if (!slot || slot === "none") {
+    blockers.unshift("Slot scheduler");
+  }
+
+  if (earliestAt && new Date(earliestAt) > now) {
+    blockers.unshift("Data minima");
+  }
+
+  return Array.from(new Set(blockers));
 };
 
 const isEligibleForAutopublish = (doc: CollectionDoc, now: Date) => {
@@ -107,6 +188,38 @@ const sortQueue = (items: QueueItem[]) =>
     return (left.title || "").localeCompare(right.title || "");
   });
 
+const buildDraftInsight = (
+  adminRoute: string,
+  collection: "articles" | "calculators",
+  doc: CollectionDoc,
+  now: Date,
+): DraftInsight => ({
+  id: String(doc.id ?? ""),
+  title: asString(doc.title) ?? "Untitled",
+  href: `${adminRoute === "/" ? "" : adminRoute}/collections/${collection}/${String(doc.id ?? "")}`,
+  type: collection === "articles" ? "article" : "calculator",
+  completion: asNumber(doc.editorialCompletion) || 0,
+  editorialStatus: asString(doc.editorialStatus),
+  slot: asString(getNested(doc, ["publishingSchedule", "slot"])),
+  priority: asNumber(getNested(doc, ["publishingSchedule", "priority"])) || 999,
+  batch: asString(doc.releaseBatch),
+  earliestAt: asString(getNested(doc, ["publishingSchedule", "earliestAt"])),
+  blockers: getPublishBlockers(doc, now),
+});
+
+const sortDraftInsights = (items: DraftInsight[]) =>
+  [...items].sort((left, right) => {
+    if (left.completion !== right.completion) {
+      return right.completion - left.completion;
+    }
+
+    if (left.priority !== right.priority) {
+      return left.priority - right.priority;
+    }
+
+    return left.title.localeCompare(right.title);
+  });
+
 export const loadDashboardData = async (
   payload: Payload,
   adminRoute: string,
@@ -123,6 +236,8 @@ export const loadDashboardData = async (
     recentCalculatorsResult,
     articleCountResult,
     calculatorCountResult,
+    draftArticlesResult,
+    draftCalculatorsResult,
   ] = await Promise.all([
     payload.find({
       collection: "calculators",
@@ -220,6 +335,34 @@ export const loadDashboardData = async (
         ],
       },
     }),
+    payload.find({
+      collection: "articles",
+      depth: 0,
+      draft: true,
+      overrideAccess: true,
+      pagination: false,
+      limit: 30,
+      sort: "-editorialCompletion",
+      where: {
+        _status: {
+          equals: "draft",
+        },
+      },
+    }),
+    payload.find({
+      collection: "calculators",
+      depth: 0,
+      draft: true,
+      overrideAccess: true,
+      pagination: false,
+      limit: 30,
+      sort: "-editorialCompletion",
+      where: {
+        _status: {
+          equals: "draft",
+        },
+      },
+    }),
   ]);
 
   const morningArticle = sortQueue(
@@ -262,6 +405,76 @@ export const loadDashboardData = async (
     .map(([offerKey, clicks]) => ({ offerKey, clicks }))
     .sort((left, right) => right.clicks - left.clicks)
     .slice(0, 5);
+
+  const affiliateSourcesMap = new Map<
+    string,
+    { clicks: number; offerKeys: Set<string>; sourceType?: string }
+  >();
+
+  for (const doc of affiliateResult.docs as CollectionDoc[]) {
+    const sourcePath = asString(doc.sourcePath);
+    if (!sourcePath) {
+      continue;
+    }
+
+    const current =
+      affiliateSourcesMap.get(sourcePath) ??
+      {
+        clicks: 0,
+        offerKeys: new Set<string>(),
+        sourceType: asString(doc.sourceType),
+      };
+
+    current.clicks += 1;
+    const offerKey = asString(doc.offerKey);
+    if (offerKey) {
+      current.offerKeys.add(offerKey);
+    }
+    if (!current.sourceType) {
+      current.sourceType = asString(doc.sourceType);
+    }
+
+    affiliateSourcesMap.set(sourcePath, current);
+  }
+
+  const topAffiliateSources = Array.from(affiliateSourcesMap.entries())
+    .map(([sourcePath, value]) => ({
+      sourcePath,
+      clicks: value.clicks,
+      sourceType: value.sourceType,
+      offerKeys: Array.from(value.offerKeys).sort(),
+    }))
+    .sort((left, right) => right.clicks - left.clicks)
+    .slice(0, 5);
+
+  const draftInsights = sortDraftInsights([
+    ...(draftArticlesResult.docs as CollectionDoc[]).map((doc) =>
+      buildDraftInsight(adminRoute, "articles", doc, now),
+    ),
+    ...(draftCalculatorsResult.docs as CollectionDoc[]).map((doc) =>
+      buildDraftInsight(adminRoute, "calculators", doc, now),
+    ),
+  ]);
+
+  const readyToPublish = draftInsights
+    .filter((item) => item.blockers.length === 0)
+    .slice(0, 6);
+
+  const blockedDrafts = draftInsights
+    .filter((item) => item.blockers.length > 0 && item.completion >= 55)
+    .slice(0, 6);
+
+  const blockerCounts = new Map<string, number>();
+  for (const item of draftInsights) {
+    for (const blocker of item.blockers) {
+      blockerCounts.set(blocker, (blockerCounts.get(blocker) ?? 0) + 1);
+    }
+  }
+
+  const blockerSummary = Array.from(blockerCounts.entries())
+    .map(([label, count]) => ({ label, count }))
+    .sort((left, right) => right.count - left.count)
+    .slice(0, 6);
 
   const recentPublished = [
     ...(recentArticlesResult.docs as CollectionDoc[]).map((doc) => ({
@@ -319,6 +532,10 @@ export const loadDashboardData = async (
       lastSeenAt: asString(doc.lastSeenAt),
     })),
     affiliateSummary,
+    topAffiliateSources,
+    readyToPublish,
+    blockedDrafts,
+    blockerSummary,
     recentPublished,
   };
 };
