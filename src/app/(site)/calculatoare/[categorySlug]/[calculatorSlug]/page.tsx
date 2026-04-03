@@ -1,12 +1,14 @@
 import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CalculatorRunner } from "@/components/calculator-runner";
+import { DecisionSupportPanel } from "@/components/decision-support-panel";
 import { EditorialBlocks } from "@/components/editorial-blocks";
 import { JsonLd } from "@/components/json-ld";
 import {
   buildArticlePath,
   buildCalculatorPath,
   getCalculatorByRoute,
+  listSuggestedArticlesForCalculator,
   listRelatedCalculators,
 } from "@/lib/content";
 import {
@@ -17,6 +19,7 @@ import {
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
 import { adsConfig } from "@/lib/ads";
+import { buildDecisionSupport } from "@/lib/decision-support";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -77,11 +80,15 @@ export default async function CalculatorPage({ params }: { params: Params }) {
     notFound();
   }
 
-  const relatedCalculators = await listRelatedCalculators(calculator, 6);
+  const [relatedCalculators, suggestedArticles] = await Promise.all([
+    listRelatedCalculators(calculator, 6),
+    listSuggestedArticlesForCalculator({ calculator, limit: 4 }),
+  ]);
   const seoParagraphs = splitParagraphs(calculator.seoBody);
   const interpretationParagraphs = splitParagraphs(calculator.interpretationNotes);
   const contextualCalculatorLinks = relatedCalculators.slice(0, 3);
-  const contextualArticleLinks = calculator.relatedArticles.filter((item) => item.slug);
+  const contextualArticleLinks = suggestedArticles.filter((item) => item.slug);
+  const decisionSupport = buildDecisionSupport(calculator);
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
@@ -162,6 +169,10 @@ export default async function CalculatorPage({ params }: { params: Params }) {
           />
         </section>
       ) : null}
+
+      <section className="mt-10">
+        <DecisionSupportPanel data={decisionSupport} />
+      </section>
 
       <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Formula explicata</p>
@@ -281,18 +292,18 @@ export default async function CalculatorPage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      {calculator.relatedArticles.length > 0 ? (
+      {suggestedArticles.length > 0 ? (
         <section className="paper-panel mt-10 rounded-[2rem] p-6">
           <h2 className="text-2xl font-bold text-slate-950">Articole conexe</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Daca vrei mai mult context despre formula sau despre modul de interpretare, continua cu articolele de mai jos.</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            {calculator.relatedArticles.map((article) => (
+            {suggestedArticles.map((article) => (
               <Link
                 key={article.id}
-                href={buildArticlePath(article.slug ?? "")}
+                href={buildArticlePath(article.slug)}
                 className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-emerald-400 hover:text-emerald-700"
               >
-                {article.title ?? article.slug}
+                {article.title}
               </Link>
             ))}
           </div>

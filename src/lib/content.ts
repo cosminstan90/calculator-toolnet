@@ -639,7 +639,7 @@ export const listRelatedCalculators = async (
   if (calculator.relatedCalculators.length > 0) {
     return safeRun(async () => {
       const payload = await getPayloadClient();
-      const result = await payload.find({
+      const explicitResult = await payload.find({
         collection: "calculators",
         draft: false,
         depth: 2,
@@ -650,7 +650,33 @@ export const listRelatedCalculators = async (
           },
         },
       });
-      return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+
+      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
+      if (explicitDocs.length >= limit || !categoryID) {
+        return explicitDocs;
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: 2,
+        limit: limit - explicitDocs.length + 4,
+        sort: "sortOrder",
+        where: {
+          and: [
+            { category: { equals: categoryID } },
+            { audience: { in: [calculator.audience, "both"] } },
+            { id: { not_in: [calculator.id, ...explicitDocs.map((item) => item.id)] } },
+          ],
+        },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
     }, []);
   }
 
@@ -669,11 +695,110 @@ export const listRelatedCalculators = async (
       where: {
         and: [
           { category: { equals: categoryID } },
+          { audience: { in: [calculator.audience, "both"] } },
           { id: { not_equals: calculator.id } },
         ],
       },
     });
     return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  }, []);
+};
+
+export const listSuggestedArticlesForCalculator = async (args: {
+  calculator: CalculatorDoc;
+  limit?: number;
+}): Promise<Article[]> => {
+  const limit = args.limit ?? 4;
+  const explicitArticleIDs = args.calculator.relatedArticles.map((item) => item.id);
+
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+
+    if (explicitArticleIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 2,
+        limit,
+        sort: "-publishedAt",
+        where: {
+          id: {
+            in: explicitArticleIDs,
+          },
+        },
+      });
+
+      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const fallbackWhere: Where[] = [
+        {
+          audience: {
+            in: [args.calculator.audience, "both"],
+          },
+        },
+      ];
+
+      if (args.calculator.category?.id) {
+        fallbackWhere.push({
+          relatedCategory: {
+            equals: args.calculator.category.id,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 2,
+        limit: limit - explicitDocs.length + 4,
+        sort: "-publishedAt",
+        where: {
+          and: [
+            ...fallbackWhere,
+            { id: { not_in: explicitDocs.map((item) => item.id) } },
+          ],
+        },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [
+      {
+        audience: {
+          in: [args.calculator.audience, "both"],
+        },
+      },
+    ];
+
+    if (args.calculator.category?.id) {
+      whereAnd.push({
+        relatedCategory: {
+          equals: args.calculator.category.id,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 2,
+      limit,
+      sort: "-publishedAt",
+      where: {
+        and: whereAnd,
+      },
+    });
+
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
   }, []);
 };
 
