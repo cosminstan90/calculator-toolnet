@@ -14,6 +14,7 @@ type DraftInsight = {
   title: string;
   href: string;
   type: "article" | "calculator";
+  audience: string;
   completion: number;
   editorialStatus?: string;
   slot?: string;
@@ -59,6 +60,12 @@ export type DashboardData = {
     label: string;
     count: number;
   }>;
+  workflowSlices: {
+    batches: Array<{ label: string; count: number }>;
+    audiences: Array<{ label: string; count: number }>;
+    statuses: Array<{ label: string; count: number }>;
+    slots: Array<{ label: string; count: number }>;
+  };
   recentPublished: Array<{
     id: string;
     title: string;
@@ -203,6 +210,7 @@ const buildDraftInsight = (
   title: asString(doc.title) ?? "Untitled",
   href: `${adminRoute === "/" ? "" : adminRoute}/collections/${collection}/${String(doc.id ?? "")}`,
   type: collection === "articles" ? "article" : "calculator",
+  audience: asString(doc.audience) ?? "both",
   completion: asNumber(doc.editorialCompletion) || 0,
   editorialStatus: asString(doc.editorialStatus),
   slot: asString(getNested(doc, ["publishingSchedule", "slot"])),
@@ -224,6 +232,22 @@ const sortDraftInsights = (items: DraftInsight[]) =>
 
     return left.title.localeCompare(right.title);
   });
+
+const buildCountList = (items: DraftInsight[], mapper: (item: DraftInsight) => string) =>
+  Array.from(
+    items.reduce((acc, item) => {
+      const key = mapper(item);
+      if (!key || key === "none") {
+        return acc;
+      }
+
+      acc.set(key, (acc.get(key) ?? 0) + 1);
+      return acc;
+    }, new Map<string, number>()),
+  )
+    .map(([label, count]) => ({ label, count }))
+    .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
+    .slice(0, 8);
 
 export const loadDashboardData = async (
   payload: Payload,
@@ -517,6 +541,13 @@ export const loadDashboardData = async (
     .sort((left, right) => right.count - left.count)
     .slice(0, 6);
 
+  const workflowSlices = {
+    batches: buildCountList(draftInsights, (item) => item.batch ?? "fara-batch"),
+    audiences: buildCountList(draftInsights, (item) => item.audience),
+    statuses: buildCountList(draftInsights, (item) => item.editorialStatus ?? "draft"),
+    slots: buildCountList(draftInsights, (item) => item.slot ?? "none"),
+  };
+
   const recentPublished = [
     ...(recentArticlesResult.docs as CollectionDoc[]).map((doc) => ({
       id: String(doc.id ?? ""),
@@ -578,6 +609,7 @@ export const loadDashboardData = async (
     readyToPublish,
     blockedDrafts,
     blockerSummary,
+    workflowSlices,
     recentPublished,
   };
 };

@@ -38,7 +38,12 @@ export type CalculatorKey =
   | "profit-margin"
   | "markup"
   | "break-even"
-  | "roi";
+  | "roi"
+  | "salary-increase"
+  | "hourly-rate"
+  | "monthly-work-hours"
+  | "annual-income"
+  | "effective-tax-rate";
 
 export type CalculatorInputOption = {
   label: string;
@@ -2602,6 +2607,281 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       return {
         netProfit: round(netProfit, 2),
         roiPercent: round((netProfit / investmentCost) * 100, 2),
+      };
+    },
+  },
+  "salary-increase": {
+    key: "salary-increase",
+    title: "Calculator crestere salariala",
+    slug: "calculator-crestere-salariala",
+    categorySlug: "salarii-si-taxe",
+    summary:
+      "Compara salariul actual cu salariul tinta si vezi diferenta in lei si in procente.",
+    formulaName: "Crestere salariala",
+    formulaExpression:
+      "Diferenta = salariu tinta - salariu actual; Crestere (%) = diferenta / salariu actual x 100",
+    formulaDescription:
+      "Calculatorul transforma diferenta dintre salariul actual si cel tinta intr-o crestere absoluta si procentuala.",
+    howToSteps: [
+      "Introdu salariul actual.",
+      "Introdu salariul tinta sau oferta noua.",
+      "Citeste cresterea in lei si in procente.",
+    ],
+    inputs: [
+      {
+        name: "currentSalary",
+        label: "Salariu actual",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 5000,
+      },
+      {
+        name: "targetSalary",
+        label: "Salariu tinta",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 6200,
+      },
+    ],
+    outputs: [
+      { name: "increaseAmount", label: "Crestere in lei", unit: "lei", decimals: 2 },
+      { name: "increasePercent", label: "Crestere procentuala", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const currentSalary = Math.max(parseNumber(values.currentSalary), 0.01);
+      const targetSalary = parseNumber(values.targetSalary);
+      const increaseAmount = targetSalary - currentSalary;
+      return {
+        increaseAmount: round(increaseAmount, 2),
+        increasePercent: round((increaseAmount / currentSalary) * 100, 2),
+      };
+    },
+  },
+  "hourly-rate": {
+    key: "hourly-rate",
+    title: "Calculator tarif orar din salariu",
+    slug: "calculator-tarif-orar-din-salariu",
+    categorySlug: "salarii-si-taxe",
+    summary:
+      "Transforma salariul lunar intr-un tarif orar orientativ, pornind de la numarul de ore lucrate.",
+    formulaName: "Tarif orar",
+    formulaExpression: "Tarif orar = venit lunar / ore lucrate in luna",
+    formulaDescription:
+      "Tariful orar rezulta din impartirea venitului lunar la numarul total de ore lucrate in aceeasi perioada.",
+    howToSteps: [
+      "Introdu venitul lunar pe care vrei sa-l transformi in tarif orar.",
+      "Introdu numarul de ore lucrate in luna.",
+      "Citeste valoarea orientativa pe ora.",
+    ],
+    inputs: [
+      {
+        name: "monthlyIncome",
+        label: "Venit lunar",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 6000,
+      },
+      {
+        name: "hoursWorked",
+        label: "Ore lucrate",
+        type: "number",
+        unit: "ore",
+        min: 1,
+        max: 400,
+        step: 1,
+        required: true,
+        defaultValue: 168,
+      },
+    ],
+    outputs: [
+      { name: "hourlyRate", label: "Tarif orar", unit: "lei/ora", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyIncome = parseNumber(values.monthlyIncome);
+      const hoursWorked = Math.max(parseNumber(values.hoursWorked), 1);
+      return {
+        hourlyRate: round(monthlyIncome / hoursWorked, 2),
+      };
+    },
+  },
+  "monthly-work-hours": {
+    key: "monthly-work-hours",
+    title: "Calculator ore lucrate pe luna",
+    slug: "calculator-ore-lucrate-pe-luna",
+    categorySlug: "salarii-si-taxe",
+    summary:
+      "Estimeaza numarul total de ore lucrate intr-o luna pe baza zilelor lucratoare si a programului zilnic.",
+    formulaName: "Ore lucrate pe luna",
+    formulaExpression: "Ore lunare = zile lucratoare x ore pe zi",
+    formulaDescription:
+      "Numarul total de ore lucrate intr-o luna se obtine inmultind zilele lucratoare cu durata programului zilnic.",
+    howToSteps: [
+      "Introdu numarul de zile lucratoare relevante pentru luna analizata.",
+      "Introdu numarul de ore lucrate intr-o zi obisnuita.",
+      "Citeste totalul de ore pentru luna respectiva.",
+    ],
+    inputs: [
+      {
+        name: "workDays",
+        label: "Zile lucratoare",
+        type: "number",
+        unit: "zile",
+        min: 1,
+        max: 31,
+        step: 1,
+        required: true,
+        defaultValue: 21,
+      },
+      {
+        name: "hoursPerDay",
+        label: "Ore pe zi",
+        type: "number",
+        unit: "ore",
+        min: 1,
+        max: 24,
+        step: 0.5,
+        required: true,
+        defaultValue: 8,
+      },
+    ],
+    outputs: [
+      { name: "monthlyHours", label: "Ore lucrate", unit: "ore", decimals: 1 },
+    ],
+    compute: (values) => {
+      const workDays = parseNumber(values.workDays);
+      const hoursPerDay = parseNumber(values.hoursPerDay);
+      return {
+        monthlyHours: round(workDays * hoursPerDay, 1),
+      };
+    },
+  },
+  "annual-income": {
+    key: "annual-income",
+    title: "Calculator venit anual",
+    slug: "calculator-venit-anual",
+    categorySlug: "salarii-si-taxe",
+    summary:
+      "Transforma venitul lunar intr-o estimare anuala si permite adaugarea bonusurilor sau a lunilor suplimentare.",
+    formulaName: "Venit anual",
+    formulaExpression: "Venit anual = venit lunar x luni platite + bonusuri",
+    formulaDescription:
+      "Venitul anual rezulta din inmultirea venitului lunar cu numarul de luni platite, la care se pot adauga bonusuri sau venituri suplimentare.",
+    howToSteps: [
+      "Introdu venitul lunar mediu.",
+      "Alege numarul de luni platite sau valoarea suplimentara pentru bonusuri.",
+      "Citeste venitul anual estimat.",
+    ],
+    inputs: [
+      {
+        name: "monthlyIncome",
+        label: "Venit lunar",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 6000,
+      },
+      {
+        name: "paidMonths",
+        label: "Luni platite",
+        type: "number",
+        unit: "luni",
+        min: 1,
+        max: 24,
+        step: 1,
+        required: true,
+        defaultValue: 12,
+      },
+      {
+        name: "bonuses",
+        label: "Bonusuri anuale",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 0,
+      },
+    ],
+    outputs: [
+      { name: "annualIncome", label: "Venit anual", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyIncome = parseNumber(values.monthlyIncome);
+      const paidMonths = parseNumber(values.paidMonths);
+      const bonuses = parseNumber(values.bonuses);
+      return {
+        annualIncome: round(monthlyIncome * paidMonths + bonuses, 2),
+      };
+    },
+  },
+  "effective-tax-rate": {
+    key: "effective-tax-rate",
+    title: "Calculator taxare efectiva salariu",
+    slug: "calculator-taxare-efectiva-salariu",
+    categorySlug: "salarii-si-taxe",
+    summary:
+      "Porneste de la brut si net pentru a vedea diferenta absoluta si rata efectiva de taxare.",
+    formulaName: "Taxare efectiva",
+    formulaExpression:
+      "Taxe totale = brut - net; Taxare efectiva (%) = taxe totale / brut x 100",
+    formulaDescription:
+      "Calculatorul compara venitul brut cu venitul net pentru a estima rapid cat reprezinta taxele si contributiile in termeni absoluti si procentuali.",
+    howToSteps: [
+      "Introdu venitul brut.",
+      "Introdu venitul net corespunzator.",
+      "Citeste suma taxelor si rata efectiva rezultata.",
+    ],
+    inputs: [
+      {
+        name: "grossIncome",
+        label: "Venit brut",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 10000,
+      },
+      {
+        name: "netIncome",
+        label: "Venit net",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 5850,
+      },
+    ],
+    outputs: [
+      { name: "taxAmount", label: "Taxe si contributii", unit: "lei", decimals: 2 },
+      { name: "effectiveTaxRate", label: "Rata efectiva", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const grossIncome = Math.max(parseNumber(values.grossIncome), 0.01);
+      const netIncome = parseNumber(values.netIncome);
+      const taxAmount = grossIncome - netIncome;
+      return {
+        taxAmount: round(taxAmount, 2),
+        effectiveTaxRate: round((taxAmount / grossIncome) * 100, 2),
       };
     },
   },

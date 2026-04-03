@@ -26,6 +26,12 @@ type AudienceHubProps = {
   categories: CalculatorCategory[];
   calculators: CalculatorDoc[];
   articles: Article[];
+  journeys: Array<{
+    title: string;
+    description: string;
+    href: string;
+    label: string;
+  }>;
 };
 
 export const AudienceHub = ({
@@ -40,6 +46,7 @@ export const AudienceHub = ({
   categories,
   calculators,
   articles,
+  journeys,
 }: AudienceHubProps) => {
   const spotlightCalculator = calculators[0];
   const popularCalculators = calculators.slice(0, 4);
@@ -120,6 +127,33 @@ export const AudienceHub = ({
           </article>
         </div>
       </section>
+
+      {journeys.length > 0 ? (
+        <section className="mt-12 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+          <div>
+            <p className="section-kicker">Trasee rapide</p>
+            <h2 className="mt-4 section-title">Incepe din scenariul potrivit, nu doar din primul calculator pe care il vezi.</h2>
+            <p className="mt-5 section-copy max-w-md">
+              Pentru acest hub, cele mai bune rezultate apar cand legi intrebarea initiala de clusterul si ghidul potrivit. Aici ai trei trasee de start gandite pentru intentii reale.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {journeys.map((journey) => (
+              <Link
+                key={journey.title}
+                href={journey.href}
+                className="rounded-[1.5rem] border border-slate-200 bg-white/90 p-5 text-slate-950 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.22)] transition-transform duration-200 hover:-translate-y-1"
+              >
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+                  {journey.label}
+                </p>
+                <h3 className="mt-3 text-lg font-black leading-tight">{journey.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-700">{journey.description}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-12 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
         <div>

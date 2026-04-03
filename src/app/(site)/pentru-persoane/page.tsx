@@ -15,7 +15,14 @@ export const metadata = buildMetadata({
   path: "/pentru-persoane",
 });
 
-const categorySlugs = new Set(["fitness", "auto", "energie", "conversii", "finante"]);
+const categorySlugs = new Set([
+  "fitness",
+  "auto",
+  "energie",
+  "conversii",
+  "finante",
+  "salarii-si-taxe",
+]);
 
 export default async function ConsumerHubPage() {
   const [categories, calculators, articles] = await Promise.all([
@@ -37,6 +44,36 @@ export default async function ConsumerHubPage() {
         "Sanatate, nutritie si compozitie corporala",
         "Costuri auto si estimari de drum",
         "Energie, utilitati si conversii practice",
+      ]}
+      journeys={[
+        {
+          label: "Sanatate",
+          title: "Porneste cu compozitia corporala si necesarul caloric",
+          description:
+            "Daca vrei sa intelegi greutatea, aportul caloric sau hidratarea, incepe din clusterul fitness si continua cu ghidurile care traduc cifra in actiune.",
+          href: "/calculatoare/fitness",
+        },
+        {
+          label: "Costuri auto",
+          title: "Compara consumul, costul si timpul aceluiasi drum",
+          description:
+            "Pentru decizii auto bune, combina consumul real, costul pe drum si timpul estimat in acelasi traseu de cautare.",
+          href: "/calculatoare/auto",
+        },
+        {
+          label: "Facturi si utilitati",
+          title: "Leaga consumul de cost si de conversiile tehnice necesare",
+          description:
+            "In energie si utilitati, raspunsul bun apare cand treci de la unitati la bani si apoi la decizia practica de consum.",
+          href: "/calculatoare/energie",
+        },
+        {
+          label: "Salarii",
+          title: "Compara oferta, tariful orar si venitul anual in acelasi flux",
+          description:
+            "Pentru oferte noi, renegocieri sau claritate pe brut versus net, noua verticala salarii si taxe este un punct de pornire foarte bun.",
+          href: "/calculatoare/salarii-si-taxe",
+        },
       ]}
       categories={categories.filter((category) => categorySlugs.has(category.slug))}
       calculators={calculators}

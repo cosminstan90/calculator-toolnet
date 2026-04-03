@@ -128,6 +128,26 @@ const formatDate = (value?: string) => {
 const formatDocType = (value: "article" | "calculator") =>
   value === "article" ? "Articol" : "Calculator";
 
+const formatWorkflowLabel = (value: string) => {
+  const labels: Record<string, string> = {
+    consumer: "Pentru persoane",
+    business: "Pentru firme",
+    both: "Pentru ambele",
+    draft: "Draft",
+    formula_validated: "Formula validated",
+    content_in_progress: "Content in progress",
+    ready_for_review: "Ready for review",
+    approved: "Approved",
+    scheduled: "Scheduled",
+    published: "Published",
+    morning: "08:00",
+    evening: "17:00",
+    "fara-batch": "Fara batch",
+  };
+
+  return labels[value] ?? value;
+};
+
 async function DashboardHomeInner(
   props: AdminViewServerProps,
   templateProps: {
@@ -300,6 +320,83 @@ async function DashboardHomeInner(
                 {link.description}
               </span>
             </a>
+          ))}
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          }}
+        >
+          {[
+            {
+              title: "Pe batch-uri",
+              color: "#0f766e",
+              items: data.workflowSlices.batches,
+            },
+            {
+              title: "Pe audienta",
+              color: "#1d4ed8",
+              items: data.workflowSlices.audiences,
+            },
+            {
+              title: "Pe status editorial",
+              color: "#7c3aed",
+              items: data.workflowSlices.statuses,
+            },
+            {
+              title: "Pe slot scheduler",
+              color: "#b45309",
+              items: data.workflowSlices.slots,
+            },
+          ].map((group) => (
+            <article
+              key={group.title}
+              style={{
+                background: "#fff",
+                border: "1px solid #e2e8f0",
+                borderRadius: "20px",
+                padding: "1.15rem 1.2rem",
+              }}
+            >
+              <p
+                style={{
+                  color: group.color,
+                  fontSize: "0.78rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  margin: 0,
+                  textTransform: "uppercase",
+                }}
+              >
+                {group.title}
+              </p>
+              <div style={{ display: "grid", gap: "0.55rem", marginTop: "0.9rem" }}>
+                {group.items.length > 0 ? (
+                  group.items.map((item) => (
+                    <div
+                      key={`${group.title}-${item.label}`}
+                      style={{
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span style={{ color: "#334155", fontSize: "0.9rem" }}>
+                        {formatWorkflowLabel(item.label)}
+                      </span>
+                      <strong style={{ color: "#0f172a" }}>{item.count}</strong>
+                    </div>
+                  ))
+                ) : (
+                  <span style={{ color: "#64748b", fontSize: "0.9rem" }}>
+                    Nu exista inca suficiente date pentru gruparea aceasta.
+                  </span>
+                )}
+              </div>
+            </article>
           ))}
         </section>
 

@@ -15,7 +15,14 @@ export const metadata = buildMetadata({
   path: "/pentru-firme",
 });
 
-const categorySlugs = new Set(["business", "finante", "constructii", "energie", "conversii"]);
+const categorySlugs = new Set([
+  "business",
+  "finante",
+  "constructii",
+  "energie",
+  "conversii",
+  "salarii-si-taxe",
+]);
 
 export default async function BusinessHubPage() {
   const [categories, calculators, articles] = await Promise.all([
@@ -37,6 +44,29 @@ export default async function BusinessHubPage() {
         "Preturi, marje si rentabilitate",
         "Taxe, procente si scenarii financiare",
         "Estimari operationale pentru lucrari si materiale",
+      ]}
+      journeys={[
+        {
+          label: "Pricing",
+          title: "Compara rapid marja, markup si rentabilitatea",
+          description:
+            "Cand decizia are legatura cu pretul, profitul sau ROI-ul, incepe cu clusterul business si continua cu scenariile financiare complementare.",
+          href: "/calculatoare/business",
+        },
+        {
+          label: "Taxe si salarii",
+          title: "Leaga venitul, taxarea si costul real al unei decizii salariale",
+          description:
+            "Noua verticala salarii si taxe te ajuta sa compari cresterea salariala, tariful orar, venitul anual si taxarea efectiva intr-un flux coerent.",
+          href: "/calculatoare/salarii-si-taxe",
+        },
+        {
+          label: "Estimari operative",
+          title: "Porneste din materiale, volum si necesar de lucru",
+          description:
+            "Pentru proiecte, lucrari si costuri de executie, clusterul constructii iti da punctul de plecare bun si te trimite spre ghidurile potrivite.",
+          href: "/calculatoare/constructii",
+        },
       ]}
       categories={categories.filter((category) => categorySlugs.has(category.slug))}
       calculators={calculators}

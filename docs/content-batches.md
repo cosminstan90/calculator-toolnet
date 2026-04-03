@@ -154,13 +154,29 @@ Obiective:
 
 ## Batch 05
 
-Rezervat pentru extinderea clusterului `business` si `e-commerce`, cu directii candidate precum:
+Primul lot dedicat verticalei `salarii-si-taxe`, cu accent pe compararea ofertelor, timpului de lucru si a diferentei dintre brut si net.
 
-1. `cac`
-2. `roas`
-3. `aov`
-4. `cash-flow`
-5. `stoc-minim`
+Calculatoare:
+
+1. `salary-increase`
+2. `hourly-rate`
+3. `monthly-work-hours`
+4. `annual-income`
+5. `effective-tax-rate`
+
+Articole suport:
+
+1. `cum-calculezi-cresterea-salariala-corect`
+2. `cum-transformi-salariul-lunar-in-tarif-orar`
+3. `cate-ore-lucrezi-intr-o-luna-de-fapt`
+4. `cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva`
+5. `cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul`
+
+Obiective:
+
+- deschidem categoria `salarii-si-taxe`
+- acoperim un cluster foarte bun atat pentru persoane, cat si pentru firme
+- construim pagini sigure, explicabile si usor de extins ulterior spre payroll si fiscalitate mai avansata
 
 ## Regula de operare
 

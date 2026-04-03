@@ -198,6 +198,14 @@ const BATCH_04_CALCULATORS: CalculatorKey[] = [
   "loan-payment",
 ];
 
+const BATCH_05_CALCULATORS: CalculatorKey[] = [
+  "salary-increase",
+  "hourly-rate",
+  "monthly-work-hours",
+  "annual-income",
+  "effective-tax-rate",
+];
+
 const BATCH_04_ARTICLES = [
   "cum-calculezi-procentele-corect",
   "procent-din-numar-vs-diferenta-procentuala",
@@ -207,6 +215,14 @@ const BATCH_04_ARTICLES = [
   "cum-planifici-economii-lunare",
   "cum-estimezi-un-obiectiv-de-economisire",
   "cum-citesti-rata-lunara-la-un-credit",
+];
+
+const BATCH_05_ARTICLES = [
+  "cum-calculezi-cresterea-salariala-corect",
+  "cum-transformi-salariul-lunar-in-tarif-orar",
+  "cate-ore-lucrezi-intr-o-luna-de-fapt",
+  "cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva",
+  "cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul",
 ];
 
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
@@ -257,6 +273,8 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
         ? "batch-03"
         : BATCH_04_CALCULATORS.includes(key)
           ? "batch-04"
+          : BATCH_05_CALCULATORS.includes(key)
+            ? "batch-05"
           : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
@@ -267,7 +285,11 @@ const defaultAudienceForCategory = (categorySlug: string): Audience => {
     return "business";
   }
 
-  if (categorySlug === "fitness" || categorySlug === "auto" || categorySlug === "conversii") {
+  if (
+    categorySlug === "fitness" ||
+    categorySlug === "auto" ||
+    categorySlug === "conversii"
+  ) {
     return "consumer";
   }
 
@@ -297,6 +319,10 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-04";
   }
 
+  if (BATCH_05_ARTICLES.includes(seed.slug)) {
+    return "batch-05";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
@@ -318,11 +344,13 @@ const calculatorDraftQueue = [
   ...BATCH_02_CALCULATORS,
   ...BATCH_03_CALCULATORS,
   ...BATCH_04_CALCULATORS,
+  ...BATCH_05_CALCULATORS,
 ];
 const articleDraftQueue = [
   ...BATCH_02_ARTICLES,
   ...BATCH_03_ARTICLES,
   ...BATCH_04_ARTICLES,
+  ...BATCH_05_ARTICLES,
 ];
 
 const defaultPublishingScheduleForCalculator = (
@@ -420,6 +448,14 @@ const categoryFrames = {
       "In finante, formula ofera un reper bun, dar rezultatul trebuie citit cu atentie atunci cand intervin comisioane, taxe suplimentare, conditii contractuale sau dobanzi variabile.",
     linkingLead:
       "Paginile financiare functioneaza cel mai bine cand legi intre ele procentele, TVA-ul, economiile si creditele, pentru ca utilizatorul cauta de multe ori mai multe unghiuri ale aceleiasi decizii.",
+  },
+  "salarii-si-taxe": {
+    audience:
+      "cand compari venituri, cresterea salariala, orele lucrate sau diferenta dintre brut si net intr-un scenariu usor de explicat",
+    caution:
+      "In zona salariilor si taxarii efective, calculatorul este foarte util pentru orientare, dar regulile fiscale concrete si clauzele contractuale pot schimba interpretarea finala.",
+    linkingLead:
+      "Leaga natural paginile de crestere salariala, tarif orar, venit anual si taxare efectiva pentru a sustine un traseu complet de decizie.",
   },
 } as const;
 
@@ -644,6 +680,15 @@ const categorySeeds: CategorySeed[] = [
     introContent:
       "Categoria Finante reuneste calcule rapide pentru procente, discounturi, TVA, economii, dobanda compusa si rate de credit. Este gandita atat pentru persoane care compara costuri si obiective de economisire, cat si pentru firme mici care vor calcule comerciale simple, clare si reutilizabile.",
     sortOrder: 70,
+    isFeatured: true,
+  },
+  {
+    name: "Salarii si taxe",
+    slug: "salarii-si-taxe",
+    summary: "Calculatoare pentru crestere salariala, tarif orar, ore lucrate, venit anual si taxare efectiva.",
+    introContent:
+      "Categoria Salarii si taxe aduna calcule utile pentru compararea ofertelor salariale, transformarea venitului lunar in tarif orar, estimarea orelor lucrate, intelegerea diferentei dintre brut si net si planificarea venitului anual. Paginile sunt gandite ca instrumente de orientare rapida, completate de articole care clarifica decizia si limitele interpretarii.",
+    sortOrder: 80,
     isFeatured: true,
   },
 ];
@@ -1209,6 +1254,86 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedCalculatorKeys: ["break-even", "profit-margin", "markup"],
     relatedArticleSlugs: ["cum-evaluezi-un-roi-fara-sa-fortezi-cifrele"],
   },
+  "salary-increase": {
+    shortDescription: "Compara salariul actual cu cel tinta si vezi diferenta in lei si in procente.",
+    intro: "Calculatorul de crestere salariala te ajuta sa compari rapid oferta actuala cu salariul tinta si sa vezi clar diferentele importante.",
+    interpretationNotes: "Rezultatul este util pentru orientare, dar o oferta salariala merita citita impreuna cu beneficiile, bonusurile si programul de lucru.",
+    isFeatured: true,
+    sortOrder: 10,
+    audience: "both",
+    releaseBatch: "batch-05",
+    example: "De la 5.000 lei la 6.200 lei inseamna o crestere de 1.200 lei, adica aproximativ 24%.",
+    faq: [
+      { question: "Este mai util sa compar lei sau procente?", answer: "Ideal este sa le privesti impreuna. Suma absoluta arata impactul direct, iar procentul te ajuta sa compari mai corect doua scenarii." },
+      { question: "Include bonusuri si beneficii?", answer: "Nu automat. Daca vrei o comparatie completa, adauga separat bonusurile si beneficiile recurente." },
+    ],
+    relatedCalculatorKeys: ["hourly-rate", "annual-income", "effective-tax-rate"],
+    relatedArticleSlugs: ["cum-calculezi-cresterea-salariala-corect"],
+  },
+  "hourly-rate": {
+    shortDescription: "Transforma salariul lunar intr-un tarif orar orientativ, util pentru comparatii si planificare.",
+    intro: "Calculatorul de tarif orar te ajuta sa vezi mai clar cat valoreaza o ora de lucru atunci cand compari oferte, proiecte sau programe diferite.",
+    interpretationNotes: "Tariful orar este orientativ. Daca ai ture, bonusuri variabile sau ore suplimentare, merita sa testezi mai multe scenarii.",
+    isFeatured: true,
+    sortOrder: 20,
+    audience: "both",
+    releaseBatch: "batch-05",
+    example: "Un venit de 6.000 lei si 168 de ore lucrate inseamna aproximativ 35,71 lei pe ora.",
+    faq: [
+      { question: "De ce conteaza tariful orar?", answer: "Te ajuta sa compari oferte, proiecte sau venituri lunare diferite prin acelasi reper comun." },
+      { question: "Ce ore folosesc in calcul?", answer: "Ideal folosesti numarul real de ore lucrate in luna analizata, nu doar programul teoretic." },
+    ],
+    relatedCalculatorKeys: ["monthly-work-hours", "annual-income", "salary-increase"],
+    relatedArticleSlugs: ["cum-transformi-salariul-lunar-in-tarif-orar"],
+  },
+  "monthly-work-hours": {
+    shortDescription: "Estimeaza cate ore lucrezi intr-o luna pe baza zilelor lucratoare si a programului zilnic.",
+    intro: "Calculatorul de ore lucrate pe luna este un reper bun cand vrei sa transformi venitul lunar in tarif orar sau sa compari doua programe diferite.",
+    interpretationNotes: "Rezultatul este orientativ daca apar ture, zile libere suplimentare sau ore suplimentare neincluse in scenariul standard.",
+    isFeatured: false,
+    sortOrder: 30,
+    audience: "both",
+    releaseBatch: "batch-05",
+    example: "21 de zile lucratoare si 8 ore pe zi inseamna 168 de ore intr-o luna obisnuita.",
+    faq: [
+      { question: "Pot folosi acelasi numar de zile in fiecare luna?", answer: "Nu neaparat. Zilele lucratoare variaza si merita sa refaci calculul pentru luna reala analizata." },
+      { question: "Include ore suplimentare?", answer: "Doar daca le adaugi explicit printr-un numar mai mare de ore sau zile." },
+    ],
+    relatedCalculatorKeys: ["hourly-rate", "annual-income"],
+    relatedArticleSlugs: ["cate-ore-lucrezi-intr-o-luna-de-fapt"],
+  },
+  "annual-income": {
+    shortDescription: "Porneste de la venitul lunar si estimeaza venitul anual, inclusiv bonusurile sau lunile suplimentare.",
+    intro: "Calculatorul de venit anual te ajuta sa vezi imaginea mare atunci cand planifici bugetul, compari oferte sau separi salariul de bonusuri.",
+    interpretationNotes: "Este o estimare buna pentru planificare, dar rezultatul merita ajustat daca veniturile variaza semnificativ de la o luna la alta.",
+    isFeatured: false,
+    sortOrder: 40,
+    audience: "both",
+    releaseBatch: "batch-05",
+    example: "La 6.000 lei pe luna, 12 luni si 5.000 lei bonusuri, venitul anual este 77.000 lei.",
+    faq: [
+      { question: "Include bonusuri si prime?", answer: "Da, daca le introduci separat in campul dedicat bonusurilor anuale." },
+      { question: "Este util si pentru compararea ofertelor?", answer: "Da. Venitul anual te ajuta sa compari oferte cu bonusuri, prime sau luni suplimentare de plata." },
+    ],
+    relatedCalculatorKeys: ["salary-increase", "hourly-rate", "effective-tax-rate"],
+    relatedArticleSlugs: ["cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul"],
+  },
+  "effective-tax-rate": {
+    shortDescription: "Compara brutul cu netul si arata diferenta absoluta si rata efectiva de taxare.",
+    intro: "Calculatorul de taxare efectiva te ajuta sa transformi diferenta dintre brut si net intr-un reper usor de citit atunci cand compari venituri sau oferte.",
+    interpretationNotes: "Rata efectiva este un indicator orientativ. Ea nu explica automat structura exacta a contributiilor sau exceptiile fiscale aplicabile in fiecare caz.",
+    isFeatured: true,
+    sortOrder: 50,
+    audience: "both",
+    releaseBatch: "batch-05",
+    example: "La 10.000 lei brut si 5.850 lei net, diferenta este 4.150 lei, adica aproximativ 41,5%.",
+    faq: [
+      { question: "Pot deduce din asta structura exacta a taxelor?", answer: "Nu complet. Calculatorul arata diferenta efectiva dintre brut si net, nu inlocuieste verificarea regulilor fiscale aplicabile." },
+      { question: "De ce este utila rata efectiva?", answer: "Pentru ca te ajuta sa compari rapid scenarii salariale sau sa intelegi mai clar cat din brut ramane efectiv disponibil." },
+    ],
+    relatedCalculatorKeys: ["salary-increase", "annual-income", "hourly-rate"],
+    relatedArticleSlugs: ["cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva"],
+  },
 };
 
 const articleSeeds: ArticleSeed[] = [
@@ -1549,6 +1674,71 @@ const articleSeeds: ArticleSeed[] = [
     relatedCalculatorKeys: ["loan-payment", "monthly-savings", "compound-interest"],
     relatedArticleSlugs: ["cum-estimezi-un-obiectiv-de-economisire"],
     launchWave: "backlog",
+  },
+  {
+    slug: "cum-calculezi-cresterea-salariala-corect",
+    title: "Cum calculezi cresterea salariala corect fara sa compari doua sume scoase din context",
+    excerpt: "O crestere salariala buna nu inseamna doar un procent frumos. Conteaza si baza de comparatie, bonusurile si programul de lucru.",
+    content: "Cresterea salariala pare simpla pana cand incepi sa compari oferte diferite, beneficii neuniforme si structuri de plata care nu seamana intre ele.\n\nDe aceea, primul pas util nu este doar sa vezi cu cat creste suma finala in lei, ci sa transformi diferenta intr-un procent clar si sa o pui in context. O crestere de 1.000 lei poate insemna foarte mult intr-un scenariu si relativ putin in altul, in functie de baza de la care pleci.\n\nCalculatorul de crestere salariala este valoros tocmai pentru ca reduce zgomotul. Iti arata rapid diferenta absoluta si diferenta procentuala, iar de acolo poti continua cu tariful orar, cu venitul anual sau cu analiza brut versus net.\n\nAsta conteaza mai ales cand compari un job nou, o renegociere sau o schimbare de rol. Uneori doua oferte apropiate ca suma lunara se simt foarte diferit dupa ce iei in calcul timpul lucrat, bonusurile sau taxarea efectiva.\n\nPrivita corect, cresterea salariala nu este doar un numar. Este un semnal care te ajuta sa decizi daca merita sa negociezi, sa accepti oferta sau sa compari mai multe scenarii inainte de urmatorul pas.",
+    articleType: "guide",
+    relatedCategorySlug: "salarii-si-taxe",
+    relatedCalculatorKeys: ["salary-increase", "hourly-rate", "annual-income"],
+    relatedArticleSlugs: ["cum-transformi-salariul-lunar-in-tarif-orar"],
+    launchWave: "backlog",
+    releaseBatch: "batch-05",
+    audience: "both",
+  },
+  {
+    slug: "cum-transformi-salariul-lunar-in-tarif-orar",
+    title: "Cum transformi salariul lunar in tarif orar fara sa ignori orele reale lucrate",
+    excerpt: "Tariful orar devine util doar daca pornesti de la numarul real de ore, nu de la o luna idealizata.",
+    content: "Tariful orar este unul dintre cele mai utile repere atunci cand vrei sa compari doua oferte, sa intelegi valoarea unei zile de lucru sau sa transformi un venit lunar intr-o cifra mai usor de discutat.\n\nProblema apare atunci cand folosesti un numar generic de ore, fara sa te uiti la luna concreta sau la programul real. Diferenta dintre 160 si 184 de ore poate schimba semnificativ concluzia, mai ales daca folosesti tariful orar pentru comparatii comerciale sau de cariera.\n\nCalculatorul de tarif orar ar trebui folosit impreuna cu cel de ore lucrate pe luna. Unul iti arata reperul pe ora, celalalt te ajuta sa validezi baza de calcul. Abia dupa aceea poti interpreta corect daca diferenta dintre doua oferte este cu adevarat relevanta.\n\nAcest lucru este util si pentru firme, nu doar pentru persoane. Managerii compara uneori costuri interne, freelanceri sau proiecte pornind tocmai de la un tarif orar orientativ.\n\nTariful orar nu inlocuieste toate nuantele unui pachet de compensare, dar este un punct excelent de clarificare atunci cand vrei sa compari mere cu mere, nu sume lunare scoase din context.",
+    articleType: "guide",
+    relatedCategorySlug: "salarii-si-taxe",
+    relatedCalculatorKeys: ["hourly-rate", "monthly-work-hours", "salary-increase"],
+    relatedArticleSlugs: ["cate-ore-lucrezi-intr-o-luna-de-fapt"],
+    launchWave: "backlog",
+    releaseBatch: "batch-05",
+    audience: "both",
+  },
+  {
+    slug: "cate-ore-lucrezi-intr-o-luna-de-fapt",
+    title: "Cate ore lucrezi intr-o luna de fapt si de ce raspunsul conteaza mai mult decat pare",
+    excerpt: "Numarul de ore lucrate schimba comparatia dintre oferte, tarife si asteptari de volum. Iata cum il folosesti corect.",
+    content: "Multi utilizatori pornesc de la ideea ca o luna inseamna acelasi numar de ore de fiecare data. In practica, zilele lucratoare variaza, iar asta schimba imediat orice comparatie care depinde de timpul efectiv lucrat.\n\nCalculatorul de ore lucrate pe luna este foarte simplu, dar tocmai de aceea util. El iti ofera baza de care ai nevoie pentru a transforma salariul intr-un tarif orar, pentru a compara doua programe sau pentru a intelege mai bine volumul lunar de munca.\n\nIn plus, este un calculator bun pentru decizii de planning. Daca stii cate ore apar in luna curenta, poti construi mai realist scenarii despre venit, cost orar sau distributia timpului intre activitati.\n\nMerita totusi sa privesti rezultatul cu un pic de prudenta. Turele, orele suplimentare, concediile sau zilele libere suplimentare pot schimba imaginea finala.\n\nCa pagina de produs, acest calculator functioneaza bine cand este conectat de tarif orar, venit anual si crestere salariala. Singur este simplu; in cluster devine un reper foarte util pentru decizie.",
+    articleType: "explainer",
+    relatedCategorySlug: "salarii-si-taxe",
+    relatedCalculatorKeys: ["monthly-work-hours", "hourly-rate", "annual-income"],
+    relatedArticleSlugs: ["cum-transformi-salariul-lunar-in-tarif-orar"],
+    launchWave: "backlog",
+    releaseBatch: "batch-05",
+    audience: "both",
+  },
+  {
+    slug: "cum-citesti-diferenta-dintre-brut-net-si-taxare-efectiva",
+    title: "Cum citesti diferenta dintre brut, net si taxare efectiva fara sa tragi concluzii gresite",
+    excerpt: "Brutul, netul si diferenta dintre ele spun lucruri utile, dar nu inseamna automat acelasi lucru.",
+    content: "Diferenta dintre brut si net este una dintre cele mai frecvente surse de confuzie atunci cand cineva compara oferte, vrea sa inteleaga cat ramane efectiv disponibil sau incearca sa explice o rata aparent mare de taxare.\n\nCalculatorul de taxare efectiva este util pentru ca face vizibila distanta dintre cele doua valori. El iti arata suma absoluta care se pierde pe traseu si procentul orientativ pe care aceasta il reprezinta din brut.\n\nTotusi, merita sa nu supralicitezi interpretarea. Taxarea efectiva te ajuta sa vezi diferenta dintre doua numere, dar nu iti spune automat intreaga poveste fiscala din spate. De aceea este bun pentru orientare rapida, nu pentru consultanta fiscala sau de payroll.\n\nCa instrument de decizie, valoarea lui este mare in doua situatii: cand compari mai multe variante salariale si cand vrei sa intelegi mai clar de ce doua sume brute apropiate se simt diferit dupa taxare.\n\nPusa in context, diferenta brut-net devine mai usor de folosit impreuna cu venitul anual, tariful orar si cresterea salariala. In felul acesta nu ramai doar cu un procent, ci cu o imagine mai buna despre valoarea reala a unui pachet de compensare.",
+    articleType: "guide",
+    relatedCategorySlug: "salarii-si-taxe",
+    relatedCalculatorKeys: ["effective-tax-rate", "salary-increase", "annual-income"],
+    relatedArticleSlugs: ["cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul"],
+    launchWave: "backlog",
+    releaseBatch: "batch-05",
+    audience: "both",
+  },
+  {
+    slug: "cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul",
+    title: "Cum estimezi venitul anual fara sa amesteci bonusurile cu salariul lunar",
+    excerpt: "Venitul anual clarifica mult mai bine comparatiile atunci cand bonusurile si lunile suplimentare fac parte din pachet.",
+    content: "Venitul lunar este util pentru ritmul zilnic al bugetului, dar nu este intotdeauna suficient atunci cand vrei sa compari doua oferte sau sa planifici realist anul urmator.\n\nIn multe cazuri apar bonusuri, prime, a 13-a luna sau alte componente care schimba imaginea finala. Daca le amesteci direct cu salariul lunar, comparatia devine mai confuza, nu mai clara.\n\nCalculatorul de venit anual este folositor tocmai pentru ca separa aceste elemente si le aduce la un numitor comun: totalul pe an. Din acel moment devine mai usor sa compari doua scenarii salariale, doua roluri sau doua structuri diferite de compensare.\n\nMai mult, venitul anual este un punct de pornire bun si pentru planificare. Il poti conecta de cresterea salariala, de taxare efectiva sau de obiective financiare mai mari.\n\nCa produs editorial, aceasta pagina este valoroasa pentru ca nu ofera doar un total. Te invata sa compari mai corect si sa vezi dincolo de suma lunara afisata prima data intr-o oferta.",
+    articleType: "guide",
+    relatedCategorySlug: "salarii-si-taxe",
+    relatedCalculatorKeys: ["annual-income", "salary-increase", "effective-tax-rate"],
+    relatedArticleSlugs: ["cum-calculezi-cresterea-salariala-corect"],
+    launchWave: "backlog",
+    releaseBatch: "batch-05",
+    audience: "both",
   },
 ];
 

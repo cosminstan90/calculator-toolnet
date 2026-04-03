@@ -18,11 +18,85 @@ import {
 import { adsConfig } from "@/lib/ads";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { headers } from "next/headers";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Params = Promise<{ categorySlug: string }>;
 
 export const revalidate = 900;
+
+const categoryPlaybooks: Record<
+  string,
+  {
+    audience: string;
+    scenarios: string[];
+    nextHub?: { label: string; href: string };
+  }
+> = {
+  fitness: {
+    audience: "Mai ales pentru persoane care urmaresc sanatatea, nutritia si performanta.",
+    scenarios: [
+      "Porneste cu calculatorul care iti raspunde la intrebarea principala: IMC, calorii, proteine sau hidratare.",
+      "Continua cu un calculator complementar daca rezultatul depinde de obiectiv, nu doar de o singura valoare.",
+      "Verifica articolul asociat atunci cand cifra trebuie interpretata, nu doar memorata.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
+  auto: {
+    audience: "Pentru persoane si firme care vor costuri, timp si scenarii de drum mai realiste.",
+    scenarios: [
+      "Calculeaza mai intai consumul sau costul real al drumului.",
+      "Compara apoi costul pe kilometru si timpul estimat pentru doua scenarii diferite.",
+      "Daca decizia implica buget, valideaza rezultatul cu ghidul editorial din categorie.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
+  energie: {
+    audience: "Pentru persoane si firme care au nevoie de conversii tehnice, consum sau cost energetic.",
+    scenarios: [
+      "Clarifica mai intai daca ai nevoie de putere, energie sau cost.",
+      "Leaga conversia de un calculator de consum sau cost ca sa obtii valoare practica.",
+      "Foloseste ghidurile cand vrei sa compari aparate sau sa explici factura.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
+  constructii: {
+    audience: "Pentru persoane, echipe mici si firme care estimeaza materiale sau volume de lucru.",
+    scenarios: [
+      "Porneste din suprafata sau volum, apoi adauga marja de pierdere si contextul lucrarii.",
+      "Compara doua materiale sau doua metode de calcul inainte de aprovizionare.",
+      "Continua cu ghidul categoriei daca rezultatul trebuie transformat in deviz sau lista de cumparaturi.",
+    ],
+    nextHub: { label: "Hub firme", href: "/pentru-firme" },
+  },
+  business: {
+    audience: "In primul rand pentru firme care compara pret, marja, cost si rentabilitate.",
+    scenarios: [
+      "Porneste cu intrebarea concreta: pret, marja, markup, prag de rentabilitate sau ROI.",
+      "Valideaza apoi rezultatul cu un al doilea calculator financiar sau comercial apropiat.",
+      "Foloseste ghidurile cand decizia depinde si de context fiscal sau operational.",
+    ],
+    nextHub: { label: "Hub firme", href: "/pentru-firme" },
+  },
+  finante: {
+    audience: "Pentru persoane si firme care compara procente, TVA, rate, economii si cost total.",
+    scenarios: [
+      "Clarifica baza de calcul: net, brut, fara TVA sau cu TVA.",
+      "Compara scenariul initial cu varianta inversa sau cu o alternativa apropiata.",
+      "Continua cu articolul suport cand decizia depinde de interpretare, nu doar de formula.",
+    ],
+    nextHub: { label: "Hub firme", href: "/pentru-firme" },
+  },
+  "salarii-si-taxe": {
+    audience: "Pentru persoane si firme care compara oferte, timp lucrat, venit anual sau brut versus net.",
+    scenarios: [
+      "Porneste cu scenariul concret: crestere salariala, tarif orar, venit anual sau taxare efectiva.",
+      "Leaga calculul de orele reale lucrate si de structura venitului, nu doar de suma lunara afisata.",
+      "Foloseste ghidurile pentru a interpreta corect diferenta dintre brut, net, bonusuri si valoarea reala a ofertei.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
+};
 
 export async function generateMetadata({ params }: { params: Params }) {
   const { categorySlug } = await params;
@@ -65,6 +139,12 @@ export default async function CategoryPage({ params }: { params: Params }) {
     listCalculatorsByCategory(category.id, 100),
     listArticlesByCategory({ categoryID: category.id, limit: 8 }),
   ]);
+  const playbook = categoryPlaybooks[category.slug];
+  const featuredCalculator =
+    calculators.find((calculator) => calculator.isFeatured) ?? calculators[0];
+  const supportingCalculators = featuredCalculator
+    ? calculators.filter((calculator) => calculator.id !== featuredCalculator.id).slice(0, 5)
+    : calculators.slice(0, 6);
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
@@ -119,6 +199,52 @@ export default async function CategoryPage({ params }: { params: Params }) {
       {category.contentBlocks.length > 0 ? (
         <section className="mt-10">
           <EditorialBlocks blocks={category.contentBlocks} />
+        </section>
+      ) : null}
+
+      {playbook ? (
+        <section className="mt-12 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+          <div>
+            <p className="section-kicker">Cum folosesti categoria</p>
+            <h2 className="mt-4 section-title">Aceasta categorie functioneaza cel mai bine cand legi calculatorul de scenariul real, nu doar de formula.</h2>
+            <p className="mt-5 section-copy max-w-md">{playbook.audience}</p>
+            {playbook.nextHub ? (
+              <Link
+                href={playbook.nextHub.href}
+                className="mt-6 inline-flex rounded-full border border-emerald-300 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-800 transition-colors hover:border-emerald-400 hover:bg-emerald-100"
+              >
+                Continua in {playbook.nextHub.label}
+              </Link>
+            ) : null}
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {playbook.scenarios.map((scenario) => (
+              <article
+                key={scenario}
+                className="rounded-[1.4rem] border border-slate-200 bg-white/90 p-5 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.22)]"
+              >
+                <p className="text-sm leading-7 text-slate-700">{scenario}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {featuredCalculator ? (
+        <section className="mt-14 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+          <div>
+            <p className="section-kicker">Punct de intrare</p>
+            <h2 className="mt-4 section-title">Daca vrei sa incepi rapid, acesta este calculatorul care te pune cel mai repede in context.</h2>
+            <p className="mt-5 section-copy max-w-md">
+              Am ales un punct de intrare puternic pentru categoria {category.name.toLowerCase()}, apoi l-am completat cu pagini care continua logic aceeasi intentie.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <CalculatorCard key={featuredCalculator.id} calculator={featuredCalculator} />
+            {supportingCalculators.map((calculator) => (
+              <CalculatorCard key={calculator.id} calculator={calculator} />
+            ))}
+          </div>
         </section>
       ) : null}
 

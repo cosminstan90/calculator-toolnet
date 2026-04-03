@@ -10,6 +10,7 @@ export type DecisionSupportData = {
   title: string;
   summary: string;
   checks: string[];
+  mistakes: string[];
   nextSteps: string[];
   sections: DecisionSupportSection[];
 };
@@ -17,6 +18,7 @@ export type DecisionSupportData = {
 type CategoryGuidance = {
   summary: string;
   checks: string[];
+  mistakes: string[];
   nextSteps: string[];
   sections: DecisionSupportSection[];
 };
@@ -40,6 +42,11 @@ const defaultGuidance: CategoryGuidance = {
     "Verifica unitatile introduse si ordinea marimilor din formular.",
     "Refa calculul cu un scenariu conservator si cu unul optimist.",
     "Compara rezultatul cu cel putin un calculator sau articol conex.",
+  ],
+  mistakes: [
+    "Sa tratezi cifra obtinuta ca verdict final, nu ca punct de pornire.",
+    "Sa compari rezultate din scenarii construite pe unitati sau ipoteze diferite.",
+    "Sa ignori limitarile formulei atunci cand decizia are miza mare.",
   ],
   nextSteps: [
     "Vezi cum se schimba rezultatul daca modifici valorile principale din formular.",
@@ -69,6 +76,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Nu interpreta rezultatul izolat daca obiectivul tau este performanta, recompozitie sau sanatate metabolica.",
       "Compara cifra obtinuta cu alte repere apropiate, nu doar cu o singura eticheta.",
     ],
+    mistakes: [
+      "Sa interpretezi rezultatul ca diagnostic medical sau nutritional complet.",
+      "Sa alegi un target fix fara sa il verifici in evolutia reala de cateva saptamani.",
+      "Sa ignori contextul personal: antrenament, masa musculara, istoric metabolic.",
+    ],
     nextSteps: [
       "Continua cu un calculator complementar din nutritie sau compozitie corporala.",
       "Foloseste rezultatul pentru a seta un interval, nu un target rigid.",
@@ -94,6 +106,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Introdu valori cat mai apropiate de consumul tau real, nu doar de specificatia producatorului.",
       "Ia in calcul traficul, incarcare masinii, traseul si preturile diferite la combustibil.",
       "Verifica daca decizia depinde de cost total, cost pe kilometru sau timp estimat.",
+    ],
+    mistakes: [
+      "Sa folosesti consumul idealizat din fabrica in locul unei valori apropiate de practica.",
+      "Sa compari drumuri foarte diferite ca si cum ar fi acelasi scenariu.",
+      "Sa iei costul estimat ca valoare garantata, nu ca interval orientativ.",
     ],
     nextSteps: [
       "Compara doua scenarii de drum sau doua valori de consum.",
@@ -121,6 +138,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Nu confunda consumul teoretic cu consumul real pe durata folosirii aparatului.",
       "Daca decizia implica bani, compara si durata de utilizare sau tariful folosit.",
     ],
+    mistakes: [
+      "Sa amesteci wati, kWh si costul final in acelasi pas.",
+      "Sa tratezi puterea nominala ca si cum ar fi consum constant in orice scenariu.",
+      "Sa uiti de timpul real de utilizare cand calculezi costul.",
+    ],
     nextSteps: [
       "Continua cu un calculator de cost sau consum complementar.",
       "Testeaza mai multe valori pentru ore de utilizare sau putere nominala.",
@@ -146,6 +168,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Verifica daca sensul conversiei este corect si daca unitatea finala este cea de care ai nevoie.",
       "Cand valoarea urmeaza sa fie folosita in alt calcul, reia rapid pasul pentru confirmare.",
       "Daca rezultatul pare neobisnuit, verifica punctul zecimal si unitatile introduse.",
+    ],
+    mistakes: [
+      "Sa inversezi directia conversiei fara sa observi.",
+      "Sa copiezi o valoare fara unitatea finala atasata clar.",
+      "Sa folosesti o conversie aproximativa intr-un calcul care are nevoie de precizie mai buna.",
     ],
     nextSteps: [
       "Continua cu alta conversie apropiata daca lucrezi cu mai multe unitati.",
@@ -173,6 +200,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Adauga marja pentru pierderi, taieturi, rosturi sau neregularitati.",
       "Verifica daca produsul ales are randament sau acoperire diferita fata de scenariul standard.",
     ],
+    mistakes: [
+      "Sa cumperi fix cantitatea teoretica fara marja de pierdere.",
+      "Sa aplici randamentul unui produs pe alt material cu specificatii diferite.",
+      "Sa tratezi estimarea ca deviz final fara verificare pe lucrare.",
+    ],
     nextSteps: [
       "Compara necesarul brut cu necesarul plus pierderi.",
       "Continua cu un calculator complementar de materiale sau suprafata.",
@@ -198,6 +230,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Verifica daca in calcul intra toate costurile relevante, nu doar costul direct evident.",
       "Compara minim doua scenarii: conservator si optimist.",
       "Nu lua decizia finala fara sa vezi si efectul taxelor, discounturilor sau comisioanelor.",
+    ],
+    mistakes: [
+      "Sa ignori costurile indirecte si sa ramai doar la costul de baza.",
+      "Sa compari scenarii comerciale diferite cu ipoteze inegale.",
+      "Sa folosesti formula ca verdict final fara context fiscal sau operational.",
     ],
     nextSteps: [
       "Deschide un calculator conex pentru marja, markup, break-even sau ROI.",
@@ -225,6 +262,11 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       "Testeaza un scenariu suplimentar cu comisioane, dobanda sau costuri recurente.",
       "Nu interpreta un singur calcul fara sa verifici si impactul asupra cash-flow-ului sau bugetului.",
     ],
+    mistakes: [
+      "Sa amesteci procentele cu valorile absolute fara baza de calcul clara.",
+      "Sa compari TVA, discount sau dobanda pe sume exprimate diferit.",
+      "Sa folosesti un singur scenariu cand decizia depinde de mai multe ipoteze financiare.",
+    ],
     nextSteps: [
       "Continua cu un calculator financiar complementar pentru validare.",
       "Compara rezultatul cu varianta inversa sau cu un scenariu alternativ.",
@@ -240,6 +282,37 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
         title: "Unde apare cea mai mare confuzie",
         body:
           "Cele mai multe erori apar cand se amesteca procentele cu valorile absolute sau cand baza de calcul nu este clar definita.",
+      },
+    ],
+  },
+  "salarii-si-taxe": {
+    summary:
+      "In salarii si taxare efectiva, calculatorul este util ca reper rapid, dar rezultatul trebuie citit impreuna cu orele lucrate, structura pachetului si contextul concret al ofertei.",
+    checks: [
+      "Clarifica daca lucrezi cu net, brut, venit lunar, bonusuri sau scenarii mixte.",
+      "Verifica daca baza de comparatie este aceeasi pentru toate variantele analizate.",
+      "Leaga rezultatul de timpul real de lucru, nu doar de suma afisata lunar.",
+    ],
+    mistakes: [
+      "Sa compari doua oferte doar prin suma lunara, fara bonusuri sau ore reale lucrate.",
+      "Sa tratezi rata efectiva drept explicatie fiscala completa, nu ca indicator orientativ.",
+      "Sa ignori venitul anual atunci cand compari pachete salariale diferite.",
+    ],
+    nextSteps: [
+      "Compara cresterea salariala cu tariful orar si venitul anual pentru acelasi scenariu.",
+      "Testeaza atat varianta neta, cat si varianta bruta daca oferta este prezentata diferit.",
+      "Continua cu ghidurile conexe pentru a clarifica interpretarea rezultatului in negociere sau planning.",
+    ],
+    sections: [
+      {
+        title: "Ce decizie sustine",
+        body:
+          "Pagina te ajuta sa compari oferte, sa intelegi mai clar valoarea reala a venitului si sa legi rapid salariul de timp, taxare sau venit anual.",
+      },
+      {
+        title: "Ce trebuie validat separat",
+        body:
+          "Detaliile fiscale concrete, regulile de payroll si structura completa a pachetului de compensare trebuie verificate separat fata de calculatorul orientativ.",
       },
     ],
   },
@@ -264,6 +337,7 @@ export const buildDecisionSupport = (calculator: Pick<
     title: `Cum folosesti ${calculator.title.toLowerCase()} intr-o decizie reala`,
     summary: guidance.summary,
     checks: guidance.checks,
+    mistakes: guidance.mistakes,
     nextSteps: [...guidance.nextSteps, dynamicStep],
     sections: guidance.sections,
   };

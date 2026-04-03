@@ -34,7 +34,7 @@ export const DecisionSupportPanel = ({ data }: DecisionSupportPanelProps) => {
             </div>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-3">
             <article className="rounded-[1.6rem] border border-emerald-300/20 bg-emerald-300/10 p-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-200">
                 Ce verifici inainte
@@ -44,6 +44,20 @@ export const DecisionSupportPanel = ({ data }: DecisionSupportPanelProps) => {
                   <li key={check} className="flex gap-3">
                     <span className="mt-1 h-2 w-2 rounded-full bg-emerald-300" />
                     <span>{check}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+
+            <article className="rounded-[1.6rem] border border-rose-300/20 bg-rose-200/10 p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-rose-200">
+                Ce sa nu fortezi
+              </p>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-200">
+                {data.mistakes.map((mistake) => (
+                  <li key={mistake} className="flex gap-3">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-rose-200" />
+                    <span>{mistake}</span>
                   </li>
                 ))}
               </ul>
