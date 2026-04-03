@@ -1,10 +1,11 @@
+import { AudienceBadge } from "@/components/audience-badge";
 import type { Article } from "@/lib/content";
 import { buildArticlePath } from "@/lib/content";
 import Link from "next/link";
 
 type ArticleCardDoc = Pick<
   Article,
-  "id" | "slug" | "title" | "excerpt" | "articleType" | "publishedAt" | "author"
+  "id" | "slug" | "title" | "excerpt" | "articleType" | "publishedAt" | "author" | "audience"
 >;
 
 type ArticleCardProps = {
@@ -20,6 +21,9 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
       <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
         {article.articleType}
       </p>
+      <div className="mt-3">
+        <AudienceBadge audience={article.audience} />
+      </div>
       <h3 className="mt-3 text-[1.9rem] font-black leading-tight text-slate-950">{article.title}</h3>
       <p className="mt-4 text-sm leading-7 text-slate-700">{article.excerpt}</p>
       {article.publishedAt || article.author ? (

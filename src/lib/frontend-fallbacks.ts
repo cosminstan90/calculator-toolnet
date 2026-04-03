@@ -34,13 +34,14 @@ export const fallbackCategories: Array<Pick<CalculatorCategory, "id" | "name" | 
 ];
 
 export const fallbackCalculators: Array<
-  Pick<CalculatorDoc, "id" | "title" | "slug" | "shortDescription" | "category">
+  Pick<CalculatorDoc, "id" | "title" | "slug" | "shortDescription" | "category" | "audience">
 > = [
   {
     id: "bmi",
     title: "Calculator BMI",
     slug: "calculator-bmi",
     shortDescription: "Afla rapid indicele de masa corporala si intervalul in care se incadreaza rezultatul tau.",
+    audience: "consumer",
     category: { id: "fitness", name: "Fitness", slug: "fitness" },
   },
   {
@@ -48,6 +49,7 @@ export const fallbackCalculators: Array<
     title: "Calculator TDEE",
     slug: "calculator-tdee",
     shortDescription: "Estimeaza necesarul zilnic de calorii in functie de activitate, varsta, greutate si obiectiv.",
+    audience: "consumer",
     category: { id: "fitness", name: "Fitness", slug: "fitness" },
   },
   {
@@ -55,6 +57,7 @@ export const fallbackCalculators: Array<
     title: "Convertor kW in CP",
     slug: "kw-in-cp",
     shortDescription: "Converteste rapid kilowatii in cai putere pentru masini, motoare si fise tehnice.",
+    audience: "both",
     category: { id: "auto", name: "Auto", slug: "auto" },
   },
   {
@@ -62,17 +65,21 @@ export const fallbackCalculators: Array<
     title: "Calculator consum combustibil",
     slug: "consum-combustibil",
     shortDescription: "Calculeaza consumul real pe baza kilometrilor parcursi si a cantitatii de combustibil alimentate.",
+    audience: "consumer",
     category: { id: "auto", name: "Auto", slug: "auto" },
   },
 ];
 
-export const fallbackArticles: Array<Pick<Article, "id" | "slug" | "title" | "excerpt" | "articleType">> = [
+export const fallbackArticles: Array<
+  Pick<Article, "id" | "slug" | "title" | "excerpt" | "articleType" | "audience">
+> = [
   {
     id: "ghid-bmi",
     slug: "cum-se-interpreteaza-bmi",
     title: "Cum se interpreteaza BMI in mod corect",
     excerpt: "Cand te ajuta BMI, unde devine insuficient si cum il folosesti alaturi de alte repere utile.",
     articleType: "Ghid",
+    audience: "consumer",
   },
   {
     id: "ghid-tdee",
@@ -80,6 +87,7 @@ export const fallbackArticles: Array<Pick<Article, "id" | "slug" | "title" | "ex
     title: "Cum estimezi TDEE fara sa supraevaluezi activitatea",
     excerpt: "Un ghid practic despre factorii de activitate si erorile frecvente care apar la calculul necesarului caloric.",
     articleType: "Explicativ",
+    audience: "consumer",
   },
   {
     id: "ghid-consum",
@@ -87,6 +95,7 @@ export const fallbackArticles: Array<Pick<Article, "id" | "slug" | "title" | "ex
     title: "Cum calculezi consumul auto real",
     excerpt: "Formula de baza, exemple rapide si principalii factori care pot schimba rezultatul in utilizarea de zi cu zi.",
     articleType: "Auto",
+    audience: "consumer",
   },
   {
     id: "ghid-conversii",
@@ -94,6 +103,7 @@ export const fallbackArticles: Array<Pick<Article, "id" | "slug" | "title" | "ex
     title: "kW vs CP: diferenta si cand folosesti fiecare unitate",
     excerpt: "Explicam ce masoara fiecare unitate si de ce conversia corecta conteaza in specificatiile tehnice auto.",
     articleType: "Conversii",
+    audience: "both",
   },
 ];
 

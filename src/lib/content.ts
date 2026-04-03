@@ -861,6 +861,205 @@ export const listArticlesByCategory = async (args: {
   }, []);
 };
 
+export const listSuggestedCalculatorsForArticle = async (args: {
+  article: Article;
+  limit?: number;
+}): Promise<CalculatorDoc[]> => {
+  const limit = args.limit ?? 6;
+  const explicitCalculatorIDs = args.article.relatedCalculators.map((item) => item.id);
+
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+
+    if (explicitCalculatorIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: 2,
+        limit,
+        sort: "sortOrder",
+        where: {
+          id: {
+            in: explicitCalculatorIDs,
+          },
+        },
+      });
+
+      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const fallbackWhere: Where[] = [
+        {
+          audience: {
+            in: [args.article.audience, "both"],
+          },
+        },
+      ];
+
+      if (args.article.relatedCategory?.id) {
+        fallbackWhere.push({
+          category: {
+            equals: args.article.relatedCategory.id,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: 2,
+        limit: limit - explicitDocs.length + 4,
+        sort: "sortOrder",
+        where: {
+          and: [
+            ...fallbackWhere,
+            { id: { not_in: explicitDocs.map((item) => item.id) } },
+          ],
+        },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [
+      {
+        audience: {
+          in: [args.article.audience, "both"],
+        },
+      },
+    ];
+
+    if (args.article.relatedCategory?.id) {
+      whereAnd.push({
+        category: {
+          equals: args.article.relatedCategory.id,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: 2,
+      limit,
+      sort: "sortOrder",
+      where: {
+        and: whereAnd,
+      },
+    });
+
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  }, []);
+};
+
+export const listSuggestedArticles = async (args: {
+  article: Article;
+  limit?: number;
+}): Promise<Article[]> => {
+  const limit = args.limit ?? 4;
+  const explicitArticleIDs = args.article.relatedArticles.map((item) => item.id);
+
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+
+    if (explicitArticleIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 2,
+        limit,
+        sort: "-publishedAt",
+        where: {
+          and: [
+            { id: { in: explicitArticleIDs } },
+            { slug: { not_equals: args.article.slug } },
+          ],
+        },
+      });
+
+      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const fallbackWhere: Where[] = [
+        {
+          audience: {
+            in: [args.article.audience, "both"],
+          },
+        },
+        { slug: { not_equals: args.article.slug } },
+      ];
+
+      if (args.article.relatedCategory?.id) {
+        fallbackWhere.push({
+          relatedCategory: {
+            equals: args.article.relatedCategory.id,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 2,
+        limit: limit - explicitDocs.length + 4,
+        sort: "-publishedAt",
+        where: {
+          and: [
+            ...fallbackWhere,
+            { id: { not_in: explicitDocs.map((item) => item.id) } },
+          ],
+        },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [
+      {
+        audience: {
+          in: [args.article.audience, "both"],
+        },
+      },
+      { slug: { not_equals: args.article.slug } },
+    ];
+
+    if (args.article.relatedCategory?.id) {
+      whereAnd.push({
+        relatedCategory: {
+          equals: args.article.relatedCategory.id,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 2,
+      limit,
+      sort: "-publishedAt",
+      where: {
+        and: whereAnd,
+      },
+    });
+
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  }, []);
+};
+
 export const listArticlesByAudience = async (args: {
   audience: Exclude<Audience, "both">;
   limit?: number;

@@ -1,10 +1,13 @@
 import { AdSlot } from "@/components/ad-slot";
+import { AudienceBadge } from "@/components/audience-badge";
+import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
 import { JsonLd } from "@/components/json-ld";
 import {
   buildArticlePath,
   buildAuthorPath,
   getArticleBySlug,
-  listArticlesByCategory,
+  listSuggestedArticles,
+  listSuggestedCalculatorsForArticle,
 } from "@/lib/content";
 import {
   buildArticleJsonLd,
@@ -15,6 +18,7 @@ import {
 } from "@/lib/seo";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { adsConfig } from "@/lib/ads";
+import { getCommercialCta } from "@/lib/commercial-cta";
 import { organizationConfig } from "@/lib/site";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -61,12 +65,15 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
     notFound();
   }
 
-  const categoryArticles = article.relatedCategory?.id
-    ? await listArticlesByCategory({ categoryID: article.relatedCategory.id, limit: 6 })
-    : [];
-  const relatedArticles = (
-    article.relatedArticles.length > 0 ? article.relatedArticles : categoryArticles
-  ).filter((item) => item.slug && item.slug !== article.slug).slice(0, 4);
+  const [suggestedArticles, suggestedCalculators] = await Promise.all([
+    listSuggestedArticles({ article, limit: 4 }),
+    listSuggestedCalculatorsForArticle({ article, limit: 6 }),
+  ]);
+  const commercialCta = getCommercialCta({
+    categorySlug: article.relatedCategory?.slug,
+    audience: article.audience,
+    kind: "article",
+  });
 
   return (
     <div className="mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
@@ -117,6 +124,9 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
 
       <article className="paper-panel rounded-[2.4rem] p-6 sm:p-10">
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">{article.articleType}</p>
+        <div className="mt-3">
+          <AudienceBadge audience={article.audience} />
+        </div>
         <h1 className="mt-3 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">{article.title}</h1>
         <div className="mt-3 flex flex-wrap gap-3 text-sm text-slate-500">
           {article.publishedAt ? (
@@ -155,19 +165,23 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      {article.relatedCalculators.length > 0 ? (
+      {commercialCta ? (
+        <section className="mt-8">
+          <CommercialCtaPanel cta={commercialCta} />
+        </section>
+      ) : null}
+
+      {suggestedCalculators.length > 0 ? (
         <section className="paper-panel mt-8 rounded-[2rem] p-6">
           <h2 className="text-2xl font-black text-slate-900">Calculatoare utile din acelasi subiect</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Daca vrei sa aplici imediat informatia din articol, incepe cu unul dintre calculatoarele legate direct de subiect.</p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {article.relatedCalculators.map((calculator) => (
+            {suggestedCalculators.map((calculator) => (
               <Link
                 key={calculator.id}
-                href={
-                  article.relatedCategory?.slug && calculator.slug
-                    ? `/calculatoare/${article.relatedCategory.slug}/${calculator.slug}`
-                    : "/calculatoare"
-                }
+                href={calculator.category?.slug && calculator.slug
+                  ? `/calculatoare/${calculator.category.slug}/${calculator.slug}`
+                  : "/calculatoare"}
                 className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-emerald-400 hover:text-emerald-700"
               >
                 {calculator.title ?? calculator.slug}
@@ -177,18 +191,18 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      {relatedArticles.length > 0 ? (
+      {suggestedArticles.length > 0 ? (
         <section className="paper-panel mt-8 rounded-[2rem] p-6">
           <h2 className="text-2xl font-black text-slate-900">Articole conexe</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Continua cu ghiduri apropiate daca vrei sa aprofundezi sau sa compari mai multe perspective asupra aceluiasi subiect.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
-            {relatedArticles.map((related) => (
+            {suggestedArticles.map((related) => (
               <Link
                 key={related.id}
-                href={buildArticlePath(related.slug ?? "")}
+                href={buildArticlePath(related.slug)}
                 className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 transition-colors hover:border-emerald-300 hover:bg-emerald-50/60"
               >
-                <h3 className="text-base font-bold text-slate-950">{related.title ?? related.slug}</h3>
+                <h3 className="text-base font-bold text-slate-950">{related.title}</h3>
               </Link>
             ))}
           </div>

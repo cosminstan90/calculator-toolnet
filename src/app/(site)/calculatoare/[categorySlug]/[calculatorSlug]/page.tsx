@@ -1,5 +1,7 @@
 import { AdSlot } from "@/components/ad-slot";
+import { AudienceBadge } from "@/components/audience-badge";
 import { CalculatorCard } from "@/components/calculator-card";
+import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
 import { CalculatorRunner } from "@/components/calculator-runner";
 import { DecisionSupportPanel } from "@/components/decision-support-panel";
 import { EditorialBlocks } from "@/components/editorial-blocks";
@@ -19,6 +21,7 @@ import {
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
 import { adsConfig } from "@/lib/ads";
+import { getCommercialCta } from "@/lib/commercial-cta";
 import { buildDecisionSupport } from "@/lib/decision-support";
 import { recordNotFoundEvent } from "@/lib/routing";
 import { headers } from "next/headers";
@@ -89,6 +92,11 @@ export default async function CalculatorPage({ params }: { params: Params }) {
   const contextualCalculatorLinks = relatedCalculators.slice(0, 3);
   const contextualArticleLinks = suggestedArticles.filter((item) => item.slug);
   const decisionSupport = buildDecisionSupport(calculator);
+  const commercialCta = getCommercialCta({
+    categorySlug,
+    audience: calculator.audience,
+    kind: "calculator",
+  });
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
@@ -129,6 +137,9 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-emerald-300">
               {calculator.category?.name ?? "Calculator"}
             </p>
+            <div className="mt-4">
+              <AudienceBadge audience={calculator.audience} className="border-white/15 bg-white/10 text-white" />
+            </div>
             <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">{calculator.title}</h1>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">{calculator.intro}</p>
             {calculator.publishedAt || calculator.updatedAt ? (
@@ -173,6 +184,12 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       <section className="mt-10">
         <DecisionSupportPanel data={decisionSupport} />
       </section>
+
+      {commercialCta ? (
+        <section className="mt-10">
+          <CommercialCtaPanel cta={commercialCta} />
+        </section>
+      ) : null}
 
       <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Formula explicata</p>

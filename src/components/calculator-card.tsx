@@ -1,10 +1,11 @@
+import { AudienceBadge } from "@/components/audience-badge";
 import type { CalculatorDoc } from "@/lib/content";
 import { buildCalculatorPath } from "@/lib/content";
 import Link from "next/link";
 
 type CalculatorCardDoc = Pick<
   CalculatorDoc,
-  "id" | "title" | "slug" | "shortDescription" | "category"
+  "id" | "title" | "slug" | "shortDescription" | "category" | "audience"
 >;
 
 type CalculatorCardProps = {
@@ -21,6 +22,9 @@ export const CalculatorCard = ({ calculator }: CalculatorCardProps) => {
       <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
         {calculator.category?.name ?? "Calculator"}
       </p>
+      <div className="mt-3">
+        <AudienceBadge audience={calculator.audience} />
+      </div>
       <h3 className="mt-3 text-[1.8rem] font-black leading-tight text-slate-950">{calculator.title}</h3>
       <p className="mt-4 text-sm leading-7 text-slate-700">{calculator.shortDescription}</p>
       <div className="mt-8 flex items-center justify-between border-t border-slate-300/70 pt-4 text-sm font-semibold text-emerald-700">
