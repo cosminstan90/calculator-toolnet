@@ -9,6 +9,8 @@ type RelationDoc = {
   profileSlug?: string;
 };
 
+export type Audience = "consumer" | "business" | "both";
+
 export type PublicAuthor = {
   id: string;
   name: string;
@@ -108,6 +110,7 @@ export type CalculatorDoc = {
   howToSteps: string[];
   examples: Array<{ title: string; narrative: string }>;
   faq: Array<{ question: string; answer: string }>;
+  audience: Audience;
   category?: RelationDoc;
   relatedCalculators: RelationDoc[];
   relatedArticles: RelationDoc[];
@@ -124,6 +127,7 @@ export type Article = {
   excerpt: string;
   content: string;
   articleType: string;
+  audience: Audience;
   launchWave?: string;
   coverImageURL?: string;
   publishedAt?: string;
@@ -147,6 +151,14 @@ const asString = (value: unknown): string | undefined => {
 
 const asStringOrEmpty = (value: unknown): string => {
   return asString(value) ?? "";
+};
+
+const asAudience = (value: unknown): Audience => {
+  if (value === "consumer" || value === "business") {
+    return value;
+  }
+
+  return "both";
 };
 
 const mapSEO = (doc: RawDoc): SeoData | undefined => {
@@ -390,6 +402,7 @@ const mapCalculator = (doc: RawDoc): CalculatorDoc => ({
         };
       })
     : [],
+  audience: asAudience(doc.audience),
   category: mapRelation(doc.category),
   relatedCalculators: Array.isArray(doc.relatedCalculators)
     ? doc.relatedCalculators
@@ -412,6 +425,7 @@ const mapArticle = (doc: RawDoc): Article => ({
   excerpt: asStringOrEmpty(doc.excerpt),
   content: asStringOrEmpty(doc.content),
   articleType: asString(doc.articleType) ?? "guide",
+  audience: asAudience(doc.audience),
   launchWave: asString(doc.launchWave),
   coverImageURL: asString(doc.coverImageURL),
   publishedAt: asString(doc.publishedAt),
@@ -485,6 +499,10 @@ export const buildCalculatorPath = (calculator: { category?: RelationDoc; slug: 
 export const buildArticlePath = (articleSlug: string) => `/blog/${articleSlug}`;
 export const buildAuthorPath = (author: Pick<PublicAuthor, "profileSlug">) =>
   `/autori/${author.profileSlug}`;
+
+const buildAudienceWhere = (audience: Exclude<Audience, "both">): Where => ({
+  or: [{ audience: { equals: audience } }, { audience: { equals: "both" } }],
+});
 
 export const getHomepageContent = async (): Promise<HomepageContent | null> => {
   return safeRun(async () => {
@@ -564,6 +582,24 @@ export const listCalculatorsByCategory = async (
       limit,
       sort: "sortOrder",
       where: { category: { equals: categoryID } },
+    });
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  }, []);
+};
+
+export const listCalculatorsByAudience = async (
+  audience: Exclude<Audience, "both">,
+  limit = 24
+): Promise<CalculatorDoc[]> => {
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: 2,
+      limit,
+      sort: "sortOrder",
+      where: buildAudienceWhere(audience),
     });
     return result.docs.map((doc) => mapCalculator(doc as RawDoc));
   }, []);
@@ -695,6 +731,24 @@ export const listArticlesByCategory = async (args: {
       limit: args.limit ?? 8,
       sort: "-publishedAt",
       where: whereAnd.length > 0 ? { and: whereAnd } : undefined,
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  }, []);
+};
+
+export const listArticlesByAudience = async (args: {
+  audience: Exclude<Audience, "both">;
+  limit?: number;
+}): Promise<Article[]> => {
+  return safeRun(async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 2,
+      limit: args.limit ?? 8,
+      sort: "-publishedAt",
+      where: buildAudienceWhere(args.audience),
     });
     return attachAuthorsToArticles(result.docs as RawDoc[]);
   }, []);

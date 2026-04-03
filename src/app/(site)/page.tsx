@@ -134,6 +134,44 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <section className="mt-16 grid gap-4 lg:grid-cols-2">
+          <Link
+            href="/pentru-persoane"
+            className="group rounded-[2rem] border border-slate-300/70 bg-[linear-gradient(180deg,rgba(255,252,247,0.96)_0%,rgba(248,243,235,0.84)_100%)] p-6 text-slate-950 shadow-[0_22px_80px_-55px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-1 hover:border-emerald-300"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+              Pentru persoane
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight">
+              Fitness, auto, utilitati si finante personale intr-un singur traseu clar.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-700">
+              Incepi de la intrebarea practica, alegi calculatorul potrivit si continui cu ghidul care te ajuta sa folosesti corect rezultatul.
+            </p>
+            <p className="mt-6 text-sm font-semibold text-emerald-700 transition-transform duration-300 group-hover:translate-x-1">
+              Deschide hub-ul pentru persoane
+            </p>
+          </Link>
+
+          <Link
+            href="/pentru-firme"
+            className="group rounded-[2rem] border border-slate-950/10 bg-slate-950 p-6 text-white shadow-[0_22px_80px_-55px_rgba(15,23,42,0.7)] transition duration-300 hover:-translate-y-1 hover:border-amber-300/40"
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-200/80">
+              Pentru firme
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight">
+              Marje, TVA, costuri si decizii operationale explicate pentru context comercial.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
+              Hub-ul pentru firme leaga calculatoarele de ghiduri utile pentru preturi, rentabilitate, taxare, lucrari si estimari rapide.
+            </p>
+            <p className="mt-6 text-sm font-semibold text-amber-200 transition-transform duration-300 group-hover:translate-x-1">
+              Deschide hub-ul pentru firme
+            </p>
+          </Link>
+        </section>
+
         <section className="mt-24 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
             <p className="section-kicker">Calculatoare populare</p>

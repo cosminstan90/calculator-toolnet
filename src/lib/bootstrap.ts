@@ -40,6 +40,7 @@ type EditorialStatus =
   | "approved"
   | "scheduled"
   | "published";
+type Audience = "consumer" | "business" | "both";
 type PublishingSlot = "none" | "morning" | "evening";
 type PublishingScheduleSeed = {
   slot: PublishingSlot;
@@ -79,6 +80,7 @@ type CalculatorMeta = {
   sortOrder: number;
   releaseBatch?: ReleaseBatch;
   editorialStatus?: EditorialStatus;
+  audience?: Audience;
   publishByDefault?: boolean;
   publishingSchedule?: PublishingScheduleSeed;
   example: string;
@@ -99,6 +101,7 @@ type ArticleSeed = {
   launchWave?: "wave-1" | "wave-2" | "backlog";
   releaseBatch?: ReleaseBatch;
   editorialStatus?: EditorialStatus;
+  audience?: Audience;
   publishByDefault?: boolean;
   publishingSchedule?: PublishingScheduleSeed;
 };
@@ -259,6 +262,21 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
 
+const defaultAudienceForCategory = (categorySlug: string): Audience => {
+  if (categorySlug === "business") {
+    return "business";
+  }
+
+  if (categorySlug === "fitness" || categorySlug === "auto" || categorySlug === "conversii") {
+    return "consumer";
+  }
+
+  return "both";
+};
+
+const defaultAudienceForCalculator = (key: CalculatorKey): Audience =>
+  defaultAudienceForCategory(getCalculatorDefinition(key).categorySlug);
+
 const shouldPublishCalculator = (key: CalculatorKey, meta: CalculatorMeta) =>
   meta.publishByDefault === true || BATCH_01_CALCULATORS.includes(key);
 
@@ -292,6 +310,9 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
 
 const defaultEditorialStatusForArticle = (seed: ArticleSeed): EditorialStatus =>
   BATCH_01_ARTICLES.includes(seed.slug) ? "approved" : "draft";
+
+const defaultAudienceForArticle = (seed: ArticleSeed): Audience =>
+  seed.relatedCategorySlug ? defaultAudienceForCategory(seed.relatedCategorySlug) : "both";
 
 const calculatorDraftQueue = [
   ...BATCH_02_CALCULATORS,
@@ -493,6 +514,7 @@ const buildFallbackCalculatorMeta = (
     sortOrder: 200 + CALCULATOR_KEYS.indexOf(key),
     releaseBatch: defaultReleaseBatchForCalculator(key),
     editorialStatus: defaultEditorialStatusForCalculator(key),
+    audience: defaultAudienceForCalculator(key),
     publishByDefault: BATCH_01_CALCULATORS.includes(key),
     example: `Exemplu orientativ pentru ${definition.title.toLowerCase()}, pornind de la valorile standard afisate in formular si ajustat apoi dupa scenariul tau real.`,
     faq: [
@@ -1861,6 +1883,7 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       howToSteps: definition.howToSteps.map((step) => ({ step })),
       isFeatured: meta.isFeatured,
       sortOrder: meta.sortOrder,
+      audience: meta.audience ?? defaultAudienceForCalculator(key),
       releaseBatch: meta.releaseBatch ?? defaultReleaseBatchForCalculator(key),
       publishingSchedule:
         meta.publishingSchedule ?? defaultPublishingScheduleForCalculator(key, meta),
@@ -1954,6 +1977,7 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
       excerpt: seed.excerpt,
       content: seed.content,
       articleType: seed.articleType,
+      audience: seed.audience ?? defaultAudienceForArticle(seed),
       relatedCategory: seed.relatedCategorySlug ? categoryMap.get(seed.relatedCategorySlug) : undefined,
       relatedCalculators: (seed.relatedCalculatorKeys ?? []).map((item) => calculatorMap.get(item)).filter(Boolean),
       launchWave: seed.launchWave ?? "backlog",

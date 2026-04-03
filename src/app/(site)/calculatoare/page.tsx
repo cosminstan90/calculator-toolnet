@@ -15,6 +15,7 @@ import {
   buildMetadata,
 } from "@/lib/seo";
 import { adsConfig } from "@/lib/ads";
+import Link from "next/link";
 
 export const revalidate = 900;
 
@@ -117,6 +118,38 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
             <CategoryCard key={category.id} category={category} />
           ))}
         </div>
+      </section>
+
+      <section className="mt-14 grid gap-4 lg:grid-cols-2">
+        <Link
+          href="/pentru-persoane"
+          className="group rounded-[2rem] border border-slate-300/70 bg-[linear-gradient(180deg,rgba(255,252,247,0.96)_0%,rgba(248,243,235,0.84)_100%)] p-6 text-slate-950 shadow-[0_22px_80px_-55px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-1 hover:border-emerald-300"
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+            Ruta rapida pentru persoane
+          </p>
+          <h2 className="mt-3 text-3xl font-black leading-tight">
+            Mergi direct spre calcule pentru sanatate, auto, facturi si finante personale.
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-slate-700">
+            Daca vrei un traseu mai simplu decat indexul complet, hub-ul pentru persoane grupeaza cele mai utile pagini pentru deciziile de zi cu zi.
+          </p>
+        </Link>
+
+        <Link
+          href="/pentru-firme"
+          className="group rounded-[2rem] border border-slate-950/10 bg-slate-950 p-6 text-white shadow-[0_22px_80px_-55px_rgba(15,23,42,0.7)] transition duration-300 hover:-translate-y-1 hover:border-amber-300/40"
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-200/80">
+            Ruta rapida pentru firme
+          </p>
+          <h2 className="mt-3 text-3xl font-black leading-tight">
+            Intra direct in calculatoare pentru marje, costuri, TVA si operare.
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-slate-300">
+            Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru business, finante si constructii.
+          </p>
+        </Link>
       </section>
 
       <section className="mt-14">

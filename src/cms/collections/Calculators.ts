@@ -105,6 +105,7 @@ export const Calculators: CollectionConfig = {
       "title",
       "calculatorKey",
       "category",
+      "audience",
       "releaseBatch",
       "publishingSchedule.slot",
       "editorialCompletion",
@@ -143,6 +144,22 @@ export const Calculators: CollectionConfig = {
       type: "relationship",
       relationTo: "calculator-categories",
       required: true,
+    },
+    {
+      name: "audience",
+      type: "select",
+      required: true,
+      defaultValue: "both",
+      index: true,
+      admin: {
+        description:
+          "Arata daca pagina este gandita in primul rand pentru persoane, firme sau pentru ambele audiente.",
+      },
+      options: [
+        { label: "Pentru persoane", value: "consumer" },
+        { label: "Pentru firme", value: "business" },
+        { label: "Pentru ambele", value: "both" },
+      ],
     },
     {
       name: "releaseBatch",

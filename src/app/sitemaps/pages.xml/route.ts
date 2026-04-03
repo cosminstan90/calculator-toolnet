@@ -6,6 +6,8 @@ export async function GET() {
   const nodes = [
     asURLNode("/"),
     asURLNode("/calculatoare"),
+    asURLNode("/pentru-persoane"),
+    asURLNode("/pentru-firme"),
     asURLNode("/blog"),
     asURLNode("/despre-noi"),
     asURLNode("/echipa-editoriala"),

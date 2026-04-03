@@ -84,6 +84,7 @@ export const Articles: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: [
       "title",
+      "audience",
       "releaseBatch",
       "publishingSchedule.slot",
       "editorialCompletion",
@@ -126,6 +127,22 @@ export const Articles: CollectionConfig = {
       name: "relatedCategory",
       type: "relationship",
       relationTo: "calculator-categories",
+    },
+    {
+      name: "audience",
+      type: "select",
+      required: true,
+      defaultValue: "both",
+      index: true,
+      admin: {
+        description:
+          "Ajuta la separarea ghidurilor pentru persoane de cele pentru firme si la construirea hub-urilor tematice.",
+      },
+      options: [
+        { label: "Pentru persoane", value: "consumer" },
+        { label: "Pentru firme", value: "business" },
+        { label: "Pentru ambele", value: "both" },
+      ],
     },
     {
       name: "relatedCalculators",
