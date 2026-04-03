@@ -8,13 +8,38 @@ export type CommercialCta = {
   disclaimer?: string;
 };
 
-const affiliateConfig = {
-  finante: process.env.NEXT_PUBLIC_AFFILIATE_FINANCE_URL ?? "",
-  business: process.env.NEXT_PUBLIC_AFFILIATE_BUSINESS_URL ?? "",
-  energie: process.env.NEXT_PUBLIC_AFFILIATE_ENERGY_URL ?? "",
-  auto: process.env.NEXT_PUBLIC_AFFILIATE_AUTO_URL ?? "",
-  constructii: process.env.NEXT_PUBLIC_AFFILIATE_CONSTRUCTION_URL ?? "",
+type OfferKey = "finance" | "business" | "energy" | "auto" | "construction";
+
+const affiliateDestinations: Record<OfferKey, string> = {
+  finance:
+    process.env.AFFILIATE_FINANCE_URL ??
+    process.env.NEXT_PUBLIC_AFFILIATE_FINANCE_URL ??
+    "",
+  business:
+    process.env.AFFILIATE_BUSINESS_URL ??
+    process.env.NEXT_PUBLIC_AFFILIATE_BUSINESS_URL ??
+    "",
+  energy:
+    process.env.AFFILIATE_ENERGY_URL ??
+    process.env.NEXT_PUBLIC_AFFILIATE_ENERGY_URL ??
+    "",
+  auto:
+    process.env.AFFILIATE_AUTO_URL ??
+    process.env.NEXT_PUBLIC_AFFILIATE_AUTO_URL ??
+    "",
+  construction:
+    process.env.AFFILIATE_CONSTRUCTION_URL ??
+    process.env.NEXT_PUBLIC_AFFILIATE_CONSTRUCTION_URL ??
+    "",
 } as const;
+
+const categoryOfferMap: Partial<Record<string, OfferKey>> = {
+  finante: "finance",
+  business: "business",
+  energie: "energy",
+  auto: "auto",
+  constructii: "construction",
+};
 
 const audienceLabel = (audience: Audience) => {
   if (audience === "consumer") {
@@ -28,22 +53,55 @@ const audienceLabel = (audience: Audience) => {
   return "pentru persoane si firme";
 };
 
+export const getAffiliateDestination = (offerKey: string) => {
+  if (!(offerKey in affiliateDestinations)) {
+    return "";
+  }
+
+  return affiliateDestinations[offerKey as OfferKey];
+};
+
+const buildTrackingHref = (args: {
+  offerKey: OfferKey;
+  sourcePath: string;
+  sourceType: "calculator" | "article";
+  audience: Audience;
+  categorySlug?: string;
+}) => {
+  const params = new URLSearchParams({
+    source: args.sourcePath,
+    kind: args.sourceType,
+    audience: args.audience,
+  });
+
+  if (args.categorySlug) {
+    params.set("category", args.categorySlug);
+  }
+
+  return `/go/${args.offerKey}?${params.toString()}`;
+};
+
 export const getCommercialCta = (args: {
   categorySlug?: string;
   audience: Audience;
   kind: "calculator" | "article";
+  sourcePath: string;
 }): CommercialCta | null => {
-  const categorySlug = args.categorySlug ?? "";
-  const href =
-    categorySlug in affiliateConfig
-      ? affiliateConfig[categorySlug as keyof typeof affiliateConfig]
-      : "";
+  const offerKey = args.categorySlug ? categoryOfferMap[args.categorySlug] : undefined;
 
-  if (!href) {
+  if (!offerKey || !getAffiliateDestination(offerKey)) {
     return null;
   }
 
-  if (categorySlug === "finante") {
+  const href = buildTrackingHref({
+    offerKey,
+    sourcePath: args.sourcePath,
+    sourceType: args.kind,
+    audience: args.audience,
+    categorySlug: args.categorySlug,
+  });
+
+  if (offerKey === "finance") {
     return {
       label: "Vezi oferta recomandata",
       href,
@@ -57,7 +115,7 @@ export const getCommercialCta = (args: {
     };
   }
 
-  if (categorySlug === "business") {
+  if (offerKey === "business") {
     return {
       label: "Vezi solutia recomandata",
       href,
@@ -69,7 +127,7 @@ export const getCommercialCta = (args: {
     };
   }
 
-  if (categorySlug === "energie") {
+  if (offerKey === "energy") {
     return {
       label: "Compara optiunile",
       href,
@@ -81,7 +139,7 @@ export const getCommercialCta = (args: {
     };
   }
 
-  if (categorySlug === "auto") {
+  if (offerKey === "auto") {
     return {
       label: "Vezi recomandarea",
       href,
@@ -93,17 +151,13 @@ export const getCommercialCta = (args: {
     };
   }
 
-  if (categorySlug === "constructii") {
-    return {
-      label: "Vezi ofertele utile",
-      href,
-      title: "Daca vrei sa mergi de la estimare la achizitie",
-      body:
-        "Dupa ce ai o estimare de materiale sau cost, poate fi util sa compari si produse sau servicii concrete legate de lucrarea ta.",
-      disclaimer:
-        "Linkul poate fi afiliat. Verifica acoperirea, consumul real si conditiile de livrare inainte de comanda.",
-    };
-  }
-
-  return null;
+  return {
+    label: "Vezi ofertele utile",
+    href,
+    title: "Daca vrei sa mergi de la estimare la achizitie",
+    body:
+      "Dupa ce ai o estimare de materiale sau cost, poate fi util sa compari si produse sau servicii concrete legate de lucrarea ta.",
+    disclaimer:
+      "Linkul poate fi afiliat. Verifica acoperirea, consumul real si conditiile de livrare inainte de comanda.",
+  };
 };

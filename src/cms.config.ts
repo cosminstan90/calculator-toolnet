@@ -5,6 +5,7 @@ import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 
 import { Articles } from "./cms/collections/Articles.ts";
+import { AffiliateClickEvents } from "./cms/collections/AffiliateClickEvents.ts";
 import { CalculatorCategories } from "./cms/collections/CalculatorCategories.ts";
 import { Calculators } from "./cms/collections/Calculators.ts";
 import { FormulaLibrary } from "./cms/collections/FormulaLibrary.ts";
@@ -68,6 +69,7 @@ export default buildConfig({
     FormulaLibrary,
     Calculators,
     Articles,
+    AffiliateClickEvents,
     Redirects,
     NotFoundEvents,
   ],

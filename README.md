@@ -72,6 +72,18 @@ Platforma SSR/ISR pentru calculatoare online si continut explicativ SEO-first, c
 
 Cand toggle-ul este pe `OFF`, scriptul AdSense nu se mai injecteaza si sloturile nu se randaza.
 
+## Affiliate si click tracking
+
+- CTA-urile comerciale apar doar pe paginile cu categorie potrivita si doar daca exista URL configurat
+- URL-uri suportate:
+  - `AFFILIATE_FINANCE_URL`
+  - `AFFILIATE_BUSINESS_URL`
+  - `AFFILIATE_ENERGY_URL`
+  - `AFFILIATE_AUTO_URL`
+  - `AFFILIATE_CONSTRUCTION_URL`
+- click-urile trec prin ruta interna `/go/{offer}` si sunt logate in colectia `affiliate-click-events`
+- ruta `/go` este marcata `noindex, nofollow` si este blocata in `robots.txt`
+
 ## Comenzi utile
 
 ```bash

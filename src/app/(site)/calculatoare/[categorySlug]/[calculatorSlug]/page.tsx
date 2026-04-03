@@ -96,6 +96,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
     categorySlug,
     audience: calculator.audience,
     kind: "calculator",
+    sourcePath: `/calculatoare/${categorySlug}/${calculator.slug}`,
   });
 
   return (

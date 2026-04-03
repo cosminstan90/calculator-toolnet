@@ -42,7 +42,10 @@ export const AudienceHub = ({
   articles,
 }: AudienceHubProps) => {
   const spotlightCalculator = calculators[0];
-  const supportCalculators = calculators.slice(1, 7);
+  const popularCalculators = calculators.slice(0, 4);
+  const intentCalculators = calculators.slice(4, 8);
+  const featuredArticles = articles.slice(0, 4);
+  const deepDiveArticles = articles.slice(4, 6);
   const jsonLd = [
     buildCollectionJsonLd({
       name: title,
@@ -136,7 +139,7 @@ export const AudienceHub = ({
       {spotlightCalculator ? (
         <section className="mt-20 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div>
-            <p className="section-kicker">Start recomandat</p>
+            <p className="section-kicker">Popular acum</p>
             <h2 className="mt-4 section-title">Calculatorul care te pune rapid pe directia buna.</h2>
             <p className="mt-5 section-copy max-w-md">
               Am ales un punct de intrare puternic pentru acest hub, apoi l-am completat cu pagini care merg natural mai departe in aceeasi decizie.
@@ -144,7 +147,24 @@ export const AudienceHub = ({
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <CalculatorCard calculator={spotlightCalculator} />
-            {supportCalculators.map((calculator) => (
+            {popularCalculators.slice(1).map((calculator) => (
+              <CalculatorCard key={calculator.id} calculator={calculator} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {intentCalculators.length > 0 ? (
+        <section className="mt-16 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+          <div>
+            <p className="section-kicker">High intent</p>
+            <h2 className="mt-4 section-title">Pagini bune pentru decizii cu impact direct in cost, timp sau rezultat.</h2>
+            <p className="mt-5 section-copy max-w-md">
+              Aici grupam tool-urile care au sanse mai mari sa duca spre o comparatie, o achizitie sau o alegere practica imediata.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {intentCalculators.map((calculator) => (
               <CalculatorCard key={calculator.id} calculator={calculator} />
             ))}
           </div>
@@ -170,11 +190,19 @@ export const AudienceHub = ({
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {articles.map((article) => (
+          {featuredArticles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       </section>
+
+      {deepDiveArticles.length > 0 ? (
+        <section className="mt-16 grid gap-4 md:grid-cols-2">
+          {deepDiveArticles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+        </section>
+      ) : null}
 
       <section className="paper-panel mt-24 rounded-[2.4rem] px-6 py-8 sm:px-8 sm:py-10">
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">

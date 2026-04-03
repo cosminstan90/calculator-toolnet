@@ -73,6 +73,7 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
     categorySlug: article.relatedCategory?.slug,
     audience: article.audience,
     kind: "article",
+    sourcePath: `/blog/${article.slug}`,
   });
 
   return (
