@@ -9,6 +9,7 @@ type SearchParams = Promise<{
 }>;
 
 const configPromise = Promise.resolve(config);
+const dashboardParams = Promise.resolve({}) as Promise<{ segments: string[] }>;
 
 export const generateMetadata = async ({
   searchParams,
@@ -17,9 +18,7 @@ export const generateMetadata = async ({
 }) => {
   return generatePageMetadata({
     config: configPromise,
-    params: Promise.resolve({
-      segments: [],
-    }),
+    params: dashboardParams,
     searchParams,
   });
 };
@@ -32,9 +31,7 @@ export default function PayloadAdminIndexPage({
   return RootPage({
     config: configPromise,
     importMap,
-    params: Promise.resolve({
-      segments: [],
-    }),
+    params: dashboardParams,
     searchParams,
   });
 }
