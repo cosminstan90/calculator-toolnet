@@ -799,50 +799,99 @@ async function DashboardHomeInner(
             </p>
             <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
               {data.topAffiliateSources.length > 0 ? (
-                data.topAffiliateSources.map((item) => (
-                  <div
-                    key={item.sourcePath}
-                    style={{
-                      background: "#f8fafc",
-                      border: "1px solid #e2e8f0",
-                      borderRadius: "14px",
-                      padding: "0.85rem 0.95rem",
-                    }}
-                  >
-                    <strong
+                <>
+                  {data.topAffiliateSources.map((item) => (
+                    <div
+                      key={item.sourcePath}
                       style={{
-                        color: "#0f172a",
-                        display: "block",
-                        fontSize: "0.93rem",
-                        wordBreak: "break-all",
+                        background: "#f8fafc",
+                        border: "1px solid #e2e8f0",
+                        borderRadius: "14px",
+                        padding: "0.85rem 0.95rem",
                       }}
                     >
-                      {item.sourcePath}
-                    </strong>
-                    <span
-                      style={{
-                        color: "#475569",
-                        display: "block",
-                        fontSize: "0.84rem",
-                        marginTop: "0.3rem",
-                      }}
-                    >
-                      {item.clicks} click-uri | {item.sourceType ?? "necunoscut"}
-                    </span>
-                    {item.offerKeys.length > 0 ? (
-                      <span
+                      <strong
                         style={{
-                          color: "#1d4ed8",
+                          color: "#0f172a",
                           display: "block",
-                          fontSize: "0.84rem",
-                          marginTop: "0.35rem",
+                          fontSize: "0.93rem",
+                          wordBreak: "break-all",
                         }}
                       >
-                        Oferte: {item.offerKeys.join(", ")}
+                        {item.sourcePath}
+                      </strong>
+                      <span
+                        style={{
+                          color: "#475569",
+                          display: "block",
+                          fontSize: "0.84rem",
+                          marginTop: "0.3rem",
+                        }}
+                      >
+                        {item.clicks} click-uri | {item.sourceType ?? "necunoscut"}
                       </span>
-                    ) : null}
+                      {item.offerKeys.length > 0 ? (
+                        <span
+                          style={{
+                            color: "#1d4ed8",
+                            display: "block",
+                            fontSize: "0.84rem",
+                            marginTop: "0.35rem",
+                          }}
+                        >
+                          Oferte: {item.offerKeys.join(", ")}
+                        </span>
+                      ) : null}
+                    </div>
+                  ))}
+
+                  <div
+                    style={{
+                      background: "#eff6ff",
+                      border: "1px solid #bfdbfe",
+                      borderRadius: "14px",
+                      padding: "0.9rem 0.95rem",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "#1d4ed8",
+                        fontSize: "0.82rem",
+                        fontWeight: 700,
+                        margin: 0,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Top categorii comerciale
+                    </p>
+                    <div style={{ display: "grid", gap: "0.5rem", marginTop: "0.7rem" }}>
+                      {data.topAffiliateCategories.length > 0 ? (
+                        data.topAffiliateCategories.map((item) => (
+                          <div
+                            key={item.categorySlug}
+                            style={{
+                              alignItems: "center",
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <span style={{ color: "#1e3a8a", fontSize: "0.88rem" }}>
+                              {item.categorySlug}
+                              {item.audiences.length > 0
+                                ? ` | ${item.audiences.join(", ")}`
+                                : ""}
+                            </span>
+                            <strong style={{ color: "#0f172a" }}>{item.clicks}</strong>
+                          </div>
+                        ))
+                      ) : (
+                        <span style={{ color: "#475569", fontSize: "0.86rem" }}>
+                          Inca nu exista suficiente date pe categorii.
+                        </span>
+                      )}
+                    </div>
                   </div>
-                ))
+                </>
               ) : (
                 <p
                   style={{

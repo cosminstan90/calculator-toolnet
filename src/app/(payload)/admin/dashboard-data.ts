@@ -48,6 +48,11 @@ export type DashboardData = {
     sourceType?: string;
     offerKeys: string[];
   }>;
+  topAffiliateCategories: Array<{
+    categorySlug: string;
+    clicks: number;
+    audiences: string[];
+  }>;
   readyToPublish: DraftInsight[];
   blockedDrafts: DraftInsight[];
   blockerSummary: Array<{
@@ -447,6 +452,42 @@ export const loadDashboardData = async (
     .sort((left, right) => right.clicks - left.clicks)
     .slice(0, 5);
 
+  const affiliateCategoriesMap = new Map<
+    string,
+    { clicks: number; audiences: Set<string> }
+  >();
+
+  for (const doc of affiliateResult.docs as CollectionDoc[]) {
+    const categorySlug = asString(doc.categorySlug);
+    if (!categorySlug) {
+      continue;
+    }
+
+    const current =
+      affiliateCategoriesMap.get(categorySlug) ??
+      {
+        clicks: 0,
+        audiences: new Set<string>(),
+      };
+
+    current.clicks += 1;
+    const audience = asString(doc.audience);
+    if (audience) {
+      current.audiences.add(audience);
+    }
+
+    affiliateCategoriesMap.set(categorySlug, current);
+  }
+
+  const topAffiliateCategories = Array.from(affiliateCategoriesMap.entries())
+    .map(([categorySlug, value]) => ({
+      categorySlug,
+      clicks: value.clicks,
+      audiences: Array.from(value.audiences).sort(),
+    }))
+    .sort((left, right) => right.clicks - left.clicks)
+    .slice(0, 5);
+
   const draftInsights = sortDraftInsights([
     ...(draftArticlesResult.docs as CollectionDoc[]).map((doc) =>
       buildDraftInsight(adminRoute, "articles", doc, now),
@@ -533,6 +574,7 @@ export const loadDashboardData = async (
     })),
     affiliateSummary,
     topAffiliateSources,
+    topAffiliateCategories,
     readyToPublish,
     blockedDrafts,
     blockerSummary,
