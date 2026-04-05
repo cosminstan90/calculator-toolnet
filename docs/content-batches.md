@@ -312,6 +312,74 @@ Obiective:
 - acoperim consumul casnic, fotovoltaicele si autonomia energetica intr-un singur ecosistem
 - pregatim o categorie foarte buna pentru decizii consumer, ads si afiliere
 
+## Batch 10
+
+Primul lot pentru `imobiliare`, cu focus pe achizitie, buget total, chirie versus cumparare si presiunea reala a locuintei asupra bugetului.
+
+Calculatoare:
+
+1. `price-per-sqm`
+2. `property-down-payment`
+3. `property-total-purchase-cost`
+4. `rent-vs-buy`
+5. `renovation-budget`
+6. `furniture-budget`
+7. `monthly-home-budget`
+8. `price-negotiation`
+9. `space-per-person`
+10. `mortgage-buffer`
+
+Articole suport:
+
+1. `cum-citesti-pretul-pe-mp-fara-sa-cazi-in-comparatii-false`
+2. `ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte`
+3. `chirie-vs-cumparare-cum-compari-corect-doua-scenarii`
+4. `cum-estimezi-un-buget-de-renovare-fara-optimism-periculos`
+5. `cum-planifici-bugetul-de-mobilare-si-electrocasnice`
+6. `cat-iti-mananca-locuinta-din-bugetul-lunar`
+7. `cand-negocierea-pretului-schimba-cu-adevarat-afacerea`
+8. `cat-spatiu-iti-trebuie-de-fapt-in-functie-de-familie-si-folosinta`
+
+Obiective:
+
+- deschidem verticala `imobiliare` ca hub real de decizie, nu doar ca subset de finante
+- legam achizitia de buget total, costuri recurente, negocieri si scenarii de locuire
+- pregatim o categorie foarte buna pentru SEO si pentru monetizare viitoare in jurul finantarii
+
+## Batch 11
+
+Al doilea lot pentru `imobiliare`, cu focus pe randament, ocupare, costuri de exploatare si scenarii investitionale mici.
+
+Calculatoare:
+
+1. `rental-yield`
+2. `cash-on-cash-return`
+3. `vacancy-loss`
+4. `rent-increase`
+5. `property-flip-margin`
+6. `property-management-fee`
+7. `closing-cost-share`
+8. `room-rental-income`
+9. `service-charge-budget`
+10. `rental-break-even-occupancy`
+
+Articole suport:
+
+1. `cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse`
+2. `cash-on-cash-return-explicat-pentru-investitii-imobiliare`
+3. `cum-estimezi-pierderile-din-vacanta-la-o-proprietate-de-inchiriat`
+4. `cum-proiectezi-cresterea-chiriei-fara-sa-fortezi-ipotezele`
+5. `ce-marja-ramane-intr-un-flip-imobiliar-dupa-costurile-reale`
+6. `cat-te-costa-administrarea-unei-proprietati-inchiriate`
+7. `cum-citesti-ponderea-costurilor-de-inchidere-intr-o-achizitie`
+8. `inchiriere-integrala-vs-pe-camera-cum-compari-venitul`
+
+Obiective:
+
+- transformam verticala intr-un cluster complet pentru locuire si investitii imobiliare mici
+- legam randamentul de vacanta, administrare si costurile recurente reale
+- pregatim categoria pentru future affiliate si pagini de comparatie cu intentie comerciala mare
+
 ## Regula de operare
 
 - `releaseBatch` marcheaza lotul editorial

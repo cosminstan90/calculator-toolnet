@@ -116,6 +116,16 @@ const categoryPlaybooks: Record<
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
   },
+  imobiliare: {
+    audience:
+      "Pentru persoane, familii si investitori mici care compara pretul pe mp, costul total, chiria, randamentul si costurile recurente ale unei proprietati.",
+    scenarios: [
+      "Porneste cu intrebarea principala: pret pe mp, buget total de achizitie, chirie versus cumparare sau randament din chirie.",
+      "Separa costurile initiale de cele recurente ca sa nu amesteci avansul, renovarea si mobilarea cu presiunea lunara asupra bugetului.",
+      "Daca decizia are componenta investitionala, leaga randamentul de vacanta, administrare si costurile recurente reale.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
 };
 
 export async function generateMetadata({ params }: { params: Params }) {

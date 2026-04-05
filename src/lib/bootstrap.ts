@@ -258,6 +258,32 @@ const BATCH_09_CALCULATORS: CalculatorKey[] = [
   "solar-co2-savings",
 ];
 
+const BATCH_10_CALCULATORS: CalculatorKey[] = [
+  "price-per-sqm",
+  "property-down-payment",
+  "property-total-purchase-cost",
+  "rent-vs-buy",
+  "renovation-budget",
+  "furniture-budget",
+  "monthly-home-budget",
+  "price-negotiation",
+  "space-per-person",
+  "mortgage-buffer",
+];
+
+const BATCH_11_CALCULATORS: CalculatorKey[] = [
+  "rental-yield",
+  "cash-on-cash-return",
+  "vacancy-loss",
+  "rent-increase",
+  "property-flip-margin",
+  "property-management-fee",
+  "closing-cost-share",
+  "room-rental-income",
+  "service-charge-budget",
+  "rental-break-even-occupancy",
+];
+
 const BATCH_04_ARTICLES = [
   "cum-calculezi-procentele-corect",
   "procent-din-numar-vs-diferenta-procentuala",
@@ -319,6 +345,28 @@ const BATCH_09_ARTICLES = [
   "cat-co2-poti-evita-cu-un-sistem-fotovoltaic",
 ];
 
+const BATCH_10_ARTICLES = [
+  "cum-citesti-pretul-pe-mp-fara-sa-cazi-in-comparatii-false",
+  "ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte",
+  "chirie-vs-cumparare-cum-compari-corect-doua-scenarii",
+  "cum-estimezi-un-buget-de-renovare-fara-optimism-periculos",
+  "cum-planifici-bugetul-de-mobilare-si-electrocasnice",
+  "cat-iti-mananca-locuinta-din-bugetul-lunar",
+  "cand-negocierea-pretului-schimba-cu-adevarat-afacerea",
+  "cat-spatiu-iti-trebuie-de-fapt-in-functie-de-familie-si-folosinta",
+];
+
+const BATCH_11_ARTICLES = [
+  "cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse",
+  "cash-on-cash-return-explicat-pentru-investitii-imobiliare",
+  "cum-estimezi-pierderile-din-vacanta-la-o-proprietate-de-inchiriat",
+  "cum-proiectezi-cresterea-chiriei-fara-sa-fortezi-ipotezele",
+  "ce-marja-ramane-intr-un-flip-imobiliar-dupa-costurile-reale",
+  "cat-te-costa-administrarea-unei-proprietati-inchiriate",
+  "cum-citesti-ponderea-costurilor-de-inchidere-intr-o-achizitie",
+  "inchiriere-integrala-vs-pe-camera-cum-compari-venitul",
+];
+
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   {
     key: "legacy-bmi",
@@ -377,7 +425,11 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
                   ? "batch-08"
                   : BATCH_09_CALCULATORS.includes(key)
                     ? "batch-09"
-                : "batch-18";
+                    : BATCH_10_CALCULATORS.includes(key)
+                      ? "batch-10"
+                      : BATCH_11_CALCULATORS.includes(key)
+                        ? "batch-11"
+                        : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
@@ -442,6 +494,14 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-09";
   }
 
+  if (BATCH_10_ARTICLES.includes(seed.slug)) {
+    return "batch-10";
+  }
+
+  if (BATCH_11_ARTICLES.includes(seed.slug)) {
+    return "batch-11";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
@@ -454,6 +514,8 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
         ? "batch-07"
         : seed.relatedCategorySlug === "energie-pentru-casa"
           ? "batch-08"
+          : seed.relatedCategorySlug === "imobiliare"
+            ? "batch-10"
     : seed.relatedCategorySlug === "conversii"
       ? "batch-04"
       : "batch-03";
@@ -474,6 +536,8 @@ const calculatorDraftQueue = [
   ...BATCH_07_CALCULATORS,
   ...BATCH_08_CALCULATORS,
   ...BATCH_09_CALCULATORS,
+  ...BATCH_10_CALCULATORS,
+  ...BATCH_11_CALCULATORS,
 ];
 const articleDraftQueue = [
   ...BATCH_02_ARTICLES,
@@ -484,6 +548,8 @@ const articleDraftQueue = [
   ...BATCH_07_ARTICLES,
   ...BATCH_08_ARTICLES,
   ...BATCH_09_ARTICLES,
+  ...BATCH_10_ARTICLES,
+  ...BATCH_11_ARTICLES,
 ];
 
 const defaultPublishingScheduleForCalculator = (
@@ -606,6 +672,14 @@ const categoryFrames = {
     linkingLead:
       "Leaga intre ele paginile de rata maxima, cost total credit, refinantare, fond de urgenta si obiective de economisire pentru a sustine un traseu complet de decizie.",
   },
+  imobiliare: {
+    audience:
+      "cand compari o proprietate prin pret, buget total, cost lunar, chirie, randament sau costuri recurente",
+    caution:
+      "In imobiliare, formula ajuta la orientare, dar rezultatul final depinde si de starea proprietatii, structura finantarii, costurile de inchidere, neocupare si cheltuielile reale din exploatare.",
+    linkingLead:
+      "Categoria functioneaza bine cand legi intre ele pretul pe mp, costul total de achizitie, chiria versus cumpararea, randamentul si costurile recurente.",
+  },
 } as const;
 
 const readStringField = (doc: { [key: string]: unknown }, field: string): string => {
@@ -694,6 +768,10 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames["credite-si-economii"];
   }
 
+  if (categorySlug === "imobiliare") {
+    return categoryFrames.imobiliare;
+  }
+
   return categoryFrames.fitness;
 };
 
@@ -736,12 +814,12 @@ const homepageSeed = {
   heroBadge: "Calculatoare online clare si utile",
   heroTitle: "Calcule utile, explicate pe inteles si gata de folosit.",
   heroDescription:
-    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, energie pentru casa, conversii, constructii, business, finante, salarii si credite, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
+    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, energie pentru casa, conversii, constructii, business, finante, salarii, credite si imobiliare, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "85", label: "calculatoare disponibile in primele noua loturi" },
-    { value: "10", label: "categorii principale de cautare" },
+    { value: "105", label: "calculatoare disponibile in primele unsprezece loturi" },
+    { value: "11", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
   contentBlocks: [
@@ -771,13 +849,14 @@ const homepageSeed = {
         { value: "Finante", label: "procente, TVA, economii, dobanzi si rate" },
         { value: "Salarii", label: "crestere salariala, tarif orar, venit anual si taxare" },
         { value: "Credite", label: "rata maxima, refinantare, fond de urgenta si avans" },
+        { value: "Imobiliare", label: "pret pe mp, chirie vs cumparare si randament" },
       ],
     },
   ],
   seo: buildSeoPayload({
-    metaTitle: "Calculatoare Online - credite, energie, fotovoltaice si business",
+    metaTitle: "Calculatoare Online - credite, energie, imobiliare si business",
     metaDescription:
-      "Hub de calculatoare online pentru credite, economii, energie pentru casa, fotovoltaice, fitness, auto, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
+      "Hub de calculatoare online pentru credite, economii, imobiliare, energie pentru casa, fotovoltaice, fitness, auto, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
   }),
 };
@@ -871,6 +950,16 @@ const categorySeeds: CategorySeed[] = [
     introContent:
       "Categoria Credite si economii aduna calculatoare pentru rata maxima suportabila, grad de indatorare, cost total credit, refinantare, fond de urgenta si planificarea obiectivelor financiare. Paginile sunt gandite ca instrumente de decizie, nu doar de calcul, astfel incat utilizatorul sa poata compara scenarii si sa inteleaga mai usor ce face mai departe.",
     sortOrder: 90,
+    isFeatured: true,
+  },
+  {
+    name: "Imobiliare",
+    slug: "imobiliare",
+    summary:
+      "Calculatoare pentru pret pe mp, buget total de achizitie, chirie vs cumparare, randament si costuri recurente.",
+    introContent:
+      "Categoria Imobiliare aduna calculatoare pentru compararea unei proprietati din mai multe unghiuri: pret pe metru patrat, cost total de achizitie, buget lunar, chirie versus cumparare, randament din chirie si costuri recurente. Scopul este sa transformi o decizie imobiliara intr-un scenariu mai clar, nu doar intr-o cifra separata de context.",
+    sortOrder: 100,
     isFeatured: true,
   },
 ];
@@ -2951,6 +3040,270 @@ const articleSeeds: ArticleSeed[] = [
     launchWave: "backlog",
     releaseBatch: "batch-09",
     audience: "consumer",
+  },
+  {
+    slug: "cum-citesti-pretul-pe-mp-fara-sa-cazi-in-comparatii-false",
+    title: "Cum citesti pretul pe mp fara sa cazi in comparatii false intre proprietati",
+    excerpt:
+      "Pretul pe mp este util, dar numai daca il citesti pe aceeasi baza: suprafata, stare si configuratie comparabila.",
+    content:
+      "Pretul pe metru patrat este unul dintre cele mai folosite repere din imobiliare pentru ca simplifica foarte repede comparatia. Problema apare atunci cand doua proprietati par comparabile doar pe hartie, dar folosesc suprafete diferite sau au configuratii care schimba complet lectura cifrei.\n\nCalculatorul de pret pe mp este util pentru ca te forteaza sa pui aceeasi formula peste mai multe variante. Asta te ajuta sa vezi mai repede daca un apartament pare ieftin sau scump raportat la suprafata utila reala.\n\nTotusi, un pret pe mp nu spune singur toata povestea. Compartimentarea, starea proprietatii, etajul, anul constructiei, pozitionarea si costurile ulterioare pot schimba radical concluzia. De aceea pagina merita folosita impreuna cu negocierea de pret si cu costul total de achizitie.\n\nConcluzia buna este simpla: pretul pe mp functioneaza ca filtru initial foarte bun, dar decizia reala apare abia cand il legi de restul scenariului.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["price-per-sqm", "price-negotiation", "property-total-purchase-cost"],
+    relatedArticleSlugs: ["ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte",
+    title: "Ce intra de fapt in bugetul total de achizitie al unei locuinte",
+    excerpt:
+      "Pretul afisat nu este tot proiectul. Avansul, costurile de inchidere, renovarea si mobilarea schimba rapid bugetul real.",
+    content:
+      "Multi cumparatori pornesc de la pretul locuintei si cred ca acela este bugetul principal. In practica, achizitia reala inseamna si avans, costuri de inchidere, renovare, mobilare si o rezerva minima pentru surprizele care apar inevitabil.\n\nCalculatorul de cost total de achizitie este util pentru ca pune in aceeasi imagine pretul proprietatii si costurile pe care le simti imediat dupa tranzactie. Astfel vezi mult mai repede daca proiectul este sustenabil sau daca ai comprimat prea mult rezerva.\n\nAici se vede de ce avansul si costul total nu trebuie citite separat. Un avans suportabil nu inseamna automat si un proiect confortabil daca dupa semnare ramai fara spatiu pentru renovare, mobilare sau buffer de lichiditate.\n\nConcluzia practica este ca o achizitie buna nu este doar una pe care o poti semna, ci una pe care o poti absorbi financiar fara sa ramai blocat imediat dupa mutare.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "property-total-purchase-cost",
+      "property-down-payment",
+      "furniture-budget",
+    ],
+    relatedArticleSlugs: ["chirie-vs-cumparare-cum-compari-corect-doua-scenarii"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "chirie-vs-cumparare-cum-compari-corect-doua-scenarii",
+    title: "Chirie vs cumparare: cum compari corect doua scenarii care par simple doar la suprafata",
+    excerpt:
+      "Comparatia buna nu opune doar chiria unei rate. Trebuie sa adaugi costul initial, costurile recurente si flexibilitatea.",
+    content:
+      "Comparatia dintre chirie si cumparare este una dintre cele mai cautate pentru ca promite un raspuns simplu la o decizie grea. In realitate, rata lunara nu este singurul element care conteaza, iar chiria nu este singurul cost al flexibilitatii.\n\nCalculatorul de chirie vs cumparare este bun pentru ca aduce intr-un singur cadru costul initial al cumpararii si costul lunar al locuirii. Asta iti arata rapid daca scenariul de proprietate pare mai greu sau mai usor de sustinut pe perioada analizata.\n\nTotusi, comparatia devine utila doar daca pui alaturi costurile recurente, bufferul lunar si orizontul de timp. Pentru unii utilizatori, flexibilitatea chiriei valoreaza mai mult. Pentru altii, stabilitatea si capitalizarea prin proprietate conteaza mai tare.\n\nConcluzia practica este ca nu exista raspuns universal. Exista doar un scenariu pe care il citesti corect sau unul pe care il simplifici prea devreme.",
+    articleType: "comparison",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["rent-vs-buy", "monthly-home-budget", "mortgage-buffer"],
+    relatedArticleSlugs: ["cat-iti-mananca-locuinta-din-bugetul-lunar"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cum-estimezi-un-buget-de-renovare-fara-optimism-periculos",
+    title: "Cum estimezi un buget de renovare fara optimism periculos",
+    excerpt:
+      "Bugetul de renovare bun porneste din suprafata si cost/mp, dar devine realist abia dupa ce adaugi rezerva si fazele lucrarii.",
+    content:
+      "Bugetul de renovare pare simplu cat timp il reduci la o suma intuitiva pe care ai vrea sa o cheltui. In practica, formula buna porneste din suprafata, costul pe mp si o rezerva care sa absoarba diferentele dintre estimare si santier.\n\nCalculatorul de buget renovare este util tocmai pentru ca scoate discutia din zona de impresie si o duce intr-o estimare repetabila. Cand schimbi costul pe mp sau rezerva, vezi imediat cat se misca bugetul total.\n\nPartea importanta este sa nu tratezi costul pe mp ca pe o promisiune rigida. Finisajele, instalatiile, demolarile si ritmul executiei schimba foarte repede cifra. De aceea pagina merita legata de costul total de achizitie si de bugetul de mobilare.\n\nConcluzia practica este ca renovarea buna se planifica cu marja, nu cu speranta ca totul va iesi exact cum ai pus in prima schita.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "renovation-budget",
+      "property-total-purchase-cost",
+      "furniture-budget",
+    ],
+    relatedArticleSlugs: ["cum-planifici-bugetul-de-mobilare-si-electrocasnice"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cum-planifici-bugetul-de-mobilare-si-electrocasnice",
+    title: "Cum planifici bugetul de mobilare si electrocasnice fara sa iti manance toata rezerva",
+    excerpt:
+      "Mobilarea pare ultimul pas, dar poate consuma rapid un buget serios daca nu o separi clar de renovare si de costurile initiale.",
+    content:
+      "Dupa achizitie si renovare, multi utilizatori trateaza mobilarea ca pe un detaliu care se va rezolva cumva din mers. In realitate, exact aici se sparg multe bugete care pareau suportabile pe hartie.\n\nCalculatorul de buget mobilare este util pentru ca transforma numarul de camere, electrocasnicele si o marja de rezerva intr-o suma clara. Asta te ajuta sa intelegi daca proiectul tau este complet finantat sau doar partial imaginat.\n\nPartea bună a unui astfel de calcul nu este doar cifra finala, ci faptul ca separa clar mobilarea de renovare. Fara aceasta separare, costul total al locuintei pare artificial mai mic, iar bufferul ramas pare mai confortabil decat este in realitate.\n\nConcluzia practica este ca mobilarea merita tratata ca proiect separat in aceeasi decizie financiara, nu ca un cost vag care se va regla ulterior.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "furniture-budget",
+      "property-total-purchase-cost",
+      "monthly-home-budget",
+    ],
+    relatedArticleSlugs: ["ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cat-iti-mananca-locuinta-din-bugetul-lunar",
+    title: "Cat iti mananca locuinta din bugetul lunar si de ce rata singura nu spune destul",
+    excerpt:
+      "Bugetul lunar al locuintei inseamna mai mult decat rata sau chiria. Utilitatile, administrarea si mentenanta schimba imaginea reala.",
+    content:
+      "Cea mai comuna eroare in compararea unei locuinte este sa folosesti doar rata sau chiria lunara ca reper principal. In practica, presiunea reala pe buget vine din totalul costurilor recurente, nu dintr-o singura linie a calculului.\n\nCalculatorul de buget lunar al locuintei este util pentru ca aduna intr-un singur loc costul principal, utilitatile, administrarea, mentenanta si asigurarea. Asta iti arata mai repede ce trebuie sa sustii luna de luna, nu doar ce suna suportabil in anunt sau in discutia cu banca.\n\nAici intervine si calculatorul de buffer. O locuinta nu este doar despre ce poti plati, ci despre ce iti ramane dupa ce ai platit-o. Daca spatiul ramas este prea mic, scenariul devine fragil chiar daca formula initiala parea acceptabila.\n\nConcluzia practica este ca locuinta trebuie citita in buget ca sistem complet, nu ca un cost singular care arata bine separat de restul cheltuielilor.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["monthly-home-budget", "mortgage-buffer", "rent-vs-buy"],
+    relatedArticleSlugs: ["chirie-vs-cumparare-cum-compari-corect-doua-scenarii"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cand-negocierea-pretului-schimba-cu-adevarat-afacerea",
+    title: "Cand negocierea pretului schimba cu adevarat afacerea si cand doar pare importanta",
+    excerpt:
+      "Un discount mic poate conta enorm sau aproape deloc, in functie de bugetul total si de costurile care vin imediat dupa achizitie.",
+    content:
+      "Negocierea de pret are un farmec aparte pentru ca este una dintre putinele zone in care utilizatorul simte ca poate schimba imediat cifra mare din tranzactie. Totusi, impactul real al negocierii nu este intotdeauna evident.\n\nCalculatorul de negociere te ajuta sa vezi rapid cat inseamna in lei un discount aparent mic. Asta este deja valoros, pentru ca muta discutia din procente abstracte in economie concreta.\n\nMai departe, conteaza sa pui economia langa costul total de achizitie. Uneori o reducere buna acopera costuri de inchidere sau parte din renovare. Alteori, desi suna bine, nu schimba cu adevarat presiunea bugetara a proiectului.\n\nConcluzia practica este ca negocierea buna nu este doar cea mai mare, ci cea care muta semnificativ structura reala a bugetului tau.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["price-negotiation", "price-per-sqm", "property-total-purchase-cost"],
+    relatedArticleSlugs: ["cum-citesti-pretul-pe-mp-fara-sa-cazi-in-comparatii-false"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cat-spatiu-iti-trebuie-de-fapt-in-functie-de-familie-si-folosinta",
+    title: "Cat spatiu iti trebuie de fapt in functie de familie si folosinta locuintei",
+    excerpt:
+      "Suprafata buna nu se citește doar in mp. Conteaza si numarul de persoane, camerele si felul in care folosesti casa zi de zi.",
+    content:
+      "Cand compari doua proprietati, reflexul natural este sa te uiti la numarul de metri patrati. Problema este ca mp-ii singuri nu spun cat de bine functioneaza spatiul pentru familia sau folosinta ta reala.\n\nCalculatorul de spatiu pe persoana este util pentru ca transforma suprafata si camerele intr-un reper mai practic. Asta te ajuta sa compari mai coerent doua variante care au configuratii diferite, dar par apropiate la prima vedere.\n\nPentru unele gospodarii, flexibilitatea unei camere in plus valoreaza mai mult decat cativa mp in plus. Pentru altele, zona de zi sau spatiul de lucru de acasa schimba mai mult utilitatea decat numarul formal de camere.\n\nConcluzia practica este ca spatiul bun nu este doar cel mai mare, ci cel care raspunde cel mai bine ritmului tau real de locuire.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["space-per-person", "price-per-sqm", "monthly-home-budget"],
+    relatedArticleSlugs: ["cum-citesti-pretul-pe-mp-fara-sa-cazi-in-comparatii-false"],
+    launchWave: "backlog",
+    releaseBatch: "batch-10",
+    audience: "both",
+  },
+  {
+    slug: "cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse",
+    title: "Cum citesti randamentul din chirie fara sa ignori costurile ascunse",
+    excerpt:
+      "Randamentul brut arata repede, dar randamentul net spune mult mai bine ce ramane dupa costurile reale ale proprietatii.",
+    content:
+      "Randamentul din chirie este unul dintre cele mai folosite repere in investitiile imobiliare pentru ca iti promite o comparatie simpla intre pretul proprietatii si venitul anual. Problema este ca randamentul brut spune doar prima jumatate a povestii.\n\nCalculatorul de randament chirie este util tocmai pentru ca separa randamentul brut de cel net. Astfel vezi imediat ce ramane dupa costurile recurente pe care multe analize rapide le trec prea usor cu vederea.\n\nAdministrarea, mentenanta, perioadele de neocupare si alte costuri aparent mici pot muta semnificativ concluzia finala. De aceea randamentul bun se citeste doar impreuna cu costurile recurente si cu ipoteza de ocupare.\n\nConcluzia practica este ca o proprietate interesanta nu este cea cu randament brut spectaculos pe hartie, ci cea al carei randament net ramane coerent dupa ce adaugi frictiunea reala a exploatarii.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["rental-yield", "service-charge-budget", "property-management-fee"],
+    relatedArticleSlugs: ["cash-on-cash-return-explicat-pentru-investitii-imobiliare"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "cash-on-cash-return-explicat-pentru-investitii-imobiliare",
+    title: "Cash-on-cash return explicat pentru investitii imobiliare fara jargon inutil",
+    excerpt:
+      "Acest indicator arata ce randament obtii pe banii proprii blocati in proiect, nu pe valoarea totala a proprietatii.",
+    content:
+      "Cash-on-cash return este util tocmai pentru ca muta atentia de la pretul total al proprietatii la capitalul propriu pe care il blochezi efectiv. Pentru investitorii care folosesc credit sau combina mai multe surse de bani, acesta poate fi un reper mult mai clar decat randamentul clasic din chirie.\n\nCalculatorul este valoros fiindca pune fata in fata fluxul net anual si capitalul propriu investit. Asta te ajuta sa vezi daca proiectul este bun pentru lichiditatea ta, nu doar pentru o analiza abstracta de randament.\n\nTotusi, indicatorul devine periculos daca nu separi corect fluxul net de costurile reale sau daca subestimezi capitalul propriu investit in avans, renovare si costuri initiale. De aceea merita citit impreuna cu bugetul total de achizitie si cu randamentul din chirie.\n\nConcluzia practica este ca acest indicator nu inlocuieste randamentul net, ci il completeaza foarte bine atunci cand decizia depinde de cati bani proprii ai blocati in proiect.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "cash-on-cash-return",
+      "property-total-purchase-cost",
+      "rental-yield",
+    ],
+    relatedArticleSlugs: ["cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "cum-estimezi-pierderile-din-vacanta-la-o-proprietate-de-inchiriat",
+    title: "Cum estimezi pierderile din vacanta la o proprietate de inchiriat fara sa iti sabotezi singur analiza",
+    excerpt:
+      "O proprietate raraori este ocupata perfect. Rata de neocupare conteaza direct in venitul real si in pragul de break-even.",
+    content:
+      "Una dintre cele mai optimiste ipoteze din analizele imobiliare este ocuparea perfecta. In practica, orice proprietate de inchiriat are perioade mai bune si mai slabe, iar aceste goluri mananca direct din venitul real.\n\nCalculatorul de pierdere din vacanta este util pentru ca transforma procentul de neocupare intr-o suma anuala usor de inteles. Asta iti arata repede cat de sensibil devine randamentul atunci cand lasi mai mult spatiu intre chiriasi sau cand piata merge mai lent.\n\nAici merita legata imediat si rata de ocupare break-even. Daca pragul minim de ocupare este deja ridicat, orice vacanta mai lunga poate transforma un proiect aparent bun intr-unul fragil.\n\nConcluzia practica este ca analiza prudenta porneste dintr-o neocupare realista, nu din scenariul ideal in care proprietatea produce venit maxim in fiecare luna.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["vacancy-loss", "rental-break-even-occupancy", "rental-yield"],
+    relatedArticleSlugs: ["cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "cum-proiectezi-cresterea-chiriei-fara-sa-fortezi-ipotezele",
+    title: "Cum proiectezi cresterea chiriei fara sa fortezi ipotezele doar ca sa iasa randamentul mai bine",
+    excerpt:
+      "Cresterea chiriei poate imbunatati scenariul, dar doar daca ipoteza ramane credibila pentru piata reala si pentru proprietate.",
+    content:
+      "Proiectarea unei cresteri de chirie este tentanta pentru ca face aproape orice scenariu sa arate mai bine. Problema este ca o crestere prea optimista poate cosmetiza un proiect mediocru si il poate face sa para mai bun decat este.\n\nCalculatorul de crestere chirie este util pentru ca arata clar ce inseamna o anumita rata anuala in termeni de chirie lunara viitoare. Asta te ajuta sa vezi cat din scenariu vine din ipoteza de crestere si cat vine din structura actuala a proprietatii.\n\nDe aceea merita sa folosesti atat un scenariu prudent, cat si unul optimist. Daca proiectul functioneaza doar in varianta optimista, semnalul nu este unul bun. Daca ramane coerent si in scenariul prudent, analiza devine mult mai sanatoasa.\n\nConcluzia practica este ca o proiectie buna nu este cea mai frumoasa, ci cea care rezista si dupa ce scazi optimismul din ea.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["rent-increase", "vacancy-loss", "rental-yield"],
+    relatedArticleSlugs: ["cum-estimezi-pierderile-din-vacanta-la-o-proprietate-de-inchiriat"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "ce-marja-ramane-intr-un-flip-imobiliar-dupa-costurile-reale",
+    title: "Ce marja ramane intr-un flip imobiliar dupa costurile reale, nu dupa entuziasmul initial",
+    excerpt:
+      "La flip, profitul nu este doar diferenta dintre cumparare si vanzare. Renovarea, detinerea si frictiunile din executie pot muta rapid marja.",
+    content:
+      "Un flip imobiliar pare atragator atunci cand iei doar diferenta dintre pretul de cumparare si pretul posibil de vanzare. In practica, tocmai costurile intermediare sunt cele care decid daca proiectul mai ramane interesant sau nu.\n\nCalculatorul de marja pentru flip este util pentru ca aduna pretul de achizitie, renovarea si costurile de detinere in acelasi loc. Asta face mult mai greu sa te amagesti cu o marja artificial inflata.\n\nMai ales aici conteaza rezerva si disciplina de buget. O renovare subestimata sau o iesire mai lenta din proiect poate consuma repede profitul aparent confortabil de la inceput. De aceea pagina trebuie legata natural de bugetul de renovare si de costurile de inchidere.\n\nConcluzia practica este ca flip-ul bun nu este cel cu cea mai mare promisiune pe hartie, ci cel care rezista dupa ce adaugi costurile reale si o marja prudenta de eroare.",
+    articleType: "guide",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["property-flip-margin", "renovation-budget", "closing-cost-share"],
+    relatedArticleSlugs: ["cum-estimezi-un-buget-de-renovare-fara-optimism-periculos"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "cat-te-costa-administrarea-unei-proprietati-inchiriate",
+    title: "Cat te costa administrarea unei proprietati inchiriate si cum o legi de randamentul real",
+    excerpt:
+      "Administrarea pare un cost mic pana cand incepi sa o vezi anual si sa o pui langa randamentul net al proprietatii.",
+    content:
+      "Administrarea proprietatii este unul dintre acele costuri care par suportabile cand le privesti izolat pe luna. In analiza completa, tocmai costurile recurente mai mici sunt cele care subtiaza vizibil randamentul net.\n\nCalculatorul de cost administrare proprietate este util pentru ca pune intr-o singura cifra comisionul variabil si costurile fixe lunare. Asta iti arata rapid cat platesti ca sa pastrezi proprietatea functionala in exploatare.\n\nCand legi acest cost de randamentul din chirie si de costurile recurente totale, vezi mult mai clar cat de realist este proiectul. Uneori randamentul brut pare bun, dar dupa administrare, reparatii si perioade de neocupare, concluzia se schimba mult.\n\nConcluzia practica este ca administrarea nu trebuie privita ca detaliu operational, ci ca parte reala din randamentul si efortul proiectului.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "property-management-fee",
+      "service-charge-budget",
+      "rental-yield",
+    ],
+    relatedArticleSlugs: ["cum-citesti-randamentul-din-chirie-fara-sa-ignori-costurile-ascunse"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "cum-citesti-ponderea-costurilor-de-inchidere-intr-o-achizitie",
+    title: "Cum citesti ponderea costurilor de inchidere intr-o achizitie si de ce conteaza mai mult decat pare",
+    excerpt:
+      "Costurile de inchidere par secundare pana cand le pui in procente din proprietate si vezi ce parte din lichiditate consuma imediat.",
+    content:
+      "Costurile de inchidere sunt deseori tratate ca o anexa inevitabila a achizitiei, nu ca o parte reala a deciziei. Tocmai de aceea multi cumparatori raman surprinsi cand vad cat capital initial consuma imediat.\n\nCalculatorul de pondere a costurilor de inchidere este util pentru ca traduce aceste sume intr-un procent din pretul proprietatii. Asta iti permite sa compari mai bine scenarii diferite si sa vezi daca presiunea initiala asupra lichiditatii este inca suportabila.\n\nPunctul important este ca aceste costuri trebuie citite impreuna cu avansul si cu bugetul total de achizitie. Separat, fiecare pare gestionabil. Impreuna, pot muta semnificativ confortul financiar al proiectului.\n\nConcluzia practica este ca lichiditatea de la inceput trebuie protejata la fel de atent ca rata lunara de dupa semnare.",
+    articleType: "explainer",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: [
+      "closing-cost-share",
+      "property-total-purchase-cost",
+      "property-down-payment",
+    ],
+    relatedArticleSlugs: ["ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
+  },
+  {
+    slug: "inchiriere-integrala-vs-pe-camera-cum-compari-venitul",
+    title: "Inchiriere integrala vs pe camera: cum compari venitul fara sa confunzi scenariile",
+    excerpt:
+      "Comparatia buna nu sta doar in chiria maxima posibila, ci si in ocupare, administrare si stabilitatea exploatarii.",
+    content:
+      "Inchirierea pe camera pare adesea mai profitabila pe hartie, pentru ca insumeaza mai multa chirie potentiala decat inchirierea integrala. In practica, scenariul devine mai complex tocmai pentru ca managementul, ocuparea si uzura pot schimba mult rezultatul.\n\nCalculatorul de venit din inchiriere pe camera este util pentru ca pune intr-o formula simpla numarul de camere, chiria per camera si gradul de ocupare. Asta iti ofera un punct de pornire bun pentru comparatie.\n\nTotusi, comparatia buna cere sa vezi si vacanta probabila, costul administrarii si efortul operational. De aceea merita sa legi imediat acest calcul de randamentul din chirie si de pierderea din neocupare.\n\nConcluzia practica este ca scenariul mai profitabil nu este neaparat cel cu venitul brut mai mare, ci cel care ramane coerent dupa ce adaugi frictiunea reala a exploatarii.",
+    articleType: "comparison",
+    relatedCategorySlug: "imobiliare",
+    relatedCalculatorKeys: ["room-rental-income", "rental-yield", "vacancy-loss"],
+    relatedArticleSlugs: ["cum-estimezi-pierderile-din-vacanta-la-o-proprietate-de-inchiriat"],
+    launchWave: "backlog",
+    releaseBatch: "batch-11",
+    audience: "both",
   },
 ];
 

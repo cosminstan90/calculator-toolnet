@@ -24,7 +24,7 @@ type SearchParams = Promise<{ q?: string }>;
 export const metadata = buildMetadata({
   title: "Calculatoare online pe categorii",
   description:
-    "Descopera calculatoare online pentru fitness, auto, energie si conversii, fiecare cu explicatia formulei si exemple practice.",
+    "Descopera calculatoare online pentru fitness, auto, energie, imobiliare si conversii, fiecare cu explicatia formulei si exemple practice.",
   path: "/calculatoare",
 });
 
@@ -147,7 +147,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
             Intra direct in calculatoare pentru marje, costuri, TVA si operare.
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-300">
-            Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru business, finante si constructii.
+            Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru business, finante, constructii si imobiliare.
           </p>
         </Link>
       </section>

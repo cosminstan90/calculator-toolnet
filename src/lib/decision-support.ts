@@ -373,8 +373,39 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       },
       {
         title: "Ce trebuie validat separat",
-        body:
+      body:
           "Comisioanele, conditiile produsului, fiscalitatea si comportamentul real al bugetului trebuie verificate separat fata de formula orientativa.",
+      },
+    ],
+  },
+  imobiliare: {
+    summary:
+      "In imobiliare, rezultatul este util doar daca il legi de costul total, lichiditatea initiala si scenariul real de folosire sau exploatare a proprietatii.",
+    checks: [
+      "Verifica daca toate costurile sunt puse in acelasi cadru: pret, costuri initiale, costuri recurente si rezerva.",
+      "Compara macar un scenariu prudent si unul optimist pentru chirie, ocupare sau renovare.",
+      "Nu citi proprietatea doar prin rata sau doar prin randament; leaga calculul de bugetul complet.",
+    ],
+    mistakes: [
+      "Sa tratezi pretul afisat ca si cum ar fi costul total al proiectului.",
+      "Sa folosesti randamentul brut fara sa scazi administrarea, neocuparea sau costurile recurente.",
+      "Sa proiectezi cresterea chiriei sau profitul din flip pe ipoteze prea optimiste.",
+    ],
+    nextSteps: [
+      "Continua cu un calculator complementar pentru avans, cost total, buget lunar sau randament.",
+      "Compara scenariul de locuire cu scenariul investitional daca proprietatea poate juca ambele roluri.",
+      "Foloseste ghidurile categoriei pentru a transforma cifra intr-o decizie mai prudenta.",
+    ],
+    sections: [
+      {
+        title: "Ce decizie sustine",
+        body:
+          "Te ajuta sa compari proprietati, sa bugetezi achizitia, sa alegi intre chirie si cumparare sau sa verifici daca o investitie imobiliara rezista dupa costurile reale.",
+      },
+      {
+        title: "Ce trebuie validat separat",
+        body:
+          "Starea proprietatii, costurile de inchidere, finantarea concreta, ocuparea reala si costurile de exploatare trebuie verificate separat fata de formula de pe pagina.",
       },
     ],
   },

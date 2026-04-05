@@ -11,7 +11,7 @@ export const revalidate = 900;
 export const metadata = buildMetadata({
   title: "Calculatoare online pentru firme",
   description:
-    "Hub pentru firme: marje, markup, ROI, TVA, economii, constructii si decizii operationale, cu ghiduri si calculatoare gandite pentru context comercial.",
+    "Hub pentru firme: marje, markup, ROI, TVA, economii, constructii, imobiliare si decizii operationale, cu ghiduri si calculatoare gandite pentru context comercial.",
   path: "/pentru-firme",
 });
 
@@ -23,6 +23,7 @@ const categorySlugs = new Set([
   "conversii",
   "salarii-si-taxe",
   "credite-si-economii",
+  "imobiliare",
 ]);
 
 export default async function BusinessHubPage() {
@@ -74,6 +75,13 @@ export default async function BusinessHubPage() {
           description:
             "Pentru proiecte, lucrari si costuri de executie, clusterul constructii iti da punctul de plecare bun si te trimite spre ghidurile potrivite.",
           href: "/calculatoare/constructii",
+        },
+        {
+          label: "Imobiliare",
+          title: "Compara randamentul, vacanta si costurile unei proprietati",
+          description:
+            "Pentru investitii mici sau comparatii de proiect, verticala imobiliare leaga costul total, randamentul si bufferul real al proprietatii.",
+          href: "/calculatoare/imobiliare",
         },
       ]}
       categories={categories.filter((category) => categorySlugs.has(category.slug))}

@@ -83,7 +83,27 @@ export type CalculatorKey =
   | "solar-self-consumption"
   | "ups-runtime"
   | "heating-cost-comparison"
-  | "solar-co2-savings";
+  | "solar-co2-savings"
+  | "price-per-sqm"
+  | "property-down-payment"
+  | "property-total-purchase-cost"
+  | "rent-vs-buy"
+  | "renovation-budget"
+  | "furniture-budget"
+  | "monthly-home-budget"
+  | "price-negotiation"
+  | "space-per-person"
+  | "mortgage-buffer"
+  | "rental-yield"
+  | "cash-on-cash-return"
+  | "vacancy-loss"
+  | "rent-increase"
+  | "property-flip-margin"
+  | "property-management-fee"
+  | "closing-cost-share"
+  | "room-rental-income"
+  | "service-charge-budget"
+  | "rental-break-even-occupancy";
 
 export type CalculatorInputOption = {
   label: string;
@@ -4977,6 +4997,1384 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       return {
         avoidedKgCo2: round(avoidedKgCo2, 0),
         avoidedTonsCo2: round(avoidedKgCo2 / 1000, 2),
+      };
+    },
+  },
+  "price-per-sqm": {
+    key: "price-per-sqm",
+    title: "Calculator pret pe mp",
+    slug: "calculator-pret-pe-mp",
+    categorySlug: "imobiliare",
+    summary:
+      "Calculeaza pretul pe metru patrat pornind de la pretul total al proprietatii si suprafata utila.",
+    formulaName: "Pret pe metru patrat",
+    formulaExpression: "Pret/mp = pret total / suprafata utila",
+    formulaDescription:
+      "Calculatorul imparte pretul total al proprietatii la suprafata utila pentru a obtine un reper comparabil intre anunturi sau scenarii.",
+    howToSteps: [
+      "Introdu pretul total cerut sau negociat.",
+      "Introdu suprafata utila folosita in comparatie.",
+      "Citeste pretul pe mp si foloseste-l pentru a compara proprietati similare.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret total",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 620000,
+      },
+      {
+        name: "usableArea",
+        label: "Suprafata utila",
+        type: "number",
+        unit: "mp",
+        min: 1,
+        max: 10000,
+        step: 0.1,
+        required: true,
+        defaultValue: 72,
+      },
+    ],
+    outputs: [{ name: "pricePerSqm", label: "Pret pe mp", unit: "lei/mp", decimals: 2 }],
+    compute: (values) => {
+      const purchasePrice = parseNumber(values.purchasePrice);
+      const usableArea = Math.max(parseNumber(values.usableArea), 0.01);
+      return {
+        pricePerSqm: round(purchasePrice / usableArea, 2),
+      };
+    },
+  },
+  "property-down-payment": {
+    key: "property-down-payment",
+    title: "Calculator avans locuinta",
+    slug: "calculator-avans-locuinta",
+    categorySlug: "imobiliare",
+    summary:
+      "Transforma procentul de avans intr-o suma concreta si arata cat ramane de finantat pentru achizitia unei locuinte.",
+    formulaName: "Avans locuinta",
+    formulaExpression:
+      "Avans = pret total x procent avans; suma finantata = pret total - avans",
+    formulaDescription:
+      "Calculatorul transforma rapid procentul de avans intr-o suma concreta si estimeaza partea ramasa pentru finantare.",
+    howToSteps: [
+      "Introdu pretul total al proprietatii.",
+      "Introdu procentul de avans pe care vrei sa-l testezi.",
+      "Citeste suma avansului si suma care ramane de finantat.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret proprietate",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 580000,
+      },
+      {
+        name: "downPaymentPercent",
+        label: "Procent avans",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 15,
+      },
+    ],
+    outputs: [
+      { name: "downPaymentAmount", label: "Avans", unit: "lei", decimals: 2 },
+      { name: "financedAmount", label: "Suma finantata", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
+      const downPaymentPercent = parseNumber(values.downPaymentPercent);
+      const downPaymentAmount = purchasePrice * (downPaymentPercent / 100);
+      return {
+        downPaymentAmount: round(downPaymentAmount, 2),
+        financedAmount: round(purchasePrice - downPaymentAmount, 2),
+      };
+    },
+  },
+  "property-total-purchase-cost": {
+    key: "property-total-purchase-cost",
+    title: "Calculator cost total achizitie locuinta",
+    slug: "calculator-cost-total-achizitie-locuinta",
+    categorySlug: "imobiliare",
+    summary:
+      "Leaga pretul locuintei de taxele si costurile initiale, renovare, mobilare si o marja de rezerva.",
+    formulaName: "Cost total proiect imobiliar",
+    formulaExpression:
+      "Cost total = pret proprietate + costuri inchidere + renovare + mobilare + rezerva",
+    formulaDescription:
+      "Calculatorul separa pretul proprietatii de costurile initiale suplimentare si aplica o rezerva simpla pentru bugetare mai prudenta.",
+    howToSteps: [
+      "Introdu pretul proprietatii si costurile de inchidere estimate.",
+      "Adauga bugetul pentru renovare si mobilare.",
+      "Alege o marja de rezerva si citeste costul total estimat.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret proprietate",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 620000,
+      },
+      {
+        name: "closingCosts",
+        label: "Costuri inchidere",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 24000,
+      },
+      {
+        name: "renovationBudget",
+        label: "Buget renovare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 45000,
+      },
+      {
+        name: "furnishingBudget",
+        label: "Buget mobilare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 30000,
+      },
+      {
+        name: "contingencyPercent",
+        label: "Rezerva buget",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 10,
+      },
+    ],
+    outputs: [
+      { name: "baseProjectCost", label: "Cost proiect", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "totalProjectCost", label: "Cost total", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = parseNumber(values.purchasePrice);
+      const closingCosts = parseNumber(values.closingCosts);
+      const renovationBudget = parseNumber(values.renovationBudget);
+      const furnishingBudget = parseNumber(values.furnishingBudget);
+      const contingencyPercent = parseNumber(values.contingencyPercent);
+      const extras = closingCosts + renovationBudget + furnishingBudget;
+      const contingencyAmount = extras * (contingencyPercent / 100);
+      const baseProjectCost = purchasePrice + extras;
+      return {
+        baseProjectCost: round(baseProjectCost, 2),
+        contingencyAmount: round(contingencyAmount, 2),
+        totalProjectCost: round(baseProjectCost + contingencyAmount, 2),
+      };
+    },
+  },
+  "rent-vs-buy": {
+    key: "rent-vs-buy",
+    title: "Calculator chirie vs cumparare",
+    slug: "calculator-chirie-vs-cumparare",
+    categorySlug: "imobiliare",
+    summary:
+      "Compara costul cumulat al chiriei cu costul unui scenariu de proprietate pe acelasi interval de timp.",
+    formulaName: "Comparatie chirie vs cumparare",
+    formulaExpression:
+      "Chirie totala = chirie lunara x 12 x ani; Cost proprietate = cost initial + cost lunar x 12 x ani",
+    formulaDescription:
+      "Calculatorul compara rapid doua scenarii de locuire folosind acelasi orizont de timp si aceeasi unitate monetara.",
+    howToSteps: [
+      "Introdu chiria lunara si costul lunar al scenariului de proprietate.",
+      "Adauga costul initial al cumpararii si perioada de comparatie.",
+      "Citeste costul cumulat pentru ambele scenarii si diferenta dintre ele.",
+    ],
+    inputs: [
+      {
+        name: "monthlyRent",
+        label: "Chirie lunara",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3200,
+      },
+      {
+        name: "monthlyOwnershipCost",
+        label: "Cost lunar proprietate",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3800,
+      },
+      {
+        name: "upfrontBuyingCost",
+        label: "Cost initial cumparare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 95000,
+      },
+      {
+        name: "years",
+        label: "Perioada comparata",
+        type: "number",
+        unit: "ani",
+        min: 1,
+        max: 50,
+        step: 1,
+        required: true,
+        defaultValue: 7,
+      },
+    ],
+    outputs: [
+      { name: "totalRentCost", label: "Cost total chirie", unit: "lei", decimals: 2 },
+      {
+        name: "totalOwnershipCost",
+        label: "Cost total proprietate",
+        unit: "lei",
+        decimals: 2,
+      },
+      { name: "difference", label: "Diferenta", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyRent = parseNumber(values.monthlyRent);
+      const monthlyOwnershipCost = parseNumber(values.monthlyOwnershipCost);
+      const upfrontBuyingCost = parseNumber(values.upfrontBuyingCost);
+      const years = Math.max(parseNumber(values.years), 1);
+      const totalRentCost = monthlyRent * 12 * years;
+      const totalOwnershipCost = upfrontBuyingCost + monthlyOwnershipCost * 12 * years;
+      return {
+        totalRentCost: round(totalRentCost, 2),
+        totalOwnershipCost: round(totalOwnershipCost, 2),
+        difference: round(totalOwnershipCost - totalRentCost, 2),
+      };
+    },
+  },
+  "renovation-budget": {
+    key: "renovation-budget",
+    title: "Calculator buget renovare",
+    slug: "calculator-buget-renovare",
+    categorySlug: "imobiliare",
+    summary:
+      "Estimeaza bugetul de renovare pornind de la suprafata, costul pe mp si o rezerva pentru surprizele din lucrare.",
+    formulaName: "Buget renovare",
+    formulaExpression: "Buget = suprafata x cost/mp + rezerva",
+    formulaDescription:
+      "Calculatorul foloseste un cost mediu pe mp si adauga o rezerva procentuala pentru a aproxima mai prudent bugetul de renovare.",
+    howToSteps: [
+      "Introdu suprafata care intra in renovare.",
+      "Introdu costul estimat pe mp si rezerva dorita.",
+      "Citeste bugetul de baza, rezerva si totalul proiectului.",
+    ],
+    inputs: [
+      {
+        name: "area",
+        label: "Suprafata renovata",
+        type: "number",
+        unit: "mp",
+        min: 1,
+        max: 10000,
+        step: 0.1,
+        required: true,
+        defaultValue: 68,
+      },
+      {
+        name: "costPerSqm",
+        label: "Cost estimat pe mp",
+        type: "number",
+        unit: "lei/mp",
+        min: 0,
+        max: 100000,
+        step: 1,
+        required: true,
+        defaultValue: 900,
+      },
+      {
+        name: "contingencyPercent",
+        label: "Rezerva",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 12,
+      },
+    ],
+    outputs: [
+      { name: "baseBudget", label: "Buget de baza", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "totalBudget", label: "Buget total", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const area = parseNumber(values.area);
+      const costPerSqm = parseNumber(values.costPerSqm);
+      const contingencyPercent = parseNumber(values.contingencyPercent);
+      const baseBudget = area * costPerSqm;
+      const contingencyAmount = baseBudget * (contingencyPercent / 100);
+      return {
+        baseBudget: round(baseBudget, 2),
+        contingencyAmount: round(contingencyAmount, 2),
+        totalBudget: round(baseBudget + contingencyAmount, 2),
+      };
+    },
+  },
+  "furniture-budget": {
+    key: "furniture-budget",
+    title: "Calculator buget mobilare",
+    slug: "calculator-buget-mobilare",
+    categorySlug: "imobiliare",
+    summary:
+      "Estimeaza bugetul de mobilare si electrocasnice pornind de la numarul de camere si o rezerva de buget.",
+    formulaName: "Buget mobilare",
+    formulaExpression: "Buget = camere x buget/camera + electrocasnice + rezerva",
+    formulaDescription:
+      "Calculatorul transforma o estimare pe camera intr-un buget total si adauga separat costul pentru electrocasnice si o marja de rezerva.",
+    howToSteps: [
+      "Introdu numarul de camere si bugetul estimat per camera.",
+      "Adauga bugetul pentru electrocasnice si rezerva dorita.",
+      "Citeste bugetul de baza si totalul recomandat.",
+    ],
+    inputs: [
+      {
+        name: "rooms",
+        label: "Numar camere",
+        type: "number",
+        unit: "camere",
+        min: 1,
+        max: 30,
+        step: 1,
+        required: true,
+        defaultValue: 3,
+      },
+      {
+        name: "budgetPerRoom",
+        label: "Buget / camera",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 9000,
+      },
+      {
+        name: "appliancesBudget",
+        label: "Electrocasnice",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 18000,
+      },
+      {
+        name: "contingencyPercent",
+        label: "Rezerva",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 8,
+      },
+    ],
+    outputs: [
+      { name: "baseBudget", label: "Buget de baza", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "totalBudget", label: "Buget total", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const rooms = Math.max(parseNumber(values.rooms), 1);
+      const budgetPerRoom = parseNumber(values.budgetPerRoom);
+      const appliancesBudget = parseNumber(values.appliancesBudget);
+      const contingencyPercent = parseNumber(values.contingencyPercent);
+      const baseBudget = rooms * budgetPerRoom + appliancesBudget;
+      const contingencyAmount = baseBudget * (contingencyPercent / 100);
+      return {
+        baseBudget: round(baseBudget, 2),
+        contingencyAmount: round(contingencyAmount, 2),
+        totalBudget: round(baseBudget + contingencyAmount, 2),
+      };
+    },
+  },
+  "monthly-home-budget": {
+    key: "monthly-home-budget",
+    title: "Calculator buget lunar locuinta",
+    slug: "calculator-buget-lunar-locuinta",
+    categorySlug: "imobiliare",
+    summary:
+      "Aduna chiria sau rata cu utilitatile, administrarea, mentenanta si asigurarea pentru a vedea costul lunar total al locuirii.",
+    formulaName: "Buget lunar locuinta",
+    formulaExpression:
+      "Cost lunar total = rata sau chirie + utilitati + administrare + mentenanta + asigurare",
+    formulaDescription:
+      "Calculatorul aduna principalele costuri recurente ale unei locuinte pentru a oferi o imagine mai realista a presiunii lunare asupra bugetului.",
+    howToSteps: [
+      "Introdu rata sau chiria lunara.",
+      "Adauga utilitatile si celelalte costuri recurente.",
+      "Citeste costul lunar si anual al locuintei.",
+    ],
+    inputs: [
+      {
+        name: "housingCost",
+        label: "Rata sau chirie",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3400,
+      },
+      {
+        name: "utilities",
+        label: "Utilitati",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 850,
+      },
+      {
+        name: "associationFees",
+        label: "Administrare",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 250,
+      },
+      {
+        name: "maintenanceReserve",
+        label: "Rezerva mentenanta",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 300,
+      },
+      {
+        name: "insurance",
+        label: "Asigurare",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 70,
+      },
+    ],
+    outputs: [
+      { name: "monthlyTotal", label: "Cost lunar total", unit: "lei", decimals: 2 },
+      { name: "annualTotal", label: "Cost anual", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const housingCost = parseNumber(values.housingCost);
+      const utilities = parseNumber(values.utilities);
+      const associationFees = parseNumber(values.associationFees);
+      const maintenanceReserve = parseNumber(values.maintenanceReserve);
+      const insurance = parseNumber(values.insurance);
+      const monthlyTotal =
+        housingCost + utilities + associationFees + maintenanceReserve + insurance;
+      return {
+        monthlyTotal: round(monthlyTotal, 2),
+        annualTotal: round(monthlyTotal * 12, 2),
+      };
+    },
+  },
+  "price-negotiation": {
+    key: "price-negotiation",
+    title: "Calculator negociere pret proprietate",
+    slug: "calculator-negociere-pret-proprietate",
+    categorySlug: "imobiliare",
+    summary:
+      "Arata rapid pretul negociat si economia obtinuta pornind de la pretul cerut si discountul estimat.",
+    formulaName: "Negociere pret",
+    formulaExpression: "Pret negociat = pret cerut x (1 - discount%); economie = diferenta",
+    formulaDescription:
+      "Calculatorul transforma un discount procentual intr-o economie concreta si intr-un pret final de comparat cu alte anunturi.",
+    howToSteps: [
+      "Introdu pretul cerut al proprietatii.",
+      "Introdu discountul pe care vrei sa-l testezi.",
+      "Citeste pretul negociat si economia potentiala.",
+    ],
+    inputs: [
+      {
+        name: "askingPrice",
+        label: "Pret cerut",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 590000,
+      },
+      {
+        name: "discountPercent",
+        label: "Discount negociat",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 4,
+      },
+    ],
+    outputs: [
+      { name: "negotiatedPrice", label: "Pret negociat", unit: "lei", decimals: 2 },
+      { name: "savingsAmount", label: "Economie", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const askingPrice = Math.max(parseNumber(values.askingPrice), 0.01);
+      const discountPercent = parseNumber(values.discountPercent);
+      const negotiatedPrice = askingPrice * (1 - discountPercent / 100);
+      return {
+        negotiatedPrice: round(negotiatedPrice, 2),
+        savingsAmount: round(askingPrice - negotiatedPrice, 2),
+      };
+    },
+  },
+  "space-per-person": {
+    key: "space-per-person",
+    title: "Calculator spatiu pe persoana",
+    slug: "calculator-spatiu-pe-persoana",
+    categorySlug: "imobiliare",
+    summary:
+      "Raporteaza suprafata utila si numarul de camere la numarul de persoane din locuinta pentru o comparatie mai practica.",
+    formulaName: "Spatiu pe persoana",
+    formulaExpression:
+      "mp/persoana = suprafata utila / persoane; camere/persoana = camere / persoane",
+    formulaDescription:
+      "Calculatorul transforma suprafata si numarul de camere intr-un reper simplu pentru compararea configuratiilor de locuire.",
+    howToSteps: [
+      "Introdu suprafata utila si numarul de camere.",
+      "Introdu numarul de persoane care vor folosi locuinta.",
+      "Citeste suprafata si camerele disponibile per persoana.",
+    ],
+    inputs: [
+      {
+        name: "usableArea",
+        label: "Suprafata utila",
+        type: "number",
+        unit: "mp",
+        min: 1,
+        max: 10000,
+        step: 0.1,
+        required: true,
+        defaultValue: 76,
+      },
+      {
+        name: "rooms",
+        label: "Numar camere",
+        type: "number",
+        unit: "camere",
+        min: 1,
+        max: 30,
+        step: 1,
+        required: true,
+        defaultValue: 3,
+      },
+      {
+        name: "residents",
+        label: "Numar persoane",
+        type: "number",
+        unit: "persoane",
+        min: 1,
+        max: 20,
+        step: 1,
+        required: true,
+        defaultValue: 3,
+      },
+    ],
+    outputs: [
+      { name: "sqmPerPerson", label: "mp per persoana", unit: "mp", decimals: 2 },
+      { name: "roomsPerPerson", label: "Camere per persoana", decimals: 2 },
+    ],
+    compute: (values) => {
+      const usableArea = parseNumber(values.usableArea);
+      const rooms = parseNumber(values.rooms);
+      const residents = Math.max(parseNumber(values.residents), 1);
+      return {
+        sqmPerPerson: round(usableArea / residents, 2),
+        roomsPerPerson: round(rooms / residents, 2),
+      };
+    },
+  },
+  "mortgage-buffer": {
+    key: "mortgage-buffer",
+    title: "Calculator buffer rata locuinta",
+    slug: "calculator-buffer-rata-locuinta",
+    categorySlug: "imobiliare",
+    summary:
+      "Arata ce spatiu ramane in buget dupa costul locuintei si o rezerva minima de siguranta.",
+    formulaName: "Buffer dupa costul locuintei",
+    formulaExpression:
+      "Buffer = venit net - cost locuinta; buffer dupa rezerva = buffer - venit x rezerva%",
+    formulaDescription:
+      "Calculatorul nu spune daca o locuinta este automat accesibila, dar arata rapid cat spatiu lunar mai ramane dupa costul principal si o rezerva prudenta.",
+    howToSteps: [
+      "Introdu venitul lunar net al gospodariei.",
+      "Introdu costul lunar al locuintei si rezerva de siguranta dorita.",
+      "Citeste ponderea locuintei in venit si bufferul ramas dupa rezerva.",
+    ],
+    inputs: [
+      {
+        name: "householdNetIncome",
+        label: "Venit net gospodarie",
+        type: "number",
+        unit: "lei/luna",
+        min: 0.01,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 12000,
+      },
+      {
+        name: "monthlyHousingCost",
+        label: "Cost lunar locuinta",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 4200,
+      },
+      {
+        name: "reservePercent",
+        label: "Rezerva minima",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 15,
+      },
+    ],
+    outputs: [
+      { name: "housingSharePercent", label: "Pondere locuinta", unit: "%", decimals: 2 },
+      { name: "monthlyBuffer", label: "Buffer ramas", unit: "lei", decimals: 2 },
+      { name: "bufferAfterReserve", label: "Buffer dupa rezerva", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const householdNetIncome = Math.max(parseNumber(values.householdNetIncome), 0.01);
+      const monthlyHousingCost = parseNumber(values.monthlyHousingCost);
+      const reservePercent = parseNumber(values.reservePercent);
+      const monthlyBuffer = householdNetIncome - monthlyHousingCost;
+      const reserveAmount = householdNetIncome * (reservePercent / 100);
+      return {
+        housingSharePercent: round((monthlyHousingCost / householdNetIncome) * 100, 2),
+        monthlyBuffer: round(monthlyBuffer, 2),
+        bufferAfterReserve: round(monthlyBuffer - reserveAmount, 2),
+      };
+    },
+  },
+  "rental-yield": {
+    key: "rental-yield",
+    title: "Calculator randament chirie",
+    slug: "calculator-randament-chirie",
+    categorySlug: "imobiliare",
+    summary:
+      "Calculeaza randamentul brut si net din chirie pornind de la pretul proprietatii, chiria lunara si costurile anuale.",
+    formulaName: "Randament chirie",
+    formulaExpression:
+      "Randament brut = chirie anuala / pret; randament net = (chirie anuala - costuri) / pret",
+    formulaDescription:
+      "Calculatorul separa randamentul brut de cel net pentru a arata mai clar ce ramane dupa costurile recurente.",
+    howToSteps: [
+      "Introdu pretul proprietatii si chiria lunara estimata.",
+      "Adauga costurile anuale recurente asociate inchirierii.",
+      "Citeste randamentul brut, randamentul net si venitul net anual.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret proprietate",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 520000,
+      },
+      {
+        name: "monthlyRent",
+        label: "Chirie lunara",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 2800,
+      },
+      {
+        name: "annualCosts",
+        label: "Costuri anuale",
+        type: "number",
+        unit: "lei/an",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 7000,
+      },
+    ],
+    outputs: [
+      { name: "grossYieldPercent", label: "Randament brut", unit: "%", decimals: 2 },
+      { name: "netYieldPercent", label: "Randament net", unit: "%", decimals: 2 },
+      { name: "annualNetIncome", label: "Venit net anual", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
+      const monthlyRent = parseNumber(values.monthlyRent);
+      const annualCosts = parseNumber(values.annualCosts);
+      const annualRent = monthlyRent * 12;
+      const annualNetIncome = annualRent - annualCosts;
+      return {
+        grossYieldPercent: round((annualRent / purchasePrice) * 100, 2),
+        netYieldPercent: round((annualNetIncome / purchasePrice) * 100, 2),
+        annualNetIncome: round(annualNetIncome, 2),
+      };
+    },
+  },
+  "cash-on-cash-return": {
+    key: "cash-on-cash-return",
+    title: "Calculator cash-on-cash return",
+    slug: "calculator-cash-on-cash-return",
+    categorySlug: "imobiliare",
+    summary:
+      "Compara fluxul anual de numerar cu banii proprii investiti intr-o proprietate pentru a estima randamentul cash-on-cash.",
+    formulaName: "Cash-on-cash return",
+    formulaExpression: "CoC = flux net anual / capital propriu investit",
+    formulaDescription:
+      "Calculatorul raporteaza fluxul net anual la banii proprii blocati in achizitie, renovare si costuri initiale.",
+    howToSteps: [
+      "Introdu fluxul net anual estimat dupa costuri.",
+      "Introdu capitalul propriu investit in proiect.",
+      "Citeste randamentul cash-on-cash si echivalentul lunar al fluxului.",
+    ],
+    inputs: [
+      {
+        name: "annualNetCashFlow",
+        label: "Flux net anual",
+        type: "number",
+        unit: "lei/an",
+        min: -100000000,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 18500,
+      },
+      {
+        name: "cashInvested",
+        label: "Capital propriu investit",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 170000,
+      },
+    ],
+    outputs: [
+      { name: "cashOnCashReturn", label: "Cash-on-cash return", unit: "%", decimals: 2 },
+      { name: "monthlyCashFlow", label: "Flux net lunar", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const annualNetCashFlow = parseNumber(values.annualNetCashFlow);
+      const cashInvested = Math.max(parseNumber(values.cashInvested), 0.01);
+      return {
+        cashOnCashReturn: round((annualNetCashFlow / cashInvested) * 100, 2),
+        monthlyCashFlow: round(annualNetCashFlow / 12, 2),
+      };
+    },
+  },
+  "vacancy-loss": {
+    key: "vacancy-loss",
+    title: "Calculator pierdere din vacanta",
+    slug: "calculator-pierdere-din-vacanta-la-inchiriere",
+    categorySlug: "imobiliare",
+    summary:
+      "Estimeaza cat venit se pierde anual din lunile sau procentele de neocupare ale unei proprietati de inchiriat.",
+    formulaName: "Pierdere din vacanta",
+    formulaExpression:
+      "Pierdere anuala = chirie anuala potentiala x rata de neocupare",
+    formulaDescription:
+      "Calculatorul transforma rata de neocupare intr-o pierdere anuala usor de comparat cu randamentul sau cu costurile fixe ale proprietatii.",
+    howToSteps: [
+      "Introdu chiria lunara potentiala.",
+      "Introdu rata de neocupare estimata.",
+      "Citeste pierderea anuala si chiria efectiv colectata.",
+    ],
+    inputs: [
+      {
+        name: "monthlyRent",
+        label: "Chirie lunara potentiala",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3200,
+      },
+      {
+        name: "vacancyRate",
+        label: "Rata de neocupare",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 8,
+      },
+    ],
+    outputs: [
+      {
+        name: "annualVacancyLoss",
+        label: "Pierdere anuala",
+        unit: "lei/an",
+        decimals: 2,
+      },
+      {
+        name: "collectedAnnualRent",
+        label: "Chirie anuala colectata",
+        unit: "lei/an",
+        decimals: 2,
+      },
+    ],
+    compute: (values) => {
+      const monthlyRent = parseNumber(values.monthlyRent);
+      const vacancyRate = parseNumber(values.vacancyRate);
+      const annualPotentialRent = monthlyRent * 12;
+      const annualVacancyLoss = annualPotentialRent * (vacancyRate / 100);
+      return {
+        annualVacancyLoss: round(annualVacancyLoss, 2),
+        collectedAnnualRent: round(annualPotentialRent - annualVacancyLoss, 2),
+      };
+    },
+  },
+  "rent-increase": {
+    key: "rent-increase",
+    title: "Calculator crestere chirie",
+    slug: "calculator-crestere-chirie",
+    categorySlug: "imobiliare",
+    summary:
+      "Proiecteaza cum se schimba chiria lunara in timp cand aplici un ritm anual de crestere.",
+    formulaName: "Crestere chirie",
+    formulaExpression: "Chirie viitoare = chirie curenta x (1 + crestere)^ani",
+    formulaDescription:
+      "Calculatorul foloseste o crestere anuala compusa pentru a arata cum evolueaza chiria intr-un interval de timp ales.",
+    howToSteps: [
+      "Introdu chiria lunara curenta.",
+      "Introdu cresterea anuala si numarul de ani.",
+      "Citeste chiria lunara proiectata si cresterea absoluta.",
+    ],
+    inputs: [
+      {
+        name: "currentRent",
+        label: "Chirie curenta",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 2800,
+      },
+      {
+        name: "annualIncreasePercent",
+        label: "Crestere anuala",
+        type: "number",
+        unit: "%",
+        min: -50,
+        max: 200,
+        step: 0.1,
+        required: true,
+        defaultValue: 4,
+      },
+      {
+        name: "years",
+        label: "Ani",
+        type: "number",
+        unit: "ani",
+        min: 1,
+        max: 50,
+        step: 1,
+        required: true,
+        defaultValue: 5,
+      },
+    ],
+    outputs: [
+      { name: "projectedRent", label: "Chirie proiectata", unit: "lei/luna", decimals: 2 },
+      { name: "increaseAmount", label: "Crestere absoluta", unit: "lei/luna", decimals: 2 },
+    ],
+    compute: (values) => {
+      const currentRent = parseNumber(values.currentRent);
+      const annualIncreasePercent = parseNumber(values.annualIncreasePercent) / 100;
+      const years = Math.max(parseNumber(values.years), 1);
+      const projectedRent = currentRent * (1 + annualIncreasePercent) ** years;
+      return {
+        projectedRent: round(projectedRent, 2),
+        increaseAmount: round(projectedRent - currentRent, 2),
+      };
+    },
+  },
+  "property-flip-margin": {
+    key: "property-flip-margin",
+    title: "Calculator marja flip imobiliar",
+    slug: "calculator-marja-flip-imobiliar",
+    categorySlug: "imobiliare",
+    summary:
+      "Compara costul total al unui proiect de revanzare cu pretul de iesire pentru a estima profitul si marja.",
+    formulaName: "Marja flip imobiliar",
+    formulaExpression: "Profit = pret vanzare - cost total; Marja = profit / pret vanzare",
+    formulaDescription:
+      "Calculatorul aduna pretul de achizitie, renovarea si costurile de detinere pentru a vedea ce ramane la vanzare.",
+    howToSteps: [
+      "Introdu pretul de achizitie, renovarea si costurile de detinere.",
+      "Introdu pretul de vanzare estimat.",
+      "Citeste costul total, profitul si marja proiectului.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret achizitie",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 400000,
+      },
+      {
+        name: "renovationCost",
+        label: "Cost renovare",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 70000,
+      },
+      {
+        name: "holdingCosts",
+        label: "Costuri detinere",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 18000,
+      },
+      {
+        name: "salePrice",
+        label: "Pret vanzare",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 560000,
+      },
+    ],
+    outputs: [
+      { name: "totalCost", label: "Cost total", unit: "lei", decimals: 2 },
+      { name: "profit", label: "Profit estimat", unit: "lei", decimals: 2 },
+      { name: "marginPercent", label: "Marja", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = parseNumber(values.purchasePrice);
+      const renovationCost = parseNumber(values.renovationCost);
+      const holdingCosts = parseNumber(values.holdingCosts);
+      const salePrice = Math.max(parseNumber(values.salePrice), 0.01);
+      const totalCost = purchasePrice + renovationCost + holdingCosts;
+      const profit = salePrice - totalCost;
+      return {
+        totalCost: round(totalCost, 2),
+        profit: round(profit, 2),
+        marginPercent: round((profit / salePrice) * 100, 2),
+      };
+    },
+  },
+  "property-management-fee": {
+    key: "property-management-fee",
+    title: "Calculator cost administrare proprietate",
+    slug: "calculator-cost-administrare-proprietate",
+    categorySlug: "imobiliare",
+    summary:
+      "Estimeaza costul administrarii unei proprietati de inchiriat pornind de la chirie, comision si costurile fixe de operare.",
+    formulaName: "Cost administrare proprietate",
+    formulaExpression: "Cost administrare = chirie x comision + cost fix",
+    formulaDescription:
+      "Calculatorul aduna comisionul variabil aplicat la chirie cu costurile fixe de administrare pentru a estima costul anual.",
+    howToSteps: [
+      "Introdu chiria lunara estimata si procentul de administrare.",
+      "Adauga eventualele costuri fixe lunare.",
+      "Citeste costul lunar si anual al administrarii.",
+    ],
+    inputs: [
+      {
+        name: "monthlyRent",
+        label: "Chirie lunara",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3000,
+      },
+      {
+        name: "managementPercent",
+        label: "Comision administrare",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 8,
+      },
+      {
+        name: "monthlyFixedAdmin",
+        label: "Cost fix lunar",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 120,
+      },
+    ],
+    outputs: [
+      { name: "monthlyManagementCost", label: "Cost lunar", unit: "lei/luna", decimals: 2 },
+      { name: "annualManagementCost", label: "Cost anual", unit: "lei/an", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyRent = parseNumber(values.monthlyRent);
+      const managementPercent = parseNumber(values.managementPercent);
+      const monthlyFixedAdmin = parseNumber(values.monthlyFixedAdmin);
+      const monthlyManagementCost = monthlyRent * (managementPercent / 100) + monthlyFixedAdmin;
+      return {
+        monthlyManagementCost: round(monthlyManagementCost, 2),
+        annualManagementCost: round(monthlyManagementCost * 12, 2),
+      };
+    },
+  },
+  "closing-cost-share": {
+    key: "closing-cost-share",
+    title: "Calculator pondere costuri inchidere",
+    slug: "calculator-pondere-costuri-inchidere",
+    categorySlug: "imobiliare",
+    summary:
+      "Arata ce pondere au costurile de inchidere in pretul proprietatii si cat capital total trebuie alocat la start.",
+    formulaName: "Pondere costuri inchidere",
+    formulaExpression:
+      "Pondere = costuri inchidere / pret proprietate; total initial = pret + costuri",
+    formulaDescription:
+      "Calculatorul transforma costurile de inchidere intr-o pondere usor de comparat intre scenarii si arata capitalul initial total.",
+    howToSteps: [
+      "Introdu pretul proprietatii si costurile de inchidere estimate.",
+      "Citeste ponderea lor in pret si suma totala alocata la start.",
+      "Compara mai multe scenarii daca ai variante diferite de finantare sau tranzactie.",
+    ],
+    inputs: [
+      {
+        name: "purchasePrice",
+        label: "Pret proprietate",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 480000,
+      },
+      {
+        name: "closingCosts",
+        label: "Costuri inchidere",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 22000,
+      },
+    ],
+    outputs: [
+      { name: "closingCostShare", label: "Pondere costuri", unit: "%", decimals: 2 },
+      { name: "totalInitialCost", label: "Cost initial total", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
+      const closingCosts = parseNumber(values.closingCosts);
+      return {
+        closingCostShare: round((closingCosts / purchasePrice) * 100, 2),
+        totalInitialCost: round(purchasePrice + closingCosts, 2),
+      };
+    },
+  },
+  "room-rental-income": {
+    key: "room-rental-income",
+    title: "Calculator venit inchiriere pe camera",
+    slug: "calculator-venit-inchiriere-pe-camera",
+    categorySlug: "imobiliare",
+    summary:
+      "Estimeaza venitul lunar si anual cand inchiriezi pe camera, pornind de la numarul de camere, chiria per camera si gradul de ocupare.",
+    formulaName: "Venit inchiriere pe camera",
+    formulaExpression:
+      "Venit lunar = camere x chirie/camera x ocupare; venit anual = venit lunar x 12",
+    formulaDescription:
+      "Calculatorul foloseste numarul de camere si gradul de ocupare pentru a aproxima venitul posibil din inchirierea pe camera.",
+    howToSteps: [
+      "Introdu numarul de camere inchiriate si chiria lunara per camera.",
+      "Introdu gradul de ocupare mediu.",
+      "Citeste venitul lunar si anual estimat.",
+    ],
+    inputs: [
+      {
+        name: "roomsRented",
+        label: "Camere inchiriate",
+        type: "number",
+        unit: "camere",
+        min: 1,
+        max: 30,
+        step: 1,
+        required: true,
+        defaultValue: 3,
+      },
+      {
+        name: "rentPerRoom",
+        label: "Chirie / camera",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 1100,
+      },
+      {
+        name: "occupancyPercent",
+        label: "Grad ocupare",
+        type: "number",
+        unit: "%",
+        min: 0,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 92,
+      },
+    ],
+    outputs: [
+      { name: "monthlyIncome", label: "Venit lunar", unit: "lei/luna", decimals: 2 },
+      { name: "annualIncome", label: "Venit anual", unit: "lei/an", decimals: 2 },
+    ],
+    compute: (values) => {
+      const roomsRented = Math.max(parseNumber(values.roomsRented), 1);
+      const rentPerRoom = parseNumber(values.rentPerRoom);
+      const occupancyPercent = parseNumber(values.occupancyPercent) / 100;
+      const monthlyIncome = roomsRented * rentPerRoom * occupancyPercent;
+      return {
+        monthlyIncome: round(monthlyIncome, 2),
+        annualIncome: round(monthlyIncome * 12, 2),
+      };
+    },
+  },
+  "service-charge-budget": {
+    key: "service-charge-budget",
+    title: "Calculator costuri recurente proprietate",
+    slug: "calculator-costuri-recurente-proprietate",
+    categorySlug: "imobiliare",
+    summary:
+      "Aduna administrarea, reparatiile si asigurarea pentru a vedea costul anual recurent al unei proprietati.",
+    formulaName: "Costuri recurente proprietate",
+    formulaExpression:
+      "Cost anual = administrare lunara x 12 + reparatii anuale + asigurare anuala",
+    formulaDescription:
+      "Calculatorul este util pentru bugetarea costurilor recurente atunci cand compari randamentul sau presiunea pe cash-flow.",
+    howToSteps: [
+      "Introdu costul lunar de administrare.",
+      "Adauga reparatiile si asigurarea anuala.",
+      "Citeste costul anual total si media lunara aferenta.",
+    ],
+    inputs: [
+      {
+        name: "monthlyServiceCharge",
+        label: "Administrare lunara",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 1000000,
+        step: 1,
+        required: true,
+        defaultValue: 260,
+      },
+      {
+        name: "annualRepairs",
+        label: "Reparatii anuale",
+        type: "number",
+        unit: "lei/an",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 3500,
+      },
+      {
+        name: "annualInsurance",
+        label: "Asigurare anuala",
+        type: "number",
+        unit: "lei/an",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 850,
+      },
+    ],
+    outputs: [
+      { name: "annualTotal", label: "Cost anual", unit: "lei/an", decimals: 2 },
+      { name: "monthlyAverage", label: "Medie lunara", unit: "lei/luna", decimals: 2 },
+    ],
+    compute: (values) => {
+      const monthlyServiceCharge = parseNumber(values.monthlyServiceCharge);
+      const annualRepairs = parseNumber(values.annualRepairs);
+      const annualInsurance = parseNumber(values.annualInsurance);
+      const annualTotal = monthlyServiceCharge * 12 + annualRepairs + annualInsurance;
+      return {
+        annualTotal: round(annualTotal, 2),
+        monthlyAverage: round(annualTotal / 12, 2),
+      };
+    },
+  },
+  "rental-break-even-occupancy": {
+    key: "rental-break-even-occupancy",
+    title: "Calculator grad ocupare break-even",
+    slug: "calculator-grad-ocupare-break-even",
+    categorySlug: "imobiliare",
+    summary:
+      "Arata ce grad minim de ocupare iti trebuie ca sa acoperi costurile fixe lunare ale unei proprietati de inchiriat.",
+    formulaName: "Grad ocupare break-even",
+    formulaExpression:
+      "Ocupare break-even = costuri fixe lunare / venit potential lunar",
+    formulaDescription:
+      "Calculatorul transforma costurile fixe si chiria potentiala intr-un prag minim de ocupare util pentru scenarii prudente.",
+    howToSteps: [
+      "Introdu costurile fixe lunare ale proprietatii.",
+      "Introdu venitul lunar potential la ocupare completa.",
+      "Citeste pragul minim de ocupare si bufferul ramas la ocupare completa.",
+    ],
+    inputs: [
+      {
+        name: "monthlyFixedCosts",
+        label: "Costuri fixe lunare",
+        type: "number",
+        unit: "lei/luna",
+        min: 0,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 2400,
+      },
+      {
+        name: "monthlyPotentialRent",
+        label: "Venit potential lunar",
+        type: "number",
+        unit: "lei/luna",
+        min: 0.01,
+        max: 10000000,
+        step: 1,
+        required: true,
+        defaultValue: 3600,
+      },
+    ],
+    outputs: [
+      {
+        name: "breakEvenOccupancyPercent",
+        label: "Ocupare break-even",
+        unit: "%",
+        decimals: 2,
+      },
+      {
+        name: "monthlyBufferAtFullOccupancy",
+        label: "Buffer la ocupare completa",
+        unit: "lei/luna",
+        decimals: 2,
+      },
+    ],
+    compute: (values) => {
+      const monthlyFixedCosts = parseNumber(values.monthlyFixedCosts);
+      const monthlyPotentialRent = Math.max(parseNumber(values.monthlyPotentialRent), 0.01);
+      return {
+        breakEvenOccupancyPercent: round(
+          (monthlyFixedCosts / monthlyPotentialRent) * 100,
+          2
+        ),
+        monthlyBufferAtFullOccupancy: round(
+          monthlyPotentialRent - monthlyFixedCosts,
+          2
+        ),
       };
     },
   },

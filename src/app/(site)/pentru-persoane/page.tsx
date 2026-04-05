@@ -11,7 +11,7 @@ export const revalidate = 900;
 export const metadata = buildMetadata({
   title: "Calculatoare online pentru persoane",
   description:
-    "Hub pentru persoane: fitness, auto, finante personale, energie si conversii utile, cu calculatoare explicate si ghiduri care ajuta la decizie.",
+    "Hub pentru persoane: fitness, auto, finante personale, energie, imobiliare si conversii utile, cu calculatoare explicate si ghiduri care ajuta la decizie.",
   path: "/pentru-persoane",
 });
 
@@ -24,6 +24,7 @@ const categorySlugs = new Set([
   "finante",
   "salarii-si-taxe",
   "credite-si-economii",
+  "imobiliare",
 ]);
 
 export default async function ConsumerHubPage() {
@@ -89,6 +90,13 @@ export default async function ConsumerHubPage() {
           description:
             "Cand compari un credit, un avans sau un obiectiv mare, noua verticala credite si economii te ajuta sa pui scenariile in aceeasi imagine.",
           href: "/calculatoare/credite-si-economii",
+        },
+        {
+          label: "Imobiliare",
+          title: "Compara pretul pe mp, bugetul total si chirie versus cumparare",
+          description:
+            "Verticala imobiliare leaga achizitia, costul lunar, renovarea si randamentul intr-un traseu mai bun de decizie pentru locuire sau investitie mica.",
+          href: "/calculatoare/imobiliare",
         },
       ]}
       categories={categories.filter((category) => categorySlugs.has(category.slug))}
