@@ -33,6 +33,9 @@ const categoryPlaybooks: Record<
     audience: string;
     scenarios: string[];
     nextHub?: { label: string; href: string };
+    priorityQuestions?: string[];
+    moneyAngles?: string[];
+    quickWins?: string[];
   }
 > = {
   "nutritie-si-antrenament": {
@@ -70,6 +73,22 @@ const categoryPlaybooks: Record<
       "Pentru climatizare si incalzire, valideaza necesarul de BTU sau kW inainte sa compari oferte sau echipamente.",
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+    priorityQuestions: [
+      "Cat ma costa factura de curent intr-un scenariu realist?",
+      "Cate panouri imi trebuie pentru consumul actual al casei?",
+      "In cati ani se amortizeaza investitia in fotovoltaice?",
+      "Ce BTU sau ce putere de incalzire are sens pentru locuinta mea?",
+    ],
+    moneyAngles: [
+      "Factura curenta versus economie potentiala anuala",
+      "Investitie initiala versus amortizare prudenta",
+      "Consum teoretic versus consum real din casa",
+    ],
+    quickWins: [
+      "Porneste din factura lunara reala, nu din impresia generala despre consum.",
+      "Compara un scenariu prudent si unul optimist pentru productie si amortizare.",
+      "Leaga alegerea echipamentului de costul anual, nu doar de puterea afisata.",
+    ],
   },
   constructii: {
     audience: "Pentru persoane, echipe mici si firme care estimeaza materiale sau volume de lucru.",
@@ -115,6 +134,22 @@ const categoryPlaybooks: Record<
       "Continua cu ghidurile cand ai nevoie de context despre cost total, refinantare, fond de urgenta sau leasing versus credit.",
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+    priorityQuestions: [
+      "Ce rata lunara imi permit fara sa blochez bugetul?",
+      "Care este costul total real al creditului, nu doar rata?",
+      "Cand merita refinantarea si cand doar mut costul in alta forma?",
+      "In cat timp ajung la avansul sau fondul de urgenta de care am nevoie?",
+    ],
+    moneyAngles: [
+      "Rata lunara versus cost total pe toata perioada",
+      "Scenariu confortabil versus scenariu fragil la orice crestere de cost",
+      "Obiectiv de economisire versus disciplina lunara realista",
+    ],
+    quickWins: [
+      "Nu compara doua credite doar prin rata lunara; pune langa ele si costul total.",
+      "Testeaza mereu un scenariu cu buffer, nu doar varianta ideala.",
+      "Leaga fiecare simulare de lichiditate si de obiectivul real din urmatoarele 12-24 luni.",
+    ],
   },
   imobiliare: {
     audience:
@@ -125,6 +160,22 @@ const categoryPlaybooks: Record<
       "Daca decizia are componenta investitionala, leaga randamentul de vacanta, administrare si costurile recurente reale.",
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+    priorityQuestions: [
+      "Cat ma costa cu adevarat achizitia, nu doar pretul de lista?",
+      "Merita chirie sau cumparare in scenariul meu actual?",
+      "Ce randament imi ramane dupa costurile reale de exploatare?",
+      "Cat de sensibila este investitia la neocupare, renovare si costuri de inchidere?",
+    ],
+    moneyAngles: [
+      "Pret pe mp versus cost total de intrare",
+      "Locuire proprie versus investitie mica",
+      "Randament brut versus randament care supravietuieste dupa costuri",
+    ],
+    quickWins: [
+      "Separa costurile initiale de cele recurente inainte sa tragi concluzia.",
+      "Compara cel putin un scenariu prudent pentru chirie, neocupare si renovare.",
+      "Nu trata pretul de lista ca si cum ar fi costul total al deciziei imobiliare.",
+    ],
   },
 };
 
@@ -262,6 +313,52 @@ export default async function CategoryPage({ params }: { params: Params }) {
                 <p className="text-sm leading-7 text-slate-700">{scenario}</p>
               </article>
             ))}
+          </div>
+        </section>
+      ) : null}
+
+      {playbook?.priorityQuestions?.length || playbook?.moneyAngles?.length || playbook?.quickWins?.length ? (
+        <section className="mt-14 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+          <div>
+            <p className="section-kicker">Intentie mare</p>
+            <h2 className="mt-4 section-title">Aici se joaca traficul bun: intrebarile pe care utilizatorii le cauta cand au deja o decizie reala in fata.</h2>
+            <p className="mt-5 section-copy max-w-md">
+              Pentru categoriile cele mai puternice, nu vrem doar listare. Vrem un hub care raspunde clar la intrebarile cu miza, scoate in fata comparatiile utile si leaga calculatorul de urmatorul pas practic.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {playbook.priorityQuestions?.length ? (
+              <article className="rounded-[1.6rem] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.22)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">Intrebari prioritare</p>
+                <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+                  {playbook.priorityQuestions.map((question) => (
+                    <li key={question}>• {question}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+
+            {playbook.moneyAngles?.length ? (
+              <article className="rounded-[1.6rem] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.22)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-700">Comparatii care conteaza</p>
+                <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+                  {playbook.moneyAngles.map((angle) => (
+                    <li key={angle}>• {angle}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+
+            {playbook.quickWins?.length ? (
+              <article className="rounded-[1.6rem] border border-slate-200 bg-white/95 p-5 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.22)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-sky-700">Ce faci prima data</p>
+                <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+                  {playbook.quickWins.map((step) => (
+                    <li key={step}>• {step}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
           </div>
         </section>
       ) : null}
