@@ -53,7 +53,17 @@ export type CalculatorKey =
   | "retirement-savings"
   | "goal-timeline"
   | "lease-vs-loan"
-  | "down-payment";
+  | "down-payment"
+  | "roas"
+  | "break-even-roas"
+  | "aov"
+  | "conversion-rate"
+  | "cpl"
+  | "cac"
+  | "target-revenue"
+  | "gross-profit"
+  | "net-profit"
+  | "inventory-turnover";
 
 export type CalculatorInputOption = {
   label: string;
@@ -3661,6 +3671,539 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       return {
         downPaymentAmount: round(downPaymentAmount, 2),
         financedAmount: round(purchasePrice - downPaymentAmount, 2),
+      };
+    },
+  },
+  roas: {
+    key: "roas",
+    title: "Calculator ROAS",
+    slug: "calculator-roas",
+    categorySlug: "business",
+    summary:
+      "Calculeaza ROAS-ul pornind de la bugetul de advertising si venitul atribuit campaniei.",
+    formulaName: "ROAS",
+    formulaExpression: "ROAS = venit atribuit / buget ads",
+    formulaDescription:
+      "ROAS-ul arata de cate ori recuperezi bugetul de advertising prin venitul generat de campanie.",
+    howToSteps: [
+      "Introdu bugetul de advertising consumat.",
+      "Introdu venitul atribuit campaniei.",
+      "Citeste multiplicatorul ROAS si venitul generat pentru fiecare leu investit.",
+    ],
+    inputs: [
+      {
+        name: "adSpend",
+        label: "Buget ads",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 12000,
+      },
+      {
+        name: "attributedRevenue",
+        label: "Venit atribuit",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 54000,
+      },
+    ],
+    outputs: [
+      { name: "roas", label: "ROAS", decimals: 2 },
+      {
+        name: "revenuePerLeu",
+        label: "Venit per 1 leu ads",
+        unit: "lei",
+        decimals: 2,
+      },
+    ],
+    compute: (values) => {
+      const adSpend = Math.max(parseNumber(values.adSpend), 0.01);
+      const attributedRevenue = parseNumber(values.attributedRevenue);
+      const roas = attributedRevenue / adSpend;
+      return {
+        roas: round(roas, 2),
+        revenuePerLeu: round(roas, 2),
+      };
+    },
+  },
+  "break-even-roas": {
+    key: "break-even-roas",
+    title: "Calculator break-even ROAS",
+    slug: "calculator-break-even-roas",
+    categorySlug: "business",
+    summary:
+      "Arata ROAS-ul minim necesar pentru a acoperi costul variabil si pentru a nu ramane pe pierdere.",
+    formulaName: "Break-even ROAS",
+    formulaExpression: "Break-even ROAS = 100 / marja bruta (%)",
+    formulaDescription:
+      "ROAS-ul de break-even porneste din marja bruta disponibila pentru marketing si arata pragul minim la care campania nu mai pierde bani.",
+    howToSteps: [
+      "Introdu marja bruta disponibila dupa costurile directe.",
+      "Citeste ROAS-ul minim necesar pentru break-even.",
+      "Compara rezultatul cu ROAS-ul real al campaniilor tale.",
+    ],
+    inputs: [
+      {
+        name: "grossMarginPercent",
+        label: "Marja bruta disponibila",
+        type: "number",
+        unit: "%",
+        min: 0.1,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 35,
+      },
+    ],
+    outputs: [
+      { name: "breakEvenRoas", label: "Break-even ROAS", decimals: 2 },
+      { name: "adBudgetShare", label: "Pondere maxima ads", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const grossMarginPercent = Math.max(parseNumber(values.grossMarginPercent), 0.1);
+      return {
+        breakEvenRoas: round(100 / grossMarginPercent, 2),
+        adBudgetShare: round(grossMarginPercent, 2),
+      };
+    },
+  },
+  aov: {
+    key: "aov",
+    title: "Calculator AOV",
+    slug: "calculator-aov",
+    categorySlug: "business",
+    summary:
+      "Calculeaza valoarea medie a comenzii pornind de la venit si numarul total de comenzi.",
+    formulaName: "Average Order Value",
+    formulaExpression: "AOV = venit total / numar comenzi",
+    formulaDescription:
+      "AOV-ul arata cati bani aduce in medie o comanda si ajuta la interpretarea mai buna a funnel-ului comercial.",
+    howToSteps: [
+      "Introdu venitul total din perioada analizata.",
+      "Introdu numarul total de comenzi.",
+      "Citeste valoarea medie pe comanda.",
+    ],
+    inputs: [
+      {
+        name: "revenue",
+        label: "Venit total",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 180000,
+      },
+      {
+        name: "orders",
+        label: "Numar comenzi",
+        type: "number",
+        unit: "comenzi",
+        min: 1,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 1200,
+      },
+    ],
+    outputs: [{ name: "aov", label: "AOV", unit: "lei", decimals: 2 }],
+    compute: (values) => {
+      const revenue = parseNumber(values.revenue);
+      const orders = Math.max(parseNumber(values.orders), 1);
+      return {
+        aov: round(revenue / orders, 2),
+      };
+    },
+  },
+  "conversion-rate": {
+    key: "conversion-rate",
+    title: "Calculator rata de conversie",
+    slug: "calculator-rata-de-conversie",
+    categorySlug: "business",
+    summary:
+      "Calculeaza rata de conversie pornind de la vizitatori si conversii.",
+    formulaName: "Rata de conversie",
+    formulaExpression: "Conversion rate (%) = conversii / vizitatori x 100",
+    formulaDescription:
+      "Rata de conversie arata ce procent din trafic face pasul dorit: comanda, lead sau alta actiune.",
+    howToSteps: [
+      "Introdu numarul total de vizitatori sau sesiuni.",
+      "Introdu numarul de conversii.",
+      "Citeste procentul de conversie.",
+    ],
+    inputs: [
+      {
+        name: "visitors",
+        label: "Vizitatori",
+        type: "number",
+        unit: "vizitatori",
+        min: 1,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 25000,
+      },
+      {
+        name: "conversions",
+        label: "Conversii",
+        type: "number",
+        unit: "conversii",
+        min: 0,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 650,
+      },
+    ],
+    outputs: [
+      { name: "conversionRate", label: "Rata de conversie", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const visitors = Math.max(parseNumber(values.visitors), 1);
+      const conversions = parseNumber(values.conversions);
+      return {
+        conversionRate: round((conversions / visitors) * 100, 2),
+      };
+    },
+  },
+  cpl: {
+    key: "cpl",
+    title: "Calculator CPL",
+    slug: "calculator-cpl",
+    categorySlug: "business",
+    summary:
+      "Calculeaza costul per lead pornind de la bugetul de marketing si numarul de lead-uri generate.",
+    formulaName: "Cost per lead",
+    formulaExpression: "CPL = cost marketing / lead-uri",
+    formulaDescription:
+      "CPL-ul arata cat platesti in medie pentru un lead si este util cand compari canale sau campanii.",
+    howToSteps: [
+      "Introdu costul total al campaniei.",
+      "Introdu lead-urile generate.",
+      "Citeste costul per lead.",
+    ],
+    inputs: [
+      {
+        name: "marketingCost",
+        label: "Cost marketing",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 8500,
+      },
+      {
+        name: "leads",
+        label: "Lead-uri",
+        type: "number",
+        unit: "lead-uri",
+        min: 1,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 210,
+      },
+    ],
+    outputs: [{ name: "cpl", label: "CPL", unit: "lei", decimals: 2 }],
+    compute: (values) => {
+      const marketingCost = parseNumber(values.marketingCost);
+      const leads = Math.max(parseNumber(values.leads), 1);
+      return {
+        cpl: round(marketingCost / leads, 2),
+      };
+    },
+  },
+  cac: {
+    key: "cac",
+    title: "Calculator CAC",
+    slug: "calculator-cac",
+    categorySlug: "business",
+    summary:
+      "Calculeaza costul de achizitie al unui client pornind de la costurile comerciale si numarul de clienti noi.",
+    formulaName: "Customer acquisition cost",
+    formulaExpression: "CAC = cost total achizitie / clienti noi",
+    formulaDescription:
+      "CAC-ul arata cat te costa in medie sa transformi prospectii in clienti noi intr-o perioada.",
+    howToSteps: [
+      "Introdu costurile de marketing si vanzari atribuite perioadei.",
+      "Introdu numarul de clienti noi.",
+      "Citeste costul mediu de achizitie per client.",
+    ],
+    inputs: [
+      {
+        name: "acquisitionCost",
+        label: "Cost total achizitie",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 42000,
+      },
+      {
+        name: "newCustomers",
+        label: "Clienti noi",
+        type: "number",
+        unit: "clienti",
+        min: 1,
+        max: 100000000,
+        step: 1,
+        required: true,
+        defaultValue: 140,
+      },
+    ],
+    outputs: [{ name: "cac", label: "CAC", unit: "lei", decimals: 2 }],
+    compute: (values) => {
+      const acquisitionCost = parseNumber(values.acquisitionCost);
+      const newCustomers = Math.max(parseNumber(values.newCustomers), 1);
+      return {
+        cac: round(acquisitionCost / newCustomers, 2),
+      };
+    },
+  },
+  "target-revenue": {
+    key: "target-revenue",
+    title: "Calculator venit tinta",
+    slug: "calculator-venit-tinta",
+    categorySlug: "business",
+    summary:
+      "Estimeaza venitul necesar pentru a acoperi costurile fixe si profitul tinta la o anumita marja.",
+    formulaName: "Venit tinta",
+    formulaExpression: "Venit tinta = (costuri fixe + profit tinta) / marja bruta",
+    formulaDescription:
+      "Calculatorul porneste din marja disponibila si arata ce venit trebuie atins pentru a sustine costurile si obiectivul de profit.",
+    howToSteps: [
+      "Introdu costurile fixe lunare sau ale perioadei.",
+      "Introdu profitul tinta dorit.",
+      "Introdu marja bruta disponibila.",
+    ],
+    inputs: [
+      {
+        name: "fixedCosts",
+        label: "Costuri fixe",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 60000,
+      },
+      {
+        name: "targetProfit",
+        label: "Profit tinta",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 30000,
+      },
+      {
+        name: "grossMarginPercent",
+        label: "Marja bruta",
+        type: "number",
+        unit: "%",
+        min: 0.1,
+        max: 100,
+        step: 0.1,
+        required: true,
+        defaultValue: 40,
+      },
+    ],
+    outputs: [{ name: "targetRevenue", label: "Venit tinta", unit: "lei", decimals: 2 }],
+    compute: (values) => {
+      const fixedCosts = parseNumber(values.fixedCosts);
+      const targetProfit = parseNumber(values.targetProfit);
+      const grossMarginPercent = Math.max(parseNumber(values.grossMarginPercent), 0.1);
+      return {
+        targetRevenue: round((fixedCosts + targetProfit) / (grossMarginPercent / 100), 2),
+      };
+    },
+  },
+  "gross-profit": {
+    key: "gross-profit",
+    title: "Calculator profit brut",
+    slug: "calculator-profit-brut",
+    categorySlug: "business",
+    summary:
+      "Calculeaza profitul brut si marja bruta pornind de la venit si costuri directe.",
+    formulaName: "Profit brut",
+    formulaExpression: "Profit brut = venit - costuri directe",
+    formulaDescription:
+      "Profitul brut arata ce ramane dupa ce scazi costurile direct legate de livrarea produsului sau serviciului.",
+    howToSteps: [
+      "Introdu venitul din perioada analizata.",
+      "Introdu costurile directe aferente.",
+      "Citeste profitul brut si marja bruta.",
+    ],
+    inputs: [
+      {
+        name: "revenue",
+        label: "Venit",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 150000,
+      },
+      {
+        name: "directCosts",
+        label: "Costuri directe",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 90000,
+      },
+    ],
+    outputs: [
+      { name: "grossProfit", label: "Profit brut", unit: "lei", decimals: 2 },
+      { name: "grossMargin", label: "Marja bruta", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const revenue = Math.max(parseNumber(values.revenue), 0.01);
+      const directCosts = parseNumber(values.directCosts);
+      const grossProfit = revenue - directCosts;
+      return {
+        grossProfit: round(grossProfit, 2),
+        grossMargin: round((grossProfit / revenue) * 100, 2),
+      };
+    },
+  },
+  "net-profit": {
+    key: "net-profit",
+    title: "Calculator profit net",
+    slug: "calculator-profit-net",
+    categorySlug: "business",
+    summary:
+      "Calculeaza profitul net orientativ pornind de la venit si costul total al perioadei.",
+    formulaName: "Profit net",
+    formulaExpression: "Profit net = venit total - cost total",
+    formulaDescription:
+      "Calculatorul arata ce ramane dupa ce scazi toate costurile incluse in scenariul analizat.",
+    howToSteps: [
+      "Introdu venitul total.",
+      "Introdu costurile totale ale perioadei.",
+      "Citeste profitul net si marja neta orientativa.",
+    ],
+    inputs: [
+      {
+        name: "revenue",
+        label: "Venit",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 150000,
+      },
+      {
+        name: "totalCosts",
+        label: "Cost total",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 118000,
+      },
+    ],
+    outputs: [
+      { name: "netProfit", label: "Profit net", unit: "lei", decimals: 2 },
+      { name: "netMargin", label: "Marja neta", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const revenue = Math.max(parseNumber(values.revenue), 0.01);
+      const totalCosts = parseNumber(values.totalCosts);
+      const netProfit = revenue - totalCosts;
+      return {
+        netProfit: round(netProfit, 2),
+        netMargin: round((netProfit / revenue) * 100, 2),
+      };
+    },
+  },
+  "inventory-turnover": {
+    key: "inventory-turnover",
+    title: "Calculator rotatie stoc",
+    slug: "calculator-rotatie-stoc",
+    categorySlug: "business",
+    summary:
+      "Calculeaza de cate ori se roteste stocul intr-o perioada pornind de la costul marfii vandute si stocul mediu.",
+    formulaName: "Rotatie stoc",
+    formulaExpression: "Rotatie stoc = cost marfa vanduta / stoc mediu",
+    formulaDescription:
+      "Rotatia stocului arata cat de repede se transforma stocul in vanzari pe durata unei perioade analizate.",
+    howToSteps: [
+      "Introdu costul marfii vandute in perioada analizata.",
+      "Introdu stocul mediu.",
+      "Citeste numarul de rotatii si zilele medii pe stoc.",
+    ],
+    inputs: [
+      {
+        name: "cogs",
+        label: "Cost marfa vanduta",
+        type: "number",
+        unit: "lei",
+        min: 0,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 420000,
+      },
+      {
+        name: "averageInventory",
+        label: "Stoc mediu",
+        type: "number",
+        unit: "lei",
+        min: 0.01,
+        max: 1000000000,
+        step: 1,
+        required: true,
+        defaultValue: 70000,
+      },
+      {
+        name: "daysInPeriod",
+        label: "Zile in perioada",
+        type: "number",
+        unit: "zile",
+        min: 1,
+        max: 366,
+        step: 1,
+        required: true,
+        defaultValue: 30,
+      },
+    ],
+    outputs: [
+      { name: "inventoryTurnover", label: "Rotatie stoc", decimals: 2 },
+      { name: "daysOfInventory", label: "Zile medii pe stoc", unit: "zile", decimals: 2 },
+    ],
+    compute: (values) => {
+      const cogs = parseNumber(values.cogs);
+      const averageInventory = Math.max(parseNumber(values.averageInventory), 0.01);
+      const daysInPeriod = Math.max(parseNumber(values.daysInPeriod), 1);
+      const inventoryTurnover = cogs / averageInventory;
+      return {
+        inventoryTurnover: round(inventoryTurnover, 2),
+        daysOfInventory: round(daysInPeriod / inventoryTurnover, 2),
       };
     },
   },

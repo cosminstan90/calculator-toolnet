@@ -210,6 +210,38 @@ Obiective:
 - legam mai clar zona `finante` de decision support cu intentie mare
 - pregatim un cluster foarte bun pentru monetizare ulterioara prin ads si afiliere
 
+## Batch 07
+
+Lot dedicat clusterului `business` cu focus pe marketing metrics, ecommerce si indicatori comerciali care pot sustine mai tarziu si afilierea pe tool-uri sau servicii.
+
+Calculatoare:
+
+1. `roas`
+2. `break-even-roas`
+3. `aov`
+4. `conversion-rate`
+5. `cpl`
+6. `cac`
+7. `target-revenue`
+8. `gross-profit`
+9. `net-profit`
+10. `inventory-turnover`
+
+Articole suport:
+
+1. `cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul`
+2. `break-even-roas-explicat-pentru-campanii-platite`
+3. `cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele`
+4. `aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel`
+5. `cum-estimezi-targetul-de-venit-si-profitul-real`
+6. `rotatia-stocului-explicata-pentru-ecommerce-si-retail`
+
+Obiective:
+
+- extindem clusterul `business` cu pagini foarte bune pentru intentie comerciala
+- legam performanta de ads, funnel si profit de indicatori usor de explicat
+- pregatim terenul pentru CTA-uri affiliate si pentru pagini de comparatie cu instrumente reale
+
 ## Regula de operare
 
 - `releaseBatch` marcheaza lotul editorial

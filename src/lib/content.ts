@@ -90,6 +90,7 @@ export type CalculatorCategory = {
   summary?: string;
   introContent?: string;
   isFeatured?: boolean;
+  audience: Audience;
   contentBlocks: EditorialBlock[];
   seo?: SeoData;
 };
@@ -361,6 +362,7 @@ const mapCategory = (doc: RawDoc): CalculatorCategory => ({
   summary: asString(doc.summary),
   introContent: asString(doc.introContent),
   isFeatured: Boolean(doc.isFeatured),
+  audience: asAudience(doc.audience),
   contentBlocks: mapContentBlocks(doc.contentBlocks),
   seo: mapSEO(doc),
 });

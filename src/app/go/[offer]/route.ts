@@ -29,8 +29,11 @@ export async function GET(request: Request, context: Context) {
 
   const url = new URL(request.url);
   const sourcePath = sanitizeValue(url.searchParams.get("source"), 512) || "/";
+  const sourceTypeParam = url.searchParams.get("kind");
   const sourceType =
-    url.searchParams.get("kind") === "article" ? "article" : "calculator";
+    sourceTypeParam === "article" || sourceTypeParam === "category"
+      ? sourceTypeParam
+      : "calculator";
   const audienceParam = url.searchParams.get("audience");
   const audience =
     audienceParam === "consumer" || audienceParam === "business"

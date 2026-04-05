@@ -219,6 +219,19 @@ const BATCH_06_CALCULATORS: CalculatorKey[] = [
   "down-payment",
 ];
 
+const BATCH_07_CALCULATORS: CalculatorKey[] = [
+  "roas",
+  "break-even-roas",
+  "aov",
+  "conversion-rate",
+  "cpl",
+  "cac",
+  "target-revenue",
+  "gross-profit",
+  "net-profit",
+  "inventory-turnover",
+];
+
 const BATCH_04_ARTICLES = [
   "cum-calculezi-procentele-corect",
   "procent-din-numar-vs-diferenta-procentuala",
@@ -245,6 +258,15 @@ const BATCH_06_ARTICLES = [
   "cum-iti-construiesti-fondul-de-urgenta-fara-sa-ramai-fara-lichiditati",
   "cum-planifici-economii-pe-termen-lung-pentru-obiective-mari",
   "leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare",
+];
+
+const BATCH_07_ARTICLES = [
+  "cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul",
+  "break-even-roas-explicat-pentru-campanii-platite",
+  "cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele",
+  "aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel",
+  "cum-estimezi-targetul-de-venit-si-profitul-real",
+  "rotatia-stocului-explicata-pentru-ecommerce-si-retail",
 ];
 
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
@@ -299,7 +321,9 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
             ? "batch-05"
             : BATCH_06_CALCULATORS.includes(key)
               ? "batch-06"
-          : "batch-18";
+              : BATCH_07_CALCULATORS.includes(key)
+                ? "batch-07"
+                : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
@@ -351,6 +375,10 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-06";
   }
 
+  if (BATCH_07_ARTICLES.includes(seed.slug)) {
+    return "batch-07";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
@@ -359,6 +387,8 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     ? "batch-04"
     : seed.relatedCategorySlug === "credite-si-economii"
       ? "batch-06"
+      : seed.relatedCategorySlug === "business"
+        ? "batch-07"
     : seed.relatedCategorySlug === "conversii"
       ? "batch-04"
       : "batch-03";
@@ -376,6 +406,7 @@ const calculatorDraftQueue = [
   ...BATCH_04_CALCULATORS,
   ...BATCH_05_CALCULATORS,
   ...BATCH_06_CALCULATORS,
+  ...BATCH_07_CALCULATORS,
 ];
 const articleDraftQueue = [
   ...BATCH_02_ARTICLES,
@@ -383,6 +414,7 @@ const articleDraftQueue = [
   ...BATCH_04_ARTICLES,
   ...BATCH_05_ARTICLES,
   ...BATCH_06_ARTICLES,
+  ...BATCH_07_ARTICLES,
 ];
 
 const defaultPublishingScheduleForCalculator = (
@@ -627,7 +659,7 @@ const homepageSeed = {
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "55", label: "calculatoare disponibile in primele sase loturi" },
+    { value: "65", label: "calculatoare disponibile in primele sapte loturi" },
     { value: "9", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
@@ -1553,6 +1585,166 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedCalculatorKeys: ["credit-affordability", "loan-total-cost", "goal-timeline"],
     relatedArticleSlugs: ["cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul"],
   },
+  roas: {
+    shortDescription: "Masoara de cate ori recuperezi bugetul ads prin venitul atribuit campaniilor.",
+    intro: "Calculatorul ROAS este un punct de plecare excelent cand vrei sa vezi repede daca o campanie aduce suficient venit raportat la bugetul investit.",
+    interpretationNotes: "ROAS-ul nu este acelasi lucru cu profitul. Fara context de marja, taxe, retururi sau costuri operationale, cifra poate arata mai bine decat realitatea.",
+    isFeatured: true,
+    sortOrder: 10,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 12.000 lei buget ads si 54.000 lei venit atribuit, ROAS-ul este 4,5, adica fiecare leu investit aduce 4,5 lei venit.",
+    faq: [
+      { question: "Un ROAS mare inseamna automat campanie buna?", answer: "Nu. Trebuie comparat cu marja, cu costurile de fulfillment si cu obiectivul de profit." },
+      { question: "Pot compara doua campanii cu ROAS diferit?", answer: "Da, dar ideal pe aceeasi perioada si cu aceeasi logica de atribuire." },
+    ],
+    relatedCalculatorKeys: ["break-even-roas", "cac", "target-revenue"],
+    relatedArticleSlugs: ["cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul"],
+  },
+  "break-even-roas": {
+    shortDescription: "Arata ROAS-ul minim de la care campania nu mai pierde bani la marja curenta.",
+    intro: "Calculatorul de break-even ROAS este util cand vrei sa transformi marja bruta intr-un prag concret pentru advertising, nu doar intr-o intuitie vagă.",
+    interpretationNotes: "Daca marja folosita nu include toate costurile relevante, break-even ROAS-ul va parea mai confortabil decat este in realitate.",
+    isFeatured: true,
+    sortOrder: 20,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La o marja disponibila de 35%, break-even ROAS-ul este aproximativ 2,86. Sub pragul asta, campania intra usor pe pierdere.",
+    faq: [
+      { question: "Se aplica si la lead generation?", answer: "Da, daca poti transforma lead-ul in venit sau valoare economica comparabila." },
+      { question: "Este suficient pentru decizii de scalare?", answer: "Nu singur. Merita legat de ROAS real, CAC si viteza de conversie." },
+    ],
+    relatedCalculatorKeys: ["roas", "gross-profit", "target-revenue"],
+    relatedArticleSlugs: ["break-even-roas-explicat-pentru-campanii-platite"],
+  },
+  aov: {
+    shortDescription: "Calculeaza valoarea medie a comenzii si te ajuta sa citesti mai bine performanta comerciala.",
+    intro: "Calculatorul AOV este util cand vrei sa vezi daca cresterea veniturilor vine din mai multe comenzi sau din comenzi mai valoroase.",
+    interpretationNotes: "AOV-ul este mai valoros cand este citit impreuna cu rata de conversie si cu marja, nu separat.",
+    isFeatured: false,
+    sortOrder: 30,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 180.000 lei venit si 1.200 comenzi, valoarea medie a comenzii este 150 lei.",
+    faq: [
+      { question: "AOV mai mare inseamna mereu progres?", answer: "Nu neaparat. Poate veni si din scumpiri, nu doar din mix mai bun sau upsell." },
+      { question: "Cu ce il leg prima data?", answer: "Cu rata de conversie si cu marja produselor vandute." },
+    ],
+    relatedCalculatorKeys: ["conversion-rate", "gross-profit", "roas"],
+    relatedArticleSlugs: ["aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel"],
+  },
+  "conversion-rate": {
+    shortDescription: "Arata ce procent din trafic se transforma in comenzi, lead-uri sau alta actiune relevanta.",
+    intro: "Calculatorul de rata de conversie este util cand vrei sa vezi daca problema este in trafic, in oferta sau in pasii finali ai funnel-ului.",
+    interpretationNotes: "O rata de conversie buna depinde de canal, de intentie si de tipul conversiei. De aceea merita comparata in contexte similare.",
+    isFeatured: false,
+    sortOrder: 40,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 25.000 vizitatori si 650 conversii, rata de conversie este 2,6%.",
+    faq: [
+      { question: "Pot folosi sesiuni in loc de utilizatori?", answer: "Da, daca ramai consecvent in aceeasi metoda de raportare." },
+      { question: "De ce conteaza AOV impreuna cu conversia?", answer: "Pentru ca una iti spune cat de des vinzi, iar cealalta cat valoreaza fiecare vanzare." },
+    ],
+    relatedCalculatorKeys: ["aov", "cpl", "cac"],
+    relatedArticleSlugs: ["aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel"],
+  },
+  cpl: {
+    shortDescription: "Calculeaza costul per lead si te ajuta sa compari canale sau campanii de generare lead-uri.",
+    intro: "Calculatorul CPL este bun cand vrei sa vezi rapid cat te costa sa alimentezi pipeline-ul, chiar inainte sa transformi lead-urile in clienti.",
+    interpretationNotes: "CPL-ul are sens doar daca lead-ul are definitie stabila. Daca schimbi criteriile de calificare, comparatia se strica.",
+    isFeatured: false,
+    sortOrder: 50,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 8.500 lei cost total si 210 lead-uri, CPL-ul este putin peste 40 lei.",
+    faq: [
+      { question: "Un CPL mic este automat bun?", answer: "Nu. Lead-ul ieftin dar slab calificat poate costa mai mult in vanzari si follow-up." },
+      { question: "Cand il leg de CAC?", answer: "Cand vrei sa vezi cat din costul de achizitie se pierde intre lead si client nou." },
+    ],
+    relatedCalculatorKeys: ["cac", "conversion-rate", "roas"],
+    relatedArticleSlugs: ["cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele"],
+  },
+  cac: {
+    shortDescription: "Calculeaza costul real de achizitie al unui client nou intr-o perioada data.",
+    intro: "Calculatorul CAC este util cand vrei sa vezi cat te costa cresterea si daca modelul comercial are loc suficient pentru profit si scalare.",
+    interpretationNotes: "CAC-ul trebuie comparat cu marja si cu valoarea clientului in timp. Fara acest context, cifra singura poate induce decizii gresite.",
+    isFeatured: true,
+    sortOrder: 60,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 42.000 lei cost total si 140 clienti noi, CAC-ul este 300 lei per client.",
+    faq: [
+      { question: "Includ si costurile echipei de vanzari?", answer: "Ideal da, daca vrei un CAC mai aproape de realitate." },
+      { question: "Cu ce il compar prima data?", answer: "Cu AOV, marja si timpul in care clientul ramane activ." },
+    ],
+    relatedCalculatorKeys: ["cpl", "roas", "target-revenue"],
+    relatedArticleSlugs: ["cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele"],
+  },
+  "target-revenue": {
+    shortDescription: "Transforma costurile si profitul tinta intr-un venit minim clar pentru perioada urmatoare.",
+    intro: "Calculatorul de venit tinta este util cand vrei sa treci de la obiectiv vag la cifra concreta de vanzari, folosind marja reala a businessului.",
+    interpretationNotes: "Daca marja folosita este prea optimista, venitul tinta va iesi artificial mai mic si poate duce la planuri greu de sustinut.",
+    isFeatured: true,
+    sortOrder: 70,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "Cu 60.000 lei costuri fixe, 30.000 lei profit tinta si 40% marja, venitul minim necesar ajunge la 225.000 lei.",
+    faq: [
+      { question: "Pot folosi marja neta in loc de marja bruta?", answer: "Doar daca esti consecvent si intelegi exact ce costuri ai inclus deja in baza de calcul." },
+      { question: "Cu ce il leg in pagina?", answer: "Cu profit brut, profit net si ROAS, pentru ca toate contribuie la realismul planului." },
+    ],
+    relatedCalculatorKeys: ["gross-profit", "net-profit", "roas"],
+    relatedArticleSlugs: ["cum-estimezi-targetul-de-venit-si-profitul-real"],
+  },
+  "gross-profit": {
+    shortDescription: "Arata ce ramane dupa costurile directe si te ajuta sa vezi daca modelul merita sustinut.",
+    intro: "Calculatorul de profit brut este util cand vrei sa verifici rapid daca pretul, costul si volumul se intalnesc intr-o marja care poate sustine businessul.",
+    interpretationNotes: "Profitul brut nu include toate costurile. El este primul filtru bun, dar nu verdictul final despre rentabilitate.",
+    isFeatured: false,
+    sortOrder: 80,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 150.000 lei venit si 90.000 lei costuri directe, profitul brut este 60.000 lei, iar marja bruta ajunge la 40%.",
+    faq: [
+      { question: "De ce mai am nevoie si de profit net?", answer: "Pentru ca profitul brut nu include chirii, salarii, software sau alte costuri indirecte." },
+      { question: "Cu ce il leg pentru marketing?", answer: "Cu break-even ROAS si venit tinta." },
+    ],
+    relatedCalculatorKeys: ["net-profit", "break-even-roas", "target-revenue"],
+    relatedArticleSlugs: ["cum-estimezi-targetul-de-venit-si-profitul-real"],
+  },
+  "net-profit": {
+    shortDescription: "Calculeaza ce ramane dupa toate costurile incluse in scenariu si ofera o marja neta orientativa.",
+    intro: "Calculatorul de profit net este util cand vrei sa treci de la performanta comerciala bruta la o imagine mai apropiata de realitatea businessului.",
+    interpretationNotes: "Rezultatul depinde complet de ce costuri incluzi. El este orientativ, nu inlocuieste contabilitatea sau raportarea financiara completa.",
+    isFeatured: false,
+    sortOrder: 90,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 150.000 lei venit si 118.000 lei cost total, profitul net ajunge la 32.000 lei, cu o marja neta de circa 21%.",
+    faq: [
+      { question: "E acelasi lucru cu profitul contabil?", answer: "Nu neaparat. Calculatorul este orientativ si depinde de structura costurilor pe care o introduci." },
+      { question: "Cand devine util in decizie?", answer: "Cand compari scenarii si vrei sa vezi ce ramane cu adevarat dupa toate costurile incluse." },
+    ],
+    relatedCalculatorKeys: ["gross-profit", "target-revenue", "roi"],
+    relatedArticleSlugs: ["cum-estimezi-targetul-de-venit-si-profitul-real"],
+  },
+  "inventory-turnover": {
+    shortDescription: "Arata de cate ori se roteste stocul si cate zile ramane marfa blocata in medie.",
+    intro: "Calculatorul de rotatie stoc este util pentru ecommerce, retail sau distributie cand vrei sa vezi daca stocul lucreaza sau doar consuma capital.",
+    interpretationNotes: "Rotatia trebuie interpretata pe categorie si pe sezon. Un prag bun pentru un produs poate fi prea lent sau prea agresiv pentru altul.",
+    isFeatured: false,
+    sortOrder: 100,
+    audience: "business",
+    releaseBatch: "batch-07",
+    example: "La 420.000 lei cost marfa vanduta si 70.000 lei stoc mediu, rotatia este 6 ori in perioada analizata.",
+    faq: [
+      { question: "Rotatie mare inseamna automat situatie buna?", answer: "Nu mereu. Poate insemna si stoc insuficient, rupturi de disponibilitate sau presiune pe supply." },
+      { question: "Cu ce o leg in acelasi cluster?", answer: "Cu venit tinta si profit, mai ales daca lucrezi cu capital blocat in marfa." },
+    ],
+    relatedCalculatorKeys: ["target-revenue", "gross-profit", "net-profit"],
+    relatedArticleSlugs: ["rotatia-stocului-explicata-pentru-ecommerce-si-retail"],
+  },
 };
 
 const articleSeeds: ArticleSeed[] = [
@@ -2036,6 +2228,84 @@ const articleSeeds: ArticleSeed[] = [
     launchWave: "backlog",
     releaseBatch: "batch-06",
     audience: "both",
+  },
+  {
+    slug: "cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul",
+    title: "Cum citesti ROAS fara sa confunzi venitul cu profitul real",
+    excerpt: "ROAS-ul este util, dar fara marja si costuri poate arata mai bine decat realitatea. Iata cum il folosesti corect.",
+    content: "ROAS-ul este unul dintre cei mai atragatori indicatori din marketing pentru ca promite un raspuns simplu: cat venit a generat fiecare leu investit in ads. Problema este ca simplu nu inseamna intotdeauna suficient.\n\nCalculatorul ROAS te ajuta sa vezi repede raportul dintre venit si buget. Dar decizia buna apare abia atunci cand legi rezultatul de marja, de costurile de fulfilment, de retururi si de diferenta dintre venit si profit.\n\nUn ROAS de 4 poate parea excelent. Daca marja disponibila dupa costurile directe este mica, campania poate totusi sa fie sub break-even. De aceea paginile de business trebuie sa lege ROAS-ul de break-even ROAS, CAC si profit.\n\nCel mai bun mod de a folosi acest calculator este ca filtru de prima lectura. El iti spune daca merita sa cercetezi mai departe, nu daca ai deja verdictul final.\n\nConcluzia practica este simpla: ROAS-ul este bun pentru orientare rapida, dar profitul real apare doar cand pui langa el marja si costul complet al modelului tau comercial.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["roas", "break-even-roas", "gross-profit"],
+    relatedArticleSlugs: ["break-even-roas-explicat-pentru-campanii-platite"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
+  },
+  {
+    slug: "break-even-roas-explicat-pentru-campanii-platite",
+    title: "Break-even ROAS explicat pentru campanii platite fara sa fortezi concluziile",
+    excerpt: "Afla ce prag minim trebuie sa atinga o campanie ca sa nu piarda bani la marja ta reala.",
+    content: "Break-even ROAS-ul este unul dintre cei mai practici indicatori pentru echipele care vor sa scape de interpretarile prea optimiste ale performantei. El traduce marja intr-un prag minim de ROAS.\n\nCalculatorul de break-even ROAS te ajuta sa raspunzi la o intrebare simpla: de la ce punct in sus campania incepe sa aiba sens economic? Asta este mult mai valoros decat sa spui vag ca ai un ROAS bun sau rau.\n\nDaca marja este subtire, pragul de break-even urca. Daca marja este generoasa, campaniile au mai mult spatiu de manevra. Din acest motiv, acelasi ROAS poate fi excelent intr-un business si insuficient in altul.\n\nPagina trebuie legata natural de profit brut, venit tinta si ROAS real. Asa utilizatorul poate merge de la un prag teoretic la o comparatie practica intre scenariul minim necesar si performanta curenta.\n\nConcluzia buna este ca break-even ROAS-ul nu este un KPI spectaculos, dar este unul dintre cele mai utile pentru disciplina decizionala.",
+    articleType: "explainer",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["break-even-roas", "roas", "target-revenue"],
+    relatedArticleSlugs: ["cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
+  },
+  {
+    slug: "cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele",
+    title: "Cum calculezi CAC si CPL fara sa amesteci canalele, perioadele si definitiile",
+    excerpt: "CAC si CPL sunt utile doar daca definesti corect costurile, lead-urile si clientii noi. Altfel comparatia te poate induce in eroare.",
+    content: "CAC si CPL sunt doi indicatori aparent simpli, dar foarte usor de distorsionat in practica. Cele mai multe probleme apar atunci cand compari campanii diferite, perioade diferite sau lead-uri definite diferit.\n\nCalculatorul CPL iti arata costul unui lead. Calculatorul CAC iti spune cat te costa un client nou. Intre cele doua exista mereu o zona de conversie, iar acolo apar multe dintre interpretarile gresite.\n\nDaca un canal genereaza lead-uri ieftine dar slab calificate, CPL-ul poate parea excelent, in timp ce CAC-ul ramane slab. Invers, un canal mai scump la nivel de lead poate genera clienti mai repede si mai predictibil.\n\nCel mai bun mod de a folosi aceste calcule este in pereche, cu aceeasi fereastra de timp si cu aceeasi logica de atribuire. Doar asa poti vedea daca problema este in volum, in calitate sau in procesul comercial.\n\nConcluzia practica este ca nici CAC, nici CPL nu merita citite separat. Abia impreuna spun ceva util despre eficienta reala a cresterii.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["cac", "cpl", "conversion-rate"],
+    relatedArticleSlugs: ["aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
+  },
+  {
+    slug: "aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel",
+    title: "AOV si rata de conversie: ce spun impreuna despre funnel, nu doar separat",
+    excerpt: "Valoarea medie a comenzii si rata de conversie devin cu adevarat utile cand sunt citite impreuna.",
+    content: "AOV-ul si rata de conversie sunt doi indicatori care par separati, dar in realitate descriu acelasi traseu comercial din unghiuri diferite. Unul iti spune cat valoreaza o comanda, celalalt cat de des ajunge traficul la comanda.\n\nDaca AOV-ul creste, dar conversia cade, venitul poate ramane pe loc. Daca rata de conversie creste, dar AOV-ul scade puternic, rezultatul final poate fi la fel de dezamagitor. De aceea cele doua merita citite in pereche.\n\nCalculatorul AOV este bun pentru a intelege structura venitului pe comanda. Calculatorul de conversie este bun pentru a intelege eficienta funnel-ului. Impreuna, ele spun o poveste comerciala mult mai buna decat oricare luat singur.\n\nPagina merita legata si de ROAS sau CAC atunci cand traficul este platit, pentru ca acolo fiecare imbunatatire in AOV sau conversie se vede direct in economie si scalare.\n\nConcluzia practica este simpla: daca vrei decizii bune, nu intreba doar cat vinzi sau cat de des vinzi, ci si cum lucreaza cele doua impreuna.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["aov", "conversion-rate", "roas"],
+    relatedArticleSlugs: ["cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
+  },
+  {
+    slug: "cum-estimezi-targetul-de-venit-si-profitul-real",
+    title: "Cum estimezi targetul de venit si profitul real fara sa construiesti pe marje prea optimiste",
+    excerpt: "Venitul tinta pare simplu, dar depinde de marja reala si de costurile pe care chiar le incluzi in calcul.",
+    content: "Cand spui ca vrei un anumit venit luna viitoare, de fapt spui ca vrei sa acoperi costuri, sa sustii marketingul si sa ramai cu un anumit profit. De aceea venitul tinta trebuie construit pornind de la marja si costuri, nu ales arbitrar.\n\nCalculatorul de venit tinta este util pentru ca transforma aceasta logica intr-o cifra clara. El porneste de la costurile fixe, profitul dorit si marja disponibila, iar apoi iti arata ce nivel de venit trebuie sa atingi.\n\nAici apare si capcana cea mai frecventa: folosirea unei marje prea generoase. Daca marja este idealizata, tot planul comercial va parea mai usor decat este in realitate. De aceea merita sa pui alaturi si profitul brut, profitul net si break-even ROAS-ul.\n\nPagina este foarte buna pentru businessuri mici, ecommerce sau servicii care au nevoie de un reper rapid intre obiectiv si executie. Ea muta discutia de la intuitie la constrangere reala.\n\nConcluzia practica este ca targetul bun de venit nu porneste din ambitie, ci din structura economica a businessului.",
+    articleType: "guide",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["target-revenue", "gross-profit", "net-profit"],
+    relatedArticleSlugs: ["break-even-roas-explicat-pentru-campanii-platite"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
+  },
+  {
+    slug: "rotatia-stocului-explicata-pentru-ecommerce-si-retail",
+    title: "Rotatia stocului explicata pentru ecommerce si retail fara formule inutile",
+    excerpt: "Rotatia stocului arata cat de repede transformi marfa in vanzari si cat capital ramane blocat in stoc.",
+    content: "Rotatia stocului este una dintre cele mai subestimate formule in businessurile care vand produse fizice. Multi se uita doar la venit sau la volum, fara sa observe cat capital ramane blocat in marfa.\n\nCalculatorul de rotatie stoc iti arata de cate ori se roteste stocul intr-o perioada si cate zile ramane, in medie, marfa in depozit. Asta este extrem de util pentru ecommerce, retail sau distributie.\n\nIndicatorul nu trebuie citit izolat. O rotatie foarte mare poate insemna eficienta, dar si risc de rupturi de stoc. O rotatie mica poate insemna selectie slaba, forecast prost sau capital imobilizat inutil.\n\nCel mai bun mod de a folosi pagina este impreuna cu venitul tinta si profitul. Asa poti vedea daca viteza stocului sustine obiectivele comerciale sau le saboteaza discret prin capital blocat si lichiditate slaba.\n\nConcluzia practica este ca stocul nu este doar inventar. Este cash care se misca mai repede sau mai greu, iar rotatia iti arata exact asta.",
+    articleType: "explainer",
+    relatedCategorySlug: "business",
+    relatedCalculatorKeys: ["inventory-turnover", "target-revenue", "gross-profit"],
+    relatedArticleSlugs: ["cum-estimezi-targetul-de-venit-si-profitul-real"],
+    launchWave: "backlog",
+    releaseBatch: "batch-07",
+    audience: "business",
   },
 ];
 

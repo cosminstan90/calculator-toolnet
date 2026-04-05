@@ -1,6 +1,7 @@
 import { AdSlot } from "@/components/ad-slot";
 import { ArticleCard } from "@/components/article-card";
 import { CalculatorCard } from "@/components/calculator-card";
+import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
 import { EditorialBlocks } from "@/components/editorial-blocks";
 import { JsonLd } from "@/components/json-ld";
 import {
@@ -9,6 +10,7 @@ import {
   listArticlesByCategory,
   listCalculatorsByCategory,
 } from "@/lib/content";
+import { getCommercialCta } from "@/lib/commercial-cta";
 import {
   buildBreadcrumbJsonLd,
   buildCollectionJsonLd,
@@ -149,6 +151,12 @@ export default async function CategoryPage({ params }: { params: Params }) {
     listArticlesByCategory({ categoryID: category.id, limit: 8 }),
   ]);
   const playbook = categoryPlaybooks[category.slug];
+  const commercialCta = getCommercialCta({
+    categorySlug: category.slug,
+    audience: category.audience,
+    kind: "category",
+    sourcePath: `/calculatoare/${category.slug}`,
+  });
   const featuredCalculator =
     calculators.find((calculator) => calculator.isFeatured) ?? calculators[0];
   const supportingCalculators = featuredCalculator
@@ -279,6 +287,12 @@ export default async function CategoryPage({ params }: { params: Params }) {
             label="Publicitate"
             className="mx-auto max-w-[980px]"
           />
+        </section>
+      ) : null}
+
+      {commercialCta ? (
+        <section className="mt-10">
+          <CommercialCtaPanel cta={commercialCta} />
         </section>
       ) : null}
 

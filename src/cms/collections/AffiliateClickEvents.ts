@@ -46,6 +46,7 @@ export const AffiliateClickEvents: CollectionConfig = {
       options: [
         { label: "Calculator", value: "calculator" },
         { label: "Article", value: "article" },
+        { label: "Categorie", value: "category" },
       ],
     },
     {

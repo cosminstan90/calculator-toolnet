@@ -35,6 +35,8 @@ const affiliateDestinations: Record<OfferKey, string> = {
 
 const categoryOfferMap: Partial<Record<string, OfferKey>> = {
   finante: "finance",
+  "salarii-si-taxe": "finance",
+  "credite-si-economii": "finance",
   business: "business",
   energie: "energy",
   auto: "auto",
@@ -64,7 +66,7 @@ export const getAffiliateDestination = (offerKey: string) => {
 const buildTrackingHref = (args: {
   offerKey: OfferKey;
   sourcePath: string;
-  sourceType: "calculator" | "article";
+  sourceType: "calculator" | "article" | "category";
   audience: Audience;
   categorySlug?: string;
 }) => {
@@ -84,7 +86,7 @@ const buildTrackingHref = (args: {
 export const getCommercialCta = (args: {
   categorySlug?: string;
   audience: Audience;
-  kind: "calculator" | "article";
+  kind: "calculator" | "article" | "category";
   sourcePath: string;
 }): CommercialCta | null => {
   const offerKey = args.categorySlug ? categoryOfferMap[args.categorySlug] : undefined;
@@ -103,10 +105,15 @@ export const getCommercialCta = (args: {
 
   if (offerKey === "finance") {
     return {
-      label: "Vezi oferta recomandata",
+      label:
+        args.kind === "category"
+          ? "Compara ofertele relevante"
+          : "Vezi oferta recomandata",
       href,
       title:
-        args.kind === "calculator"
+        args.kind === "category"
+          ? "Daca vrei sa treci de la simulare la compararea ofertelor reale"
+          : args.kind === "calculator"
           ? "Daca vrei sa mergi de la estimare la oferta concreta"
           : "Daca vrei sa compari si o oferta concreta",
       body: `Pagina este construita ${audienceLabel(args.audience)}, iar dupa calcul poate fi util sa compari si o oferta reala din piata pentru credite, economii sau produse financiare.`,
