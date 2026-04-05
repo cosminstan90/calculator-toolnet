@@ -245,6 +245,19 @@ const BATCH_08_CALCULATORS: CalculatorKey[] = [
   "solar-battery-size",
 ];
 
+const BATCH_09_CALCULATORS: CalculatorKey[] = [
+  "fridge-electricity-cost",
+  "boiler-electricity-cost",
+  "ac-electricity-cost",
+  "led-savings",
+  "solar-roof-area",
+  "solar-inverter-size",
+  "solar-self-consumption",
+  "ups-runtime",
+  "heating-cost-comparison",
+  "solar-co2-savings",
+];
+
 const BATCH_04_ARTICLES = [
   "cum-calculezi-procentele-corect",
   "procent-din-numar-vs-diferenta-procentuala",
@@ -291,6 +304,19 @@ const BATCH_08_ARTICLES = [
   "cum-alegi-btu-ul-potrivit-pentru-aer-conditionat",
   "centrala-vs-pompa-de-caldura-cum-compari-corect-costurile",
   "cand-merita-o-baterie-fotovoltaica-si-cand-doar-creste-costul",
+];
+
+const BATCH_09_ARTICLES = [
+  "cat-consuma-un-frigider-in-realitate-si-cum-citesti-corect-eticheta",
+  "cat-consuma-un-boiler-electric-si-cand-devine-o-problema-in-factura",
+  "cat-consuma-aerul-conditionat-pe-zi-si-pe-luna",
+  "cum-calculezi-economia-reala-din-becuri-led",
+  "cata-suprafata-de-acoperis-iti-trebuie-pentru-panouri",
+  "cum-alegi-corect-puterea-invertorului-fotovoltaic",
+  "autoconsum-vs-injectare-ce-conteaza-cu-adevarat-la-un-sistem-fv",
+  "cum-estimezi-backup-ul-pentru-ups-sau-baterie",
+  "cum-compari-costul-de-incalzire-intre-gaz-si-pompa-de-caldura",
+  "cat-co2-poti-evita-cu-un-sistem-fotovoltaic",
 ];
 
 const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
@@ -349,6 +375,8 @@ const defaultReleaseBatchForCalculator = (key: CalculatorKey): ReleaseBatch =>
                 ? "batch-07"
                 : BATCH_08_CALCULATORS.includes(key)
                   ? "batch-08"
+                  : BATCH_09_CALCULATORS.includes(key)
+                    ? "batch-09"
                 : "batch-18";
 
 const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatus =>
@@ -410,6 +438,10 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     return "batch-08";
   }
 
+  if (BATCH_09_ARTICLES.includes(seed.slug)) {
+    return "batch-09";
+  }
+
   if (seed.launchWave === "wave-2") {
     return "batch-02";
   }
@@ -441,6 +473,7 @@ const calculatorDraftQueue = [
   ...BATCH_06_CALCULATORS,
   ...BATCH_07_CALCULATORS,
   ...BATCH_08_CALCULATORS,
+  ...BATCH_09_CALCULATORS,
 ];
 const articleDraftQueue = [
   ...BATCH_02_ARTICLES,
@@ -450,6 +483,7 @@ const articleDraftQueue = [
   ...BATCH_06_ARTICLES,
   ...BATCH_07_ARTICLES,
   ...BATCH_08_ARTICLES,
+  ...BATCH_09_ARTICLES,
 ];
 
 const defaultPublishingScheduleForCalculator = (
@@ -706,7 +740,7 @@ const homepageSeed = {
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
-    { value: "85", label: "calculatoare disponibile in primele opt loturi" },
+    { value: "85", label: "calculatoare disponibile in primele noua loturi" },
     { value: "10", label: "categorii principale de cautare" },
     { value: "FAQ", label: "explicatii si raspunsuri integrate in pagini" },
   ],
@@ -1962,6 +1996,166 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedCalculatorKeys: ["solar-production", "solar-payback", "monthly-electricity-bill"],
     relatedArticleSlugs: ["cand-merita-o-baterie-fotovoltaica-si-cand-doar-creste-costul"],
   },
+  "fridge-electricity-cost": {
+    shortDescription: "Estimeaza cat te costa frigiderul pe luna si pe an, pornind de la consumul sau zilnic mediu.",
+    intro: "Calculatorul de consum pentru frigider este util cand vrei sa vezi daca unul dintre putinele aparate pornite permanent contribuie semnificativ la factura.",
+    interpretationNotes: "Consumul zilnic real depinde de clasa energetica, temperatura ambientala, deschiderea usii si vechimea aparatului.",
+    isFeatured: false,
+    sortOrder: 110,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La 1,1 kWh pe zi, frigiderul depaseste rapid 30 kWh pe luna si devine un cost de baza stabil in factura anuala.",
+    faq: [
+      { question: "Merge pentru orice frigider?", answer: "Da, atat timp cat ai o estimare zilnica rezonabila a consumului." },
+      { question: "De ce merita calculat separat?", answer: "Pentru ca este unul dintre consumatorii permanenti si influenteaza costul de baza al casei." },
+    ],
+    relatedCalculatorKeys: ["monthly-electricity-bill", "appliance-electricity-cost", "led-savings"],
+    relatedArticleSlugs: ["cat-consuma-un-frigider-in-realitate-si-cum-citesti-corect-eticheta"],
+  },
+  "boiler-electricity-cost": {
+    shortDescription: "Calculeaza cat consuma un boiler electric in functie de apa incalzita, temperatura si numarul de cicluri.",
+    intro: "Calculatorul de consum pentru boiler electric este util cand vrei sa vezi daca apa calda este unul dintre costurile mari ascunse din locuinta.",
+    interpretationNotes: "Rezultatul este sensibil la temperatura initiala a apei, frecventa folosirii si eficienta reala a sistemului.",
+    isFeatured: false,
+    sortOrder: 120,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La 80 litri, 35°C diferenta si peste un ciclu pe zi, costul lunar creste surprinzator de repede in zonele cu utilizare intensa.",
+    faq: [
+      { question: "Este mai bun decat un calculator generic de aparat?", answer: "Da, pentru ca leaga consumul de volumul si temperatura apei, nu doar de putere." },
+      { question: "Cum il leg de factura?", answer: "Compara costul lunar estimat al boilerului cu factura totala si vezi ce pondere are." },
+    ],
+    relatedCalculatorKeys: ["monthly-electricity-bill", "appliance-electricity-cost", "solar-system-size"],
+    relatedArticleSlugs: ["cat-consuma-un-boiler-electric-si-cand-devine-o-problema-in-factura"],
+  },
+  "ac-electricity-cost": {
+    shortDescription: "Estimeaza cat te costa aerul conditionat pe luna si pe sezon, pornind de la puterea absorbita si orele de folosire.",
+    intro: "Calculatorul de consum pentru aer conditionat este util cand vrei sa legi confortul din lunile calde de impactul real in factura.",
+    interpretationNotes: "Puterea medie absorbita poate varia mult in functie de setpoint, izolatie, temperatura exterioara si eficienta aparatului.",
+    isFeatured: false,
+    sortOrder: 130,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "Un aparat cu 0,9 kW absorbiti mediu, folosit 8 ore pe zi, poate ajunge la un cost sezonier pe care merita sa il compari cu alte scenarii.",
+    faq: [
+      { question: "De ce nu folosesc doar BTU-ul?", answer: "Pentru cost, ai nevoie de puterea absorbita sau de un consum mediu realist, nu doar de capacitatea de racire." },
+      { question: "Ce verific prima data?", answer: "Daca aparatul este bine dimensionat si daca scenariul de utilizare este aproape de realitate." },
+    ],
+    relatedCalculatorKeys: ["ac-btu", "monthly-electricity-bill", "appliance-electricity-cost"],
+    relatedArticleSlugs: ["cat-consuma-aerul-conditionat-pe-zi-si-pe-luna"],
+  },
+  "led-savings": {
+    shortDescription: "Compara becurile clasice cu LED si estimeaza economia anuala si timpul de recuperare.",
+    intro: "Calculatorul de economie din LED-uri este util cand vrei una dintre cele mai simple comparatii de eficienta energetica din casa.",
+    interpretationNotes: "Economia reala depinde de orele de utilizare si de cat de mare este diferenta intre sursa veche si cea noua.",
+    isFeatured: false,
+    sortOrder: 140,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La 12 becuri si 5 ore pe zi, trecerea de la 60 W la 9 W poate schimba repede costul anual si recupera investitia intr-un interval scurt.",
+    faq: [
+      { question: "Merita daca folosesc lumina putin?", answer: "Da, dar perioada de recuperare creste cand orele de utilizare sunt mici." },
+      { question: "Cu ce il leg mai departe?", answer: "Cu factura de curent si cu consumul altor aparate, ca sa vezi unde sunt cele mai mari economii posibile." },
+    ],
+    relatedCalculatorKeys: ["monthly-electricity-bill", "appliance-electricity-cost", "fridge-electricity-cost"],
+    relatedArticleSlugs: ["cum-calculezi-economia-reala-din-becuri-led"],
+  },
+  "solar-roof-area": {
+    shortDescription: "Arata cate panouri si ce putere maxima incap pe suprafata utila reala a acoperisului.",
+    intro: "Calculatorul de suprafata pentru panouri este util cand vrei sa pornesti din spatiul disponibil si sa vezi repede cat de mare poate fi sistemul.",
+    interpretationNotes: "Rezultatul este sensibil la forma acoperisului, distantele de montaj, umbrire si zonele care raman neutilizabile.",
+    isFeatured: false,
+    sortOrder: 150,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La 42 mp utili si panouri standard de 2,1 mp, puterea maxima posibila poate ajunge rapid intr-o zona suficienta pentru consumul multor case.",
+    faq: [
+      { question: "Pot folosi suprafata totala a acoperisului?", answer: "Mai sigur este sa folosesti doar suprafata cu adevarat utila pentru montaj." },
+      { question: "Cu ce il combin imediat?", answer: "Cu necesarul sistemului si cu numarul de panouri, ca sa vezi daca spatiul sustine obiectivul." },
+    ],
+    relatedCalculatorKeys: ["solar-system-size", "solar-panel-count", "solar-production"],
+    relatedArticleSlugs: ["cata-suprafata-de-acoperis-iti-trebuie-pentru-panouri"],
+  },
+  "solar-inverter-size": {
+    shortDescription: "Estimeaza puterea invertorului pornind de la sistemul DC si raportul DC/AC dorit.",
+    intro: "Calculatorul de putere pentru invertor fotovoltaic este util cand vrei sa treci de la panouri si kWp la una dintre piesele cheie ale sistemului.",
+    interpretationNotes: "Raportul DC/AC nu este o regulă rigidă. El depinde de configuratie, orientare, strategie si limitele practice ale proiectului.",
+    isFeatured: false,
+    sortOrder: 160,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "Pentru un sistem de 6,3 kWp cu raport 1,15, invertorul recomandat poate cobori spre zona de 5,5 kW.",
+    faq: [
+      { question: "Un invertor mai mare este automat mai bun?", answer: "Nu. Supradimensionarea sau subdimensionarea trebuie gandite in contextul sistemului complet." },
+      { question: "Cu ce il leg in cluster?", answer: "Cu puterea sistemului, productia estimata si suprafata disponibila." },
+    ],
+    relatedCalculatorKeys: ["solar-system-size", "solar-panel-count", "solar-production"],
+    relatedArticleSlugs: ["cum-alegi-corect-puterea-invertorului-fotovoltaic"],
+  },
+  "solar-self-consumption": {
+    shortDescription: "Imparte productia intre autoconsum si injectare si arata cat din consumul casei acoperi direct.",
+    intro: "Calculatorul de autoconsum este util cand vrei sa vezi nu doar cat produce sistemul, ci si cat folosesti cu adevarat in casa.",
+    interpretationNotes: "Autoconsumul este foarte dependent de profilul orar de utilizare, nu doar de productia anuala totala.",
+    isFeatured: true,
+    sortOrder: 170,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La un autoconsum de 45%, diferenta dintre energia folosita direct si cea injectata schimba puternic economia reala a sistemului.",
+    faq: [
+      { question: "Autoconsum mare inseamna mereu situatie buna?", answer: "De multe ori da, dar merita citit impreuna cu marimea sistemului si cu nevoia reala de consum." },
+      { question: "Cu ce il compar?", answer: "Cu productie, baterie si amortizare, pentru ca toate influenteaza economia finala." },
+    ],
+    relatedCalculatorKeys: ["solar-production", "solar-battery-size", "solar-payback"],
+    relatedArticleSlugs: ["autoconsum-vs-injectare-ce-conteaza-cu-adevarat-la-un-sistem-fv"],
+  },
+  "ups-runtime": {
+    shortDescription: "Estimeaza autonomia unui UPS sau a unei baterii in functie de sarcina si energia disponibila.",
+    intro: "Calculatorul de autonomie UPS este util cand vrei sa vezi daca backup-ul la care te gandesti are sens pentru consumatorii reali din casa.",
+    interpretationNotes: "Autonomia reala depinde de starea bateriei, temperatura, eficienta invertorului si modul in care variaza sarcina.",
+    isFeatured: false,
+    sortOrder: 180,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "O baterie de 24 V si 100 Ah, la o sarcina de 300 W, poate oferi cateva ore bune de backup, dar merita sa vezi si marja reala de utilizare.",
+    faq: [
+      { question: "Este acelasi lucru cu o baterie fotovoltaica?", answer: "Nu neaparat, dar logica energiei disponibile si a sarcinii este foarte apropiata." },
+      { question: "De ce merita calculat?", answer: "Pentru ca multi utilizatori supraestimeaza autonomia pe care o pot obtine dintr-o baterie." },
+    ],
+    relatedCalculatorKeys: ["solar-battery-size", "monthly-electricity-bill", "solar-self-consumption"],
+    relatedArticleSlugs: ["cum-estimezi-backup-ul-pentru-ups-sau-baterie"],
+  },
+  "heating-cost-comparison": {
+    shortDescription: "Compara costul anual al incalzirii intre gaz si pompa de caldura pentru acelasi necesar termic.",
+    intro: "Calculatorul de comparatie pentru costul incalzirii este util cand vrei sa treci de la preferinte tehnologice la cifre comparabile.",
+    interpretationNotes: "Rezultatul este orientativ si depinde de eficienta reala a centralei, COP-ul pompei, tarife si profilul termic al locuintei.",
+    isFeatured: true,
+    sortOrder: 190,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "Pentru acelasi necesar de caldura, diferentele dintre gaz si pompa de caldura pot schimba radical discutia despre investitie si operare.",
+    faq: [
+      { question: "Este suficient costul anual pentru alegere?", answer: "Nu. Conteaza si investitia initiala, izolatia, confortul si scenariul de folosire." },
+      { question: "Cu ce il leg dupa calcul?", answer: "Cu necesarul termic si dimensionarea pompei de caldura." },
+    ],
+    relatedCalculatorKeys: ["heating-load", "heat-pump-size", "monthly-electricity-bill"],
+    relatedArticleSlugs: ["cum-compari-costul-de-incalzire-intre-gaz-si-pompa-de-caldura"],
+  },
+  "solar-co2-savings": {
+    shortDescription: "Estimeaza emisiile de CO2 evitate prin productia fotovoltaica anuala.",
+    intro: "Calculatorul de economie CO2 pentru panouri este util cand vrei sa adaugi si o perspectiva de impact, nu doar una financiara.",
+    interpretationNotes: "Factorul de emisii folosit este orientativ si variaza in functie de mixul energetic si metodologia aleasa.",
+    isFeatured: false,
+    sortOrder: 200,
+    audience: "consumer",
+    releaseBatch: "batch-09",
+    example: "La o productie anuala buna, emisiile evitate pot ajunge intr-o zona care face vizibil si beneficiul de mediu, nu doar pe cel economic.",
+    faq: [
+      { question: "Este CO2-ul evitat un beneficiu financiar direct?", answer: "Nu direct, dar poate conta in evaluarea generala a investitiei si a impactului ei." },
+      { question: "Cu ce il leg in cluster?", answer: "Cu productie si amortizare, ca sa vezi investitia si prin lentila de mediu." },
+    ],
+    relatedCalculatorKeys: ["solar-production", "solar-payback", "solar-system-size"],
+    relatedArticleSlugs: ["cat-co2-poti-evita-cu-un-sistem-fotovoltaic"],
+  },
 };
 
 const articleSeeds: ArticleSeed[] = [
@@ -2626,6 +2820,136 @@ const articleSeeds: ArticleSeed[] = [
     relatedArticleSlugs: ["cum-citesti-amortizarea-unui-sistem-fotovoltaic"],
     launchWave: "backlog",
     releaseBatch: "batch-08",
+    audience: "consumer",
+  },
+  {
+    slug: "cat-consuma-un-frigider-in-realitate-si-cum-citesti-corect-eticheta",
+    title: "Cat consuma un frigider in realitate si cum citesti corect eticheta",
+    excerpt: "Frigiderul merge permanent, dar consumul real nu se citește doar dintr-un singur numar de pe eticheta.",
+    content: "Frigiderul este unul dintre putinii consumatori care lucreaza practic in fiecare zi a anului. Tocmai de aceea merita tratat separat atunci cand vrei sa intelegi factura de curent. Problema este ca multi utilizatori fie il subestimeaza, fie trag concluzii prea rapide doar din eticheta energetica.\n\nCalculatorul de consum frigider te ajuta sa pornesti de la un consum zilnic mediu si sa-l transformi in cost lunar si anual. Asta este mult mai util pentru buget decat o valoare abstracta pe care nu o legi de pretul real al energiei.\n\nEticheta este utila, dar nu suficienta. Temperatura din bucatarie, cat de des se deschide usa, incarcarea frigiderului si vechimea aparatului pot muta destul de mult consumul fata de scenariul ideal.\n\nPagina trebuie legata de factura de curent si de calculatorul generic de aparat electric. Asa utilizatorul poate vedea daca frigiderul este doar un cost de baza rezonabil sau unul dintre factorii care merita reevaluati.\n\nConcluzia practica este ca frigiderul nu este un cost spectaculos de moment, ci un consum permanent care merita citit corect in timp.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["fridge-electricity-cost", "monthly-electricity-bill", "appliance-electricity-cost"],
+    relatedArticleSlugs: ["cum-estimezi-consumul-real-al-electrocasnicelor-din-casa"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cat-consuma-un-boiler-electric-si-cand-devine-o-problema-in-factura",
+    title: "Cat consuma un boiler electric si cand devine o problema reala in factura",
+    excerpt: "Apa calda pare un cost inevitabil, dar boilerul poate conta mult mai mult decat te astepti in consumul lunar.",
+    content: "Boilerul electric este unul dintre acei consumatori care trec usor neobservati pentru ca sunt asociati cu confortul de baza al casei. Totusi, cand vrei sa intelegi factura, apa calda merita tratata separat.\n\nCalculatorul de consum pentru boiler leaga energia de volumul de apa, diferenta de temperatura si frecventa de utilizare. Asta este important pentru ca aici formula spune mai mult decat simpla putere a aparatului.\n\nIn multe case, problema nu este doar boilerul in sine, ci combinatia dintre temperatura setata, izolarea vasului, numarul de cicluri si obiceiurile de consum. Tocmai de aceea un scenariu realist este mai util decat o presupunere rapida.\n\nPagina trebuie legata de factura lunara si de calculatorul generic de aparat electric. Asa utilizatorul poate vedea rapid daca boilerul este doar un cost firesc sau unul care merita optimizat.\n\nConcluzia practica este ca boilerul poate fi un consumator surprinzator de mare atunci cand este folosit intens si setat prea sus fata de nevoia reala.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["boiler-electricity-cost", "monthly-electricity-bill", "appliance-electricity-cost"],
+    relatedArticleSlugs: ["cum-citesti-factura-de-curent-fara-sa-te-pierzi-in-detalii-inutile"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cat-consuma-aerul-conditionat-pe-zi-si-pe-luna",
+    title: "Cat consuma aerul conditionat pe zi si pe luna fara sa confundam BTU-ul cu costul",
+    excerpt: "BTU-ul explica racirea, dar factura apare din puterea absorbita si din timpul real de functionare.",
+    content: "Cand oamenii cauta informatii despre aer conditionat, de multe ori amesteca doua intrebari diferite: de cat BTU au nevoie si cat ii va costa sa foloseasca aparatul. Ambele sunt importante, dar raspunsul vine din calcule diferite.\n\nCalculatorul de consum pentru aer conditionat porneste din puterea absorbita si din durata de folosire. Asta il face foarte bun pentru buget. Calculatorul BTU, in schimb, te ajuta sa alegi capacitatea potrivita pentru camera.\n\nCele doua pagini trebuie legate intre ele pentru ca o alegere buna de capacitate poate influenta si costul final. Un aparat prost dimensionat poate merge mai mult, mai ineficient sau mai inconfortabil decat unul ales corect.\n\nConcluzia practica este ca BTU-ul spune ce aparat iti trebuie, iar consumul iti spune cat te costa sa-l folosesti. Abia impreuna duc la o decizie buna.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["ac-electricity-cost", "ac-btu", "monthly-electricity-bill"],
+    relatedArticleSlugs: ["cum-alegi-btu-ul-potrivit-pentru-aer-conditionat"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cum-calculezi-economia-reala-din-becuri-led",
+    title: "Cum calculezi economia reala din becuri LED fara sa supraestimezi beneficiul",
+    excerpt: "LED-urile economisesc aproape mereu, dar ritmul real al economiei depinde de cat de mult folosesti lumina.",
+    content: "Schimbarea becurilor clasice cu LED este unul dintre cele mai simple upgrade-uri energetice dintr-o casa. Tocmai de aceea este si foarte usor sa devii prea optimist in calcule.\n\nCalculatorul de economie LED leaga puterea veche, puterea noua, numarul de becuri si timpul real de utilizare. Asta este exact ce trebuie ca sa transformi promisiunea generala de economie intr-o suma reala.\n\nDaca folosesti lumina putin, recuperarea dureaza mai mult. Daca ai multe becuri sau zone iluminate des, efectul se vede repede. De aceea pagina este mai utila cand este legata de factura de curent si de alte surse de consum din casa.\n\nConcluzia practica este ca LED-ul este de obicei o idee buna, dar meritul lui real se vede cand il pui intr-un scenariu concret de utilizare, nu intr-o estimare vagă.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["led-savings", "monthly-electricity-bill", "appliance-electricity-cost"],
+    relatedArticleSlugs: ["cum-citesti-factura-de-curent-fara-sa-te-pierzi-in-detalii-inutile"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cata-suprafata-de-acoperis-iti-trebuie-pentru-panouri",
+    title: "Cata suprafata de acoperis iti trebuie pentru panouri fara sa supraestimezi spatiul util",
+    excerpt: "Suprafata totala a acoperisului nu inseamna automat suprafata utila pentru panouri.",
+    content: "Multi utilizatori pornesc de la ideea ca, daca au un acoperis mare, pot instala automat un sistem fotovoltaic mare. In practica, spatiul util este aproape mereu mai mic decat suprafata totala.\n\nCalculatorul de suprafata pentru panouri este util pentru ca transforma metrul patrat disponibil in numar de panouri si putere maxima instalabila. Asta te ajuta sa vezi rapid daca obiectivul de productie este realist sau nu.\n\nUmbrele, forma acoperisului, distantele de siguranta si zonele greu utilizabile pot reduce destul de mult spatiul efectiv. De aceea merita sa folosesti rezultatul ca reper, nu ca proiect final.\n\nConcluzia practica este ca intrebarea buna nu este doar cat acoperis ai, ci cat acoperis util ai pentru sistemul dorit.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["solar-roof-area", "solar-panel-count", "solar-system-size"],
+    relatedArticleSlugs: ["cate-panouri-fotovoltaice-iti-trebuie-de-fapt"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cum-alegi-corect-puterea-invertorului-fotovoltaic",
+    title: "Cum alegi corect puterea invertorului fotovoltaic fara sa o tratezi ca pe o simpla formalitate",
+    excerpt: "Invertorul nu este doar o piesa din oferta. Dimensiunea lui influenteaza echilibrul intregului sistem.",
+    content: "Cand oamenii se gandesc la un sistem fotovoltaic, discutia merge repede spre panouri si productie. Invertorul pare uneori doar o bifă tehnica. In realitate, el este o piesa centrala in echilibrul sistemului.\n\nCalculatorul de putere pentru invertor fotovoltaic te ajuta sa pornesti din puterea DC a sistemului si din raportul DC/AC. Asta nu iti da proiectul final, dar iti ofera un reper foarte bun pentru comparatii si pentru discutii mai bine informate.\n\nUn invertor ales prost poate limita inutil sistemul sau poate crea un proiect ineficient economic. Tocmai de aceea pagina trebuie legata de necesarul sistemului si de productia estimata.\n\nConcluzia practica este ca invertorul nu se alege la final, doar din oferta cea mai convenabila. Se alege ca parte din logica intregului sistem.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["solar-inverter-size", "solar-system-size", "solar-production"],
+    relatedArticleSlugs: ["cum-estimezi-productia-fotovoltaica-fara-promisiuni-umflate"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "autoconsum-vs-injectare-ce-conteaza-cu-adevarat-la-un-sistem-fv",
+    title: "Autoconsum vs injectare: ce conteaza cu adevarat la un sistem fotovoltaic",
+    excerpt: "Productia mare nu spune singura povestea. Conteaza si cat folosesti direct din ea, nu doar cat produci.",
+    content: "Una dintre cele mai importante diferente in zona fotovoltaica este cea dintre productie si autoconsum. Multi utilizatori se concentreaza doar pe kWh produsi, dar economia reala vine puternic si din cat folosesti direct in casa.\n\nCalculatorul de autoconsum fotovoltaic este util pentru ca separa energia folosita direct de energia injectata. Asta muta discutia din zona de entuziasm generic in zona de comportament real de consum.\n\nPentru unii utilizatori, un sistem care produce bine, dar are autoconsum slab, nu este neaparat la fel de interesant economic precum pare la prima vedere. Tocmai de aceea merita legat si de baterie, si de amortizare.\n\nConcluzia practica este ca productia spune cat poti avea, dar autoconsumul spune cat folosesti cu adevarat in avantajul tau direct.",
+    articleType: "comparison",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["solar-self-consumption", "solar-battery-size", "solar-payback"],
+    relatedArticleSlugs: ["cand-merita-o-baterie-fotovoltaica-si-cand-doar-creste-costul"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cum-estimezi-backup-ul-pentru-ups-sau-baterie",
+    title: "Cum estimezi backup-ul pentru UPS sau baterie fara sa te bazezi pe autonomie imaginara",
+    excerpt: "Autonomia reala depinde de sarcina, eficienta si energia disponibila, nu doar de numarul mare de Ah din specificatii.",
+    content: "Backup-ul energetic pare simplu pe hartie: ai o baterie si ai autonomie. In practica, autonomia reala poate fi mult diferita fata de ce isi imagineaza utilizatorul.\n\nCalculatorul de autonomie UPS te ajuta sa pornesti din tensiune, capacitate, sarcina si eficienta. Asta este exact ce lipsește in cele mai multe estimari intuitive.\n\nMarea capcana este supraestimarea autonomiei. Cand nu iei in calcul eficienta si adancimea de descarcare, rezultatul pare aproape mereu mai bun decat realitatea. Tocmai de aceea pagina merita legata de bateria fotovoltaica si de consumul aparatelor.\n\nConcluzia practica este ca backup-ul bun nu se masoara doar in Ah, ci in energia care chiar ajunge la sarcina de care iti pasa.",
+    articleType: "guide",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["ups-runtime", "solar-battery-size", "appliance-electricity-cost"],
+    relatedArticleSlugs: ["cand-merita-o-baterie-fotovoltaica-si-cand-doar-creste-costul"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cum-compari-costul-de-incalzire-intre-gaz-si-pompa-de-caldura",
+    title: "Cum compari costul de incalzire intre gaz si pompa de caldura fara sa sari peste ipoteze",
+    excerpt: "Comparatia buna cere acelasi necesar termic, tarife coerente si ipoteze apropiate de casa reala.",
+    content: "Cand compari gazul cu pompa de caldura, tentatia este sa iei doua cifre de cost si sa alegi varianta mai mica. In practica, comparatia buna incepe mult mai devreme: la necesarul termic al casei.\n\nCalculatorul de comparatie a costului de incalzire este util pentru ca raporteaza aceeasi nevoie de caldura la doua tehnologii diferite. Asta ofera un teren mult mai corect pentru decizie.\n\nDaca nu stii ce nevoie de caldura ai, orice comparatie de cost ramane fragila. De aceea pagina trebuie legata de necesarul termic si de dimensionarea pompei de caldura.\n\nConcluzia practica este ca alegerea intre gaz si pompa de caldura nu se face din simpatie pentru tehnologie, ci din nevoia reala a casei si din costul corect comparat.",
+    articleType: "comparison",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["heating-cost-comparison", "heating-load", "heat-pump-size"],
+    relatedArticleSlugs: ["centrala-vs-pompa-de-caldura-cum-compari-corect-costurile"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
+    audience: "consumer",
+  },
+  {
+    slug: "cat-co2-poti-evita-cu-un-sistem-fotovoltaic",
+    title: "Cat CO2 poti evita cu un sistem fotovoltaic si cum citesti corect aceasta estimare",
+    excerpt: "Impactul de mediu conteaza, dar trebuie citit ca estimare bazata pe productie si factorul de emisii folosit.",
+    content: "Pentru unii utilizatori, investitia intr-un sistem fotovoltaic nu este doar despre economie, ci si despre impact. De aici apare natural intrebarea despre cat CO2 poate fi evitat.\n\nCalculatorul de economie CO2 pentru panouri fotovoltaice este util pentru ca transforma productia anuala intr-o estimare simplificata de impact. Asta adauga o lentila diferita fata de amortizare si cost.\n\nTotusi, factorul de emisii folosit este o ipoteza. El poate varia in functie de mixul energetic si metodologia de calcul. De aceea merita sa citesti rezultatul ca reper comparativ, nu ca adevar absolut.\n\nConcluzia practica este ca impactul de mediu poate completa foarte bine discutia despre investitie, dar ar trebui sa stea langa productie si amortizare, nu in locul lor.",
+    articleType: "explainer",
+    relatedCategorySlug: "energie-pentru-casa",
+    relatedCalculatorKeys: ["solar-co2-savings", "solar-production", "solar-payback"],
+    relatedArticleSlugs: ["cum-estimezi-productia-fotovoltaica-fara-promisiuni-umflate"],
+    launchWave: "backlog",
+    releaseBatch: "batch-09",
     audience: "consumer",
   },
 ];

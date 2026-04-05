@@ -276,6 +276,42 @@ Obiective:
 - legam factura, aparatele, panourile si amortizarea intr-un singur cluster clar
 - pregatim una dintre cele mai bune verticale consumer pentru ads si afiliere
 
+## Batch 09
+
+Al doilea lot pentru `energie-pentru-casa`, cu focus pe aparate specifice, autonomie, autoconsum si comparatii utile inainte de achizitii mai mari.
+
+Calculatoare:
+
+1. `fridge-electricity-cost`
+2. `boiler-electricity-cost`
+3. `ac-electricity-cost`
+4. `led-savings`
+5. `solar-roof-area`
+6. `solar-inverter-size`
+7. `solar-self-consumption`
+8. `ups-runtime`
+9. `heating-cost-comparison`
+10. `solar-co2-savings`
+
+Articole suport:
+
+1. `cat-consuma-un-frigider-in-realitate-si-cum-citesti-corect-eticheta`
+2. `cat-consuma-un-boiler-electric-si-cand-devine-o-problema-in-factura`
+3. `cat-consuma-aerul-conditionat-pe-zi-si-pe-luna`
+4. `cum-calculezi-economia-reala-din-becuri-led`
+5. `cata-suprafata-de-acoperis-iti-trebuie-pentru-panouri`
+6. `cum-alegi-corect-puterea-invertorului-fotovoltaic`
+7. `autoconsum-vs-injectare-ce-conteaza-cu-adevarat-la-un-sistem-fv`
+8. `cum-estimezi-backup-ul-pentru-ups-sau-baterie`
+9. `cum-compari-costul-de-incalzire-intre-gaz-si-pompa-de-caldura`
+10. `cat-co2-poti-evita-cu-un-sistem-fotovoltaic`
+
+Obiective:
+
+- transformam categoria intr-o verticala completa, nu doar intr-un lot de start
+- acoperim consumul casnic, fotovoltaicele si autonomia energetica intr-un singur ecosistem
+- pregatim o categorie foarte buna pentru decizii consumer, ads si afiliere
+
 ## Regula de operare
 
 - `releaseBatch` marcheaza lotul editorial

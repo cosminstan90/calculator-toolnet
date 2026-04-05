@@ -73,7 +73,17 @@ export type CalculatorKey =
   | "ac-btu"
   | "heating-load"
   | "heat-pump-size"
-  | "solar-battery-size";
+  | "solar-battery-size"
+  | "fridge-electricity-cost"
+  | "boiler-electricity-cost"
+  | "ac-electricity-cost"
+  | "led-savings"
+  | "solar-roof-area"
+  | "solar-inverter-size"
+  | "solar-self-consumption"
+  | "ups-runtime"
+  | "heating-cost-comparison"
+  | "solar-co2-savings";
 
 export type CalculatorInputOption = {
   label: string;
@@ -4577,6 +4587,396 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       return {
         usableBatteryKwh: round(usableBatteryKwh, 2),
         nominalBatteryKwh: round(usableBatteryKwh / depthOfDischarge, 2),
+      };
+    },
+  },
+  "fridge-electricity-cost": {
+    key: "fridge-electricity-cost",
+    title: "Calculator consum frigider",
+    slug: "calculator-consum-frigider",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza costul lunar si anual al frigiderului pornind de la consumul zilnic mediu.",
+    formulaName: "Consum frigider",
+    formulaExpression: "Consum lunar = kWh/zi x zile; cost = consum x pret/kWh",
+    formulaDescription:
+      "Calculatorul foloseste consumul mediu zilnic pentru a estima costul lunar si anual al frigiderului.",
+    howToSteps: [
+      "Introdu consumul mediu zilnic al frigiderului.",
+      "Introdu pretul energiei electrice.",
+      "Citeste costul lunar si anual estimat.",
+    ],
+    inputs: [
+      { name: "dailyConsumptionKwh", label: "Consum zilnic", type: "number", unit: "kWh/zi", min: 0.01, max: 20, step: 0.01, required: true, defaultValue: 1.1 },
+      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+    ],
+    outputs: [
+      { name: "monthlyCost", label: "Cost lunar", unit: "lei", decimals: 2 },
+      { name: "annualCost", label: "Cost anual", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const dailyConsumptionKwh = parseNumber(values.dailyConsumptionKwh);
+      const pricePerKwh = parseNumber(values.pricePerKwh);
+      const monthlyCost = dailyConsumptionKwh * 30 * pricePerKwh;
+      return {
+        monthlyCost: round(monthlyCost, 2),
+        annualCost: round(monthlyCost * 12, 2),
+      };
+    },
+  },
+  "boiler-electricity-cost": {
+    key: "boiler-electricity-cost",
+    title: "Calculator consum boiler electric",
+    slug: "calculator-consum-boiler-electric",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza energia si costul pentru incalzirea apei in boiler pornind de la volum si diferenta de temperatura.",
+    formulaName: "Consum boiler",
+    formulaExpression:
+      "kWh = litri x deltaT x 0.001163 / eficienta x cicluri",
+    formulaDescription:
+      "Calculatorul foloseste energia necesara pentru incalzirea apei si o ajusteaza cu eficienta sistemului.",
+    howToSteps: [
+      "Introdu volumul de apa incalzit intr-un ciclu.",
+      "Introdu diferenta de temperatura si numarul de cicluri.",
+      "Citeste consumul si costul zilnic/lunar.",
+    ],
+    inputs: [
+      { name: "litersPerCycle", label: "Litri / ciclu", type: "number", unit: "litri", min: 1, max: 1000, step: 1, required: true, defaultValue: 80 },
+      { name: "temperatureRise", label: "Delta temperatura", type: "number", unit: "°C", min: 1, max: 80, step: 1, required: true, defaultValue: 35 },
+      { name: "cyclesPerDay", label: "Cicluri / zi", type: "number", unit: "cicluri", min: 0.1, max: 20, step: 0.1, required: true, defaultValue: 1.2 },
+      { name: "efficiencyPercent", label: "Eficienta", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
+      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+    ],
+    outputs: [
+      { name: "dailyKwh", label: "Consum zilnic", unit: "kWh", decimals: 2 },
+      { name: "monthlyCost", label: "Cost lunar", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const litersPerCycle = parseNumber(values.litersPerCycle);
+      const temperatureRise = parseNumber(values.temperatureRise);
+      const cyclesPerDay = parseNumber(values.cyclesPerDay);
+      const efficiencyPercent = Math.max(parseNumber(values.efficiencyPercent), 1) / 100;
+      const pricePerKwh = parseNumber(values.pricePerKwh);
+      const dailyKwh =
+        (litersPerCycle * temperatureRise * 0.001163 * cyclesPerDay) / efficiencyPercent;
+      return {
+        dailyKwh: round(dailyKwh, 2),
+        monthlyCost: round(dailyKwh * 30 * pricePerKwh, 2),
+      };
+    },
+  },
+  "ac-electricity-cost": {
+    key: "ac-electricity-cost",
+    title: "Calculator consum aer conditionat",
+    slug: "calculator-consum-aer-conditionat",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza costul aerului conditionat pornind de la puterea medie consumata si timpul de functionare.",
+    formulaName: "Consum aer conditionat",
+    formulaExpression: "kWh = (kW medii x ore/zi x zile); cost = kWh x pret/kWh",
+    formulaDescription:
+      "Calculatorul leaga puterea medie absorbita de durata de functionare pentru a estima costul real.",
+    howToSteps: [
+      "Introdu puterea medie absorbita a aparatului.",
+      "Introdu orele de functionare si numarul de zile.",
+      "Citeste costul lunar si sezonier.",
+    ],
+    inputs: [
+      { name: "averagePowerKw", label: "Putere medie absorbita", type: "number", unit: "kW", min: 0.1, max: 20, step: 0.01, required: true, defaultValue: 0.9 },
+      { name: "hoursPerDay", label: "Ore / zi", type: "number", unit: "ore", min: 0.1, max: 24, step: 0.1, required: true, defaultValue: 8 },
+      { name: "daysPerMonth", label: "Zile / luna", type: "number", unit: "zile", min: 1, max: 31, step: 1, required: true, defaultValue: 30 },
+      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+    ],
+    outputs: [
+      { name: "monthlyKwh", label: "Consum lunar", unit: "kWh", decimals: 2 },
+      { name: "monthlyCost", label: "Cost lunar", unit: "lei", decimals: 2 },
+      { name: "seasonCost", label: "Cost pentru 4 luni", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const averagePowerKw = parseNumber(values.averagePowerKw);
+      const hoursPerDay = parseNumber(values.hoursPerDay);
+      const daysPerMonth = parseNumber(values.daysPerMonth);
+      const pricePerKwh = parseNumber(values.pricePerKwh);
+      const monthlyKwh = averagePowerKw * hoursPerDay * daysPerMonth;
+      const monthlyCost = monthlyKwh * pricePerKwh;
+      return {
+        monthlyKwh: round(monthlyKwh, 2),
+        monthlyCost: round(monthlyCost, 2),
+        seasonCost: round(monthlyCost * 4, 2),
+      };
+    },
+  },
+  "led-savings": {
+    key: "led-savings",
+    title: "Calculator economie becuri LED",
+    slug: "calculator-economie-becuri-led",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Compara costul anual al becurilor clasice cu LED si estimeaza economia obtinuta.",
+    formulaName: "Economie LED",
+    formulaExpression:
+      "Economii = (consum vechi - consum LED) x ore x zile x pret/kWh",
+    formulaDescription:
+      "Calculatorul compara doua puteri de iluminat pentru acelasi numar de becuri si acelasi timp de utilizare.",
+    howToSteps: [
+      "Introdu puterea becurilor vechi si a becurilor LED.",
+      "Introdu numarul de becuri si timpul de folosire.",
+      "Citeste economia anuala si perioada de recuperare.",
+    ],
+    inputs: [
+      { name: "oldBulbWatts", label: "Putere bec vechi", type: "number", unit: "W", min: 1, max: 1000, step: 1, required: true, defaultValue: 60 },
+      { name: "ledBulbWatts", label: "Putere LED", type: "number", unit: "W", min: 1, max: 1000, step: 1, required: true, defaultValue: 9 },
+      { name: "bulbCount", label: "Numar becuri", type: "number", unit: "becuri", min: 1, max: 500, step: 1, required: true, defaultValue: 12 },
+      { name: "hoursPerDay", label: "Ore / zi", type: "number", unit: "ore", min: 0.1, max: 24, step: 0.1, required: true, defaultValue: 5 },
+      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "upgradeCost", label: "Cost upgrade LED", type: "number", unit: "lei", min: 0, max: 100000, step: 1, required: true, defaultValue: 180 },
+    ],
+    outputs: [
+      { name: "annualSavings", label: "Economii anuale", unit: "lei", decimals: 2 },
+      { name: "paybackMonths", label: "Recuperare investitie", unit: "luni", decimals: 1 },
+    ],
+    compute: (values) => {
+      const oldBulbWatts = parseNumber(values.oldBulbWatts);
+      const ledBulbWatts = parseNumber(values.ledBulbWatts);
+      const bulbCount = parseNumber(values.bulbCount);
+      const hoursPerDay = parseNumber(values.hoursPerDay);
+      const pricePerKwh = parseNumber(values.pricePerKwh);
+      const upgradeCost = parseNumber(values.upgradeCost);
+      const annualOldKwh = (oldBulbWatts / 1000) * bulbCount * hoursPerDay * 365;
+      const annualLedKwh = (ledBulbWatts / 1000) * bulbCount * hoursPerDay * 365;
+      const annualSavings = (annualOldKwh - annualLedKwh) * pricePerKwh;
+      return {
+        annualSavings: round(annualSavings, 2),
+        paybackMonths: round(upgradeCost / Math.max(annualSavings / 12, 0.01), 1),
+      };
+    },
+  },
+  "solar-roof-area": {
+    key: "solar-roof-area",
+    title: "Calculator suprafata acoperis pentru panouri",
+    slug: "calculator-suprafata-acoperis-panouri",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza cate panouri si ce putere maxima incap pe suprafata utila a acoperisului.",
+    formulaName: "Capacitate dupa suprafata acoperisului",
+    formulaExpression: "Panouri maxime = suprafata utila / suprafata panou",
+    formulaDescription:
+      "Calculatorul transforma suprafata utila in numar de panouri si putere maxima instalabila.",
+    howToSteps: [
+      "Introdu suprafata utila reala a acoperisului.",
+      "Introdu suprafata si puterea unui panou.",
+      "Citeste numarul maxim de panouri si puterea totala.",
+    ],
+    inputs: [
+      { name: "usableRoofArea", label: "Suprafata utila", type: "number", unit: "mp", min: 1, max: 10000, step: 0.1, required: true, defaultValue: 42 },
+      { name: "panelArea", label: "Suprafata panou", type: "number", unit: "mp", min: 0.5, max: 5, step: 0.01, required: true, defaultValue: 2.1 },
+      { name: "panelPowerWatts", label: "Putere panou", type: "number", unit: "W", min: 100, max: 1000, step: 1, required: true, defaultValue: 450 },
+    ],
+    outputs: [
+      { name: "maxPanels", label: "Panouri maxime", unit: "panouri", decimals: 0 },
+      { name: "maxSystemKwp", label: "Putere maxima", unit: "kWp", decimals: 2 },
+    ],
+    compute: (values) => {
+      const usableRoofArea = parseNumber(values.usableRoofArea);
+      const panelArea = Math.max(parseNumber(values.panelArea), 0.01);
+      const panelPowerWatts = parseNumber(values.panelPowerWatts);
+      const maxPanels = Math.floor(usableRoofArea / panelArea);
+      return {
+        maxPanels,
+        maxSystemKwp: round((maxPanels * panelPowerWatts) / 1000, 2),
+      };
+    },
+  },
+  "solar-inverter-size": {
+    key: "solar-inverter-size",
+    title: "Calculator putere invertor fotovoltaic",
+    slug: "calculator-putere-invertor-fotovoltaic",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza puterea invertorului pornind de la puterea DC a sistemului si raportul DC/AC dorit.",
+    formulaName: "Dimensionare invertor",
+    formulaExpression: "Invertor AC = kWp DC / raport DC-AC",
+    formulaDescription:
+      "Calculatorul foloseste puterea sistemului si un raport DC/AC pentru a aproxima invertorul potrivit.",
+    howToSteps: [
+      "Introdu puterea sistemului in kWp.",
+      "Introdu raportul DC/AC dorit.",
+      "Citeste puterea aproximativa a invertorului.",
+    ],
+    inputs: [
+      { name: "systemSizeKwp", label: "Sistem DC", type: "number", unit: "kWp", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 6.3 },
+      { name: "dcAcRatio", label: "Raport DC/AC", type: "number", min: 0.5, max: 2, step: 0.01, required: true, defaultValue: 1.15 },
+    ],
+    outputs: [
+      { name: "recommendedInverterKw", label: "Invertor recomandat", unit: "kW", decimals: 2 },
+    ],
+    compute: (values) => {
+      const systemSizeKwp = parseNumber(values.systemSizeKwp);
+      const dcAcRatio = Math.max(parseNumber(values.dcAcRatio), 0.01);
+      return {
+        recommendedInverterKw: round(systemSizeKwp / dcAcRatio, 2),
+      };
+    },
+  },
+  "solar-self-consumption": {
+    key: "solar-self-consumption",
+    title: "Calculator autoconsum fotovoltaic",
+    slug: "calculator-autoconsum-fotovoltaic",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Imparte productia fotovoltaica intre autoconsum si energie injectata, apoi o raporteaza la consumul casei.",
+    formulaName: "Autoconsum si injectare",
+    formulaExpression:
+      "Autoconsum = productie x procent autoconsum; injectare = productie - autoconsum",
+    formulaDescription:
+      "Calculatorul estimeaza cat din productie folosesti direct si cat ajunge in retea.",
+    howToSteps: [
+      "Introdu productia anuala estimata.",
+      "Introdu procentul de autoconsum dorit sau observat.",
+      "Citeste energia autoconsumata, injectata si acoperirea consumului.",
+    ],
+    inputs: [
+      { name: "annualProductionKwh", label: "Productie anuala", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
+      { name: "annualConsumptionKwh", label: "Consum anual", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 4200 },
+      { name: "selfConsumptionPercent", label: "Autoconsum", type: "number", unit: "%", min: 1, max: 100, step: 1, required: true, defaultValue: 45 },
+    ],
+    outputs: [
+      { name: "selfConsumedKwh", label: "Autoconsum", unit: "kWh/an", decimals: 0 },
+      { name: "exportedKwh", label: "Injectat in retea", unit: "kWh/an", decimals: 0 },
+      { name: "consumptionCoverage", label: "Acoperire consum", unit: "%", decimals: 2 },
+    ],
+    compute: (values) => {
+      const annualProductionKwh = parseNumber(values.annualProductionKwh);
+      const annualConsumptionKwh = Math.max(parseNumber(values.annualConsumptionKwh), 0.01);
+      const selfConsumptionPercent = parseNumber(values.selfConsumptionPercent) / 100;
+      const selfConsumedKwh = annualProductionKwh * selfConsumptionPercent;
+      const exportedKwh = annualProductionKwh - selfConsumedKwh;
+      return {
+        selfConsumedKwh: round(selfConsumedKwh, 0),
+        exportedKwh: round(exportedKwh, 0),
+        consumptionCoverage: round((selfConsumedKwh / annualConsumptionKwh) * 100, 2),
+      };
+    },
+  },
+  "ups-runtime": {
+    key: "ups-runtime",
+    title: "Calculator autonomie UPS",
+    slug: "calculator-autonomie-ups",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza cate ore de backup obtii dintr-o baterie sau un UPS la o anumita sarcina.",
+    formulaName: "Autonomie UPS",
+    formulaExpression:
+      "Ore = (Ah x V x DoD x eficienta) / W sarcina",
+    formulaDescription:
+      "Calculatorul foloseste energia disponibila in baterie si puterea consumatorilor pentru a aproxima autonomia.",
+    howToSteps: [
+      "Introdu tensiunea, capacitatea bateriei si sarcina in wati.",
+      "Introdu eficienta si adancimea de descarcare.",
+      "Citeste autonomia estimata in ore si minute.",
+    ],
+    inputs: [
+      { name: "batteryVoltage", label: "Tensiune baterie", type: "number", unit: "V", min: 1, max: 500, step: 1, required: true, defaultValue: 24 },
+      { name: "batteryCapacityAh", label: "Capacitate baterie", type: "number", unit: "Ah", min: 1, max: 10000, step: 1, required: true, defaultValue: 100 },
+      { name: "loadWatts", label: "Sarcina", type: "number", unit: "W", min: 1, max: 100000, step: 1, required: true, defaultValue: 300 },
+      { name: "efficiencyPercent", label: "Eficienta", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 90 },
+      { name: "depthOfDischarge", label: "Adancime descarcare", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 80 },
+    ],
+    outputs: [
+      { name: "runtimeHours", label: "Autonomie", unit: "ore", decimals: 2 },
+      { name: "runtimeMinutes", label: "Autonomie", unit: "minute", decimals: 0 },
+    ],
+    compute: (values) => {
+      const batteryVoltage = parseNumber(values.batteryVoltage);
+      const batteryCapacityAh = parseNumber(values.batteryCapacityAh);
+      const loadWatts = Math.max(parseNumber(values.loadWatts), 0.01);
+      const efficiencyPercent = parseNumber(values.efficiencyPercent) / 100;
+      const depthOfDischarge = parseNumber(values.depthOfDischarge) / 100;
+      const runtimeHours =
+        (batteryVoltage * batteryCapacityAh * efficiencyPercent * depthOfDischarge) /
+        loadWatts;
+      return {
+        runtimeHours: round(runtimeHours, 2),
+        runtimeMinutes: round(runtimeHours * 60, 0),
+      };
+    },
+  },
+  "heating-cost-comparison": {
+    key: "heating-cost-comparison",
+    title: "Calculator cost incalzire gaz vs pompa de caldura",
+    slug: "calculator-cost-incalzire-gaz-vs-pompa-de-caldura",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Compara costul anual al incalzirii intre gaz si pompa de caldura pornind de la necesarul termic.",
+    formulaName: "Comparatie cost incalzire",
+    formulaExpression:
+      "Cost gaz = necesar / eficienta x pret gaz; Cost pompa = necesar / COP x pret energie",
+    formulaDescription:
+      "Calculatorul raporteaza aceeasi nevoie de caldura la doua tehnologii diferite pentru a compara costul anual.",
+    howToSteps: [
+      "Introdu necesarul anual de caldura.",
+      "Introdu pretul gazului, eficienta centralei, pretul energiei si COP-ul pompei.",
+      "Citeste costurile anuale si diferenta.",
+    ],
+    inputs: [
+      { name: "annualHeatNeedKwh", label: "Necesar anual", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 14000 },
+      { name: "gasPricePerKwh", label: "Pret gaz", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.38 },
+      { name: "boilerEfficiencyPercent", label: "Eficienta centrala", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
+      { name: "electricityPricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "heatPumpCop", label: "COP pompa", type: "number", min: 1, max: 10, step: 0.1, required: true, defaultValue: 3.4 },
+    ],
+    outputs: [
+      { name: "gasAnnualCost", label: "Cost anual gaz", unit: "lei", decimals: 2 },
+      { name: "heatPumpAnnualCost", label: "Cost anual pompa", unit: "lei", decimals: 2 },
+      { name: "annualDifference", label: "Diferenta anuala", unit: "lei", decimals: 2 },
+    ],
+    compute: (values) => {
+      const annualHeatNeedKwh = parseNumber(values.annualHeatNeedKwh);
+      const gasPricePerKwh = parseNumber(values.gasPricePerKwh);
+      const boilerEfficiencyPercent = Math.max(parseNumber(values.boilerEfficiencyPercent), 1) / 100;
+      const electricityPricePerKwh = parseNumber(values.electricityPricePerKwh);
+      const heatPumpCop = Math.max(parseNumber(values.heatPumpCop), 0.1);
+      const gasAnnualCost = (annualHeatNeedKwh / boilerEfficiencyPercent) * gasPricePerKwh;
+      const heatPumpAnnualCost = (annualHeatNeedKwh / heatPumpCop) * electricityPricePerKwh;
+      return {
+        gasAnnualCost: round(gasAnnualCost, 2),
+        heatPumpAnnualCost: round(heatPumpAnnualCost, 2),
+        annualDifference: round(gasAnnualCost - heatPumpAnnualCost, 2),
+      };
+    },
+  },
+  "solar-co2-savings": {
+    key: "solar-co2-savings",
+    title: "Calculator economie CO2 panouri fotovoltaice",
+    slug: "calculator-economie-co2-panouri-fotovoltaice",
+    categorySlug: "energie-pentru-casa",
+    summary:
+      "Estimeaza emisiile evitate anual pornind de la productia fotovoltaica si factorul de emisii folosit.",
+    formulaName: "CO2 evitat",
+    formulaExpression: "CO2 evitat = productie anuala x factor emisii",
+    formulaDescription:
+      "Calculatorul transforma energia produsa din panouri intr-o estimare simplificata a emisiilor evitate.",
+    howToSteps: [
+      "Introdu productia anuala estimata a sistemului.",
+      "Introdu factorul de emisii folosit pentru comparatie.",
+      "Citeste emisiile evitate in kg si tone.",
+    ],
+    inputs: [
+      { name: "annualProductionKwh", label: "Productie anuala", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
+      { name: "emissionFactor", label: "Factor emisii", type: "number", unit: "kg CO2/kWh", min: 0.01, max: 2, step: 0.01, required: true, defaultValue: 0.3 },
+    ],
+    outputs: [
+      { name: "avoidedKgCo2", label: "CO2 evitat", unit: "kg/an", decimals: 0 },
+      { name: "avoidedTonsCo2", label: "CO2 evitat", unit: "tone/an", decimals: 2 },
+    ],
+    compute: (values) => {
+      const annualProductionKwh = parseNumber(values.annualProductionKwh);
+      const emissionFactor = parseNumber(values.emissionFactor);
+      const avoidedKgCo2 = annualProductionKwh * emissionFactor;
+      return {
+        avoidedKgCo2: round(avoidedKgCo2, 0),
+        avoidedTonsCo2: round(avoidedKgCo2 / 1000, 2),
       };
     },
   },
