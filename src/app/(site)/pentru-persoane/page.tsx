@@ -19,6 +19,7 @@ const categorySlugs = new Set([
   "fitness",
   "auto",
   "energie",
+  "energie-pentru-casa",
   "conversii",
   "finante",
   "salarii-si-taxe",
@@ -36,7 +37,7 @@ export default async function ConsumerHubPage() {
     <AudienceHub
       badge="Pentru persoane"
       title="Calculatoare si ghiduri pentru deciziile de zi cu zi ale persoanelor."
-      description="Aici grupam paginile cele mai utile pentru sanatate, alimentatie, costuri auto, facturi, conversii si finante personale. Ideea nu este doar sa afli o cifra, ci sa intelegi ce faci mai departe cu ea."
+      description="Aici grupam paginile cele mai utile pentru sanatate, alimentatie, costuri auto, facturi, energie pentru casa, conversii si finante personale. Ideea nu este doar sa afli o cifra, ci sa intelegi ce faci mai departe cu ea."
       path="/pentru-persoane"
       audienceLabel="Pentru persoane"
       spotlightLabel="Cum folosesti hub-ul"
@@ -44,7 +45,7 @@ export default async function ConsumerHubPage() {
       decisionPillars={[
         "Sanatate, nutritie si compozitie corporala",
         "Costuri auto si estimari de drum",
-        "Energie, utilitati si conversii practice",
+        "Energie pentru casa, utilitati si conversii practice",
       ]}
       journeys={[
         {
@@ -67,6 +68,13 @@ export default async function ConsumerHubPage() {
           description:
             "In energie si utilitati, raspunsul bun apare cand treci de la unitati la bani si apoi la decizia practica de consum.",
           href: "/calculatoare/energie",
+        },
+        {
+          label: "Panouri si consum casa",
+          title: "Porneste din factura si continua spre panouri, BTU si amortizare",
+          description:
+            "Noua verticala energie pentru casa leaga consumul real al locuintei de cost, productie fotovoltaica, climatizare si investitii energetice.",
+          href: "/calculatoare/energie-pentru-casa",
         },
         {
           label: "Salarii",

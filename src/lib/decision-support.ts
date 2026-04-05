@@ -161,6 +161,37 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       },
     ],
   },
+  "energie-pentru-casa": {
+    summary:
+      "In energia pentru casa, calculatorul este util cand te ajuta sa legi consumul, costul si alegerea echipamentului de scenariul real din locuinta.",
+    checks: [
+      "Verifica daca folosesti tariful, consumul si numarul de ore apropiate de situatia ta reala.",
+      "Pentru panouri, compara macar un scenariu prudent si unul optimist de productie.",
+      "Pentru climatizare sau incalzire, valideaza volumul, izolatia si conditiile reale ale casei.",
+    ],
+    mistakes: [
+      "Sa folosesti consumul teoretic al aparatelor ca si cum ar fi consum garantat in orice zi.",
+      "Sa tratezi productia fotovoltaica ca promisiune fixa, fara sa tii cont de orientare, umbrire sau autoconsum.",
+      "Sa alegi echipamente doar dupa puterea afisata, fara sa legi rezultatul de costul si scenariul real de utilizare.",
+    ],
+    nextSteps: [
+      "Compara costul actual cu un scenariu de reducere a consumului sau cu investitia in panouri.",
+      "Leaga calculul de un al doilea tool din aceeasi categorie: productie, amortizare, BTU sau necesar de caldura.",
+      "Foloseste ghidul editorial cand decizia implica achizitie de echipamente sau comparatii intre solutii.",
+    ],
+    sections: [
+      {
+        title: "Ce decizie sustine",
+        body:
+          "Te ajuta sa compari factura actuala cu scenarii de eficienta, panouri fotovoltaice, climatizare sau dimensionare a echipamentelor din casa.",
+      },
+      {
+        title: "Ce trebuie verificat separat",
+        body:
+          "Tarifele reale, conditiile locuintei, orientarea acoperisului, randamentul echipamentelor si montajul pot schimba semnificativ rezultatul final.",
+      },
+    ],
+  },
   conversii: {
     summary:
       "La conversii, miza nu este doar formula, ci sa folosesti rapid raspunsul corect in contextul potrivit.",

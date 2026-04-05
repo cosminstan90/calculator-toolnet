@@ -242,6 +242,40 @@ Obiective:
 - legam performanta de ads, funnel si profit de indicatori usor de explicat
 - pregatim terenul pentru CTA-uri affiliate si pentru pagini de comparatie cu instrumente reale
 
+## Batch 08
+
+Lot dedicat verticalei `energie-pentru-casa`, cu focus pe consumul locuintei, panouri fotovoltaice, climatizare si decizii energetice pentru utilizatori.
+
+Calculatoare:
+
+1. `appliance-electricity-cost`
+2. `monthly-electricity-bill`
+3. `solar-system-size`
+4. `solar-production`
+5. `solar-panel-count`
+6. `solar-payback`
+7. `ac-btu`
+8. `heating-load`
+9. `heat-pump-size`
+10. `solar-battery-size`
+
+Articole suport:
+
+1. `cum-citesti-factura-de-curent-fara-sa-te-pierzi-in-detalii-inutile`
+2. `cum-estimezi-consumul-real-al-electrocasnicelor-din-casa`
+3. `cate-panouri-fotovoltaice-iti-trebuie-de-fapt`
+4. `cum-estimezi-productia-fotovoltaica-fara-promisiuni-umflate`
+5. `cum-citesti-amortizarea-unui-sistem-fotovoltaic`
+6. `cum-alegi-btu-ul-potrivit-pentru-aer-conditionat`
+7. `centrala-vs-pompa-de-caldura-cum-compari-corect-costurile`
+8. `cand-merita-o-baterie-fotovoltaica-si-cand-doar-creste-costul`
+
+Obiective:
+
+- deschidem o categorie noua, dedicata consumului si deciziilor energetice din casa
+- legam factura, aparatele, panourile si amortizarea intr-un singur cluster clar
+- pregatim una dintre cele mai bune verticale consumer pentru ads si afiliere
+
 ## Regula de operare
 
 - `releaseBatch` marcheaza lotul editorial

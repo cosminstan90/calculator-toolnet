@@ -62,6 +62,15 @@ const categoryPlaybooks: Record<
     ],
     nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
   },
+  "energie-pentru-casa": {
+    audience: "Mai ales pentru persoane care vor sa lege consumul casei de cost, productie fotovoltaica si alegerea echipamentelor.",
+    scenarios: [
+      "Porneste cu factura sau consumul real al aparatelor, apoi leaga rezultatul de costul lunar si anual.",
+      "Daca te uiti la panouri, treci de la consumul anual la puterea sistemului, productie estimata si amortizare.",
+      "Pentru climatizare si incalzire, valideaza necesarul de BTU sau kW inainte sa compari oferte sau echipamente.",
+    ],
+    nextHub: { label: "Hub persoane", href: "/pentru-persoane" },
+  },
   constructii: {
     audience: "Pentru persoane, echipe mici si firme care estimeaza materiale sau volume de lucru.",
     scenarios: [
