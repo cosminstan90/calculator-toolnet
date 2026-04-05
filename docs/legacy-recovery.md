@@ -4,7 +4,7 @@ Lista de mai jos ne ajuta sa recuperam semnalul SEO de pe URL-uri istorice deja 
 
 ## Redirect-uri implementate deja in bootstrap
 
-1. `/calculator-imc` -> `/calculatoare/fitness/calculator-bmi-imc`
+1. `/calculator-imc` -> `/calculatoare/nutritie-si-antrenament/calculator-bmi-imc`
 2. `/calculator-combustibil-consum-auto` -> `/calculatoare/auto/calculator-consum-combustibil`
 3. `/calculator-kw-cp` -> `/calculatoare/energie/convertor-kw-in-cp`
 4. `/calculator-beton-fundatie-volum` -> `/calculatoare/constructii/calculator-volum-beton`

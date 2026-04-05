@@ -68,9 +68,9 @@ const defaultGuidance: CategoryGuidance = {
 };
 
 const categoryGuidance: Record<string, CategoryGuidance> = {
-  fitness: {
+  "nutritie-si-antrenament": {
     summary:
-      "In fitness, rezultatul te ajuta sa calibrezi aportul, ritmul sau asteptarile, dar merita mereu citit impreuna cu contextul tau real.",
+      "In nutritie si antrenament, rezultatul te ajuta sa calibrezi aportul, ritmul sau asteptarile, dar merita mereu citit impreuna cu contextul tau real.",
     checks: [
       "Verifica daca datele introduse sunt actuale: greutate, inaltime, varsta, nivel de activitate.",
       "Nu interpreta rezultatul izolat daca obiectivul tau este performanta, recompozitie sau sanatate metabolica.",
@@ -254,9 +254,9 @@ const categoryGuidance: Record<string, CategoryGuidance> = {
       },
     ],
   },
-  business: {
+  afaceri: {
     summary:
-      "Pentru firme, un calculator bun trebuie sa scurteze drumul spre decizie: pret, marja, rentabilitate sau scenariu de operare.",
+      "Pentru afaceri, un calculator bun trebuie sa scurteze drumul spre decizie: pret, marja, rentabilitate sau scenariu de operare.",
     checks: [
       "Verifica daca in calcul intra toate costurile relevante, nu doar costul direct evident.",
       "Compara minim doua scenarii: conservator si optimist.",

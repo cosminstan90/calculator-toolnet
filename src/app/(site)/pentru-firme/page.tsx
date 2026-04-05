@@ -16,7 +16,7 @@ export const metadata = buildMetadata({
 });
 
 const categorySlugs = new Set([
-  "business",
+  "afaceri",
   "finante",
   "constructii",
   "energie",
@@ -40,7 +40,7 @@ export default async function BusinessHubPage() {
       description="Acest hub pune impreuna calculatoare pentru profitabilitate, costuri, taxe, constructii si estimari utile in operare. Ne intereseaza nu doar formula, ci si cum folosesti rezultatul in ofertare, bugetare si prioritizare."
       path="/pentru-firme"
       audienceLabel="Pentru firme"
-      spotlightLabel="Decision support pentru business"
+      spotlightLabel="Decision support pentru afaceri"
       spotlightDescription="Gandim paginile astfel incat sa poti porni de la un calcul simplu si sa continui logic spre articolul sau tool-ul care clarifica decizia comerciala."
       decisionPillars={[
         "Preturi, marje si rentabilitate",
@@ -52,8 +52,8 @@ export default async function BusinessHubPage() {
           label: "Pricing",
           title: "Compara rapid marja, markup si rentabilitatea",
           description:
-            "Cand decizia are legatura cu pretul, profitul sau ROI-ul, incepe cu clusterul business si continua cu scenariile financiare complementare.",
-          href: "/calculatoare/business",
+            "Cand decizia are legatura cu pretul, profitul sau ROI-ul, incepe cu clusterul afaceri si continua cu scenariile financiare complementare.",
+          href: "/calculatoare/afaceri",
         },
         {
           label: "Taxe si salarii",

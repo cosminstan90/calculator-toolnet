@@ -27,7 +27,7 @@ export default function AboutPage() {
         <article className="paper-panel rounded-[2rem] p-6">
           <h2 className="text-2xl font-black text-slate-950">Ce publicam</h2>
           <p className="mt-3 text-sm leading-8 text-slate-700">
-            Calculatoare pentru fitness, auto, energie si conversii, completate de ghiduri care explica rezultatele si scenariile in care merita sa refaci calculul.
+            Calculatoare pentru nutritie si antrenament, auto, energie si conversii, completate de ghiduri care explica rezultatele si scenariile in care merita sa refaci calculul.
           </p>
         </article>
         <article className="paper-panel rounded-[2rem] p-6">

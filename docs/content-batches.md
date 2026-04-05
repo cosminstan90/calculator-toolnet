@@ -75,12 +75,12 @@ Articole suport:
 Obiective:
 
 - inchidem primele 20 de calculatoare complete disponibile in produs
-- acoperim mai bine clusterele `fitness`, `auto`, `energie` si `conversii`
+- acoperim mai bine clusterele `nutritie-si-antrenament`, `auto`, `energie` si `conversii`
 - sustinem lotul cu redirect-uri pentru cateva URL-uri legacy deja observate live
 
 URL-uri legacy recuperate in bootstrap:
 
-1. `/calculator-imc` -> `/calculatoare/fitness/calculator-bmi-imc`
+1. `/calculator-imc` -> `/calculatoare/nutritie-si-antrenament/calculator-bmi-imc`
 2. `/calculator-combustibil-consum-auto` -> `/calculatoare/auto/calculator-consum-combustibil`
 3. `/calculator-kw-cp` -> `/calculatoare/energie/convertor-kw-in-cp`
 
@@ -114,7 +114,7 @@ Articole suport:
 
 Obiective:
 
-- deschidem doua clustere noi: `constructii` si `business`
+- deschidem doua clustere noi: `constructii` si `afaceri`
 - introducem tool-uri utile atat pentru persoane, cat si pentru firme mici
 - sustinem lotul cu redirect pentru calculatorul legacy de beton deja vazut live
 
@@ -212,7 +212,7 @@ Obiective:
 
 ## Batch 07
 
-Lot dedicat clusterului `business` cu focus pe marketing metrics, ecommerce si indicatori comerciali care pot sustine mai tarziu si afilierea pe tool-uri sau servicii.
+Lot dedicat clusterului `afaceri` cu focus pe marketing metrics, ecommerce si indicatori comerciali care pot sustine mai tarziu si afilierea pe tool-uri sau servicii.
 
 Calculatoare:
 
@@ -238,7 +238,7 @@ Articole suport:
 
 Obiective:
 
-- extindem clusterul `business` cu pagini foarte bune pentru intentie comerciala
+- extindem clusterul `afaceri` cu pagini foarte bune pentru intentie comerciala
 - legam performanta de ads, funnel si profit de indicatori usor de explicat
 - pregatim terenul pentru CTA-uri affiliate si pentru pagini de comparatie cu instrumente reale
 

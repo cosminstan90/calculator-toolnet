@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Calculatoare Online",
   shortName: "calculatoare-online",
   description:
-    "Calculatoare online pentru fitness, auto, energie si conversii, cu formule explicate, exemple practice si continut util pentru decizii rapide.",
+    "Calculatoare online pentru nutritie si antrenament, auto, energie si conversii, cu formule explicate, exemple practice si continut util pentru decizii rapide.",
   locale: "ro_RO",
 };
 

@@ -8,9 +8,9 @@ export const fallbackHeroHighlights: Array<{ value: string; label: string }> = [
 
 export const fallbackCategories: Array<Pick<CalculatorCategory, "id" | "name" | "slug" | "summary">> = [
   {
-    id: "fitness",
-    name: "Fitness",
-    slug: "fitness",
+    id: "nutritie-si-antrenament",
+    name: "Nutritie si antrenament",
+    slug: "nutritie-si-antrenament",
     summary: "BMI, calorii, TDEE, proteine si alte calcule utile pentru obiective de greutate, forma si nutritie.",
   },
   {
@@ -38,19 +38,19 @@ export const fallbackCalculators: Array<
 > = [
   {
     id: "bmi",
-    title: "Calculator BMI",
-    slug: "calculator-bmi",
+    title: "Calculator BMI / IMC",
+    slug: "calculator-bmi-imc",
     shortDescription: "Afla rapid indicele de masa corporala si intervalul in care se incadreaza rezultatul tau.",
     audience: "consumer",
-    category: { id: "fitness", name: "Fitness", slug: "fitness" },
+    category: { id: "nutritie-si-antrenament", name: "Nutritie si antrenament", slug: "nutritie-si-antrenament" },
   },
   {
     id: "tdee",
-    title: "Calculator TDEE",
-    slug: "calculator-tdee",
+    title: "Calculator necesar caloric zilnic",
+    slug: "calculator-necesar-caloric-zilnic",
     shortDescription: "Estimeaza necesarul zilnic de calorii in functie de activitate, varsta, greutate si obiectiv.",
     audience: "consumer",
-    category: { id: "fitness", name: "Fitness", slug: "fitness" },
+    category: { id: "nutritie-si-antrenament", name: "Nutritie si antrenament", slug: "nutritie-si-antrenament" },
   },
   {
     id: "kw-cp",

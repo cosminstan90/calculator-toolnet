@@ -48,7 +48,7 @@ export const Redirects: CollectionConfig = {
         return true;
       },
       admin: {
-        description: "Path-ul nou, ex: /calculatoare/fitness/calculator-bmi-imc",
+        description: "Path-ul nou, ex: /calculatoare/nutritie-si-antrenament/calculator-bmi-imc",
       },
     },
     {

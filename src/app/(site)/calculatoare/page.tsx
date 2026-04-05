@@ -24,7 +24,7 @@ type SearchParams = Promise<{ q?: string }>;
 export const metadata = buildMetadata({
   title: "Calculatoare online pe categorii",
   description:
-    "Descopera calculatoare online pentru fitness, auto, energie, imobiliare si conversii, fiecare cu explicatia formulei si exemple practice.",
+    "Descopera calculatoare online pentru nutritie si antrenament, auto, energie, imobiliare si conversii, fiecare cu explicatia formulei si exemple practice.",
   path: "/calculatoare",
 });
 
@@ -49,7 +49,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
           buildCollectionJsonLd({
             name: "Calculatoare online pe categorii",
             description:
-              "Index complet de calculatoare online pentru fitness, auto, energie si conversii.",
+              "Index complet de calculatoare online pentru nutritie si antrenament, auto, energie si conversii.",
             path: "/calculatoare",
           }),
           buildBreadcrumbJsonLd([
@@ -110,7 +110,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
           <p className="section-kicker">Categorii principale</p>
           <h2 className="mt-4 section-title">Incepe cu domeniul potrivit, apoi mergi direct la calculul care te intereseaza.</h2>
           <p className="mt-5 section-copy max-w-md">
-            Hub-urile sunt organizate dupa intentie: sanatate si nutritie, costuri auto, energie sau conversii uzuale. Astfel ajungi mai repede la pagina relevanta.
+            Hub-urile sunt organizate dupa intentie: nutritie si antrenament, costuri auto, energie sau conversii uzuale. Astfel ajungi mai repede la pagina relevanta.
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
@@ -147,7 +147,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
             Intra direct in calculatoare pentru marje, costuri, TVA si operare.
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-300">
-            Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru business, finante, constructii si imobiliare.
+            Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru afaceri, finante, constructii si imobiliare.
           </p>
         </Link>
       </section>

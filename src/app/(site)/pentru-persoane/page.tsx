@@ -11,12 +11,12 @@ export const revalidate = 900;
 export const metadata = buildMetadata({
   title: "Calculatoare online pentru persoane",
   description:
-    "Hub pentru persoane: fitness, auto, finante personale, energie, imobiliare si conversii utile, cu calculatoare explicate si ghiduri care ajuta la decizie.",
+    "Hub pentru persoane: nutritie si antrenament, auto, finante personale, energie, imobiliare si conversii utile, cu calculatoare explicate si ghiduri care ajuta la decizie.",
   path: "/pentru-persoane",
 });
 
 const categorySlugs = new Set([
-  "fitness",
+  "nutritie-si-antrenament",
   "auto",
   "energie",
   "energie-pentru-casa",
@@ -53,8 +53,8 @@ export default async function ConsumerHubPage() {
           label: "Sanatate",
           title: "Porneste cu compozitia corporala si necesarul caloric",
           description:
-            "Daca vrei sa intelegi greutatea, aportul caloric sau hidratarea, incepe din clusterul fitness si continua cu ghidurile care traduc cifra in actiune.",
-          href: "/calculatoare/fitness",
+            "Daca vrei sa intelegi greutatea, aportul caloric sau hidratarea, incepe din clusterul de nutritie si antrenament si continua cu ghidurile care traduc cifra in actiune.",
+          href: "/calculatoare/nutritie-si-antrenament",
         },
         {
           label: "Costuri auto",

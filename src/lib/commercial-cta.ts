@@ -38,7 +38,7 @@ const categoryOfferMap: Partial<Record<string, OfferKey>> = {
   "salarii-si-taxe": "finance",
   "credite-si-economii": "finance",
   imobiliare: "finance",
-  business: "business",
+  afaceri: "business",
   energie: "energy",
   "energie-pentru-casa": "energy",
   auto: "auto",

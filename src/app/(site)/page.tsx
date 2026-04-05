@@ -57,7 +57,7 @@ export default async function HomePage() {
                 {homepage?.heroTitle ?? "Calcule utile, explicate pe inteles si gata de folosit."}
               </h1>
               <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
-                {homepage?.heroDescription ?? "Gasesti calculatoare pentru fitness, auto, energie si conversii, fiecare insotit de formula, exemple, FAQ si legaturi catre resurse relevante."}
+                {homepage?.heroDescription ?? "Gasesti calculatoare pentru nutritie si antrenament, auto, energie si conversii, fiecare insotit de formula, exemple, FAQ si legaturi catre resurse relevante."}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href={homepage?.primaryCTA?.href ?? "/calculatoare"} className="rounded-full bg-emerald-300 px-6 py-3 text-sm font-semibold text-slate-950 transition-transform duration-200 hover:-translate-y-0.5">
@@ -143,7 +143,7 @@ export default async function HomePage() {
               Pentru persoane
             </p>
             <h2 className="mt-3 text-3xl font-black leading-tight">
-              Fitness, auto, utilitati si finante personale intr-un singur traseu clar.
+              Nutritie, auto, utilitati si finante personale intr-un singur traseu clar.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-700">
               Incepi de la intrebarea practica, alegi calculatorul potrivit si continui cu ghidul care te ajuta sa folosesti corect rezultatul.

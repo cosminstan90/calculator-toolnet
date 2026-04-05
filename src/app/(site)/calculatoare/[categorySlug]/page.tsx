@@ -35,7 +35,7 @@ const categoryPlaybooks: Record<
     nextHub?: { label: string; href: string };
   }
 > = {
-  fitness: {
+  "nutritie-si-antrenament": {
     audience: "Mai ales pentru persoane care urmaresc sanatatea, nutritia si performanta.",
     scenarios: [
       "Porneste cu calculatorul care iti raspunde la intrebarea principala: IMC, calorii, proteine sau hidratare.",
@@ -80,7 +80,7 @@ const categoryPlaybooks: Record<
     ],
     nextHub: { label: "Hub firme", href: "/pentru-firme" },
   },
-  business: {
+  afaceri: {
     audience: "In primul rand pentru firme care compara pret, marja, cost si rentabilitate.",
     scenarios: [
       "Porneste cu intrebarea concreta: pret, marja, markup, prag de rentabilitate sau ROI.",

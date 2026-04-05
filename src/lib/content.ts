@@ -334,7 +334,7 @@ const mapHomepage = (doc: RawDoc): HomepageContent => {
       "Calculatoare online construite sa raspunda repede si sa explice corect.",
     heroDescription:
       asString(doc.heroDescription) ??
-      "Hub de calculatoare online pentru fitness, auto, energie si conversii.",
+      "Hub de calculatoare online pentru nutritie si antrenament, auto, energie si conversii.",
     primaryCTA: primaryCTA
       ? { label: asStringOrEmpty(primaryCTA.label), href: asString(primaryCTA.href) ?? "/calculatoare" }
       : undefined,

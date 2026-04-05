@@ -378,7 +378,7 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   {
     key: "legacy-bmi",
     sourcePath: "/calculator-imc",
-    destinationPath: "/calculatoare/fitness/calculator-bmi-imc",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-bmi-imc",
     statusCode: "308",
     notes:
       "Legacy SEO recovery pentru vechiul calculator IMC/BMI indexat anterior pe domeniu.",
@@ -413,8 +413,8 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   },
   {
     key: "legacy-bmr-slug",
-    sourcePath: "/calculatoare/fitness/calculator-bmr",
-    destinationPath: "/calculatoare/fitness/calculator-metabolism-bazal",
+    sourcePath: "/calculatoare/nutritie-si-antrenament/calculator-bmr",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-metabolism-bazal",
     statusCode: "308",
     notes:
       "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului BMR.",
@@ -422,8 +422,8 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   },
   {
     key: "legacy-tdee-slug",
-    sourcePath: "/calculatoare/fitness/calculator-tdee",
-    destinationPath: "/calculatoare/fitness/calculator-necesar-caloric-zilnic",
+    sourcePath: "/calculatoare/nutritie-si-antrenament/calculator-tdee",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-necesar-caloric-zilnic",
     statusCode: "308",
     notes:
       "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului TDEE.",
@@ -431,8 +431,8 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
   },
   {
     key: "legacy-one-rep-max-slug",
-    sourcePath: "/calculatoare/fitness/calculator-one-rep-max",
-    destinationPath: "/calculatoare/fitness/calculator-repetare-maxima-1rm",
+    sourcePath: "/calculatoare/nutritie-si-antrenament/calculator-one-rep-max",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-repetare-maxima-1rm",
     statusCode: "308",
     notes:
       "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului 1RM.",
@@ -445,6 +445,186 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
     statusCode: "308",
     notes:
       "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de randament capital propriu.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-fitness-category",
+    sourcePath: "/calculatoare/fitness",
+    destinationPath: "/calculatoare/nutritie-si-antrenament",
+    statusCode: "308",
+    notes:
+      "Mutare permanenta de la vechiul slug de categorie fitness la varianta in romana.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-business-category",
+    sourcePath: "/calculatoare/business",
+    destinationPath: "/calculatoare/afaceri",
+    statusCode: "308",
+    notes:
+      "Mutare permanenta de la vechiul slug de categorie business la varianta in romana.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-bmi-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-bmi-imc",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-bmi-imc",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului BMI.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-bmr-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-bmr",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-metabolism-bazal",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului BMR.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-tdee-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-tdee",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-necesar-caloric-zilnic",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului TDEE.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-calorie-deficit-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-calorii-slabire",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-calorii-slabire",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului pentru slabire.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-protein-intake-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-necesar-proteine",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-necesar-proteine",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului de proteine.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-body-fat-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-grasime-corporala",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-grasime-corporala",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului de grasime corporala.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-ideal-weight-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-greutate-ideala",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-greutate-ideala",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului de greutate ideala.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-water-intake-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-aport-zilnic-apa",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-aport-zilnic-apa",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului de aport zilnic de apa.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-one-rep-max-category-path",
+    sourcePath: "/calculatoare/fitness/calculator-one-rep-max",
+    destinationPath: "/calculatoare/nutritie-si-antrenament/calculator-repetare-maxima-1rm",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul path din categoria fitness al calculatorului 1RM.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-food-cost-slug",
+    sourcePath: "/calculatoare/business/calculator-food-cost",
+    destinationPath: "/calculatoare/afaceri/calculator-cost-reteta",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de cost reteta.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-markup-slug",
+    sourcePath: "/calculatoare/business/calculator-markup",
+    destinationPath: "/calculatoare/afaceri/calculator-adaos-comercial",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de adaos comercial.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-break-even-slug",
+    sourcePath: "/calculatoare/business/calculator-break-even",
+    destinationPath: "/calculatoare/afaceri/calculator-prag-rentabilitate",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de prag de rentabilitate.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-roas-slug",
+    sourcePath: "/calculatoare/business/calculator-roas",
+    destinationPath: "/calculatoare/afaceri/calculator-randament-publicitate",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului ROAS.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-break-even-roas-slug",
+    sourcePath: "/calculatoare/business/calculator-break-even-roas",
+    destinationPath: "/calculatoare/afaceri/calculator-prag-roas-rentabil",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de prag ROAS rentabil.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-aov-slug",
+    sourcePath: "/calculatoare/business/calculator-aov",
+    destinationPath: "/calculatoare/afaceri/calculator-valoare-medie-comanda",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului AOV.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-cpl-slug",
+    sourcePath: "/calculatoare/business/calculator-cpl",
+    destinationPath: "/calculatoare/afaceri/calculator-cost-prospect",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului CPL.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-cac-slug",
+    sourcePath: "/calculatoare/business/calculator-cac",
+    destinationPath: "/calculatoare/afaceri/calculator-cost-achizitie-client",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului CAC.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-rental-break-even-occupancy-slug",
+    sourcePath: "/calculatoare/imobiliare/calculator-grad-ocupare-break-even",
+    destinationPath: "/calculatoare/imobiliare/calculator-prag-ocupare-rentabil",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug mixt al calculatorului de prag de ocupare rentabil.",
     publishByDefault: true,
   },
 ];
@@ -478,12 +658,12 @@ const defaultEditorialStatusForCalculator = (key: CalculatorKey): EditorialStatu
   BATCH_01_CALCULATORS.includes(key) ? "approved" : "draft";
 
 const defaultAudienceForCategory = (categorySlug: string): Audience => {
-  if (categorySlug === "business") {
+  if (categorySlug === "afaceri") {
     return "business";
   }
 
   if (
-    categorySlug === "fitness" ||
+    categorySlug === "nutritie-si-antrenament" ||
     categorySlug === "auto" ||
     categorySlug === "conversii" ||
     categorySlug === "energie-pentru-casa"
@@ -553,7 +733,7 @@ const defaultReleaseBatchForArticle = (seed: ArticleSeed): ReleaseBatch => {
     ? "batch-04"
     : seed.relatedCategorySlug === "credite-si-economii"
       ? "batch-06"
-      : seed.relatedCategorySlug === "business"
+      : seed.relatedCategorySlug === "afaceri"
         ? "batch-07"
         : seed.relatedCategorySlug === "energie-pentru-casa"
           ? "batch-08"
@@ -635,11 +815,11 @@ const defaultPublishingScheduleForArticle = (
 };
 
 const categoryFrames = {
-  fitness: {
+  "nutritie-si-antrenament": {
     audience:
       "cand urmaresti compozitia corporala, aportul caloric, hidratarea sau performanta din antrenament",
     caution:
-      "In fitness, rezultatul merita corelat cu obiectivul, istoricul personal si cu alte repere relevante, nu folosit izolat.",
+      "In nutritie si antrenament, rezultatul merita corelat cu obiectivul, istoricul personal si cu alte repere relevante, nu folosit izolat.",
     linkingLead:
       "Din acelasi cluster merita sa legi calculatorul de alte tool-uri care rafineaza interpretarea rezultatului.",
   },
@@ -683,11 +863,11 @@ const categoryFrames = {
     linkingLead:
       "Pagini de constructii functioneaza bine cand le legi intre ele: suprafata, volum, vopsea, gresie sau parchet fac parte din acelasi traseu de decizie.",
   },
-  business: {
+  afaceri: {
     audience:
       "cand vrei sa estimezi rapid costuri, marje, rentabilitate sau preturi de vanzare pentru decizii comerciale",
     caution:
-      "In business, formula este utila ca reper rapid, dar rezultatul trebuie completat cu taxe, comisioane, discounturi si contextul real al pietei.",
+      "In afaceri, formula este utila ca reper rapid, dar rezultatul trebuie completat cu taxe, comisioane, discounturi si contextul real al pietei.",
     linkingLead:
       "Internal linking-ul este valoros aici pentru ca utilizatorul cauta de obicei mai multe unghiuri ale aceleiasi decizii: marja, markup, profit si ROI.",
   },
@@ -795,8 +975,8 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames.constructii;
   }
 
-  if (categorySlug === "business") {
-    return categoryFrames.business;
+  if (categorySlug === "afaceri") {
+    return categoryFrames.afaceri;
   }
 
   if (categorySlug === "finante") {
@@ -815,7 +995,7 @@ const getCategoryFrame = (categorySlug: string) => {
     return categoryFrames.imobiliare;
   }
 
-  return categoryFrames.fitness;
+  return categoryFrames["nutritie-si-antrenament"];
 };
 
 const buildFallbackCalculatorMeta = (
@@ -857,7 +1037,7 @@ const homepageSeed = {
   heroBadge: "Calculatoare online clare si utile",
   heroTitle: "Calcule utile, explicate pe inteles si gata de folosit.",
   heroDescription:
-    "Calculatoare Online reuneste tool-uri pentru fitness, auto, energie, energie pentru casa, conversii, constructii, business, finante, salarii, credite si imobiliare, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
+    "Calculatoare Online reuneste tool-uri pentru nutritie si antrenament, auto, energie, energie pentru casa, conversii, constructii, afaceri, finante, salarii, credite si imobiliare, fiecare completat cu formula folosita, exemple practice, intrebari frecvente si legaturi catre pagini relevante.",
   primaryCTA: { label: "Vezi toate calculatoarele", href: "/calculatoare" },
   secondaryCTA: { label: "Cum construim paginile", href: "/metodologie" },
   heroHighlights: [
@@ -882,13 +1062,13 @@ const homepageSeed = {
         "Fiecare pagina are formula, exemple, FAQ, continut contextual si legaturi catre tool-uri sau articole apropiate.",
       tone: "mist",
       items: [
-        { value: "Fitness", label: "BMI, BMR, TDEE, proteine si calorii" },
+        { value: "Nutritie", label: "BMI, BMR, TDEE, proteine si calorii" },
         { value: "Auto", label: "consum, cost de drum si timp de calatorie" },
         { value: "Energie", label: "kW in CP, cost electric si conversii utile" },
         { value: "Casa", label: "factura, consum, panouri si climatizare" },
         { value: "Conversii", label: "temperatura, greutate, lungime si unitati uzuale" },
         { value: "Constructii", label: "suprafata, beton, vopsea, gresie si parchet" },
-        { value: "Business", label: "food cost, marja, markup, break-even si ROI" },
+        { value: "Afaceri", label: "cost reteta, marja, adaos comercial, prag rentabilitate si ROI" },
         { value: "Finante", label: "procente, TVA, economii, dobanzi si rate" },
         { value: "Salarii", label: "crestere salariala, tarif orar, venit anual si taxare" },
         { value: "Credite", label: "rata maxima, refinantare, fond de urgenta si avans" },
@@ -897,20 +1077,20 @@ const homepageSeed = {
     },
   ],
   seo: buildSeoPayload({
-    metaTitle: "Calculatoare Online - credite, energie, imobiliare si business",
+    metaTitle: "Calculatoare Online - credite, energie, imobiliare si afaceri",
     metaDescription:
-      "Hub de calculatoare online pentru credite, economii, imobiliare, energie pentru casa, fotovoltaice, fitness, auto, constructii si business, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
+      "Hub de calculatoare online pentru credite, economii, imobiliare, energie pentru casa, fotovoltaice, nutritie si antrenament, auto, constructii si afaceri, cu formule explicate, exemple practice, FAQ si pagini construite pentru utilitate reala.",
     canonicalPath: "/",
   }),
 };
 
 const categorySeeds: CategorySeed[] = [
   {
-    name: "Fitness",
-    slug: "fitness",
+    name: "Nutritie si antrenament",
+    slug: "nutritie-si-antrenament",
     summary: "Calculatoare pentru IMC, metabolism, calorii, proteine si obiective de nutritie.",
     introContent:
-      "Categoria Fitness aduna tool-uri pentru compozitie corporala, necesar caloric, proteine si alte calcule frecvente in nutritie si antrenament. Fiecare pagina combina formularul cu explicatia formulei, exemple de calcul si context editorial care te ajuta sa folosesti corect rezultatul.",
+      "Categoria Nutritie si antrenament aduna tool-uri pentru compozitie corporala, necesar caloric, proteine si alte calcule frecvente in nutritie si antrenament. Fiecare pagina combina formularul cu explicatia formulei, exemple de calcul si context editorial care te ajuta sa folosesti corect rezultatul.",
     sortOrder: 10,
     isFeatured: true,
   },
@@ -960,11 +1140,11 @@ const categorySeeds: CategorySeed[] = [
     isFeatured: true,
   },
   {
-    name: "Business",
-    slug: "business",
-    summary: "Calculatoare pentru food cost, marja, markup, break-even si ROI.",
+    name: "Afaceri",
+    slug: "afaceri",
+    summary: "Calculatoare pentru cost reteta, marja, adaos comercial, prag rentabilitate si ROI.",
     introContent:
-      "Categoria Business aduna calcule simple, dar foarte cautate in vanzari, horeca si management: marja, markup, rentabilitate, ROI si alte repere care ajuta la decizii rapide. Fiecare pagina explica formula si limitele interpretarii ei in practica.",
+      "Categoria Afaceri aduna calcule simple, dar foarte cautate in vanzari, horeca si management: marja, markup, rentabilitate, ROI si alte repere care ajuta la decizii rapide. Fiecare pagina explica formula si limitele interpretarii ei in practica.",
     sortOrder: 60,
     isFeatured: true,
   },
@@ -2685,7 +2865,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "BMI este util, dar nu este suficient singur. Iata cum sa-l folosesti corect si cand trebuie completat cu alti indicatori.",
     content: "BMI este un indicator rapid, nu un verdict final despre starea ta de sanatate.\n\nPentru multi utilizatori, este primul calcul cautat atunci cand vor sa inteleaga daca greutatea actuala este aproape de un interval considerat normal. Tocmai de aceea merita folosit corect si interpretat in context, nu separat de restul datelor personale.\n\nFormula BMI leaga greutatea de inaltime si ofera un reper simplu, usor de comparat intre persoane sau intre etape diferite din acelasi proces de slabire ori mentinere. Avantajul lui este viteza. Limita lui este ca nu diferentiaza intre masa musculara si masa grasa.\n\nDin acest motiv, un rezultat mai mare nu inseamna automat exces de grasime, iar un rezultat aflat in intervalul standard nu inseamna neaparat ca toate celelalte repere sunt in regula. Sportivii, persoanele cu multa masa musculara sau cei care trec prin schimbari metabolice pot obtine valori care au nevoie de interpretare suplimentara.\n\nCel mai util mod de a privi BMI-ul este ca punct de plecare. Il poti completa cu calculatorul BMR, cu TDEE-ul si cu alte estimari legate de obiectivul tau, astfel incat rezultatul sa devina parte dintr-o imagine mai coerenta, nu doar o cifra izolata.",
     articleType: "explainer",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["bmi", "bmr", "tdee"],
     relatedArticleSlugs: ["bmr-vs-tdee-diferente"],
     launchWave: "wave-1",
@@ -2698,7 +2878,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "BMR si TDEE sunt confundate des, dar au roluri diferite in planificarea unei diete.",
     content: "BMR si TDEE par apropiate, dar raspund la doua intrebari diferite.\n\nBMR, adica rata metabolica bazala, estimeaza cate calorii consuma corpul in repaus pentru functiile de baza: respiratie, circulatie, reglare termica si mentinerea organelor in functiune. Este o valoare de fundal, nu o tinta de alimentatie zilnica pentru majoritatea oamenilor activi.\n\nTDEE porneste de la BMR si adauga miscarea zilnica, antrenamentele si nivelul general de activitate. Din acest motiv, TDEE este de obicei cifra mai utila atunci cand vrei sa afli cate calorii poti consuma pentru mentinere, slabire sau crestere in greutate.\n\nConfuzia apare frecvent atunci cand cineva foloseste direct BMR-ul ca reper alimentar si ajunge la o tinta prea joasa. In practica, daca vrei sa-ti organizezi mesele sau sa setezi un deficit caloric, TDEE este baza mai relevanta, iar BMR ramane etapa intermediara care explica de unde porneste calculul.\n\nCel mai bun mod de a le folosi este impreuna: calculezi BMR-ul, il transformi in TDEE prin factorul de activitate, apoi ajustezi in functie de obiectiv si de raspunsul real al corpului dupa cateva saptamani.",
     articleType: "guide",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["bmr", "tdee", "calorie-deficit"],
     relatedArticleSlugs: ["cum-setezi-un-deficit-caloric"],
     launchWave: "wave-1",
@@ -2711,7 +2891,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Un deficit prea mare poate sa-ti saboteze progresul. Iata cum alegi o tinta calorica mai realista.",
     content: "Deficitul caloric este diferenta dintre energia pe care o consumi si energia pe care o cheltui intr-o zi.\n\nIn teorie, ideea este simpla: mananci mai putin decat consumi si greutatea incepe sa scada. In practica, lucrurile devin mai nuantate, pentru ca un deficit prea agresiv poate duce la foame mare, oboseala, aderenta slaba si renuntare rapida.\n\nPentru multi oameni, un deficit moderat este un punct de pornire mai bun decat o taiere brusca a caloriilor. De aceea, un calculator de deficit caloric ar trebui folosit ca instrument de setare initiala, nu ca garantie ca rezultatul va arata identic la toata lumea.\n\nDupa ce obtii o tinta, cel mai important pas este observatia. Daca dupa doua-trei saptamani greutatea, energia si foamea merg intr-o directie dezechilibrata, tinta trebuie ajustata. Aici intervine diferenta dintre un calcul util si o strategie sustenabila.\n\nUn deficit bine setat iti ofera spatiu sa ramai consecvent. De aceea merita sa-l legi de TDEE, de aportul de proteine si de obiectivul real, nu doar de dorinta de a obtine un numar cat mai mic pe ecran.",
     articleType: "guide",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["calorie-deficit", "tdee", "protein-intake"],
     relatedArticleSlugs: ["cate-proteine-ai-nevoie-zilnic"],
     launchWave: "wave-1",
@@ -2724,7 +2904,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Necesarul de proteine difera intre mentinere, slabire si crestere musculara. Iata o regula simpla de pornire.",
     content: "Necesarul de proteine nu este acelasi pentru toata lumea.\n\nGreutatea corporala, nivelul de activitate, varsta si obiectivul fac diferenta intre o tinta minima pentru mentinere si una mai ridicata pentru slabire sau dezvoltare musculara. De aceea, o cifra fixa identica pentru toti este rar utila in practica.\n\nPentru multe persoane active, un interval raportat la kilogram corp ofera un punct de pornire mai bun decat o recomandare generica pe zi. Calculatorul de proteine tocmai asta face: transforma greutatea si obiectivul intr-o estimare usor de folosit in planificarea meselor.\n\nInterpretarea ramane totusi importanta. Daca esti in deficit caloric, un aport mai mare poate sustine satietatea si mentinerea masei musculare. Daca esti la mentinere si nu ai un volum mare de antrenament, o tinta mai moderata poate fi suficienta.\n\nCel mai util este sa folosesti rezultatul impreuna cu TDEE-ul si cu structura meselor tale zilnice. Astfel nu ramai doar cu un numar de grame, ci cu o tinta pe care o poti distribui realist in alimentatia de zi cu zi.",
     articleType: "explainer",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["protein-intake", "calorie-deficit", "tdee"],
     relatedArticleSlugs: ["cum-setezi-un-deficit-caloric"],
     launchWave: "wave-1",
@@ -2792,7 +2972,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Formula US Navy este utila pentru orientare, dar valoarea ei vine din masuratori coerente si interpretare prudenta.",
     content: "Procentul de grasime corporala este cautat des pentru ca promite un raspuns mai fin decat BMI-ul. In multe cazuri chiar ofera mai mult context, dar numai daca este folosit cu asteptari corecte.\n\nFormula US Navy porneste de la circumferinte si inaltime, ceea ce o face accesibila si usor de repetat acasa. Tocmai repetabilitatea este unul dintre avantajele ei: daca masori in acelasi mod, poti urmari tendinte in timp mai usor decat daca schimbi metoda la fiecare cateva saptamani.\n\nLimita principala este ca masuratorile trebuie facute atent. Un centimetru in plus sau in minus la talie ori la gat poate schimba rezultatul suficient cat sa para ca ai progresat sau regresat mai mult decat s-a intamplat in realitate. De aceea, consistenta conteaza aproape la fel de mult ca formula.\n\nIn practica, procentul estimat de grasime corporala merita citit impreuna cu BMI-ul, cu greutatea actuala si cu obiectivul personal. Pentru unii utilizatori, progresul util inseamna schimbarea compozitiei corporale, nu doar scaderea unui numar pe cantar.\n\nCel mai sanatos mod de a folosi acest calculator este ca instrument de observatie, nu ca verdict perfect. Daca il tratezi astfel, pagina devine un reper bun pentru comparatii in timp si pentru setarea unor asteptari mai realiste.",
     articleType: "guide",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["body-fat-us-navy", "bmi", "ideal-weight"],
     relatedArticleSlugs: ["cum-interpretezi-bmi-corect"],
     launchWave: "backlog",
@@ -2803,7 +2983,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Regula pe kilogram corp este un bun punct de plecare, dar hidratarea reala depinde de contextul de zi cu zi.",
     content: "Cand cineva cauta cata apa trebuie sa bea zilnic, de obicei cauta claritate, nu o formula complicata. Tocmai de aceea regulile simple, precum aportul estimat pe kilogram corp, raman atat de populare.\n\nAvantajul unui calculator simplu de hidratare este ca iti da imediat un reper. Fara acest punct de plecare, multi utilizatori fie subestimeaza constant cat beau, fie incearca sa urmeze recomandari generale care nu tin cont de greutate, vreme sau nivel de activitate.\n\nIn acelasi timp, hidratarea nu este un numar fix care trebuie respectat mecanic in fiecare zi. Temperatura, transpiratia, mesele, cafeaua, antrenamentele si chiar obiceiurile de somn pot muta nevoia reala in sus sau in jos.\n\nDe aceea merita sa folosesti calculatorul ca instrument de organizare. Iti setezi o tinta orientativa, o observi cateva zile si apoi o corectezi dupa cum te simti si dupa contextul concret. Exact aici devine utila pagina: traduce o formula simpla intr-o regula usor de aplicat, nu intr-o obligatie rigida.\n\nDaca o legi de alimentatie, de nivelul de activitate si de sezon, hidratarea devine mai usor de gestionat. Iar calculatorul ramane ceea ce trebuie sa fie: un reper practic, nu o sursa de presiune inutila.",
     articleType: "guide",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["water-intake", "tdee", "protein-intake"],
     relatedArticleSlugs: ["cate-proteine-ai-nevoie-zilnic"],
     launchWave: "backlog",
@@ -2814,7 +2994,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Estimarea 1RM este utila pentru programare, nu doar pentru a afla un numar mare pe hartie.",
     content: "One rep max este una dintre cele mai populare valori din antrenamentul de forta, dar si una dintre cele mai usor de interpretat gresit. Multi utilizatori il cauta ca pe un scor, cand de fapt valoarea lui reala apare in programare.\n\nUn calculator 1RM pleaca de la o serie submaximala si estimeaza ce ai putea ridica o singura data in conditii bune. Pentru majoritatea utilizatorilor, asta este mai practic si mai sigur decat sa testeze mereu un maxim real in sala.\n\nAvantajul apare imediat in planificare. Daca stii 1RM-ul estimat, poti calcula mai usor procente de lucru, poti organiza zilele grele si poti observa cand forta creste fara sa transformi fiecare saptamana intr-o competitie.\n\nTotusi, rezultatul trebuie citit cu prudenta. Cu cat setul folosit la intrare are mai multe repetari sau tehnica mai slaba, cu atat estimarea devine mai putin stabila. De aceea calculatorul este mai util ca reper intern decat ca adevar absolut.\n\nPrivit corect, 1RM-ul te ajuta sa aduci mai multa structura in antrenament. Nu iti spune totul despre progres, dar iti ofera un limbaj simplu prin care sa legi efortul de planificare si de obiectivele tale reale.",
     articleType: "guide",
-    relatedCategorySlug: "fitness",
+    relatedCategorySlug: "nutritie-si-antrenament",
     relatedCalculatorKeys: ["one-rep-max", "protein-intake", "tdee"],
     relatedArticleSlugs: ["cate-proteine-ai-nevoie-zilnic"],
     launchWave: "backlog",
@@ -2891,7 +3071,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Food cost-ul este un indicator foarte util, dar nu trebuie confundat cu profitul final al business-ului.",
     content: "Food cost-ul este unul dintre cele mai cautate calcule din horeca pentru ca ofera rapid un reper usor de inteles. Practic, iti arata ce procent din pretul de vanzare este consumat de ingredientele directe.\n\nValoarea lui este mare mai ales in comparatii: intre produse, intre perioade sau intre doua variante de reteta. Tocmai de aceea calculatorul este util pentru decizii rapide de meniu si pricing.\n\nTotusi, food cost-ul nu spune singur intreaga poveste. Chiria, personalul, livrarea, pierderile, ambalajele si costurile operationale pot schimba radical imaginea finala. De aceea un food cost bun nu inseamna automat si un produs foarte profitabil.\n\nCea mai buna utilizare este sa il pui alaturi de marja, markup si, in anumite cazuri, break-even. Atunci incepi sa vezi nu doar costul ingredientelor, ci si sustenabilitatea comerciala a produsului.\n\nPentru `toolnet.ro`, pagina asta este un punct foarte bun de intrare in clusterul business si horeca.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["food-cost", "profit-margin", "markup"],
     relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
     launchWave: "backlog",
@@ -2902,7 +3082,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Marja si markup-ul pleaca de la aceleasi doua valori, dar raspund la intrebari diferite.",
     content: "Marja si markup-ul sunt confundate frecvent pentru ca folosesc aceleasi componente: costul si pretul de vanzare. Diferenta reala vine din baza la care raportezi profitul.\n\nMarja iti spune ce procent din pretul final ramane dupa costul direct. Markup-ul iti spune cu cat ai crescut costul ca sa ajungi la pret. Tocmai de aceea cele doua procente nu vor avea aceeasi valoare chiar daca pleaca de la aceleasi cifre.\n\nIn practica, marja este adesea mai utila pentru analiza performantei comerciale, in timp ce markup-ul este foarte folosit in pricing atunci cand pretul se construieste pornind de la cost. Daca le amesteci, poti lua decizii gresite sau poti compara incorect produse si oferte.\n\nDe aceea cele doua calculatoare merita sa stea impreuna in acelasi cluster. Utilizatorul cauta de multe ori exact aceasta diferenta si are nevoie de o explicatie simpla, nu doar de formula.\n\nCand adaugi si break-even sau ROI in acelasi traseu, hub-ul business incepe sa capete consistenta reala.",
     articleType: "comparison",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["profit-margin", "markup", "break-even"],
     relatedArticleSlugs: ["food-cost-explicat-pentru-horeca"],
     launchWave: "backlog",
@@ -2913,7 +3093,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Break-even-ul iti arata cand nu mai esti pe pierdere, iar asta il face extrem de util in orice scenariu comercial simplu.",
     content: "Pragul de rentabilitate este unul dintre acele calcule care simplifica foarte bine o intrebare importanta: cate unitati trebuie sa vinzi pana cand iti acoperi costurile fixe. Din acest motiv este util in business, dar si in proiecte mici sau produse noi.\n\nFormula de baza porneste de la contributia pe unitate, adica diferenta dintre pretul de vanzare si costul variabil direct. Cand aceasta contributie este mica, pragul urca repede si modelul devine mai greu de sustinut.\n\nBreak-even-ul nu spune totul despre business, dar este foarte bun ca filtru rapid. Iti arata daca un scenariu are macar o baza rezonabila inainte sa mergi mai departe in forecast-uri optimiste.\n\nIn combinatie cu marja si ROI-ul, calculatorul devine si mai util. Un produs poate avea marja acceptabila, dar sa aiba nevoie de un volum greu de atins ca sa iasa din pierdere.\n\nDe aceea, pentru clusterul business, break-even-ul este una dintre piesele centrale.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["break-even", "profit-margin", "roi"],
     relatedArticleSlugs: ["marja-vs-markup-explicate-simplu"],
     launchWave: "backlog",
@@ -2924,7 +3104,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "ROI-ul este foarte util pentru comparatii rapide, dar devine periculos daca ignori timpul, riscul si costurile ascunse.",
     content: "ROI-ul este popular pentru ca rezuma repede rentabilitatea unei investitii intr-un singur procent. Tocmai de aceea este foarte util pentru comparatii rapide intre scenarii sau proiecte.\n\nProblema apare atunci cand procentul este folosit fara context. Doua investitii pot avea acelasi ROI, dar una poate cere mult mai mult timp, risc sau capital blocat. In aceste cazuri, procentul singur devine prea simplificator.\n\nTotusi, ca prim filtru, ROI-ul este excelent. Iti arata profitul net raportat la suma investita si te ajuta sa respingi rapid scenarii slabe sau sa compari optiuni apropiate.\n\nPentru decizii mai bune, merita sa il folosesti alaturi de marja, break-even si, uneori, cash flow. Asa obtii nu doar un procent frumos, ci si o imagine mai stabila asupra investitiei.\n\nIn produsul nostru, ROI-ul este un calculator foarte bun pentru a ancora clusterul business spre cautari mai strategice si mai comerciale.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["roi", "break-even", "profit-margin"],
     relatedArticleSlugs: ["cum-calculezi-pragul-de-rentabilitate"],
     launchWave: "backlog",
@@ -3166,7 +3346,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "ROAS-ul este util, dar fara marja si costuri poate arata mai bine decat realitatea. Iata cum il folosesti corect.",
     content: "ROAS-ul este unul dintre cei mai atragatori indicatori din marketing pentru ca promite un raspuns simplu: cat venit a generat fiecare leu investit in ads. Problema este ca simplu nu inseamna intotdeauna suficient.\n\nCalculatorul ROAS te ajuta sa vezi repede raportul dintre venit si buget. Dar decizia buna apare abia atunci cand legi rezultatul de marja, de costurile de fulfilment, de retururi si de diferenta dintre venit si profit.\n\nUn ROAS de 4 poate parea excelent. Daca marja disponibila dupa costurile directe este mica, campania poate totusi sa fie sub break-even. De aceea paginile de business trebuie sa lege ROAS-ul de break-even ROAS, CAC si profit.\n\nCel mai bun mod de a folosi acest calculator este ca filtru de prima lectura. El iti spune daca merita sa cercetezi mai departe, nu daca ai deja verdictul final.\n\nConcluzia practica este simpla: ROAS-ul este bun pentru orientare rapida, dar profitul real apare doar cand pui langa el marja si costul complet al modelului tau comercial.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["roas", "break-even-roas", "gross-profit"],
     relatedArticleSlugs: ["break-even-roas-explicat-pentru-campanii-platite"],
     launchWave: "backlog",
@@ -3179,7 +3359,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Afla ce prag minim trebuie sa atinga o campanie ca sa nu piarda bani la marja ta reala.",
     content: "Break-even ROAS-ul este unul dintre cei mai practici indicatori pentru echipele care vor sa scape de interpretarile prea optimiste ale performantei. El traduce marja intr-un prag minim de ROAS.\n\nCalculatorul de break-even ROAS te ajuta sa raspunzi la o intrebare simpla: de la ce punct in sus campania incepe sa aiba sens economic? Asta este mult mai valoros decat sa spui vag ca ai un ROAS bun sau rau.\n\nDaca marja este subtire, pragul de break-even urca. Daca marja este generoasa, campaniile au mai mult spatiu de manevra. Din acest motiv, acelasi ROAS poate fi excelent intr-un business si insuficient in altul.\n\nPagina trebuie legata natural de profit brut, venit tinta si ROAS real. Asa utilizatorul poate merge de la un prag teoretic la o comparatie practica intre scenariul minim necesar si performanta curenta.\n\nConcluzia buna este ca break-even ROAS-ul nu este un KPI spectaculos, dar este unul dintre cele mai utile pentru disciplina decizionala.",
     articleType: "explainer",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["break-even-roas", "roas", "target-revenue"],
     relatedArticleSlugs: ["cum-citesti-roas-fara-sa-confunzi-venitul-cu-profitul"],
     launchWave: "backlog",
@@ -3192,7 +3372,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "CAC si CPL sunt utile doar daca definesti corect costurile, lead-urile si clientii noi. Altfel comparatia te poate induce in eroare.",
     content: "CAC si CPL sunt doi indicatori aparent simpli, dar foarte usor de distorsionat in practica. Cele mai multe probleme apar atunci cand compari campanii diferite, perioade diferite sau lead-uri definite diferit.\n\nCalculatorul CPL iti arata costul unui lead. Calculatorul CAC iti spune cat te costa un client nou. Intre cele doua exista mereu o zona de conversie, iar acolo apar multe dintre interpretarile gresite.\n\nDaca un canal genereaza lead-uri ieftine dar slab calificate, CPL-ul poate parea excelent, in timp ce CAC-ul ramane slab. Invers, un canal mai scump la nivel de lead poate genera clienti mai repede si mai predictibil.\n\nCel mai bun mod de a folosi aceste calcule este in pereche, cu aceeasi fereastra de timp si cu aceeasi logica de atribuire. Doar asa poti vedea daca problema este in volum, in calitate sau in procesul comercial.\n\nConcluzia practica este ca nici CAC, nici CPL nu merita citite separat. Abia impreuna spun ceva util despre eficienta reala a cresterii.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["cac", "cpl", "conversion-rate"],
     relatedArticleSlugs: ["aov-si-rata-de-conversie-ce-spun-impreuna-despre-funnel"],
     launchWave: "backlog",
@@ -3205,7 +3385,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Valoarea medie a comenzii si rata de conversie devin cu adevarat utile cand sunt citite impreuna.",
     content: "AOV-ul si rata de conversie sunt doi indicatori care par separati, dar in realitate descriu acelasi traseu comercial din unghiuri diferite. Unul iti spune cat valoreaza o comanda, celalalt cat de des ajunge traficul la comanda.\n\nDaca AOV-ul creste, dar conversia cade, venitul poate ramane pe loc. Daca rata de conversie creste, dar AOV-ul scade puternic, rezultatul final poate fi la fel de dezamagitor. De aceea cele doua merita citite in pereche.\n\nCalculatorul AOV este bun pentru a intelege structura venitului pe comanda. Calculatorul de conversie este bun pentru a intelege eficienta funnel-ului. Impreuna, ele spun o poveste comerciala mult mai buna decat oricare luat singur.\n\nPagina merita legata si de ROAS sau CAC atunci cand traficul este platit, pentru ca acolo fiecare imbunatatire in AOV sau conversie se vede direct in economie si scalare.\n\nConcluzia practica este simpla: daca vrei decizii bune, nu intreba doar cat vinzi sau cat de des vinzi, ci si cum lucreaza cele doua impreuna.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["aov", "conversion-rate", "roas"],
     relatedArticleSlugs: ["cum-calculezi-cac-si-cpl-fara-sa-amesteci-canalele"],
     launchWave: "backlog",
@@ -3218,7 +3398,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Venitul tinta pare simplu, dar depinde de marja reala si de costurile pe care chiar le incluzi in calcul.",
     content: "Cand spui ca vrei un anumit venit luna viitoare, de fapt spui ca vrei sa acoperi costuri, sa sustii marketingul si sa ramai cu un anumit profit. De aceea venitul tinta trebuie construit pornind de la marja si costuri, nu ales arbitrar.\n\nCalculatorul de venit tinta este util pentru ca transforma aceasta logica intr-o cifra clara. El porneste de la costurile fixe, profitul dorit si marja disponibila, iar apoi iti arata ce nivel de venit trebuie sa atingi.\n\nAici apare si capcana cea mai frecventa: folosirea unei marje prea generoase. Daca marja este idealizata, tot planul comercial va parea mai usor decat este in realitate. De aceea merita sa pui alaturi si profitul brut, profitul net si break-even ROAS-ul.\n\nPagina este foarte buna pentru businessuri mici, ecommerce sau servicii care au nevoie de un reper rapid intre obiectiv si executie. Ea muta discutia de la intuitie la constrangere reala.\n\nConcluzia practica este ca targetul bun de venit nu porneste din ambitie, ci din structura economica a businessului.",
     articleType: "guide",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["target-revenue", "gross-profit", "net-profit"],
     relatedArticleSlugs: ["break-even-roas-explicat-pentru-campanii-platite"],
     launchWave: "backlog",
@@ -3231,7 +3411,7 @@ const articleSeeds: ArticleSeed[] = [
     excerpt: "Rotatia stocului arata cat de repede transformi marfa in vanzari si cat capital ramane blocat in stoc.",
     content: "Rotatia stocului este una dintre cele mai subestimate formule in businessurile care vand produse fizice. Multi se uita doar la venit sau la volum, fara sa observe cat capital ramane blocat in marfa.\n\nCalculatorul de rotatie stoc iti arata de cate ori se roteste stocul intr-o perioada si cate zile ramane, in medie, marfa in depozit. Asta este extrem de util pentru ecommerce, retail sau distributie.\n\nIndicatorul nu trebuie citit izolat. O rotatie foarte mare poate insemna eficienta, dar si risc de rupturi de stoc. O rotatie mica poate insemna selectie slaba, forecast prost sau capital imobilizat inutil.\n\nCel mai bun mod de a folosi pagina este impreuna cu venitul tinta si profitul. Asa poti vedea daca viteza stocului sustine obiectivele comerciale sau le saboteaza discret prin capital blocat si lichiditate slaba.\n\nConcluzia practica este ca stocul nu este doar inventar. Este cash care se misca mai repede sau mai greu, iar rotatia iti arata exact asta.",
     articleType: "explainer",
-    relatedCategorySlug: "business",
+    relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["inventory-turnover", "target-revenue", "gross-profit"],
     relatedArticleSlugs: ["cum-estimezi-targetul-de-venit-si-profitul-real"],
     launchWave: "backlog",

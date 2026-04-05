@@ -204,7 +204,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "bmi",
     title: "Calculator BMI / IMC",
     slug: "calculator-bmi-imc",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Calculeaza indicele de masa corporala pornind de la greutate si inaltime.",
     formulaName: "Indicele de masa corporala",
@@ -258,7 +258,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "bmr",
     title: "Calculator metabolism bazal (BMR)",
     slug: "calculator-metabolism-bazal",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza metabolismul bazal prin formula Mifflin-St Jeor.",
     formulaName: "Mifflin-St Jeor",
@@ -333,7 +333,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "tdee",
     title: "Calculator necesar caloric zilnic (TDEE)",
     slug: "calculator-necesar-caloric-zilnic",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Combina BMR-ul cu activitatea zilnica pentru a estima caloriile de mentinere.",
     formulaName: "TDEE = BMR x factor de activitate",
@@ -432,7 +432,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "calorie-deficit",
     title: "Calculator calorii pentru slabire",
     slug: "calculator-calorii-slabire",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Transforma TDEE-ul intr-o tinta zilnica de calorii pentru deficit controlat.",
     formulaName: "Target caloric pentru deficit",
@@ -497,7 +497,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "protein-intake",
     title: "Calculator necesar proteine",
     slug: "calculator-necesar-proteine",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza aportul zilnic de proteine pe baza greutatii si a obiectivului.",
     formulaName: "Proteine zilnice",
@@ -554,7 +554,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "body-fat-us-navy",
     title: "Calculator procent grasime corporala",
     slug: "calculator-grasime-corporala",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza procentul de grasime corporala folosind formula US Navy.",
     formulaName: "US Navy Body Fat",
@@ -655,7 +655,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "ideal-weight",
     title: "Calculator greutate ideala",
     slug: "calculator-greutate-ideala",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza greutatea ideala folosind formula Devine.",
     formulaName: "Formula Devine",
@@ -712,7 +712,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "water-intake",
     title: "Calculator aport zilnic de apa",
     slug: "calculator-aport-zilnic-apa",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza aportul zilnic de apa in functie de greutate.",
     formulaName: "Necesar orientativ de apa",
@@ -763,7 +763,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "one-rep-max",
     title: "Calculator repetare maxima (1RM)",
     slug: "calculator-repetare-maxima-1rm",
-    categorySlug: "fitness",
+    categorySlug: "nutritie-si-antrenament",
     summary:
       "Estimeaza repetarea maxima folosind formula Epley.",
     formulaName: "Formula Epley",
@@ -2389,19 +2389,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "food-cost": {
     key: "food-cost",
-    title: "Calculator food cost",
-    slug: "calculator-food-cost",
-    categorySlug: "business",
+    title: "Calculator cost reteta (food cost)",
+    slug: "calculator-cost-reteta",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza food cost-ul si profitul brut pe portie pornind de la costul ingredientelor si pretul de vanzare.",
-    formulaName: "Food cost",
-    formulaExpression: "Food cost (%) = cost ingrediente / pret vanzare x 100",
+    formulaName: "Cost reteta",
+    formulaExpression: "Cost reteta (%) = cost ingrediente / pret vanzare x 100",
     formulaDescription:
-      "Food cost-ul raporteaza costul ingredientelor la pretul de vanzare pentru a arata ce pondere consuma materia prima din pretul final.",
+      "Costul retetei raporteaza costul ingredientelor la pretul de vanzare pentru a arata ce pondere consuma materia prima din pretul final.",
     howToSteps: [
       "Introdu costul ingredientelor pentru o portie.",
       "Introdu pretul de vanzare al portiei.",
-      "Citeste procentul de food cost si profitul brut rezultat.",
+      "Citeste procentul costului de reteta si profitul brut rezultat.",
     ],
     inputs: [
       {
@@ -2444,7 +2444,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "profit-margin",
     title: "Calculator marja profit",
     slug: "calculator-marja-profit",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza marja de profit si profitul brut pornind de la cost si pretul de vanzare.",
     formulaName: "Marja profit",
@@ -2496,9 +2496,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   markup: {
     key: "markup",
-    title: "Calculator markup",
-    slug: "calculator-markup",
-    categorySlug: "business",
+    title: "Calculator adaos comercial",
+    slug: "calculator-adaos-comercial",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza markup-ul comercial pornind de la cost si pretul de vanzare.",
     formulaName: "Markup comercial",
@@ -2550,13 +2550,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "break-even": {
     key: "break-even",
-    title: "Calculator break-even",
-    slug: "calculator-break-even",
-    categorySlug: "business",
+    title: "Calculator prag rentabilitate",
+    slug: "calculator-prag-rentabilitate",
+    categorySlug: "afaceri",
     summary:
       "Estimeaza pragul de rentabilitate in unitati pornind de la costuri fixe, cost variabil si pret de vanzare.",
     formulaName: "Prag de rentabilitate",
-    formulaExpression: "Break-even unitati = costuri fixe / (pret de vanzare - cost variabil/unitate)",
+    formulaExpression: "Prag rentabilitate unitati = costuri fixe / (pret de vanzare - cost variabil/unitate)",
     formulaDescription:
       "Pragul de rentabilitate arata cate unitati trebuie sa vinzi pana cand acoperi costurile fixe si nu mai esti pe pierdere.",
     howToSteps: [
@@ -2620,7 +2620,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "roi",
     title: "Calculator ROI",
     slug: "calculator-roi",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza rentabilitatea unei investitii pornind de la costul investitiei si castigul obtinut.",
     formulaName: "Return on Investment",
@@ -3716,9 +3716,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   roas: {
     key: "roas",
-    title: "Calculator ROAS",
-    slug: "calculator-roas",
-    categorySlug: "business",
+    title: "Calculator randament publicitate (ROAS)",
+    slug: "calculator-randament-publicitate",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza ROAS-ul pornind de la bugetul de advertising si venitul atribuit campaniei.",
     formulaName: "ROAS",
@@ -3775,13 +3775,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "break-even-roas": {
     key: "break-even-roas",
-    title: "Calculator break-even ROAS",
-    slug: "calculator-break-even-roas",
-    categorySlug: "business",
+    title: "Calculator prag ROAS rentabil",
+    slug: "calculator-prag-roas-rentabil",
+    categorySlug: "afaceri",
     summary:
       "Arata ROAS-ul minim necesar pentru a acoperi costul variabil si pentru a nu ramane pe pierdere.",
-    formulaName: "Break-even ROAS",
-    formulaExpression: "Break-even ROAS = 100 / marja bruta (%)",
+    formulaName: "Prag ROAS rentabil",
+    formulaExpression: "Prag ROAS rentabil = 100 / marja bruta (%)",
     formulaDescription:
       "ROAS-ul de break-even porneste din marja bruta disponibila pentru marketing si arata pragul minim la care campania nu mai pierde bani.",
     howToSteps: [
@@ -3816,12 +3816,12 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   aov: {
     key: "aov",
-    title: "Calculator AOV",
-    slug: "calculator-aov",
-    categorySlug: "business",
+    title: "Calculator valoare medie comanda (AOV)",
+    slug: "calculator-valoare-medie-comanda",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza valoarea medie a comenzii pornind de la venit si numarul total de comenzi.",
-    formulaName: "Average Order Value",
+    formulaName: "Valoare medie comanda",
     formulaExpression: "AOV = venit total / numar comenzi",
     formulaDescription:
       "AOV-ul arata cati bani aduce in medie o comanda si ajuta la interpretarea mai buna a funnel-ului comercial.",
@@ -3867,7 +3867,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "conversion-rate",
     title: "Calculator rata de conversie",
     slug: "calculator-rata-de-conversie",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza rata de conversie pornind de la vizitatori si conversii.",
     formulaName: "Rata de conversie",
@@ -3916,9 +3916,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   cpl: {
     key: "cpl",
-    title: "Calculator CPL",
-    slug: "calculator-cpl",
-    categorySlug: "business",
+    title: "Calculator cost prospect (CPL)",
+    slug: "calculator-cost-prospect",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza costul per lead pornind de la bugetul de marketing si numarul de lead-uri generate.",
     formulaName: "Cost per lead",
@@ -3965,12 +3965,12 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   cac: {
     key: "cac",
-    title: "Calculator CAC",
-    slug: "calculator-cac",
-    categorySlug: "business",
+    title: "Calculator cost achizitie client (CAC)",
+    slug: "calculator-cost-achizitie-client",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza costul de achizitie al unui client pornind de la costurile comerciale si numarul de clienti noi.",
-    formulaName: "Customer acquisition cost",
+    formulaName: "Cost achizitie client",
     formulaExpression: "CAC = cost total achizitie / clienti noi",
     formulaDescription:
       "CAC-ul arata cat te costa in medie sa transformi prospectii in clienti noi intr-o perioada.",
@@ -4016,7 +4016,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "target-revenue",
     title: "Calculator venit tinta",
     slug: "calculator-venit-tinta",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Estimeaza venitul necesar pentru a acoperi costurile fixe si profitul tinta la o anumita marja.",
     formulaName: "Venit tinta",
@@ -4077,7 +4077,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "gross-profit",
     title: "Calculator profit brut",
     slug: "calculator-profit-brut",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza profitul brut si marja bruta pornind de la venit si costuri directe.",
     formulaName: "Profit brut",
@@ -4131,7 +4131,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "net-profit",
     title: "Calculator profit net",
     slug: "calculator-profit-net",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza profitul net orientativ pornind de la venit si costul total al perioadei.",
     formulaName: "Profit net",
@@ -4185,7 +4185,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     key: "inventory-turnover",
     title: "Calculator rotatie stoc",
     slug: "calculator-rotatie-stoc",
-    categorySlug: "business",
+    categorySlug: "afaceri",
     summary:
       "Calculeaza de cate ori se roteste stocul intr-o perioada pornind de la costul marfii vandute si stocul mediu.",
     formulaName: "Rotatie stoc",
@@ -6311,11 +6311,11 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   "rental-break-even-occupancy": {
     key: "rental-break-even-occupancy",
     title: "Calculator grad ocupare break-even",
-    slug: "calculator-grad-ocupare-break-even",
+    slug: "calculator-prag-ocupare-rentabil",
     categorySlug: "imobiliare",
     summary:
       "Arata ce grad minim de ocupare iti trebuie ca sa acoperi costurile fixe lunare ale unei proprietati de inchiriat.",
-    formulaName: "Grad ocupare break-even",
+    formulaName: "Prag ocupare rentabil",
     formulaExpression:
       "Ocupare break-even = costuri fixe lunare / venit potential lunar",
     formulaDescription:
