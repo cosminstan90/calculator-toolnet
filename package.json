@@ -14,6 +14,7 @@
     "ops:init-db": "node --import tsx scripts/init-db.mjs",
     "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
     "ops:publish-scheduled": "node scripts/publish-scheduled.mjs",
+    "ops:apply-launch-plan": "node --import tsx scripts/apply-launch-plan.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
     "ops:seo-audit": "node scripts/seo-audit.mjs",
     "ops:import-content": "node scripts/import-content.mjs"
