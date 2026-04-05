@@ -256,8 +256,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   bmr: {
     key: "bmr",
-    title: "Calculator BMR",
-    slug: "calculator-bmr",
+    title: "Calculator metabolism bazal (BMR)",
+    slug: "calculator-metabolism-bazal",
     categorySlug: "fitness",
     summary:
       "Estimeaza metabolismul bazal prin formula Mifflin-St Jeor.",
@@ -331,8 +331,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   tdee: {
     key: "tdee",
-    title: "Calculator TDEE",
-    slug: "calculator-tdee",
+    title: "Calculator necesar caloric zilnic (TDEE)",
+    slug: "calculator-necesar-caloric-zilnic",
     categorySlug: "fitness",
     summary:
       "Combina BMR-ul cu activitatea zilnica pentru a estima caloriile de mentinere.",
@@ -761,8 +761,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "one-rep-max": {
     key: "one-rep-max",
-    title: "Calculator one rep max",
-    slug: "calculator-one-rep-max",
+    title: "Calculator repetare maxima (1RM)",
+    slug: "calculator-repetare-maxima-1rm",
     categorySlug: "fitness",
     summary:
       "Estimeaza repetarea maxima folosind formula Epley.",
@@ -5790,8 +5790,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "cash-on-cash-return": {
     key: "cash-on-cash-return",
-    title: "Calculator cash-on-cash return",
-    slug: "calculator-cash-on-cash-return",
+    title: "Calculator randament capital propriu",
+    slug: "calculator-randament-capital-propriu",
     categorySlug: "imobiliare",
     summary:
       "Compara fluxul anual de numerar cu banii proprii investiti intr-o proprietate pentru a estima randamentul cash-on-cash.",

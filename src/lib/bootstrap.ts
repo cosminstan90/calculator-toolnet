@@ -78,6 +78,7 @@ type CalculatorMeta = {
   interpretationNotes: string;
   isFeatured: boolean;
   sortOrder: number;
+  examples?: Array<{ title: string; narrative: string }>;
   releaseBatch?: ReleaseBatch;
   editorialStatus?: EditorialStatus;
   audience?: Audience;
@@ -87,6 +88,12 @@ type CalculatorMeta = {
   faq: Array<{ question: string; answer: string }>;
   relatedCalculatorKeys?: CalculatorKey[];
   relatedArticleSlugs?: string[];
+  extraBlocks?: Array<Record<string, unknown>>;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    canonicalPath?: string;
+  };
 };
 
 type ArticleSeed = {
@@ -402,6 +409,42 @@ const LEGACY_REDIRECT_SEEDS: RedirectSeed[] = [
     statusCode: "308",
     notes:
       "Legacy SEO recovery pentru calculatorul istoric de volum beton / fundatie.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-bmr-slug",
+    sourcePath: "/calculatoare/fitness/calculator-bmr",
+    destinationPath: "/calculatoare/fitness/calculator-metabolism-bazal",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului BMR.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-tdee-slug",
+    sourcePath: "/calculatoare/fitness/calculator-tdee",
+    destinationPath: "/calculatoare/fitness/calculator-necesar-caloric-zilnic",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului TDEE.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-one-rep-max-slug",
+    sourcePath: "/calculatoare/fitness/calculator-one-rep-max",
+    destinationPath: "/calculatoare/fitness/calculator-repetare-maxima-1rm",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului 1RM.",
+    publishByDefault: true,
+  },
+  {
+    key: "legacy-cash-on-cash-return-slug",
+    sourcePath: "/calculatoare/imobiliare/calculator-cash-on-cash-return",
+    destinationPath: "/calculatoare/imobiliare/calculator-randament-capital-propriu",
+    statusCode: "308",
+    notes:
+      "Pastreaza equity-ul pentru vechiul slug englezesc al calculatorului de randament capital propriu.",
     publishByDefault: true,
   },
 ];
@@ -981,8 +1024,8 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
   },
   bmr: {
     shortDescription: "Estimeaza rata metabolica bazala folosind formula Mifflin-St Jeor.",
-    intro: "Calculatorul BMR arata de cate calorii are nevoie corpul tau in repaus pentru functiile vitale.",
-    interpretationNotes: "BMR nu include activitatea zilnica. Pentru mentinere sau slabire, foloseste si calculatorul TDEE.",
+    intro: "Calculatorul de metabolism bazal arata de cate calorii are nevoie corpul tau in repaus pentru functiile vitale, fara sa amestece miscarea zilnica cu nevoia minima a organismului.",
+    interpretationNotes: "BMR nu include activitatea zilnica. Pentru mentinere, slabire sau crestere in greutate, leaga-l imediat de calculatorul de necesar caloric zilnic.",
     isFeatured: true,
     sortOrder: 20,
     example: "Pentru 80 kg, 180 cm si 30 ani, BMR este aproximativ 1780 kcal/zi.",
@@ -995,7 +1038,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
   },
   tdee: {
     shortDescription: "Estimeaza necesarul zilnic de calorii in functie de metabolism si activitate.",
-    intro: "Calculatorul TDEE combina BMR-ul cu activitatea ta zilnica pentru a estima caloriile de mentinere.",
+    intro: "Calculatorul de necesar caloric zilnic combina metabolismul bazal cu nivelul real de activitate, ca sa iti dea un reper mult mai bun pentru mentinere, deficit sau surplus.",
     interpretationNotes: "Rezultatul este un punct de plecare. Ajusteaza dupa 2-3 saptamani in functie de evolutia reala.",
     isFeatured: true,
     sortOrder: 30,
@@ -1135,7 +1178,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
   },
   "one-rep-max": {
     shortDescription: "Estimeaza repetarea maxima si o greutate utila de antrenament pornind de la o serie submaximala.",
-    intro: "Calculatorul one rep max este util cand vrei sa planifici mai clar intensitatea la exercitii de forta fara sa testezi mereu un maxim real.",
+    intro: "Calculatorul de repetare maxima este util cand vrei sa planifici mai clar intensitatea la exercitii de forta fara sa testezi mereu un maxim real in sala.",
     interpretationNotes: "Formula functioneaza mai bine pe seturi scurte si executii curate. La repetari multe sau tehnica instabila, estimarea devine mai slaba.",
     isFeatured: false,
     sortOrder: 59,
@@ -1638,20 +1681,82 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedArticleSlugs: ["cum-afli-ce-rata-iti-permiti-fara-sa-iti-blochezi-bugetul"],
   },
   "loan-total-cost": {
-    shortDescription: "Calculeaza rata lunara, costul total si dobanda totala pentru un credit cu rate egale.",
-    intro: "Calculatorul de cost total credit este util cand vrei sa compari nu doar rata lunara, ci si pretul complet al unei decizii de finantare.",
-    interpretationNotes: "Costul real poate include si comisioane, asigurari sau alte taxe care nu intra automat in formula standard a ratei.",
+    shortDescription: "Calculeaza rata lunara, dobanda totala si costul total al unui credit, ca sa compari corect perioada, dobanda si presiunea reala pe buget.",
+    intro: "Calculatorul de cost total credit este una dintre cele mai importante pagini de decizie cand vrei sa vezi nu doar cat platesti lunar, ci cat te costa cu adevarat un imprumut pe toata perioada lui.",
+    interpretationNotes: "Cifra devine utila doar daca pui alaturi macar doua scenarii: perioada scurta vs lunga, dobanda actuala vs refinantare, avans mai mic vs avans mai mare. Costul real poate creste suplimentar prin comisioane, asigurari si alte conditii contractuale.",
     isFeatured: true,
     sortOrder: 30,
     audience: "both",
     releaseBatch: "batch-06",
     example: "La 150.000 lei, 7,5% si 240 luni, rata lunara pare suportabila, dar costul total ajunge mult peste principalul imprumutat.",
+    examples: [
+      {
+        title: "Credit ipotecar pe termen lung",
+        narrative:
+          "La 250.000 lei, 7,2% si 360 luni, rata lunara poate parea rezonabila la prima vedere, dar dobanda totala ajunge sa cantareasca aproape la fel de greu ca suma finantata.",
+      },
+      {
+        title: "Perioada mai scurta, presiune lunara mai mare",
+        narrative:
+          "Acelasi credit pe 180 luni ridica rata lunara, dar reduce agresiv costul total. Exact aici pagina te ajuta sa vezi daca sacrificiul lunar merita pe termen lung.",
+      },
+      {
+        title: "Credit de consum mai scurt, dar mai scump",
+        narrative:
+          "La o perioada mica si o dobanda mare, costul total poate ramane surprinzator de ridicat chiar daca imprumutul pare usor de absorbit ca suma.",
+      },
+    ],
     faq: [
-      { question: "De ce nu este suficienta doar rata lunara?", answer: "Pentru ca o rata mai mica poate ascunde un cost total mult mai mare atunci cand perioada este foarte lunga." },
-      { question: "Calculatorul include toate costurile bancii?", answer: "Nu automat. El porneste de la dobanda si perioada, iar costurile suplimentare trebuie adaugate separat in analiza finala." },
+      { question: "De ce nu este suficienta doar rata lunara?", answer: "Pentru ca o rata mai mica poate ascunde un cost total mult mai mare atunci cand perioada este foarte lunga si dobanda lucreaza multi ani." },
+      { question: "Calculatorul include toate costurile bancii?", answer: "Nu automat. El porneste de la dobanda si perioada, iar costurile suplimentare precum comisioane sau asigurari trebuie adaugate separat in analiza finala." },
+      { question: "Cand este util sa compar doua perioade diferite?", answer: "Exact atunci cand vrei sa vezi daca economia din rata lunara compenseaza cresterea costului total pe termen lung." },
+      { question: "Cu ce alte pagini merita legat?", answer: "Cu rata maxima suportabila, refinantarea si avansul, ca sa nu citesti creditul izolat de restul bugetului." },
     ],
     relatedCalculatorKeys: ["credit-affordability", "refinance-savings", "down-payment"],
     relatedArticleSlugs: ["cum-citesti-costul-total-al-unui-credit"],
+    seo: {
+      metaTitle: "Calculator cost total credit si rata lunara",
+      metaDescription:
+        "Calculeaza rata lunara, dobanda totala si costul total al unui credit. Compara perioada, dobanda si impactul real asupra bugetului.",
+    },
+    extraBlocks: [
+      {
+        blockType: "facts",
+        eyebrow: "Raspuns rapid",
+        title: "Ce vrei de fapt sa afli aici",
+        intro:
+          "Pagina este utila cand vrei sa vezi repede daca un credit este doar suportabil lunar sau si sanatos ca pret total.",
+        tone: "mist",
+        items: [
+          {
+            value: "Rata lunara",
+            label: "presiunea imediata pe buget",
+            detail:
+              "Buna pentru orientare rapida, dar insuficienta singura.",
+          },
+          {
+            value: "Dobanda totala",
+            label: "pretul banilor imprumutati",
+            detail:
+              "Te ajuta sa vezi cat platesti in plus peste principal.",
+          },
+          {
+            value: "Cost total",
+            label: "cifra care inchide comparatia",
+            detail:
+              "Aici se vede cu adevarat diferenta dintre scenarii.",
+          },
+        ],
+      },
+      {
+        blockType: "story",
+        eyebrow: "Cum citesti bine rezultatul",
+        title: "O rata suportabila nu inseamna automat un credit bun",
+        body:
+          "Daca perioada este foarte lunga, costul total poate creste mult mai repede decat pare din rata lunara. Citeste pagina ca instrument de comparatie intre scenarii, nu doar ca raspuns punctual la intrebarea cat iti iese pe luna.",
+        tone: "sand",
+      },
+    ],
   },
   "refinance-savings": {
     shortDescription: "Compara rata veche cu rata noua si estimeaza economia neta dupa costul refinantarii.",
@@ -1942,20 +2047,82 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedArticleSlugs: ["cum-estimezi-consumul-real-al-electrocasnicelor-din-casa"],
   },
   "monthly-electricity-bill": {
-    shortDescription: "Transforma consumul lunar total intr-o factura estimata si intr-un cost anual usor de comparat.",
-    intro: "Calculatorul de factura de curent este util cand vrei sa legi consumul real al locuintei de buget si de scenarii de economie sau productie proprie.",
-    interpretationNotes: "Pretul final pe kWh si costurile fixe pot varia intre furnizori, contracte si perioade. Foloseste-l ca reper comparativ, nu ca factura exacta.",
+    shortDescription: "Transforma consumul lunar total intr-o factura estimata si intr-un cost anual usor de comparat, ca sa vezi repede ce muta cu adevarat bugetul casei.",
+    intro: "Calculatorul de factura de curent este una dintre cele mai bune pagini din clusterul de energie pentru casa, pentru ca leaga direct consumul real de bani, de obiceiuri si de decizii despre eficienta sau fotovoltaice.",
+    interpretationNotes: "Pretul final pe kWh si costurile fixe pot varia intre furnizori, contracte si perioade. Foloseste-l ca reper comparativ, nu ca factura exacta, iar pentru decizii importante testeaza si un scenariu prudent, si unul optimist.",
     isFeatured: true,
     sortOrder: 20,
     audience: "consumer",
     releaseBatch: "batch-08",
     example: "La 280 kWh pe luna si 0,95 lei/kWh, factura sare de 270 lei chiar inainte sa discuti de economii sau panouri.",
+    examples: [
+      {
+        title: "Garsoniera cu consum moderat",
+        narrative:
+          "La aproximativ 160 kWh pe luna si un tarif all-in realist, factura ramane gestionabila, dar devine un reper bun pentru orice comparatie cu scenarii de economie.",
+      },
+      {
+        title: "Apartament cu mai multe aparate",
+        narrative:
+          "Cand consumul urca spre 320-360 kWh pe luna, diferentele mici de pret pe kWh se transforma rapid in zeci de lei pe luna si sute pe an.",
+      },
+      {
+        title: "Casa cu climatizare vara",
+        narrative:
+          "Intr-un sezon cu aer conditionat, consumul sare usor peste baza obisnuita. Exact aici merita sa compari factura curenta cu amortizarea unor upgrade-uri energetice.",
+      },
+    ],
     faq: [
       { question: "Include si toate taxele de pe factura?", answer: "Depinde de pretul pe kWh introdus. Daca el este all-in, estimarea devine mai apropiata de realitate." },
+      { question: "Ce schimba factura cel mai mult?", answer: "De obicei combinatia dintre consumul lunar real, tariful complet pe kWh si aparatele care ruleaza multe ore pe luna." },
+      { question: "Merita sa compar mai multe scenarii?", answer: "Da. Diferenta dintre 250 si 350 kWh pe luna spune mult mai mult despre presiunea pe buget decat o cifra singulara vazuta o singura data." },
       { question: "Cu ce il leg mai departe?", answer: "Cu calculatoarele de panouri, productie si amortizare, daca vrei sa vezi daca merita investitia." },
     ],
     relatedCalculatorKeys: ["appliance-electricity-cost", "solar-system-size", "solar-payback"],
     relatedArticleSlugs: ["cum-citesti-factura-de-curent-fara-sa-te-pierzi-in-detalii-inutile"],
+    seo: {
+      metaTitle: "Calculator factura curent online",
+      metaDescription:
+        "Estimeaza factura de curent din consumul lunar, pretul pe kWh si costurile fixe. Compara scenarii si vezi costul anual.",
+    },
+    extraBlocks: [
+      {
+        blockType: "facts",
+        eyebrow: "Ce muta factura",
+        title: "Cele trei variabile care conteaza cel mai mult",
+        intro:
+          "Pagina este buna pentru answer-first, dar devine si mai utila cand separi clar consumul, tariful si costurile fixe.",
+        tone: "mist",
+        items: [
+          {
+            value: "Consum lunar",
+            label: "kWh folositi in casa",
+            detail:
+              "Aici se vede cel mai repede daca problema este comportamentul sau echipamentul.",
+          },
+          {
+            value: "Pret pe kWh",
+            label: "tarif complet din contract",
+            detail:
+              "Un tarif all-in ajuta mult la o estimare mai apropiata de realitate.",
+          },
+          {
+            value: "Costuri fixe",
+            label: "partea care ramane chiar si cand consumul scade",
+            detail:
+              "Util pentru comparatii intre furnizori si intre luni.",
+          },
+        ],
+      },
+      {
+        blockType: "story",
+        eyebrow: "Ce sa nu ratezi",
+        title: "Factura buna de citit nu este doar cea mai mica, ci cea pe care o poti explica",
+        body:
+          "Daca nu stii ce aparat sau obicei muta consumul, cifra finala ramane greu de optimizat. Pagina te ajuta sa transformi factura din surpriza lunara intr-un reper pe care il poti compara si controla.",
+        tone: "sand",
+      },
+    ],
   },
   "solar-system-size": {
     shortDescription: "Estimeaza puterea sistemului fotovoltaic necesar pornind de la consumul anual si nivelul de acoperire dorit.",
@@ -2006,20 +2173,82 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     relatedArticleSlugs: ["cate-panouri-fotovoltaice-iti-trebuie-de-fapt"],
   },
   "solar-payback": {
-    shortDescription: "Arata in cati ani se poate amortiza un sistem fotovoltaic dupa cost, economii si mentenanta.",
-    intro: "Calculatorul de amortizare pentru panouri fotovoltaice este util cand vrei sa transformi entuziasmul din jurul investitiei intr-un scenariu economic mai disciplinat.",
-    interpretationNotes: "Amortizarea este foarte sensibila la pretul energiei, autoconsum, granturi si costuri reale de exploatare. Nu o citi ca promisiune fixa.",
+    shortDescription: "Arata in cati ani se poate amortiza un sistem fotovoltaic dupa cost, economii si mentenanta, ca sa nu confunzi entuziasmul investitiei cu randamentul ei real.",
+    intro: "Calculatorul de amortizare pentru panouri fotovoltaice este una dintre cele mai importante pagini de decizie din clusterul de energie pentru casa, pentru ca transforma discutia despre panouri din promisiune vaga in scenariu economic clar.",
+    interpretationNotes: "Amortizarea este foarte sensibila la pretul energiei, autoconsum, granturi si costuri reale de exploatare. Nu o citi ca promisiune fixa si nu te opri la un singur scenariu optimist.",
     isFeatured: true,
     sortOrder: 60,
     audience: "consumer",
     releaseBatch: "batch-08",
     example: "O investitie neta de 32.000 lei cu economii anuale de 5.200 lei poate cobori amortizarea spre 6-7 ani intr-un scenariu rezonabil.",
+    examples: [
+      {
+        title: "Sistem cu grant sau subventie",
+        narrative:
+          "Cand costul net scade substantial printr-un program de sprijin, anii de amortizare se comprima repede si scenariul devine mult mai usor de justificat.",
+      },
+      {
+        title: "Sistem fara baterie, cu autoconsum bun",
+        narrative:
+          "Daca folosesti direct o parte mare din productie, economiile anuale cresc si amortizarea devine mai solida chiar fara acumulatori.",
+      },
+      {
+        title: "Scenariu prudent vs scenariu optimist",
+        narrative:
+          "Diferenta dintre un tarif conservator si unul optimist poate muta amortizarea cu ani buni. Tocmai de aceea merita sa compari cel putin doua ipoteze.",
+      },
+    ],
     faq: [
-      { question: "Daca energia se scumpeste, amortizarea se schimba?", answer: "Da. In multe cazuri se poate scurta, dar merita sa testezi si scenarii prudente." },
-      { question: "Este suficient sa ma uit doar la ani?", answer: "Nu. Conteaza si cash-flow-ul, autonomia partiala si stabilitatea costurilor in timp." },
+      { question: "Daca energia se scumpeste, amortizarea se schimba?", answer: "Da. In multe cazuri se poate scurta, dar merita sa testezi si scenarii prudente, nu doar varianta cea mai convenabila." },
+      { question: "Este suficient sa ma uit doar la ani?", answer: "Nu. Conteaza si cash-flow-ul, autonomia partiala, durata de viata a echipamentelor si stabilitatea costurilor in timp." },
+      { question: "Merita sa compar si fara grant?", answer: "Da. Diferenta dintre cele doua scenarii iti arata cat de robusta este investitia si fara ajutor extern." },
+      { question: "Cu ce alte pagini trebuie legat?", answer: "Cu necesarul sistemului, productia fotovoltaica si factura curenta, altfel amortizarea ramane rupta de realitatea casei tale." },
     ],
     relatedCalculatorKeys: ["solar-system-size", "solar-production", "monthly-electricity-bill"],
     relatedArticleSlugs: ["cum-citesti-amortizarea-unui-sistem-fotovoltaic"],
+    seo: {
+      metaTitle: "Calculator amortizare panouri fotovoltaice",
+      metaDescription:
+        "Afla in cati ani se amortizeaza un sistem fotovoltaic din cost, grant, economii si mentenanta. Compara scenarii prudente si optimiste.",
+    },
+    extraBlocks: [
+      {
+        blockType: "facts",
+        eyebrow: "Ce influenteaza amortizarea",
+        title: "Trei variabile care schimba cel mai mult rezultatul",
+        intro:
+          "Pagina este buna pentru un raspuns rapid, dar decizia devine mai buna cand separi investitia neta de economiile reale si de scenariul de consum.",
+        tone: "mist",
+        items: [
+          {
+            value: "Investitie neta",
+            label: "cost total minus grant",
+            detail:
+              "Aici se vede cat capital trebuie sa recuperezi in timp.",
+          },
+          {
+            value: "Economii anuale",
+            label: "beneficiul financiar real",
+            detail:
+              "Merita gandit prudent, nu doar cu estimarea cea mai optimista.",
+          },
+          {
+            value: "Autoconsum",
+            label: "cat folosesti direct din productie",
+            detail:
+              "Poate schimba mult economia neta anuala.",
+          },
+        ],
+      },
+      {
+        blockType: "story",
+        eyebrow: "Cum citesti rezultatul",
+        title: "Amortizarea buna este cea care rezista si dupa ce tai optimismul",
+        body:
+          "Daca investitia arata bine doar intr-un scenariu foarte optimist de productie sau pret al energiei, concluzia este fragila. Pagina merita folosita pentru comparatii prudente, nu pentru confirmarea unui entuziasm deja format.",
+        tone: "sand",
+      },
+    ],
   },
   "ac-btu": {
     shortDescription: "Estimeaza capacitatea BTU potrivita pentru camera ta, ca sa nu alegi un aparat prea mic sau prea mare.",
@@ -2244,6 +2473,208 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     ],
     relatedCalculatorKeys: ["solar-production", "solar-payback", "solar-system-size"],
     relatedArticleSlugs: ["cat-co2-poti-evita-cu-un-sistem-fotovoltaic"],
+  },
+  "property-total-purchase-cost": {
+    shortDescription:
+      "Aduna pretul locuintei cu costurile initiale, renovarea, mobilarea si rezerva, ca sa vezi bugetul real al achizitiei, nu doar pretul din anunt.",
+    intro:
+      "Calculatorul de cost total de achizitie locuinta este una dintre cele mai importante pagini din clusterul imobiliar, pentru ca muta atentia de la pretul proprietatii la proiectul complet pe care chiar trebuie sa il finantezi.",
+    interpretationNotes:
+      "Rezultatul devine util doar daca tratezi separat costurile de inchidere, renovarea, mobilarea si rezerva. Exact aici se rupe de obicei diferenta dintre o achizitie suportabila pe hartie si una care iti tensioneaza imediat lichiditatea.",
+    isFeatured: true,
+    sortOrder: 130,
+    audience: "both",
+    releaseBatch: "batch-10",
+    example:
+      "La 620.000 lei pret proprietate, 24.000 lei costuri de inchidere, 45.000 lei renovare, 30.000 lei mobilare si 10% rezerva, bugetul total urca rapid mult peste cifra initiala vazuta in anunt.",
+    examples: [
+      {
+        title: "Locuinta gata de mutare",
+        narrative:
+          "Chiar si cand renovarea este minima, costurile de inchidere, mobilierul si rezerva iti pot muta semnificativ necesarul total de lichiditate.",
+      },
+      {
+        title: "Apartament care cere renovare serioasa",
+        narrative:
+          "Cand adaugi renovare, mobilare si mici surprize de santier, diferenta dintre pretul afisat si bugetul real creste mult mai repede decat intuiesc majoritatea cumparatorilor.",
+      },
+      {
+        title: "Casa cu proiect complet de amenajare",
+        narrative:
+          "La case, mobilarea, echipamentele si rezervele tind sa cantareasca si mai greu, ceea ce face acest calculator esential pentru o decizie prudenta.",
+      },
+    ],
+    faq: [
+      {
+        question: "De ce nu este suficient pretul proprietatii?",
+        answer:
+          "Pentru ca achizitia reala mai include costuri de inchidere, renovare, mobilare si o rezerva minima pentru surprizele care apar imediat dupa tranzactie.",
+      },
+      {
+        question: "Rezerva chiar este necesara?",
+        answer:
+          "Da. Fara ea, proiectul pare mai confortabil pe hartie decat este in realitate, mai ales cand apar costuri mici, dar dese, dupa semnare.",
+      },
+      {
+        question: "Cum il leg de avans si de rata?",
+        answer:
+          "Foloseste-l impreuna cu calculatorul de avans si cu cel de buget lunar, ca sa vezi atat presiunea initiala, cat si pe cea recurenta.",
+      },
+      {
+        question: "Cand devine acest calculator cel mai valoros?",
+        answer:
+          "Cand compari doua proprietati care par apropiate ca pret, dar au niveluri diferite de renovare, mobilare si costuri initiale.",
+      },
+    ],
+    relatedCalculatorKeys: ["property-down-payment", "renovation-budget", "monthly-home-budget"],
+    relatedArticleSlugs: [
+      "ce-intra-de-fapt-in-bugetul-total-de-achizitie-al-unei-locuinte",
+      "chirie-vs-cumparare-cum-compari-corect-doua-scenarii",
+    ],
+    seo: {
+      metaTitle: "Calculator cost total achizitie locuinta",
+      metaDescription:
+        "Calculeaza costul total de achizitie al unei locuinte: pret, costuri de inchidere, renovare, mobilare si rezerva de buget.",
+    },
+    extraBlocks: [
+      {
+        blockType: "facts",
+        eyebrow: "Ce intra in buget",
+        title: "Cinci componente pe care merita sa le separi",
+        intro:
+          "Pagina e utila tocmai pentru ca sparge costul mare in bucati clare si comparabile.",
+        tone: "mist",
+        items: [
+          {
+            value: "Pret locuinta",
+            label: "cifra din anunt",
+            detail:
+              "Este doar punctul de pornire, nu proiectul complet.",
+          },
+          {
+            value: "Costuri initiale",
+            label: "notar, taxe, inchidere",
+            detail:
+              "Consuma lichiditate imediata, chiar daca sunt tratate des ca detalii.",
+          },
+          {
+            value: "Renovare + mobilare",
+            label: "zona unde se sparge bugetul",
+            detail:
+              "Aici merita cele mai prudente ipoteze.",
+          },
+        ],
+      },
+      {
+        blockType: "story",
+        eyebrow: "Ce uita multi cumparatori",
+        title: "Pretul bun nu inseamna automat proiect confortabil",
+        body:
+          "O proprietate poate parea accesibila in anunt, dar sa devina incomoda imediat dupa semnare daca nu ai inclus realist costurile de inchidere, renovarea si rezerva minima. Pagina te ajuta exact sa eviti acest salt prea optimist.",
+        tone: "sand",
+      },
+    ],
+  },
+  "rent-vs-buy": {
+    shortDescription:
+      "Compara chiria cu scenariul de cumparare pe aceeasi perioada, incluzand costul initial si presiunea lunara, ca sa nu reduci decizia la rata versus chirie.",
+    intro:
+      "Calculatorul de chirie vs cumparare este una dintre cele mai puternice pagini de intentie din imobiliare, pentru ca raspunde unei intrebari foarte cautate, dar o face fara sa simplifice prea devreme comparatia.",
+    interpretationNotes:
+      "Comparatia devine utila doar daca pui alaturi costul initial, costul lunar total si perioada analizata. Daca te uiti doar la rata sau doar la chirie, vei pierde tocmai partea care decide confortul real al scenariului.",
+    isFeatured: true,
+    sortOrder: 140,
+    audience: "both",
+    releaseBatch: "batch-10",
+    example:
+      "La o chirie de 2.800 lei si un scenariu de cumparare care cere cost initial mare, diferenta nu sta doar in rata lunara, ci si in cat capital blochezi si ce buffer iti mai ramane.",
+    examples: [
+      {
+        title: "Oras mare, cost initial ridicat",
+        narrative:
+          "Intr-o piata cu preturi mari, cumpararea poate avea sens doar daca bugetul initial ramane sanatos dupa avans, costuri de inchidere si primele cheltuieli de amenajare.",
+      },
+      {
+        title: "Perioada scurta de locuire",
+        narrative:
+          "Daca stii ca nu stai multi ani in acelasi loc, flexibilitatea chiriei poate castiga chiar si atunci cand rata lunara nu arata dramatic mai rau.",
+      },
+      {
+        title: "Scenariu lung, stabil",
+        narrative:
+          "Cand perioada de locuire este lunga si bugetul suporta confortabil costurile initiale, cumpararea poate deveni mai coerenta decat pare la o comparatie superficiala.",
+      },
+    ],
+    faq: [
+      {
+        question: "Compar doar rata cu chiria?",
+        answer:
+          "Nu. O comparatie buna cere si costul initial, cheltuielile recurente si bufferul care iti ramane dupa fiecare scenariu.",
+      },
+      {
+        question: "Daca rata este apropiata de chirie, inseamna ca merita cumpararea?",
+        answer:
+          "Nu automat. Diferenta poate veni din costul initial foarte mare sau din presiunea pe lichiditate imediat dupa achizitie.",
+      },
+      {
+        question: "Cand castiga chiria?",
+        answer:
+          "De obicei cand ai nevoie de flexibilitate, cand perioada de locuire este scurta sau cand cumpararea iti comprima prea mult rezerva financiara.",
+      },
+      {
+        question: "Cu ce alte pagini trebuie legata?",
+        answer:
+          "Cu costul total de achizitie, bugetul lunar al locuintei si bufferul ipotecar, ca sa citesti scenariul complet.",
+      },
+    ],
+    relatedCalculatorKeys: ["monthly-home-budget", "mortgage-buffer", "property-total-purchase-cost"],
+    relatedArticleSlugs: [
+      "chirie-vs-cumparare-cum-compari-corect-doua-scenarii",
+      "cat-iti-mananca-locuinta-din-bugetul-lunar",
+    ],
+    seo: {
+      metaTitle: "Calculator chirie vs cumparare",
+      metaDescription:
+        "Compara chiria cu scenariul de cumparare pe aceeasi perioada. Vezi costul initial, costul lunar si presiunea reala pe buget.",
+    },
+    extraBlocks: [
+      {
+        blockType: "facts",
+        eyebrow: "Cum citesti comparatia",
+        title: "Trei lucruri pe care nu merita sa le amesteci",
+        intro:
+          "Pagina functioneaza bine doar daca separi costul initial de costul lunar si de perioada pe care o analizezi.",
+        tone: "mist",
+        items: [
+          {
+            value: "Cost initial",
+            label: "cat capital blochezi din start",
+            detail:
+              "Aici se vede repede cat de agresiva este varianta de cumparare pentru lichiditate.",
+          },
+          {
+            value: "Cost lunar",
+            label: "presiunea recurenta pe buget",
+            detail:
+              "Util pentru comparatie, dar insuficient singur.",
+          },
+          {
+            value: "Orizont",
+            label: "cate luni sau ani compari",
+            detail:
+              "Schimba mult concluzia dintre flexibilitate si stabilitate.",
+          },
+        ],
+      },
+      {
+        blockType: "story",
+        eyebrow: "Ce intrebare rezolva pagina",
+        title: "Nu cauti doar raspunsul mai ieftin, ci scenariul mai coerent pentru viata ta",
+        body:
+          "Chiria versus cumpararea nu este doar o comparatie de cifre, ci una de flexibilitate, lichiditate si confort pe termen mediu. Pagina te ajuta sa nu fortezi concluzia doar pentru ca una dintre linii arata mai frumos singura.",
+        tone: "sand",
+      },
+    ],
   },
 };
 
@@ -3399,6 +3830,9 @@ const buildCalculatorBlocks = (
   definition: ReturnType<typeof getCalculatorDefinition>,
   meta: CalculatorMeta
 ) => {
+  const categoryName =
+    categorySeeds.find((seed) => seed.slug === definition.categorySlug)?.name ??
+    definition.categorySlug.replace(/-/g, " ");
   const calculatorLinks = (meta.relatedCalculatorKeys ?? []).map((relatedKey) => {
     const relatedDefinition = getCalculatorDefinition(relatedKey);
 
@@ -3425,7 +3859,7 @@ const buildCalculatorBlocks = (
     ...calculatorLinks,
     ...articleLinks,
     {
-      label: `Toate calculatoarele din ${definition.categorySlug}`,
+      label: `Toate calculatoarele din ${categoryName}`,
       href: `/calculatoare/${definition.categorySlug}`,
       description:
         "Hub-ul de categorie grupeaza tool-uri apropiate semantic si intareste linking-ul intern din acelasi cluster.",
@@ -3475,6 +3909,10 @@ const buildCalculatorBlocks = (
       ],
     },
   ];
+
+  if (Array.isArray(meta.extraBlocks) && meta.extraBlocks.length > 0) {
+    blocks.push(...meta.extraBlocks);
+  }
 
   if (linkItems.length >= 2) {
     blocks.push({
@@ -3633,7 +4071,12 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       intro: meta.intro,
       seoBody: buildCalculatorSeoBody(definition, meta),
       interpretationNotes: meta.interpretationNotes,
-      examples: [{ title: "Exemplu de calcul", narrative: meta.example }],
+      examples: (meta.examples ?? [{ title: "Exemplu de calcul", narrative: meta.example }]).map(
+        (example) => ({
+          title: example.title,
+          narrative: example.narrative,
+        })
+      ),
       faq: ensureCalculatorFaq(key, meta.faq),
       howToSteps: definition.howToSteps.map((step) => ({ step })),
       isFeatured: meta.isFeatured,
@@ -3653,9 +4096,11 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       ),
       contentBlocks: buildCalculatorBlocks(definition, meta),
       seo: buildSeoPayload({
-        metaTitle: `${definition.title} online`,
-        metaDescription: meta.shortDescription,
-        canonicalPath: `/calculatoare/${definition.categorySlug}/${definition.slug}`,
+        metaTitle: meta.seo?.metaTitle ?? `${definition.title} online`,
+        metaDescription: meta.seo?.metaDescription ?? meta.shortDescription,
+        canonicalPath:
+          meta.seo?.canonicalPath ??
+          `/calculatoare/${definition.categorySlug}/${definition.slug}`,
       }),
       _status: publishCalculator ? "published" : "draft",
     };
