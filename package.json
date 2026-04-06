@@ -15,6 +15,7 @@
     "ops:bootstrap-cms": "node scripts/bootstrap-cms.mjs",
     "ops:publish-scheduled": "node scripts/publish-scheduled.mjs",
     "ops:apply-launch-plan": "node --import tsx scripts/apply-launch-plan.mjs",
+    "ops:launch-plan-prepare": "node --import tsx scripts/launch-plan-prepare.mjs",
     "ops:launch-plan-focus": "node --import tsx scripts/launch-plan-focus.mjs",
     "ops:launch-plan-readiness": "node --import tsx scripts/launch-plan-readiness.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
