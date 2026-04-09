@@ -39,6 +39,7 @@ export async function GET(request: Request) {
     },
     {
       headers: {
+        "cache-control": "public, s-maxage=60, stale-while-revalidate=600",
         "x-ratelimit-limit": String(rate.limit),
         "x-ratelimit-remaining": String(rate.remaining),
         "x-ratelimit-reset": String(Math.ceil(rate.resetAt / 1000)),

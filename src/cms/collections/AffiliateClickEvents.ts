@@ -43,6 +43,7 @@ export const AffiliateClickEvents: CollectionConfig = {
       name: "sourceType",
       type: "select",
       required: true,
+      index: true,
       options: [
         { label: "Calculator", value: "calculator" },
         { label: "Article", value: "article" },
@@ -53,6 +54,7 @@ export const AffiliateClickEvents: CollectionConfig = {
       name: "audience",
       type: "select",
       required: true,
+      index: true,
       options: [
         { label: "Pentru persoane", value: "consumer" },
         { label: "Pentru firme", value: "business" },
@@ -62,6 +64,7 @@ export const AffiliateClickEvents: CollectionConfig = {
     {
       name: "categorySlug",
       type: "text",
+      index: true,
     },
     {
       name: "referer",

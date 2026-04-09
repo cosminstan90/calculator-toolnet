@@ -56,6 +56,7 @@ export const Redirects: CollectionConfig = {
       type: "select",
       required: true,
       defaultValue: "308",
+      index: true,
       options: [
         { label: "301 Permanent", value: "301" },
         { label: "302 Temporary", value: "302" },
@@ -67,6 +68,7 @@ export const Redirects: CollectionConfig = {
       name: "isEnabled",
       type: "checkbox",
       defaultValue: true,
+      index: true,
     },
     {
       name: "notes",

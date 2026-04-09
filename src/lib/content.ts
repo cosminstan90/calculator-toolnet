@@ -1,5 +1,7 @@
 import { getPayloadClient } from "./payload.ts";
+import { unstable_cache } from "next/cache";
 import type { Where } from "payload";
+import { cache } from "react";
 
 type RelationDoc = {
   id: string;
@@ -141,6 +143,10 @@ export type Article = {
 };
 
 type RawDoc = Record<string, unknown>;
+
+const RELATION_DEPTH = 1;
+const DETAIL_DEPTH = 1;
+const NAVIGATION_CATEGORY_LIMIT = 6;
 
 const asObject = <T extends Record<string, unknown>>(value: unknown): T | null => {
   return value && typeof value === "object" ? (value as T) : null;
@@ -453,26 +459,7 @@ const attachAuthorsToArticles = async (docs: RawDoc[]): Promise<Article[]> => {
     return articles;
   }
 
-  const payload = await getPayloadClient();
-  const authorResult = await payload.find({
-    collection: "users",
-    depth: 0,
-    limit: authorIDs.length,
-    overrideAccess: true,
-    pagination: false,
-    where: {
-      id: {
-        in: authorIDs,
-      },
-    },
-  });
-
-  const authorMap = new Map(
-    authorResult.docs
-      .map((doc) => mapPublicAuthor(doc as RawDoc))
-      .filter((author): author is PublicAuthor => Boolean(author))
-      .map((author) => [author.id, author] as const)
-  );
+  const authorMap = await getAuthorsByKeyCached(authorIDs.toSorted().join(","));
 
   return articles.map((article, index) => {
     if (article.author) {
@@ -506,16 +493,94 @@ const buildAudienceWhere = (audience: Exclude<Audience, "both">): Where => ({
   or: [{ audience: { equals: audience } }, { audience: { equals: "both" } }],
 });
 
-export const getHomepageContent = async (): Promise<HomepageContent | null> => {
-  return safeRun(async () => {
+const getCategoryBySlugCached = cache(async (slug: string): Promise<CalculatorCategory | null> => {
+  const payload = await getPayloadClient();
+  const result = await payload.find({
+    collection: "calculator-categories",
+    draft: false,
+    depth: 0,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  });
+
+  return result.docs[0] ? mapCategory(result.docs[0] as RawDoc) : null;
+});
+
+const getCalculatorBySlugCached = cache(async (slug: string): Promise<CalculatorDoc | null> => {
+  const payload = await getPayloadClient();
+  const result = await payload.find({
+    collection: "calculators",
+    draft: false,
+    depth: DETAIL_DEPTH,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  });
+
+  return result.docs[0] ? mapCalculator(result.docs[0] as RawDoc) : null;
+});
+
+const getAuthorsByKeyCached = cache(async (authorKey: string): Promise<Map<string, PublicAuthor>> => {
+  if (!authorKey) {
+    return new Map();
+  }
+
+  const authorIDs = authorKey.split(",").filter(Boolean);
+  if (authorIDs.length === 0) {
+    return new Map();
+  }
+
+  const payload = await getPayloadClient();
+  const authorResult = await payload.find({
+    collection: "users",
+    depth: 0,
+    limit: authorIDs.length,
+    overrideAccess: true,
+    pagination: false,
+    where: {
+      id: {
+        in: authorIDs,
+      },
+    },
+  });
+
+  return new Map(
+    authorResult.docs
+      .map((doc) => mapPublicAuthor(doc as RawDoc))
+      .filter((author): author is PublicAuthor => Boolean(author))
+      .map((author) => [author.id, author] as const)
+  );
+});
+
+const getArticleBySlugCached = cache(async (slug: string): Promise<Article | null> => {
+  const payload = await getPayloadClient();
+  const result = await payload.find({
+    collection: "articles",
+    draft: false,
+    depth: DETAIL_DEPTH,
+    limit: 1,
+    where: { slug: { equals: slug } },
+  });
+
+  if (!result.docs[0]) {
+    return null;
+  }
+
+  const [article] = await attachAuthorsToArticles([result.docs[0] as RawDoc]);
+  return article ?? null;
+});
+
+const getHomepageContentCached = unstable_cache(
+  async (): Promise<HomepageContent | null> => {
     const payload = await getPayloadClient();
     const result = await payload.findGlobal({ slug: "homepage", draft: false, depth: 0 });
     return mapHomepage(result as RawDoc);
-  }, null);
-};
+  },
+  ["homepage-content"],
+  { revalidate: 900 }
+);
 
-export const listCategories = async (limit = 12): Promise<CalculatorCategory[]> => {
-  return safeRun(async () => {
+const getCategoriesCached = unstable_cache(
+  async (limit: number): Promise<CalculatorCategory[]> => {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "calculator-categories",
@@ -525,100 +590,632 @@ export const listCategories = async (limit = 12): Promise<CalculatorCategory[]> 
       sort: "sortOrder",
     });
     return result.docs.map((doc) => mapCategory(doc as RawDoc));
-  }, []);
-};
+  },
+  ["categories"],
+  { revalidate: 900 }
+);
 
-export const getCategoryBySlug = async (slug: string): Promise<CalculatorCategory | null> => {
-  return safeRun(async () => {
+const getCalculatorsByCategoryCached = unstable_cache(
+  async (categoryID: string, limit: number): Promise<CalculatorDoc[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: RELATION_DEPTH,
+      limit,
+      sort: "sortOrder",
+      where: { category: { equals: categoryID } },
+    });
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  },
+  ["calculators-by-category"],
+  { revalidate: 900 }
+);
+
+const getArticlesByCategoryCached = unstable_cache(
+  async (categoryID: string, limit: number): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+      where: {
+        relatedCategory: {
+          equals: categoryID,
+        },
+      },
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["articles-by-category"],
+  { revalidate: 900 }
+);
+
+const getPublicAuthorBySlugCached = cache(async (slug: string): Promise<PublicAuthor | null> => {
+  const payload = await getPayloadClient();
+  const result = await payload.find({
+    collection: "users",
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    pagination: false,
+    where: {
+      or: [
+        { profileSlug: { equals: slug } },
+        { id: { equals: slug } },
+      ],
+    },
+  });
+
+  return result.docs[0] ? mapPublicAuthor(result.docs[0] as RawDoc) ?? null : null;
+});
+
+const getCalculatorsCached = unstable_cache(
+  async (limit: number): Promise<CalculatorDoc[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: RELATION_DEPTH,
+      limit,
+      sort: "sortOrder",
+    });
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  },
+  ["calculators"],
+  { revalidate: 900 }
+);
+
+const getArticlesByAuthorCached = unstable_cache(
+  async (authorID: string, limit: number): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+      where: {
+        author: {
+          equals: authorID,
+        },
+      },
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["articles-by-author"],
+  { revalidate: 900 }
+);
+
+const getAllPublicAuthorsForSitemapCached = unstable_cache(
+  async (): Promise<PublicAuthor[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "users",
+      depth: 0,
+      overrideAccess: true,
+      pagination: false,
+      limit: 10000,
+      sort: "updatedAt",
+    });
+
+    return result.docs
+      .map((doc) => mapPublicAuthor(doc as RawDoc))
+      .filter((author): author is PublicAuthor => Boolean(author));
+  },
+  ["sitemap-public-authors"],
+  { revalidate: 900 }
+);
+
+const getAllCategoriesForSitemapCached = unstable_cache(
+  async (): Promise<CalculatorCategory[]> => {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "calculator-categories",
       draft: false,
       depth: 0,
-      limit: 1,
-      where: { slug: { equals: slug } },
+      pagination: false,
+      limit: 1000,
+      sort: "updatedAt",
     });
-    return result.docs[0] ? mapCategory(result.docs[0] as RawDoc) : null;
-  }, null);
-};
+    return result.docs.map((doc) => mapCategory(doc as RawDoc));
+  },
+  ["sitemap-categories"],
+  { revalidate: 900 }
+);
 
-export const listFeaturedCalculators = async (limit = 8): Promise<CalculatorDoc[]> => {
-  return safeRun(async () => {
+const getAllCalculatorsForSitemapCached = unstable_cache(
+  async (): Promise<CalculatorDoc[]> => {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "calculators",
       draft: false,
-      depth: 2,
+      depth: RELATION_DEPTH,
+      pagination: false,
+      limit: 10000,
+      sort: "updatedAt",
+    });
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  },
+  ["sitemap-calculators"],
+  { revalidate: 900 }
+);
+
+const getAllArticlesForSitemapCached = unstable_cache(
+  async (): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      pagination: false,
+      limit: 10000,
+      sort: "updatedAt",
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["sitemap-articles"],
+  { revalidate: 900 }
+);
+
+const getRelatedCalculatorsCached = unstable_cache(
+  async (
+    calculatorID: string,
+    categoryID: string,
+    audience: Audience,
+    relatedCalculatorKey: string,
+    limit: number
+  ): Promise<CalculatorDoc[]> => {
+    const payload = await getPayloadClient();
+    const explicitIDs = relatedCalculatorKey ? relatedCalculatorKey.split(",").filter(Boolean) : [];
+
+    if (explicitIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: RELATION_DEPTH,
+        limit,
+        where: {
+          id: {
+            in: explicitIDs,
+          },
+        },
+      });
+
+      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
+      if (explicitDocs.length >= limit || !categoryID) {
+        return explicitDocs;
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: RELATION_DEPTH,
+        limit: limit - explicitDocs.length + 4,
+        sort: "sortOrder",
+        where: {
+          and: [
+            { category: { equals: categoryID } },
+            { audience: { in: [audience, "both"] } },
+            { id: { not_in: [calculatorID, ...explicitDocs.map((item) => item.id)] } },
+          ],
+        },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    if (!categoryID) {
+      return [];
+    }
+
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: RELATION_DEPTH,
+      limit,
+      sort: "sortOrder",
+      where: {
+        and: [
+          { category: { equals: categoryID } },
+          { audience: { in: [audience, "both"] } },
+          { id: { not_equals: calculatorID } },
+        ],
+      },
+    });
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  },
+  ["related-calculators"],
+  { revalidate: 900 }
+);
+
+const getSuggestedArticlesForCalculatorCached = unstable_cache(
+  async (
+    audience: Audience,
+    categoryID: string,
+    explicitArticleKey: string,
+    limit: number
+  ): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const explicitIDs = explicitArticleKey ? explicitArticleKey.split(",").filter(Boolean) : [];
+
+    if (explicitIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 0,
+        limit,
+        sort: "-publishedAt",
+        where: {
+          id: {
+            in: explicitIDs,
+          },
+        },
+      });
+
+      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const whereAnd: Where[] = [
+        { audience: { in: [audience, "both"] } },
+        { id: { not_in: explicitDocs.map((item) => item.id) } },
+      ];
+
+      if (categoryID) {
+        whereAnd.unshift({
+          relatedCategory: {
+            equals: categoryID,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 0,
+        limit: limit - explicitDocs.length + 4,
+        sort: "-publishedAt",
+        where: { and: whereAnd },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [{ audience: { in: [audience, "both"] } }];
+    if (categoryID) {
+      whereAnd.push({
+        relatedCategory: {
+          equals: categoryID,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+      where: { and: whereAnd },
+    });
+
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["suggested-articles-for-calculator"],
+  { revalidate: 900 }
+);
+
+const getSuggestedCalculatorsForArticleCached = unstable_cache(
+  async (
+    audience: Audience,
+    categoryID: string,
+    explicitCalculatorKey: string,
+    limit: number
+  ): Promise<CalculatorDoc[]> => {
+    const payload = await getPayloadClient();
+    const explicitIDs = explicitCalculatorKey ? explicitCalculatorKey.split(",").filter(Boolean) : [];
+
+    if (explicitIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: RELATION_DEPTH,
+        limit,
+        sort: "sortOrder",
+        where: {
+          id: {
+            in: explicitIDs,
+          },
+        },
+      });
+
+      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const whereAnd: Where[] = [
+        { audience: { in: [audience, "both"] } },
+        { id: { not_in: explicitDocs.map((item) => item.id) } },
+      ];
+
+      if (categoryID) {
+        whereAnd.unshift({
+          category: {
+            equals: categoryID,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "calculators",
+        draft: false,
+        depth: RELATION_DEPTH,
+        limit: limit - explicitDocs.length + 4,
+        sort: "sortOrder",
+        where: { and: whereAnd },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [{ audience: { in: [audience, "both"] } }];
+    if (categoryID) {
+      whereAnd.push({
+        category: {
+          equals: categoryID,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: RELATION_DEPTH,
+      limit,
+      sort: "sortOrder",
+      where: { and: whereAnd },
+    });
+
+    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
+  },
+  ["suggested-calculators-for-article"],
+  { revalidate: 900 }
+);
+
+const getSuggestedArticlesCached = unstable_cache(
+  async (
+    articleSlug: string,
+    audience: Audience,
+    categoryID: string,
+    explicitArticleKey: string,
+    limit: number
+  ): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const explicitIDs = explicitArticleKey ? explicitArticleKey.split(",").filter(Boolean) : [];
+
+    if (explicitIDs.length > 0) {
+      const explicitResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 0,
+        limit,
+        sort: "-publishedAt",
+        where: {
+          and: [
+            { id: { in: explicitIDs } },
+            { slug: { not_equals: articleSlug } },
+          ],
+        },
+      });
+
+      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
+      if (explicitDocs.length >= limit) {
+        return explicitDocs;
+      }
+
+      const whereAnd: Where[] = [
+        { audience: { in: [audience, "both"] } },
+        { slug: { not_equals: articleSlug } },
+        { id: { not_in: explicitDocs.map((item) => item.id) } },
+      ];
+
+      if (categoryID) {
+        whereAnd.unshift({
+          relatedCategory: {
+            equals: categoryID,
+          },
+        });
+      }
+
+      const fallbackResult = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 0,
+        limit: limit - explicitDocs.length + 4,
+        sort: "-publishedAt",
+        where: { and: whereAnd },
+      });
+
+      const merged = [
+        ...explicitDocs,
+        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
+      ];
+      const deduped = new Map(merged.map((item) => [item.id, item]));
+      return Array.from(deduped.values()).slice(0, limit);
+    }
+
+    const whereAnd: Where[] = [
+      { audience: { in: [audience, "both"] } },
+      { slug: { not_equals: articleSlug } },
+    ];
+
+    if (categoryID) {
+      whereAnd.push({
+        relatedCategory: {
+          equals: categoryID,
+        },
+      });
+    }
+
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+      where: { and: whereAnd },
+    });
+
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["suggested-articles"],
+  { revalidate: 900 }
+);
+
+export const getHomepageContent = async (): Promise<HomepageContent | null> => {
+  return safeRun(async () => getHomepageContentCached(), null);
+};
+
+export const listCategories = async (limit = 12): Promise<CalculatorCategory[]> => {
+  return safeRun(async () => getCategoriesCached(limit), []);
+};
+
+const getNavigationCategoriesCached = unstable_cache(
+  async (): Promise<CalculatorCategory[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "calculator-categories",
+      draft: false,
+      depth: 0,
+      limit: NAVIGATION_CATEGORY_LIMIT,
+      sort: "sortOrder",
+    });
+
+    return result.docs.map((doc) => mapCategory(doc as RawDoc));
+  },
+  ["site-navigation-categories"],
+  { revalidate: 900 }
+);
+
+const getFeaturedCalculatorsCached = unstable_cache(
+  async (limit: number): Promise<CalculatorDoc[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "calculators",
+      draft: false,
+      depth: RELATION_DEPTH,
       limit,
       sort: "sortOrder",
       where: { isFeatured: { equals: true } },
     });
     return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
-};
+  },
+  ["featured-calculators"],
+  { revalidate: 900 }
+);
 
-export const listCalculators = async (limit = 100): Promise<CalculatorDoc[]> => {
-  return safeRun(async () => {
+const getRecentArticlesCached = unstable_cache(
+  async (limit: number): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["recent-articles"],
+  { revalidate: 900 }
+);
+
+const getCalculatorsByAudienceCached = unstable_cache(
+  async (audience: Exclude<Audience, "both">, limit: number): Promise<CalculatorDoc[]> => {
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "calculators",
       draft: false,
-      depth: 2,
+      depth: RELATION_DEPTH,
       limit,
       sort: "sortOrder",
+      where: buildAudienceWhere(audience),
     });
     return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  },
+  ["calculators-by-audience"],
+  { revalidate: 900 }
+);
+
+const getArticlesByAudienceCached = unstable_cache(
+  async (audience: Exclude<Audience, "both">, limit: number): Promise<Article[]> => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "articles",
+      draft: false,
+      depth: 0,
+      limit,
+      sort: "-publishedAt",
+      where: buildAudienceWhere(audience),
+    });
+    return attachAuthorsToArticles(result.docs as RawDoc[]);
+  },
+  ["articles-by-audience"],
+  { revalidate: 900 }
+);
+
+export const listNavigationCategories = async (): Promise<CalculatorCategory[]> => {
+  return safeRun(async () => getNavigationCategoriesCached(), []);
+};
+
+export const getCategoryBySlug = async (slug: string): Promise<CalculatorCategory | null> => {
+  return safeRun(async () => getCategoryBySlugCached(slug), null);
+};
+
+export const listFeaturedCalculators = async (limit = 8): Promise<CalculatorDoc[]> => {
+  return safeRun(async () => getFeaturedCalculatorsCached(limit), []);
+};
+
+export const listCalculators = async (limit = 100): Promise<CalculatorDoc[]> => {
+  return safeRun(async () => getCalculatorsCached(limit), []);
 };
 
 export const listCalculatorsByCategory = async (
   categoryID: string,
   limit = 100
 ): Promise<CalculatorDoc[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "sortOrder",
-      where: { category: { equals: categoryID } },
-    });
-    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  return safeRun(async () => getCalculatorsByCategoryCached(categoryID, limit), []);
 };
 
 export const listCalculatorsByAudience = async (
   audience: Exclude<Audience, "both">,
   limit = 24
 ): Promise<CalculatorDoc[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "sortOrder",
-      where: buildAudienceWhere(audience),
-    });
-    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  return safeRun(async () => getCalculatorsByAudienceCached(audience, limit), []);
 };
 
 export const getCalculatorBySlug = async (slug: string): Promise<CalculatorDoc | null> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      limit: 1,
-      where: { slug: { equals: slug } },
-    });
-    return result.docs[0] ? mapCalculator(result.docs[0] as RawDoc) : null;
-  }, null);
+  return safeRun(async () => getCalculatorBySlugCached(slug), null);
 };
 
 export const getCalculatorByRoute = async (args: {
@@ -636,551 +1233,131 @@ export const listRelatedCalculators = async (
   calculator: CalculatorDoc,
   limit = 6
 ): Promise<CalculatorDoc[]> => {
-  const categoryID = calculator.category?.id;
-
-  if (calculator.relatedCalculators.length > 0) {
-    return safeRun(async () => {
-      const payload = await getPayloadClient();
-      const explicitResult = await payload.find({
-        collection: "calculators",
-        draft: false,
-        depth: 2,
-        limit,
-        where: {
-          id: {
-            in: calculator.relatedCalculators.map((item) => item.id),
-          },
-        },
-      });
-
-      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
-      if (explicitDocs.length >= limit || !categoryID) {
-        return explicitDocs;
-      }
-
-      const fallbackResult = await payload.find({
-        collection: "calculators",
-        draft: false,
-        depth: 2,
-        limit: limit - explicitDocs.length + 4,
-        sort: "sortOrder",
-        where: {
-          and: [
-            { category: { equals: categoryID } },
-            { audience: { in: [calculator.audience, "both"] } },
-            { id: { not_in: [calculator.id, ...explicitDocs.map((item) => item.id)] } },
-          ],
-        },
-      });
-
-      const merged = [
-        ...explicitDocs,
-        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
-      ];
-      const deduped = new Map(merged.map((item) => [item.id, item]));
-      return Array.from(deduped.values()).slice(0, limit);
-    }, []);
-  }
-
-  if (!categoryID) {
-    return [];
-  }
-
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "sortOrder",
-      where: {
-        and: [
-          { category: { equals: categoryID } },
-          { audience: { in: [calculator.audience, "both"] } },
-          { id: { not_equals: calculator.id } },
-        ],
-      },
-    });
-    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  return safeRun(
+    async () =>
+      getRelatedCalculatorsCached(
+        calculator.id,
+        calculator.category?.id ?? "",
+        calculator.audience,
+        calculator.relatedCalculators.map((item) => item.id).toSorted().join(","),
+        limit
+      ),
+    []
+  );
 };
 
 export const listSuggestedArticlesForCalculator = async (args: {
   calculator: CalculatorDoc;
   limit?: number;
 }): Promise<Article[]> => {
-  const limit = args.limit ?? 4;
-  const explicitArticleIDs = args.calculator.relatedArticles.map((item) => item.id);
-
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-
-    if (explicitArticleIDs.length > 0) {
-      const explicitResult = await payload.find({
-        collection: "articles",
-        draft: false,
-        depth: 2,
-        limit,
-        sort: "-publishedAt",
-        where: {
-          id: {
-            in: explicitArticleIDs,
-          },
-        },
-      });
-
-      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
-      if (explicitDocs.length >= limit) {
-        return explicitDocs;
-      }
-
-      const fallbackWhere: Where[] = [
-        {
-          audience: {
-            in: [args.calculator.audience, "both"],
-          },
-        },
-      ];
-
-      if (args.calculator.category?.id) {
-        fallbackWhere.push({
-          relatedCategory: {
-            equals: args.calculator.category.id,
-          },
-        });
-      }
-
-      const fallbackResult = await payload.find({
-        collection: "articles",
-        draft: false,
-        depth: 2,
-        limit: limit - explicitDocs.length + 4,
-        sort: "-publishedAt",
-        where: {
-          and: [
-            ...fallbackWhere,
-            { id: { not_in: explicitDocs.map((item) => item.id) } },
-          ],
-        },
-      });
-
-      const merged = [
-        ...explicitDocs,
-        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
-      ];
-      const deduped = new Map(merged.map((item) => [item.id, item]));
-      return Array.from(deduped.values()).slice(0, limit);
-    }
-
-    const whereAnd: Where[] = [
-      {
-        audience: {
-          in: [args.calculator.audience, "both"],
-        },
-      },
-    ];
-
-    if (args.calculator.category?.id) {
-      whereAnd.push({
-        relatedCategory: {
-          equals: args.calculator.category.id,
-        },
-      });
-    }
-
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "-publishedAt",
-      where: {
-        and: whereAnd,
-      },
-    });
-
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(
+    async () =>
+      getSuggestedArticlesForCalculatorCached(
+        args.calculator.audience,
+        args.calculator.category?.id ?? "",
+        args.calculator.relatedArticles.map((item) => item.id).toSorted().join(","),
+        args.limit ?? 4
+      ),
+    []
+  );
 };
 
 export const listRecentArticles = async (limit = 8): Promise<Article[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "-publishedAt",
-    });
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(async () => getRecentArticlesCached(limit), []);
 };
 
 export const listArticlesByAuthor = async (args: {
   authorID: string;
   limit?: number;
 }): Promise<Article[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit: args.limit ?? 12,
-      sort: "-publishedAt",
-      where: {
-        author: {
-          equals: args.authorID,
-        },
-      },
-    });
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(async () => getArticlesByAuthorCached(args.authorID, args.limit ?? 12), []);
 };
 
 export const listArticlesByCategory = async (args: {
   categoryID?: string;
   limit?: number;
 }): Promise<Article[]> => {
-  const whereAnd: Where[] = [];
-  if (args.categoryID) {
-    whereAnd.push({ relatedCategory: { equals: args.categoryID } });
+  const { categoryID, limit = 8 } = args;
+
+  if (!categoryID) {
+    return safeRun(async () => {
+      const payload = await getPayloadClient();
+      const result = await payload.find({
+        collection: "articles",
+        draft: false,
+        depth: 0,
+        limit,
+        sort: "-publishedAt",
+      });
+      return attachAuthorsToArticles(result.docs as RawDoc[]);
+    }, []);
   }
 
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit: args.limit ?? 8,
-      sort: "-publishedAt",
-      where: whereAnd.length > 0 ? { and: whereAnd } : undefined,
-    });
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(async () => getArticlesByCategoryCached(categoryID, limit), []);
 };
 
 export const listSuggestedCalculatorsForArticle = async (args: {
   article: Article;
   limit?: number;
 }): Promise<CalculatorDoc[]> => {
-  const limit = args.limit ?? 6;
-  const explicitCalculatorIDs = args.article.relatedCalculators.map((item) => item.id);
-
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-
-    if (explicitCalculatorIDs.length > 0) {
-      const explicitResult = await payload.find({
-        collection: "calculators",
-        draft: false,
-        depth: 2,
-        limit,
-        sort: "sortOrder",
-        where: {
-          id: {
-            in: explicitCalculatorIDs,
-          },
-        },
-      });
-
-      const explicitDocs = explicitResult.docs.map((doc) => mapCalculator(doc as RawDoc));
-      if (explicitDocs.length >= limit) {
-        return explicitDocs;
-      }
-
-      const fallbackWhere: Where[] = [
-        {
-          audience: {
-            in: [args.article.audience, "both"],
-          },
-        },
-      ];
-
-      if (args.article.relatedCategory?.id) {
-        fallbackWhere.push({
-          category: {
-            equals: args.article.relatedCategory.id,
-          },
-        });
-      }
-
-      const fallbackResult = await payload.find({
-        collection: "calculators",
-        draft: false,
-        depth: 2,
-        limit: limit - explicitDocs.length + 4,
-        sort: "sortOrder",
-        where: {
-          and: [
-            ...fallbackWhere,
-            { id: { not_in: explicitDocs.map((item) => item.id) } },
-          ],
-        },
-      });
-
-      const merged = [
-        ...explicitDocs,
-        ...fallbackResult.docs.map((doc) => mapCalculator(doc as RawDoc)),
-      ];
-      const deduped = new Map(merged.map((item) => [item.id, item]));
-      return Array.from(deduped.values()).slice(0, limit);
-    }
-
-    const whereAnd: Where[] = [
-      {
-        audience: {
-          in: [args.article.audience, "both"],
-        },
-      },
-    ];
-
-    if (args.article.relatedCategory?.id) {
-      whereAnd.push({
-        category: {
-          equals: args.article.relatedCategory.id,
-        },
-      });
-    }
-
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "sortOrder",
-      where: {
-        and: whereAnd,
-      },
-    });
-
-    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  return safeRun(
+    async () =>
+      getSuggestedCalculatorsForArticleCached(
+        args.article.audience,
+        args.article.relatedCategory?.id ?? "",
+        args.article.relatedCalculators.map((item) => item.id).toSorted().join(","),
+        args.limit ?? 6
+      ),
+    []
+  );
 };
 
 export const listSuggestedArticles = async (args: {
   article: Article;
   limit?: number;
 }): Promise<Article[]> => {
-  const limit = args.limit ?? 4;
-  const explicitArticleIDs = args.article.relatedArticles.map((item) => item.id);
-
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-
-    if (explicitArticleIDs.length > 0) {
-      const explicitResult = await payload.find({
-        collection: "articles",
-        draft: false,
-        depth: 2,
-        limit,
-        sort: "-publishedAt",
-        where: {
-          and: [
-            { id: { in: explicitArticleIDs } },
-            { slug: { not_equals: args.article.slug } },
-          ],
-        },
-      });
-
-      const explicitDocs = await attachAuthorsToArticles(explicitResult.docs as RawDoc[]);
-      if (explicitDocs.length >= limit) {
-        return explicitDocs;
-      }
-
-      const fallbackWhere: Where[] = [
-        {
-          audience: {
-            in: [args.article.audience, "both"],
-          },
-        },
-        { slug: { not_equals: args.article.slug } },
-      ];
-
-      if (args.article.relatedCategory?.id) {
-        fallbackWhere.push({
-          relatedCategory: {
-            equals: args.article.relatedCategory.id,
-          },
-        });
-      }
-
-      const fallbackResult = await payload.find({
-        collection: "articles",
-        draft: false,
-        depth: 2,
-        limit: limit - explicitDocs.length + 4,
-        sort: "-publishedAt",
-        where: {
-          and: [
-            ...fallbackWhere,
-            { id: { not_in: explicitDocs.map((item) => item.id) } },
-          ],
-        },
-      });
-
-      const merged = [
-        ...explicitDocs,
-        ...(await attachAuthorsToArticles(fallbackResult.docs as RawDoc[])),
-      ];
-      const deduped = new Map(merged.map((item) => [item.id, item]));
-      return Array.from(deduped.values()).slice(0, limit);
-    }
-
-    const whereAnd: Where[] = [
-      {
-        audience: {
-          in: [args.article.audience, "both"],
-        },
-      },
-      { slug: { not_equals: args.article.slug } },
-    ];
-
-    if (args.article.relatedCategory?.id) {
-      whereAnd.push({
-        relatedCategory: {
-          equals: args.article.relatedCategory.id,
-        },
-      });
-    }
-
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit,
-      sort: "-publishedAt",
-      where: {
-        and: whereAnd,
-      },
-    });
-
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(
+    async () =>
+      getSuggestedArticlesCached(
+        args.article.slug,
+        args.article.audience,
+        args.article.relatedCategory?.id ?? "",
+        args.article.relatedArticles.map((item) => item.id).toSorted().join(","),
+        args.limit ?? 4
+      ),
+    []
+  );
 };
 
 export const listArticlesByAudience = async (args: {
   audience: Exclude<Audience, "both">;
   limit?: number;
 }): Promise<Article[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit: args.limit ?? 8,
-      sort: "-publishedAt",
-      where: buildAudienceWhere(args.audience),
-    });
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(async () => getArticlesByAudienceCached(args.audience, args.limit ?? 8), []);
 };
 
 export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 2,
-      limit: 1,
-      where: { slug: { equals: slug } },
-    });
-    if (!result.docs[0]) {
-      return null;
-    }
-
-    const [article] = await attachAuthorsToArticles([result.docs[0] as RawDoc]);
-    return article ?? null;
-  }, null);
+  return safeRun(async () => getArticleBySlugCached(slug), null);
 };
 
 export const getPublicAuthorBySlug = async (slug: string): Promise<PublicAuthor | null> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "users",
-      depth: 0,
-      limit: 1,
-      overrideAccess: true,
-      pagination: false,
-      where: {
-        or: [
-          { profileSlug: { equals: slug } },
-          { id: { equals: slug } },
-        ],
-      },
-    });
-
-    return result.docs[0] ? mapPublicAuthor(result.docs[0] as RawDoc) ?? null : null;
-  }, null);
+  return safeRun(async () => getPublicAuthorBySlugCached(slug), null);
 };
 
 export const listAllPublicAuthorsForSitemap = async (): Promise<PublicAuthor[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "users",
-      depth: 0,
-      overrideAccess: true,
-      pagination: false,
-      limit: 10000,
-      sort: "updatedAt",
-    });
-
-    return result.docs
-      .map((doc) => mapPublicAuthor(doc as RawDoc))
-      .filter((author): author is PublicAuthor => Boolean(author));
-  }, []);
+  return safeRun(async () => getAllPublicAuthorsForSitemapCached(), []);
 };
 
 export const listAllCategoriesForSitemap = async (): Promise<CalculatorCategory[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculator-categories",
-      draft: false,
-      depth: 0,
-      pagination: false,
-      limit: 1000,
-      sort: "updatedAt",
-    });
-    return result.docs.map((doc) => mapCategory(doc as RawDoc));
-  }, []);
+  return safeRun(async () => getAllCategoriesForSitemapCached(), []);
 };
 
 export const listAllCalculatorsForSitemap = async (): Promise<CalculatorDoc[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "calculators",
-      draft: false,
-      depth: 2,
-      pagination: false,
-      limit: 10000,
-      sort: "updatedAt",
-    });
-    return result.docs.map((doc) => mapCalculator(doc as RawDoc));
-  }, []);
+  return safeRun(async () => getAllCalculatorsForSitemapCached(), []);
 };
 
 export const listAllArticlesForSitemap = async (): Promise<Article[]> => {
-  return safeRun(async () => {
-    const payload = await getPayloadClient();
-    const result = await payload.find({
-      collection: "articles",
-      draft: false,
-      depth: 0,
-      pagination: false,
-      limit: 10000,
-      sort: "updatedAt",
-    });
-    return attachAuthorsToArticles(result.docs as RawDoc[]);
-  }, []);
+  return safeRun(async () => getAllArticlesForSitemapCached(), []);
 };
 
 export const searchSuggestions = async (query: string) => {
@@ -1195,7 +1372,7 @@ export const searchSuggestions = async (query: string) => {
       payload.find({
         collection: "calculators",
         draft: false,
-        depth: 2,
+        depth: RELATION_DEPTH,
         limit: 8,
         where: { title: { like: q } },
       }),

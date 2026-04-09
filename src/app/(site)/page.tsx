@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ad-slot";
+import { AdSlotLazy } from "@/components/ad-slot-lazy";
 import { ArticleCard } from "@/components/article-card";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CategoryCard } from "@/components/category-card";
@@ -134,7 +134,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="mt-16 grid gap-4 lg:grid-cols-2">
+        <section className="cv-auto mt-16 grid gap-4 lg:grid-cols-2">
           <Link
             href="/pentru-persoane"
             className="group rounded-[2rem] border border-slate-300/70 bg-[linear-gradient(180deg,rgba(255,252,247,0.96)_0%,rgba(248,243,235,0.84)_100%)] p-6 text-slate-950 shadow-[0_22px_80px_-55px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-1 hover:border-emerald-300"
@@ -172,7 +172,7 @@ export default async function HomePage() {
           </Link>
         </section>
 
-        <section className="mt-24 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <section className="cv-auto mt-24 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
             <p className="section-kicker">Calculatoare populare</p>
             <h2 className="mt-4 section-title">Instrumente gandite pentru uz rapid, dar suficient de bine explicate incat sa inspire incredere.</h2>
@@ -188,8 +188,8 @@ export default async function HomePage() {
         </section>
 
         {adsConfig.slots.homeInline ? (
-          <section className="mt-14">
-            <AdSlot
+          <section className="cv-auto mt-14">
+            <AdSlotLazy
               slot={adsConfig.slots.homeInline}
               label="Sustinere platforma"
               className="mx-auto max-w-[980px]"
@@ -199,12 +199,12 @@ export default async function HomePage() {
         ) : null}
 
         {homepage?.contentBlocks.length ? (
-          <section className="mt-24">
+          <section className="cv-auto mt-24">
             <EditorialBlocks blocks={homepage.contentBlocks} />
           </section>
         ) : null}
 
-        <section className="mt-24 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <section className="cv-auto mt-24 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             <p className="section-kicker">Ghiduri si explicatii</p>
             <h2 className="mt-4 section-title">Articolele completeaza calculele cu context, interpretare si exemple reale.</h2>
@@ -219,7 +219,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="paper-panel mt-24 rounded-[2.4rem] px-6 py-8 sm:px-8 sm:py-10">
+        <section className="cv-auto paper-panel mt-24 rounded-[2.4rem] px-6 py-8 sm:px-8 sm:py-10">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>
               <p className="section-kicker">Mai departe</p>

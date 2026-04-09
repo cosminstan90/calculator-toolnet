@@ -49,6 +49,7 @@ export const buildPublishingScheduleField = (label: string): Field => ({
     {
       name: "earliestAt",
       type: "date",
+      index: true,
       admin: {
         description:
           "Optional. Daca este setat, documentul nu poate fi publicat automat inainte de aceasta data.",

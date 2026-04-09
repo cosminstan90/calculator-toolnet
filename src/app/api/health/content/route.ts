@@ -12,10 +12,10 @@ export async function GET(request: Request) {
   const payload = await getPayloadClient();
   const [categories, calculators, articles, redirects, notFoundEvents] = await Promise.all([
     payload.find({ collection: "calculator-categories", limit: 1, pagination: false, draft: false }),
-    payload.find({ collection: "calculators", limit: 200, pagination: false, draft: false, depth: 0 }),
-    payload.find({ collection: "articles", limit: 200, pagination: false, draft: false, depth: 0 }),
-    payload.find({ collection: "redirects", limit: 200, pagination: false, draft: false, depth: 0, overrideAccess: true }),
-    payload.find({ collection: "not-found-events", limit: 200, pagination: false, draft: false, depth: 0, overrideAccess: true }),
+    payload.find({ collection: "calculators", limit: 1, pagination: false, draft: false, depth: 0 }),
+    payload.find({ collection: "articles", limit: 1, pagination: false, draft: false, depth: 0 }),
+    payload.find({ collection: "redirects", limit: 1, pagination: false, draft: false, depth: 0, overrideAccess: true }),
+    payload.find({ collection: "not-found-events", limit: 1, pagination: false, draft: false, depth: 0, overrideAccess: true }),
   ]);
 
   const calculatorDocs = calculators.docs as Array<Record<string, unknown>>;

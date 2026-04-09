@@ -1,8 +1,8 @@
-import { AdSlot } from "@/components/ad-slot";
+import { AdSlotLazy } from "@/components/ad-slot-lazy";
 import { AudienceBadge } from "@/components/audience-badge";
 import { CalculatorCard } from "@/components/calculator-card";
+import { CalculatorRunnerLazy } from "@/components/calculator-runner-lazy";
 import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
-import { CalculatorRunner } from "@/components/calculator-runner";
 import { DecisionSupportPanel } from "@/components/decision-support-panel";
 import { EditorialBlocks } from "@/components/editorial-blocks";
 import { JsonLd } from "@/components/json-ld";
@@ -15,8 +15,6 @@ import {
 } from "@/lib/content";
 import {
   buildBreadcrumbJsonLd,
-  buildFAQJsonLd,
-  buildHowToJsonLd,
   buildMetadata,
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
@@ -92,6 +90,28 @@ export default async function CalculatorPage({ params }: { params: Params }) {
   const contextualCalculatorLinks = relatedCalculators.slice(0, 3);
   const contextualArticleLinks = suggestedArticles.filter((item) => item.slug);
   const decisionSupport = buildDecisionSupport(calculator);
+  const answerFirstLinks = [
+    {
+      href: "#formula-explicata",
+      label: "Formula",
+    },
+    {
+      href: "#exemple-calcul",
+      label: "Exemple",
+    },
+    {
+      href: "#interpretare-context",
+      label: "Interpretare",
+    },
+    ...(calculator.faq.length > 0
+      ? [
+          {
+            href: "#intrebari-frecvente",
+            label: "FAQ",
+          },
+        ]
+      : []),
+  ];
   const commercialCta = getCommercialCta({
     categorySlug,
     audience: calculator.audience,
@@ -121,13 +141,6 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             path: `/calculatoare/${categorySlug}/${calculator.slug}`,
             applicationCategory: calculator.category?.name ?? "Calculator",
           }),
-          buildHowToJsonLd({
-            name: calculator.title,
-            description: calculator.shortDescription,
-            path: `/calculatoare/${categorySlug}/${calculator.slug}`,
-            steps: calculator.howToSteps,
-          }),
-          ...(calculator.faq.length > 0 ? [buildFAQJsonLd(calculator.faq)] : []),
         ]}
       />
 
@@ -169,12 +182,63 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       </section>
 
       <div className="mt-8">
-        <CalculatorRunner calculatorKey={calculator.calculatorKey} />
+        <CalculatorRunnerLazy calculatorKey={calculator.calculatorKey} />
       </div>
 
+      <section className="cv-auto paper-panel mt-8 rounded-[2rem] p-6 sm:p-8">
+        <p className="section-kicker">Raspuns rapid</p>
+        <div className="mt-4 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <h2 className="text-2xl font-black text-slate-950 sm:text-3xl">
+              Ce rezolvi pe scurt cu acest calculator
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-700">
+              {calculator.shortDescription}
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {answerFirstLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-emerald-400 hover:text-emerald-700"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <article className="rounded-[1.25rem] border border-slate-300/70 bg-white/70 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                Formula
+              </p>
+              <p className="mt-2 text-sm font-bold text-slate-950">
+                {calculator.formulaName ?? "Formula calculatorului"}
+              </p>
+            </article>
+            <article className="rounded-[1.25rem] border border-slate-300/70 bg-white/70 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-700">
+                Categorie
+              </p>
+              <p className="mt-2 text-sm font-bold text-slate-950">
+                {calculator.category?.name ?? "Calculator"}
+              </p>
+            </article>
+            <article className="rounded-[1.25rem] border border-slate-300/70 bg-white/70 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
+                Urmator pas
+              </p>
+              <p className="mt-2 text-sm font-bold text-slate-950">
+                Interpreteaza rezultatul si compara un scenariu apropiat
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       {adsConfig.slots.calculatorInline ? (
-        <section className="mt-8">
-          <AdSlot
+        <section className="cv-auto mt-8">
+          <AdSlotLazy
             slot={adsConfig.slots.calculatorInline}
             label="Publicitate"
             className="mx-auto max-w-[980px]"
@@ -182,17 +246,17 @@ export default async function CalculatorPage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      <section className="mt-10">
+      <section className="cv-auto mt-10">
         <DecisionSupportPanel data={decisionSupport} />
       </section>
 
       {commercialCta ? (
-        <section className="mt-10">
+        <section className="cv-auto mt-10">
           <CommercialCtaPanel cta={commercialCta} />
         </section>
       ) : null}
 
-      <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
+      <section id="formula-explicata" className="cv-auto paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Formula explicata</p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
@@ -205,7 +269,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
+      <section id="exemple-calcul" className="cv-auto paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Exemple de calcul</p>
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {calculator.examples.map((example, index) => (
@@ -217,7 +281,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
+      <section id="interpretare-context" className="cv-auto paper-panel mt-10 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Interpretare si context</p>
         <div className="mt-4 grid gap-6 lg:grid-cols-2">
           <div className="space-y-4">
@@ -274,13 +338,13 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       </section>
 
       {calculator.contentBlocks.length > 0 ? (
-        <section className="mt-10">
+        <section className="cv-auto mt-10">
           <EditorialBlocks blocks={calculator.contentBlocks} />
         </section>
       ) : null}
 
       {calculator.faq.length > 0 ? (
-        <section className="paper-panel mt-10 rounded-[2rem] p-6">
+        <section id="intrebari-frecvente" className="cv-auto paper-panel mt-10 rounded-[2rem] p-6">
           <h2 className="text-2xl font-bold text-slate-950">Intrebari frecvente</h2>
           <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-700">Intrebarile de mai jos clarifica modul de calcul, interpretarea uzuala si situatiile in care merita sa compari mai multe scenarii.</p>
           <div className="mt-4 space-y-4">
@@ -295,7 +359,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       ) : null}
 
       {relatedCalculators.length > 0 ? (
-        <section className="mt-10">
+        <section className="cv-auto mt-10">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="section-kicker">Calculatoare similare</p>
@@ -311,7 +375,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       ) : null}
 
       {suggestedArticles.length > 0 ? (
-        <section className="paper-panel mt-10 rounded-[2rem] p-6">
+        <section className="cv-auto paper-panel mt-10 rounded-[2rem] p-6">
           <h2 className="text-2xl font-bold text-slate-950">Articole conexe</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Daca vrei mai mult context despre formula sau despre modul de interpretare, continua cu articolele de mai jos.</p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -328,7 +392,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      <section className="paper-panel mt-10 rounded-[2rem] p-6">
+      <section className="cv-auto paper-panel mt-10 rounded-[2rem] p-6">
         <h2 className="text-xl font-bold text-slate-950">Legaturi interne</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href="/calculatoare" className="rounded-full border border-slate-300 bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-emerald-400 hover:text-emerald-700">

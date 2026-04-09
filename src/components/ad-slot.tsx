@@ -1,7 +1,8 @@
 "use client";
 
-import { adsConfig, ADS_TOGGLE_STORAGE_KEY } from "@/lib/ads";
-import { useEffect, useMemo, useState } from "react";
+import { adsConfig } from "@/lib/ads";
+import { useAdsEnabled } from "@/components/ads-preference";
+import { useEffect, useMemo } from "react";
 
 declare global {
   interface Window {
@@ -16,39 +17,14 @@ type AdSlotProps = {
   minHeightClassName?: string;
 };
 
-const readAdsEnabled = () => {
-  if (typeof window === "undefined") {
-    return adsConfig.enabledByDefault;
-  }
-
-  const stored = window.localStorage.getItem(ADS_TOGGLE_STORAGE_KEY);
-  if (stored === "true") {
-    return true;
-  }
-  if (stored === "false") {
-    return false;
-  }
-  return adsConfig.enabledByDefault;
-};
-
 export const AdSlot = ({
   slot,
   label = "Publicitate",
   className = "",
   minHeightClassName = "min-h-[180px]",
 }: AdSlotProps) => {
-  const [enabled, setEnabled] = useState(readAdsEnabled);
+  const enabled = useAdsEnabled();
   const slotKey = useMemo(() => `${slot}-${enabled}`, [slot, enabled]);
-
-  useEffect(() => {
-    const syncState = () => setEnabled(readAdsEnabled());
-    window.addEventListener("storage", syncState);
-    window.addEventListener("toolnet-ads-toggle", syncState as EventListener);
-    return () => {
-      window.removeEventListener("storage", syncState);
-      window.removeEventListener("toolnet-ads-toggle", syncState as EventListener);
-    };
-  }, []);
 
   useEffect(() => {
     if (!enabled || !slot || !adsConfig.adsenseClient) {

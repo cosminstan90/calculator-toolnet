@@ -171,3 +171,13 @@ a {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+.cv-auto-cards {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 720px;
+}

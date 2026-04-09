@@ -144,6 +144,7 @@ export const Calculators: CollectionConfig = {
       type: "relationship",
       relationTo: "calculator-categories",
       required: true,
+      index: true,
     },
     {
       name: "audience",
@@ -306,6 +307,7 @@ export const Calculators: CollectionConfig = {
     {
       name: "publishedAt",
       type: "date",
+      index: true,
     },
     {
       name: "sortOrder",
@@ -317,6 +319,7 @@ export const Calculators: CollectionConfig = {
       name: "isFeatured",
       type: "checkbox",
       defaultValue: false,
+      index: true,
     },
     contentBlocksField,
     seoFieldGroup,

@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ad-slot";
+import { AdSlotLazy } from "@/components/ad-slot-lazy";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CategoryCard } from "@/components/category-card";
 import { JsonLd } from "@/components/json-ld";
@@ -105,7 +105,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
         </div>
       </section>
 
-      <section className="mt-12 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+      <section className="cv-auto mt-12 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
         <div>
           <p className="section-kicker">Categorii principale</p>
           <h2 className="mt-4 section-title">Incepe cu domeniul potrivit, apoi mergi direct la calculul care te intereseaza.</h2>
@@ -120,7 +120,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
         </div>
       </section>
 
-      <section className="mt-14 grid gap-4 lg:grid-cols-2">
+      <section className="cv-auto mt-14 grid gap-4 lg:grid-cols-2">
         <Link
           href="/pentru-persoane"
           className="group rounded-[2rem] border border-slate-300/70 bg-[linear-gradient(180deg,rgba(255,252,247,0.96)_0%,rgba(248,243,235,0.84)_100%)] p-6 text-slate-950 shadow-[0_22px_80px_-55px_rgba(15,23,42,0.45)] transition duration-300 hover:-translate-y-1 hover:border-emerald-300"
@@ -152,7 +152,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
         </Link>
       </section>
 
-      <section className="mt-14">
+      <section className="cv-auto mt-14">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="section-kicker">Index complet</p>
@@ -170,8 +170,8 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
       </section>
 
       {adsConfig.slots.calculatorsHubInline ? (
-        <section className="mt-10">
-          <AdSlot
+        <section className="cv-auto mt-10">
+          <AdSlotLazy
             slot={adsConfig.slots.calculatorsHubInline}
             label="Mesaj sponsorizat"
             className="mx-auto max-w-[980px]"

@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ad-slot";
+import { AdSlotLazy } from "@/components/ad-slot-lazy";
 import { AudienceBadge } from "@/components/audience-badge";
 import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
 import { JsonLd } from "@/components/json-ld";
@@ -69,6 +69,31 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
     listSuggestedArticles({ article, limit: 4 }),
     listSuggestedCalculatorsForArticle({ article, limit: 6 }),
   ]);
+  const quickLinks = [
+    ...(suggestedCalculators[0]
+      ? [
+          {
+            href:
+              suggestedCalculators[0].category?.slug && suggestedCalculators[0].slug
+                ? `/calculatoare/${suggestedCalculators[0].category.slug}/${suggestedCalculators[0].slug}`
+                : "/calculatoare",
+            label: "Calculator util",
+          },
+        ]
+      : []),
+    ...(article.relatedCategory?.slug
+      ? [
+          {
+            href: `/calculatoare/${article.relatedCategory.slug}`,
+            label: "Hub categorie",
+          },
+        ]
+      : []),
+    {
+      href: "#articole-conexe",
+      label: "Articole conexe",
+    },
+  ];
   const commercialCta = getCommercialCta({
     categorySlug: article.relatedCategory?.slug,
     audience: article.audience,
@@ -145,6 +170,56 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
         </div>
         <p className="mt-5 text-base leading-8 text-slate-700">{article.excerpt}</p>
 
+        <section className="mt-8 rounded-[1.6rem] border border-slate-200 bg-slate-50/90 p-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+            Pe scurt
+          </p>
+          <div className="mt-4 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <h2 className="text-2xl font-black text-slate-950">
+                Ce afli rapid din acest articol
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-700">
+                Articolul iti explica {article.relatedCategory?.name?.toLowerCase() ?? "subiectul"} intr-un mod orientat spre decizie, nu doar spre definitii. Daca vrei sa aplici imediat informatia, continua cu calculatorul sau categoria cea mai apropiata.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <article className="rounded-[1.2rem] border border-white bg-white p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                  Subiect
+                </p>
+                <p className="mt-2 text-sm font-bold text-slate-950">
+                  {article.relatedCategory?.name ?? article.articleType}
+                </p>
+              </article>
+              <article className="rounded-[1.2rem] border border-white bg-white p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-700">
+                  Tip pagina
+                </p>
+                <p className="mt-2 text-sm font-bold text-slate-950">
+                  {article.articleType}
+                </p>
+              </article>
+              <article className="rounded-[1.2rem] border border-white bg-white p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">
+                  Urmator pas
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {quickLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:border-emerald-400 hover:text-emerald-700"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <div className="mt-8 space-y-5">
           {article.content.split("\n").map((paragraph, index) =>
             paragraph.trim().length > 0 ? (
@@ -157,8 +232,8 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
       </article>
 
       {adsConfig.slots.articleInline ? (
-        <section className="mt-8">
-          <AdSlot
+        <section className="cv-auto mt-8">
+          <AdSlotLazy
             slot={adsConfig.slots.articleInline}
             label="Publicitate relevanta"
             className="mx-auto max-w-[980px]"
@@ -167,13 +242,13 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
       ) : null}
 
       {commercialCta ? (
-        <section className="mt-8">
+        <section className="cv-auto mt-8">
           <CommercialCtaPanel cta={commercialCta} />
         </section>
       ) : null}
 
       {suggestedCalculators.length > 0 ? (
-        <section className="paper-panel mt-8 rounded-[2rem] p-6">
+        <section id="articole-conexe" className="cv-auto paper-panel mt-8 rounded-[2rem] p-6">
           <h2 className="text-2xl font-black text-slate-900">Calculatoare utile din acelasi subiect</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Daca vrei sa aplici imediat informatia din articol, incepe cu unul dintre calculatoarele legate direct de subiect.</p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -193,7 +268,7 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
       ) : null}
 
       {suggestedArticles.length > 0 ? (
-        <section className="paper-panel mt-8 rounded-[2rem] p-6">
+        <section className="cv-auto paper-panel mt-8 rounded-[2rem] p-6">
           <h2 className="text-2xl font-black text-slate-900">Articole conexe</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">Continua cu ghiduri apropiate daca vrei sa aprofundezi sau sa compari mai multe perspective asupra aceluiasi subiect.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -211,7 +286,7 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
       ) : null}
 
       {article.relatedCategory?.slug ? (
-        <section className="paper-panel mt-8 rounded-[2rem] p-6">
+        <section className="cv-auto paper-panel mt-8 rounded-[2rem] p-6">
           <h2 className="text-xl font-black text-slate-900">Continua in hub-ul categoriei</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">
             Daca vrei sa mergi din articol spre tool-uri si pagini din acelasi cluster, continua in categoria{" "}
@@ -226,7 +301,7 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      <section className="paper-panel mt-8 rounded-[2rem] p-6">
+      <section className="cv-auto paper-panel mt-8 rounded-[2rem] p-6">
         <h2 className="text-xl font-black text-slate-900">Feedback si corectii</h2>
         <p className="mt-2 text-sm leading-7 text-slate-700">
           Daca observi o informatie incorecta sau o explicatie care trebuie imbunatatita, ne poti scrie la{" "}

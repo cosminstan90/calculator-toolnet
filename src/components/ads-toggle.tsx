@@ -1,35 +1,17 @@
 "use client";
 
-import { adsConfig, ADS_TOGGLE_STORAGE_KEY } from "@/lib/ads";
-import { useState } from "react";
-
-const readAdsEnabled = () => {
-  if (typeof window === "undefined") {
-    return adsConfig.enabledByDefault;
-  }
-
-  const stored = window.localStorage.getItem(ADS_TOGGLE_STORAGE_KEY);
-  if (stored === "true") {
-    return true;
-  }
-  if (stored === "false") {
-    return false;
-  }
-  return adsConfig.enabledByDefault;
-};
+import { adsConfig } from "@/lib/ads";
+import { setAdsEnabledPreference, useAdsEnabled } from "@/components/ads-preference";
 
 export const AdsToggle = () => {
-  const [enabled, setEnabled] = useState(readAdsEnabled);
+  const enabled = useAdsEnabled();
 
   if (!adsConfig.showToggle || !adsConfig.adsenseClient) {
     return null;
   }
 
   const toggleAds = () => {
-    const nextState = !enabled;
-    window.localStorage.setItem(ADS_TOGGLE_STORAGE_KEY, String(nextState));
-    setEnabled(nextState);
-    window.dispatchEvent(new Event("toolnet-ads-toggle"));
+    setAdsEnabledPreference(!enabled);
   };
 
   return (

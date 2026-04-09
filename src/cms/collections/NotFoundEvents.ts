@@ -27,16 +27,19 @@ export const NotFoundEvents: CollectionConfig = {
       type: "number",
       required: true,
       defaultValue: 1,
+      index: true,
     },
     {
       name: "firstSeenAt",
       type: "date",
       required: true,
+      index: true,
     },
     {
       name: "lastSeenAt",
       type: "date",
       required: true,
+      index: true,
     },
     {
       name: "lastReferer",
@@ -53,6 +56,7 @@ export const NotFoundEvents: CollectionConfig = {
     {
       name: "source",
       type: "text",
+      index: true,
       admin: {
         description: "Locul unde a fost detectat 404-ul: catch-all, article-route, calculator-route etc.",
       },
@@ -61,6 +65,7 @@ export const NotFoundEvents: CollectionConfig = {
       name: "resolvedByRedirect",
       type: "relationship",
       relationTo: "redirects",
+      index: true,
     },
   ],
   timestamps: true,

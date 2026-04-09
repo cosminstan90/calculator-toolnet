@@ -127,6 +127,7 @@ export const Articles: CollectionConfig = {
       name: "relatedCategory",
       type: "relationship",
       relationTo: "calculator-categories",
+      index: true,
     },
     {
       name: "audience",
@@ -204,8 +205,9 @@ export const Articles: CollectionConfig = {
       type: "relationship",
       relationTo: "users",
       required: true,
+      index: true,
     },
-    { name: "publishedAt", type: "date" },
+    { name: "publishedAt", type: "date", index: true },
     {
       name: "aiDraft",
       type: "group",

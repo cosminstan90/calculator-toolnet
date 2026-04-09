@@ -18,6 +18,9 @@
     "ops:launch-plan-prepare": "node --import tsx scripts/launch-plan-prepare.mjs",
     "ops:launch-plan-focus": "node --import tsx scripts/launch-plan-focus.mjs",
     "ops:launch-plan-readiness": "node --import tsx scripts/launch-plan-readiness.mjs",
+    "ops:ops-report": "node --import tsx scripts/ops-report.mjs",
+    "ops:smoke-check": "node --import tsx scripts/smoke-check.mjs",
+    "ops:perf-snapshot": "node --import tsx scripts/perf-snapshot.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
     "ops:seo-audit": "node scripts/seo-audit.mjs",
     "ops:import-content": "node scripts/import-content.mjs"

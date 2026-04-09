@@ -129,6 +129,12 @@ export const buildCollectionJsonLd = (args: {
   name: args.name,
   description: args.description,
   url: absoluteURL(args.path),
+  inLanguage: "ro",
+  isPartOf: {
+    "@type": "WebSite",
+    name: siteConfig.name,
+    url: absoluteURL("/"),
+  },
 });
 
 export const buildItemListJsonLd = (args: {
@@ -158,6 +164,12 @@ export const buildWebPageJsonLd = (args: {
   name: args.name,
   description: args.description,
   url: absoluteURL(args.path),
+  inLanguage: "ro",
+  isPartOf: {
+    "@type": "WebSite",
+    name: siteConfig.name,
+    url: absoluteURL("/"),
+  },
 });
 
 export const buildPersonJsonLd = (args: {
@@ -210,6 +222,11 @@ export const buildWebApplicationJsonLd = (args: {
   operatingSystem: "All",
   browserRequirements: "Requires JavaScript",
   inLanguage: "ro",
+  isPartOf: {
+    "@type": "WebSite",
+    name: siteConfig.name,
+    url: absoluteURL("/"),
+  },
   offers: {
     "@type": "Offer",
     price: "0",
@@ -234,7 +251,7 @@ export const buildArticleJsonLd = (args: {
   articleSection?: string;
 }) => ({
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   headline: args.title,
   description: args.description,
   datePublished: args.publishedAt,
@@ -242,6 +259,18 @@ export const buildArticleJsonLd = (args: {
   image: args.imageURL ? [args.imageURL] : undefined,
   mainEntityOfPage: absoluteURL(args.path),
   articleSection: args.articleSection,
+  inLanguage: "ro",
+  isPartOf: {
+    "@type": "Blog",
+    name: `${siteConfig.name} Blog`,
+    url: absoluteURL("/blog"),
+  },
+  about: args.articleSection
+    ? {
+        "@type": "Thing",
+        name: args.articleSection,
+      }
+    : undefined,
   author: args.author
     ? {
         "@type": "Person",
@@ -263,40 +292,6 @@ export const buildArticleJsonLd = (args: {
       url: absoluteURL("/logo.svg"),
     },
   },
-});
-
-export const buildHowToJsonLd = (args: {
-  name: string;
-  description: string;
-  path: string;
-  steps: string[];
-}) => ({
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: args.name,
-  description: args.description,
-  url: absoluteURL(args.path),
-  step: args.steps.map((step, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Pasul ${index + 1}`,
-    text: step,
-  })),
-});
-
-export const buildFAQJsonLd = (
-  faqItems: Array<{ question: string; answer: string }>
-) => ({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
 });
 
 

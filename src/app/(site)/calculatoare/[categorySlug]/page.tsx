@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ad-slot";
+import { AdSlotLazy } from "@/components/ad-slot-lazy";
 import { ArticleCard } from "@/components/article-card";
 import { CalculatorCard } from "@/components/calculator-card";
 import { CommercialCtaPanel } from "@/components/commercial-cta-panel";
@@ -284,13 +284,13 @@ export default async function CategoryPage({ params }: { params: Params }) {
       </section>
 
       {category.contentBlocks.length > 0 ? (
-        <section className="mt-10">
+        <section className="cv-auto mt-10">
           <EditorialBlocks blocks={category.contentBlocks} />
         </section>
       ) : null}
 
       {playbook ? (
-        <section className="mt-12 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <section className="cv-auto mt-12 grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div>
             <p className="section-kicker">Cum folosesti categoria</p>
             <h2 className="mt-4 section-title">Aceasta categorie functioneaza cel mai bine cand legi calculatorul de scenariul real, nu doar de formula.</h2>
@@ -318,7 +318,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
       ) : null}
 
       {playbook?.priorityQuestions?.length || playbook?.moneyAngles?.length || playbook?.quickWins?.length ? (
-        <section className="mt-14 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <section className="cv-auto mt-14 grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
           <div>
             <p className="section-kicker">Intentie mare</p>
             <h2 className="mt-4 section-title">Aici se joaca traficul bun: intrebarile pe care utilizatorii le cauta cand au deja o decizie reala in fata.</h2>
@@ -364,7 +364,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
       ) : null}
 
       {featuredCalculator ? (
-        <section className="mt-14 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+        <section className="cv-auto mt-14 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
           <div>
             <p className="section-kicker">Punct de intrare</p>
             <h2 className="mt-4 section-title">Daca vrei sa incepi rapid, acesta este calculatorul care te pune cel mai repede in context.</h2>
@@ -381,7 +381,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </section>
       ) : null}
 
-      <section className="mt-12 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+      <section className="cv-auto mt-12 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
         <div>
           <p className="section-kicker">Calculatoare din categorie</p>
           <h2 className="mt-4 section-title">Alege rapid instrumentul potrivit, fara sa iesi din acelasi flux de cautare.</h2>
@@ -397,8 +397,8 @@ export default async function CategoryPage({ params }: { params: Params }) {
       </section>
 
       {adsConfig.slots.categoryInline ? (
-        <section className="mt-10">
-          <AdSlot
+        <section className="cv-auto mt-10">
+          <AdSlotLazy
             slot={adsConfig.slots.categoryInline}
             label="Publicitate"
             className="mx-auto max-w-[980px]"
@@ -407,13 +407,13 @@ export default async function CategoryPage({ params }: { params: Params }) {
       ) : null}
 
       {commercialCta ? (
-        <section className="mt-10">
+        <section className="cv-auto mt-10">
           <CommercialCtaPanel cta={commercialCta} />
         </section>
       ) : null}
 
       {articles.length > 0 ? (
-        <section className="mt-14 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+        <section className="cv-auto mt-14 grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
           <div>
             <p className="section-kicker">Ghiduri relevante</p>
             <h2 className="mt-4 section-title">Explicatiile completeaza calculul si reduc ambiguitatea.</h2>
