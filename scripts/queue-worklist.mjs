@@ -155,6 +155,7 @@ try {
     const calculators = await payload.find({
       collection: "calculators",
       depth: 0,
+      draft: true,
       pagination: false,
       limit: 500,
       overrideAccess: true,
@@ -166,6 +167,7 @@ try {
     const articles = await payload.find({
       collection: "articles",
       depth: 0,
+      draft: true,
       pagination: false,
       limit: 500,
       overrideAccess: true,

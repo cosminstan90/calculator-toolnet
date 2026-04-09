@@ -3,7 +3,6 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getPayload } from "payload";
-import { summarizeNotFounds } from "../src/lib/not-found-analysis.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +11,52 @@ const rootDir = path.resolve(__dirname, "..");
 const asRecord = (value) => (value && typeof value === "object" ? value : {});
 const asString = (value) => (typeof value === "string" ? value : "");
 const asBoolean = (value) => value === true;
+
+const classifyNotFound = (requestPath) => {
+  if (
+    [/^\/wp-/i, /^\/wp-json/i, /^\/xmlrpc\.php$/i, /^\/admin\.php$/i, /^\/about\.php$/i, /^\/adminfuns\.php$/i].some(
+      (pattern) => pattern.test(requestPath),
+    )
+  ) {
+    return "bot-noise";
+  }
+
+  if ([/^\/\.env/i, /^\/\.git/i, /^\/backend\/\.env/i].some((pattern) => pattern.test(requestPath))) {
+    return "suspicious-config";
+  }
+
+  if (/^\/_next\/static\//i.test(requestPath)) {
+    return "legacy-static";
+  }
+
+  return "content-gap";
+};
+
+const summarizeNotFounds = (entries) => {
+  const buckets = {
+    "bot-noise": [],
+    "legacy-static": [],
+    "suspicious-config": [],
+    "content-gap": [],
+  };
+
+  for (const entry of entries) {
+    buckets[classifyNotFound(entry.path)].push(entry);
+  }
+
+  return {
+    totals: {
+      botNoise: buckets["bot-noise"].reduce((total, item) => total + item.hits, 0),
+      suspiciousConfig: buckets["suspicious-config"].reduce((total, item) => total + item.hits, 0),
+      legacyStatic: buckets["legacy-static"].reduce((total, item) => total + item.hits, 0),
+      contentGaps: buckets["content-gap"].reduce((total, item) => total + item.hits, 0),
+    },
+    topContentGaps: buckets["content-gap"].slice(0, 10),
+    topLegacyStatic: buckets["legacy-static"].slice(0, 10),
+    topBotNoise: buckets["bot-noise"].slice(0, 10),
+    topSuspiciousConfig: buckets["suspicious-config"].slice(0, 10),
+  };
+};
 
 const loadEnvFile = async () => {
   const envPath = path.join(rootDir, ".env");
