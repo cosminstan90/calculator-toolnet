@@ -1,4 +1,5 @@
 import { getPayloadClient } from "@/lib/payload";
+import { summarizeNotFounds } from "@/lib/not-found-analysis";
 import { NextResponse } from "next/server";
 
 const asRecord = (value: unknown): Record<string, unknown> =>
@@ -144,6 +145,14 @@ export async function GET(request: Request) {
       source: asString(doc.source),
       lastSeenAt: asString(doc.lastSeenAt),
     })),
+    notFoundSummary: summarizeNotFounds(
+      notFoundEvents.docs.map((doc) => ({
+        path: asString(doc.path),
+        hits: Number(doc.hits ?? 0),
+        source: asString(doc.source),
+        lastSeenAt: asString(doc.lastSeenAt),
+      })),
+    ),
     recentAffiliateClicks: affiliateClicks.docs.map((doc) => ({
       offerKey: asString(doc.offerKey),
       sourcePath: asString(doc.sourcePath),

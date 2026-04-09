@@ -40,6 +40,7 @@ npm run ops:launch-plan-prepare -- --limit=15
 
 ```bash
 npm run ops:ops-report
+npm run ops:queue-worklist -- --limit=15
 ```
 
 ## Ce trebuie sa fie adevarat ca un document sa poata iesi live
@@ -95,5 +96,6 @@ npm run ops:publish-scheduled -- --slot=evening --dry-run
 
 ```bash
 npm run ops:ops-report
+npm run ops:queue-worklist -- --limit=15
 curl -H "x-health-token: $OPS_HEALTH_TOKEN" https://toolnet.ro/api/health/ops
 ```

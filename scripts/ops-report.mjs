@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getPayload } from "payload";
+import { summarizeNotFounds } from "../src/lib/not-found-analysis.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -286,6 +287,14 @@ try {
       lastSeenAt: asString(doc.lastSeenAt),
       source: asString(doc.source),
     })),
+    notFoundSummary: summarizeNotFounds(
+      notFoundEvents.docs.map((doc) => ({
+        path: asString(doc.path),
+        hits: Number(doc.hits ?? 0),
+        lastSeenAt: asString(doc.lastSeenAt),
+        source: asString(doc.source),
+      })),
+    ),
     affiliateClicks: summarizeAffiliateClicks(affiliateClicks.docs),
   };
 

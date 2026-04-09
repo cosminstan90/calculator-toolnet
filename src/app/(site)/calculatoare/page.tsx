@@ -1,5 +1,5 @@
 import { AdSlotLazy } from "@/components/ad-slot-lazy";
-import { CalculatorCard } from "@/components/calculator-card";
+import { CalculatorsIndexExplorer } from "@/components/calculators-index-explorer";
 import { CategoryCard } from "@/components/category-card";
 import { JsonLd } from "@/components/json-ld";
 import {
@@ -19,8 +19,6 @@ import Link from "next/link";
 
 export const revalidate = 900;
 
-type SearchParams = Promise<{ q?: string }>;
-
 export const metadata = buildMetadata({
   title: "Calculatoare online pe categorii",
   description:
@@ -28,19 +26,10 @@ export const metadata = buildMetadata({
   path: "/calculatoare",
 });
 
-export default async function CalculatorsIndexPage({ searchParams }: { searchParams: SearchParams }) {
-  const { q } = await searchParams;
-  const query = q?.trim().toLowerCase() ?? "";
+export default async function CalculatorsIndexPage() {
   const [categories, calculators] = await Promise.all([listCategories(20), listCalculators(100)]);
   const displayCategories = categories.length ? categories : fallbackCategories;
   const baseCalculators = calculators.length ? calculators : fallbackCalculators;
-  const filteredCalculators = query
-    ? baseCalculators.filter((calculator) =>
-        `${calculator.title} ${calculator.shortDescription} ${calculator.category?.name ?? ""}`
-          .toLowerCase()
-          .includes(query)
-      )
-    : baseCalculators;
 
   return (
     <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
@@ -57,9 +46,9 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
             { name: "Calculatoare", path: "/calculatoare" },
           ]),
           buildItemListJsonLd({
-            name: query ? `Rezultate pentru ${q}` : "Calculatoare disponibile",
-            path: query ? `/calculatoare?q=${encodeURIComponent(q ?? "")}` : "/calculatoare",
-            items: filteredCalculators.map((calculator) => ({
+            name: "Calculatoare disponibile",
+            path: "/calculatoare",
+            items: baseCalculators.map((calculator) => ({
               name: calculator.title,
               path: buildCalculatorPath(calculator),
             })),
@@ -81,27 +70,7 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
               explicatia formulei, exemple de calcul, FAQ si legaturi catre pagini apropiate.
             </p>
           </div>
-          <form action="/calculatoare" method="get" className="rounded-[1.8rem] border border-white/12 bg-white/6 p-5 backdrop-blur">
-            <label htmlFor="hub-search" className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-200/85">
-              Cauta un calculator
-            </label>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <input
-                id="hub-search"
-                type="search"
-                name="q"
-                defaultValue={q ?? ""}
-                placeholder="BMI, TDEE, consum, kW in CP..."
-                className="min-w-0 flex-1 rounded-full border border-white/12 bg-white/8 px-4 py-3 text-sm text-white placeholder:text-slate-400 outline-none ring-emerald-300 transition focus:ring"
-              />
-              <button
-                type="submit"
-                className="rounded-full bg-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950 transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                Cauta
-              </button>
-            </div>
-          </form>
+          <CalculatorsIndexExplorer calculators={baseCalculators} initialQuery="" />
         </div>
       </section>
 
@@ -150,23 +119,6 @@ export default async function CalculatorsIndexPage({ searchParams }: { searchPar
             Hub-ul pentru firme reduce zgomotul si iti arata mai repede paginile relevante pentru afaceri, finante, constructii si imobiliare.
           </p>
         </Link>
-      </section>
-
-      <section className="cv-auto mt-14">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="section-kicker">Index complet</p>
-            <h2 className="mt-3 text-3xl font-black text-slate-950">
-              {query ? `Rezultate pentru "${q}"` : "Toate calculatoarele disponibile"}
-            </h2>
-          </div>
-          <p className="text-sm text-slate-600">{filteredCalculators.length} rezultate</p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {filteredCalculators.map((calculator) => (
-            <CalculatorCard key={calculator.id} calculator={calculator} />
-          ))}
-        </div>
       </section>
 
       {adsConfig.slots.calculatorsHubInline ? (
