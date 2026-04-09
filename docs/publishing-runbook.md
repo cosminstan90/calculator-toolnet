@@ -43,6 +43,26 @@ npm run ops:ops-report
 npm run ops:queue-worklist -- --limit=15
 ```
 
+### 6. Marchezi documentele terminate dupa review
+
+Calculatoare:
+
+```bash
+npm run ops:queue-complete -- --collection=calculators --slugs=calculator-cost-total-credit,calculator-rata-maxima-suportabila
+```
+
+Articole:
+
+```bash
+npm run ops:queue-complete -- --collection=articles --slugs=cum-citesti-costul-total-al-unui-credit
+```
+
+Dry run:
+
+```bash
+npm run ops:queue-complete -- --collection=calculators --slugs=calculator-cost-total-credit --dry-run
+```
+
 ## Ce trebuie sa fie adevarat ca un document sa poata iesi live
 
 ### Calculatoare
