@@ -66,7 +66,7 @@ curl -H "x-health-token: $OPS_HEALTH_TOKEN" https://toolnet.ro/api/health/ops
 
 Ce vrei sa vezi suplimentar:
 
-- `/api/graphql` nu mai expune playground in productie
+- `/api/graphql` ramane functional pentru Payload, dar playground-ul nu mai apare in productie
 - `/api/internal/*` nu este accesibil public din Nginx
 - raspunsurile includ headere ca `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`
 

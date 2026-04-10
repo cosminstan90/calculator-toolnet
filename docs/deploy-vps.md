@@ -70,7 +70,7 @@ location / {
 ## Hardening recomandat pentru Nginx
 
 - blocheaza accesul public la `/api/internal/*`
-- permite doar `POST` pe `/api/graphql`
+- lasa `/api/graphql` sa functioneze normal pentru Payload, dar fara playground in productie
 - pastreaza health endpoints cu token, dar fara cache
 - ascunde `X-Powered-By`
 
