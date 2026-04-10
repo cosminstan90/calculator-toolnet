@@ -1,5 +1,7 @@
 import { getPayloadClient } from "@/lib/payload";
+import { tokenMatches } from "@/lib/internal-auth";
 import { summarizeNotFounds } from "@/lib/not-found-analysis";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { NextResponse } from "next/server";
 
 const asRecord = (value: unknown): Record<string, unknown> =>
@@ -68,8 +70,19 @@ export async function GET(request: Request) {
   const internalToken = process.env.OPS_HEALTH_TOKEN ?? process.env.CONTENT_HEALTH_TOKEN;
   const providedToken = request.headers.get("x-health-token");
 
-  if (!internalToken || providedToken !== internalToken) {
+  if (!tokenMatches(internalToken, providedToken)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const rate = checkRateLimit({
+    request,
+    scope: "health_ops",
+    limit: 60,
+    windowMs: 60_000,
+  });
+
+  if (!rate.ok) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
   const payload = await getPayloadClient();

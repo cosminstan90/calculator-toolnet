@@ -1,4 +1,6 @@
 import { getPayloadClient } from "@/lib/payload";
+import { tokenMatches } from "@/lib/internal-auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { NextResponse } from "next/server";
 
 const asString = (value: unknown) => (typeof value === "string" ? value : "");
@@ -13,8 +15,19 @@ export async function GET(request: Request) {
   const expectedToken = process.env.SEO_AUDIT_TOKEN;
   const providedToken = request.headers.get("x-seo-audit-token");
 
-  if (!expectedToken || providedToken !== expectedToken) {
+  if (!tokenMatches(expectedToken, providedToken)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const rate = checkRateLimit({
+    request,
+    scope: "internal_seo_audit",
+    limit: 20,
+    windowMs: 60_000,
+  });
+
+  if (!rate.ok) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
   const payload = await getPayloadClient();

@@ -12,13 +12,47 @@ type RateLimitResult = {
 
 const memoryBuckets = new Map<string, Bucket>();
 
+const normalizeHeaderValue = (value: string | null): string | null => {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.split(",")[0]?.trim();
+
+  if (
+    !normalized ||
+    normalized.length > 200 ||
+    normalized.includes("\n") ||
+    normalized.includes("\r")
+  ) {
+    return null;
+  }
+
+  return normalized;
+};
+
 const getClientKey = (request: Request): string => {
-  const forwardedFor =
-    request.headers.get("x-forwarded-for") ??
-    request.headers.get("x-real-ip") ??
-    "unknown";
-  const ip = forwardedFor.split(",")[0]?.trim() ?? "unknown";
-  return ip || "unknown";
+  const directIp =
+    normalizeHeaderValue(request.headers.get("x-real-ip")) ??
+    normalizeHeaderValue(request.headers.get("cf-connecting-ip"));
+
+  if (directIp) {
+    return `ip:${directIp}`;
+  }
+
+  if (process.env.TRUST_PROXY_FORWARD_HEADERS === "true") {
+    const forwardedIp = normalizeHeaderValue(request.headers.get("x-forwarded-for"));
+
+    if (forwardedIp) {
+      return `ip:${forwardedIp}`;
+    }
+  }
+
+  const userAgent = normalizeHeaderValue(request.headers.get("user-agent")) ?? "unknown";
+  const acceptLanguage =
+    normalizeHeaderValue(request.headers.get("accept-language")) ?? "unknown";
+
+  return `fallback:${userAgent}:${acceptLanguage}`;
 };
 
 const cleanupExpired = (now: number) => {

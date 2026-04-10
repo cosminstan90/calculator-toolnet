@@ -1,12 +1,25 @@
 import { getPayloadClient } from "@/lib/payload";
+import { tokenMatches } from "@/lib/internal-auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const internalToken = process.env.CONTENT_HEALTH_TOKEN;
   const providedToken = request.headers.get("x-health-token");
 
-  if (!internalToken || providedToken !== internalToken) {
+  if (!tokenMatches(internalToken, providedToken)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const rate = checkRateLimit({
+    request,
+    scope: "health_content",
+    limit: 60,
+    windowMs: 60_000,
+  });
+
+  if (!rate.ok) {
+    return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
   const payload = await getPayloadClient();

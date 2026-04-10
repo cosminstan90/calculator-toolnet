@@ -59,9 +59,16 @@ curl -I https://toolnet.ro/
 curl -I https://toolnet.ro/calculatoare
 curl -I https://toolnet.ro/blog
 curl -I https://toolnet.ro/admin
+curl -I https://toolnet.ro/api/graphql
 curl -H "x-health-token: $CONTENT_HEALTH_TOKEN" https://toolnet.ro/api/health/content
 curl -H "x-health-token: $OPS_HEALTH_TOKEN" https://toolnet.ro/api/health/ops
 ```
+
+Ce vrei sa vezi suplimentar:
+
+- `/api/graphql` nu mai expune playground in productie
+- `/api/internal/*` nu este accesibil public din Nginx
+- raspunsurile includ headere ca `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`
 
 ## Verificari rapide in UI
 
@@ -104,4 +111,21 @@ pm2 logs calculatoare-online --lines 100
 pm2 status
 curl -I http://127.0.0.1:3015/
 curl -I http://127.0.0.1:3015/admin
+```
+
+## Hardening VPS
+
+1. aplica snippet-ul din [nginx-security.conf](/D:/Projects/Tools/calculatoare-online/docs/nginx-security.conf)
+2. verifica sa existe tokenuri reale pentru:
+   - `CONTENT_HEALTH_TOKEN`
+   - `OPS_HEALTH_TOKEN`
+   - `BOOTSTRAP_TOKEN`
+   - `CONTENT_IMPORT_TOKEN`
+   - `SEO_AUDIT_TOKEN`
+3. confirma:
+
+```bash
+curl -I https://toolnet.ro/api/graphql
+curl -I https://toolnet.ro/api/internal/bootstrap/cms
+curl -I https://toolnet.ro/
 ```

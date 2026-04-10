@@ -50,6 +50,7 @@ npm run ops:bootstrap-cms
 ```
 
 8. Pune Nginx in fata aplicatiei si activeaza HTTPS.
+9. Aplica si snippet-ul de securitate din [nginx-security.conf](/D:/Projects/Tools/calculatoare-online/docs/nginx-security.conf) pentru a bloca `/api/internal/*` din exterior si a restrange GraphQL.
 
 ## Reverse proxy
 
@@ -65,6 +66,17 @@ location / {
   proxy_set_header Connection "upgrade";
 }
 ```
+
+## Hardening recomandat pentru Nginx
+
+- blocheaza accesul public la `/api/internal/*`
+- permite doar `POST` pe `/api/graphql`
+- pastreaza health endpoints cu token, dar fara cache
+- ascunde `X-Powered-By`
+
+Snippet pregatit:
+
+- [nginx-security.conf](/D:/Projects/Tools/calculatoare-online/docs/nginx-security.conf)
 
 ## Health si operare
 
