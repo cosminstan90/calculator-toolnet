@@ -65,6 +65,13 @@ Dry run:
 npm run ops:queue-complete -- --collection=calculators --slugs=calculator-cost-total-credit --dry-run
 ```
 
+### 7. Rulezi roadmap-ul SEO/editorial
+
+```bash
+npm run ops:sprint-b
+npm run ops:seo-roadmap
+```
+
 ## Ce trebuie sa fie adevarat ca un document sa poata iesi live
 
 ### Calculatoare
@@ -145,3 +152,19 @@ Rutina zilnica recomandata:
 2. validezi documentele din `readyNow`
 3. rulezi `queue-complete` pentru cele revizuite
 4. iei `blockedButClose` ca urmator lot
+
+## Sprint B
+
+Fluxul rapid pentru roadmap-ul SEO/editorial:
+
+```bash
+npm run ops:sprint-b
+```
+
+Ce primesti:
+
+- `clusters`: starea celor 3 clustere principale
+- `roadmap`: urmatoarele 30 de pagini sau optimizari prioritare
+- `nextSevenDays`: ce merita impins imediat
+- `globalContentGaps`: gap-uri reale din 404
+- `internalLinkingPriorities`: regulile clare de interlinking

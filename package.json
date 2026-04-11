@@ -22,6 +22,8 @@
     "ops:queue-today": "node --import tsx scripts/queue-today.mjs",
     "ops:queue-complete": "node --import tsx scripts/queue-complete.mjs",
     "ops:sprint-a": "node --import tsx scripts/sprint-a.mjs",
+    "ops:sprint-b": "node --import tsx scripts/sprint-b.mjs",
+    "ops:seo-roadmap": "node --import tsx scripts/sprint-b.mjs",
     "ops:ops-report": "node --import tsx scripts/ops-report.mjs",
     "ops:smoke-check": "node --import tsx scripts/smoke-check.mjs",
     "ops:perf-snapshot": "node --import tsx scripts/perf-snapshot.mjs",
