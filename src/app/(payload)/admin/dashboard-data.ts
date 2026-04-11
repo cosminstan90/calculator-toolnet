@@ -55,10 +55,17 @@ export type DashboardData = {
     audiences: string[];
   }>;
   readyToPublish: DraftInsight[];
+  closeToReady: DraftInsight[];
+  needsEditorialReview: DraftInsight[];
   blockedDrafts: DraftInsight[];
   blockerSummary: Array<{
     label: string;
     count: number;
+  }>;
+  todayChecklist: Array<{
+    label: string;
+    item?: QueueItem;
+    description: string;
   }>;
   workflowSlices: {
     batches: Array<{ label: string; count: number }>;
@@ -525,6 +532,18 @@ export const loadDashboardData = async (
     .filter((item) => item.blockers.length === 0)
     .slice(0, 6);
 
+  const closeToReady = draftInsights
+    .filter((item) => item.blockers.length > 0 && item.blockers.length <= 2)
+    .slice(0, 6);
+
+  const needsEditorialReview = draftInsights
+    .filter(
+      (item) =>
+        item.type === "article" &&
+        item.blockers.some((blocker) => blocker.includes("Review") || blocker.includes("review")),
+    )
+    .slice(0, 6);
+
   const blockedDrafts = draftInsights
     .filter((item) => item.blockers.length > 0 && item.completion >= 55)
     .slice(0, 6);
@@ -609,7 +628,32 @@ export const loadDashboardData = async (
     readyToPublish,
     blockedDrafts,
     blockerSummary,
+    todayChecklist: [
+      {
+        label: "08:00 articol",
+        item: morningArticle,
+        description: morningArticle
+          ? "Poate fi publicat azi dimineata daca ramane valid."
+          : "Nu exista articol publish-ready pe slotul de dimineata.",
+      },
+      {
+        label: "08:00 calculator",
+        item: morningCalculator,
+        description: morningCalculator
+          ? "Calculator publish-ready pentru slotul de dimineata."
+          : "Nu exista calculator publish-ready pentru dimineata.",
+      },
+      {
+        label: "17:00 calculator",
+        item: eveningCalculator,
+        description: eveningCalculator
+          ? "Calculator publish-ready pentru slotul de seara."
+          : "Nu exista calculator publish-ready pentru seara.",
+      },
+    ],
     workflowSlices,
     recentPublished,
+    closeToReady,
+    needsEditorialReview,
   };
 };

@@ -41,6 +41,8 @@ npm run ops:launch-plan-prepare -- --limit=15
 ```bash
 npm run ops:ops-report
 npm run ops:queue-worklist -- --limit=15
+npm run ops:queue-today
+npm run ops:sprint-a
 ```
 
 ### 6. Marchezi documentele terminate dupa review
@@ -117,5 +119,29 @@ npm run ops:publish-scheduled -- --slot=evening --dry-run
 ```bash
 npm run ops:ops-report
 npm run ops:queue-worklist -- --limit=15
+npm run ops:queue-today
 curl -H "x-health-token: $OPS_HEALTH_TOKEN" https://toolnet.ro/api/health/ops
 ```
+
+## Sprint A
+
+Fluxul rapid pentru sprintul editorial curent:
+
+```bash
+npm run ops:sprint-a
+```
+
+Ce primesti:
+
+- `publishingQueue`: starea generala `ready` vs `blocked`
+- `queueWorklist.readyNow`: ce poate fi impins imediat
+- `queueWorklist.blockedButClose`: documente aproape gata
+- `queueWorklist.needsEditorialReview`: articolele ce asteapta review
+- `today`: checklistul foarte scurt pentru dimineata si seara
+
+Rutina zilnica recomandata:
+
+1. rulezi `npm run ops:sprint-a`
+2. validezi documentele din `readyNow`
+3. rulezi `queue-complete` pentru cele revizuite
+4. iei `blockedButClose` ca urmator lot

@@ -715,6 +715,216 @@ async function DashboardHomeInner(
           >
             <p
               style={{
+                color: "#0f766e",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Checklist azi
+            </p>
+            <div style={{ display: "grid", gap: "0.8rem", marginTop: "1rem" }}>
+              {data.todayChecklist.map((entry) => (
+                <div
+                  key={entry.label}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.9rem 1rem",
+                  }}
+                >
+                  <p
+                    style={{
+                      color: "#64748b",
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      margin: 0,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {entry.label}
+                  </p>
+                  {entry.item ? (
+                    <>
+                      <a
+                        href={entry.item.href}
+                        style={{
+                          color: "#0f172a",
+                          display: "inline-block",
+                          fontSize: "0.98rem",
+                          fontWeight: 700,
+                          marginTop: "0.35rem",
+                          textDecoration: "none",
+                        }}
+                      >
+                        {entry.item.title}
+                      </a>
+                      <p
+                        style={{
+                          color: "#475569",
+                          fontSize: "0.88rem",
+                          lineHeight: 1.5,
+                          margin: "0.3rem 0 0",
+                        }}
+                      >
+                        {entry.description}
+                      </p>
+                    </>
+                  ) : (
+                    <p
+                      style={{
+                        color: "#64748b",
+                        fontSize: "0.9rem",
+                        lineHeight: 1.5,
+                        margin: "0.35rem 0 0",
+                      }}
+                    >
+                      {entry.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0369a1",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Aproape gata
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.closeToReady.length > 0 ? (
+                data.closeToReady.map((item) => (
+                  <a
+                    key={`${item.type}-${item.id}`}
+                    href={item.href}
+                    style={{
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "14px",
+                      color: "#0f172a",
+                      display: "block",
+                      padding: "0.85rem 0.95rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <strong style={{ display: "block", fontSize: "0.94rem" }}>
+                      {item.title}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#475569",
+                        display: "block",
+                        fontSize: "0.84rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {formatDocType(item.type)} | {item.completion}% | lipseste:{" "}
+                      {item.blockers.join(", ")}
+                    </span>
+                  </a>
+                ))
+              ) : (
+                <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, margin: 0 }}>
+                  Nu exista documente aproape gata in acest moment.
+                </p>
+              )}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#b45309",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Review editorial
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.needsEditorialReview.length > 0 ? (
+                data.needsEditorialReview.map((item) => (
+                  <a
+                    key={`${item.type}-${item.id}`}
+                    href={item.href}
+                    style={{
+                      borderBottom: "1px solid #e2e8f0",
+                      color: "#0f172a",
+                      display: "block",
+                      paddingBottom: "0.75rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <strong style={{ display: "block", fontSize: "0.94rem" }}>
+                      {item.title}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#475569",
+                        display: "block",
+                        fontSize: "0.84rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {item.completion}% | {item.blockers.join(", ")}
+                    </span>
+                  </a>
+                ))
+              ) : (
+                <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, margin: 0 }}>
+                  Nu exista articole care asteapta review editorial imediat.
+                </p>
+              )}
+            </div>
+          </article>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
                 color: "#0369a1",
                 fontSize: "0.78rem",
                 fontWeight: 700,
