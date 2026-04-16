@@ -425,6 +425,190 @@ async function DashboardHomeInner(
                 textTransform: "uppercase",
               }}
             >
+              Sprint B pe clustere
+            </p>
+            <div style={{ display: "grid", gap: "0.85rem", marginTop: "1rem" }}>
+              {data.sprintB.clusters.map((cluster) => (
+                <div
+                  key={cluster.slug}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.9rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.95rem" }}>
+                    {cluster.label}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.3rem",
+                    }}
+                  >
+                    ready: {cluster.readyCount} | publicate: {cluster.publishedCount} | lipsuri nucleu: {cluster.missingCorePages}
+                  </span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.6rem" }}>
+                    {cluster.nextPages.map((page) => (
+                      <span
+                        key={`${cluster.slug}-${page.slug}`}
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid #cbd5e1",
+                          borderRadius: "999px",
+                          color: "#1e293b",
+                          fontSize: "0.76rem",
+                          fontWeight: 700,
+                          padding: "0.25rem 0.55rem",
+                        }}
+                      >
+                        {page.slug} | {page.status}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#7c3aed",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Roadmap urmatoarele pagini
+            </p>
+            <div style={{ display: "grid", gap: "0.7rem", marginTop: "1rem" }}>
+              {data.sprintB.roadmap.map((page) => (
+                <div
+                  key={`${page.cluster}-${page.slug}`}
+                  style={{
+                    borderBottom: "1px solid #e2e8f0",
+                    paddingBottom: "0.75rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                    {page.title}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    {page.cluster} | {page.kind} | {page.priorityTier} | {page.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#b45309",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Content gaps reale
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.sprintB.contentGaps.length > 0 ? (
+                data.sprintB.contentGaps.map((gap) => (
+                  <div
+                    key={gap.path}
+                    style={{
+                      background: "#fff7ed",
+                      border: "1px solid #fed7aa",
+                      borderRadius: "14px",
+                      padding: "0.85rem 0.95rem",
+                    }}
+                  >
+                    <strong
+                      style={{
+                        color: "#9a3412",
+                        display: "block",
+                        fontSize: "0.9rem",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {gap.path}
+                    </strong>
+                    <span
+                      style={{
+                        color: "#7c2d12",
+                        display: "block",
+                        fontSize: "0.84rem",
+                        marginTop: "0.3rem",
+                      }}
+                    >
+                      {gap.hits} hit-uri | vazut ultima data {formatDate(gap.lastSeenAt)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, margin: 0 }}>
+                  Nu avem in top 404 un content gap real care sa ceara actiune imediata.
+                </p>
+              )}
+            </div>
+          </article>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0f766e",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
               Coada scheduler
             </p>
             <div style={{ display: "grid", gap: "0.9rem", marginTop: "1rem" }}>

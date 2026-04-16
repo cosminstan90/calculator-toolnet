@@ -1,4 +1,9 @@
 import type { Payload } from "payload";
+import {
+  SPRINT_B_30_PAGE_ROADMAP,
+  SPRINT_B_CLUSTERS,
+} from "../../../lib/seo-roadmap.ts";
+import { summarizeNotFounds } from "../../../lib/not-found-analysis.ts";
 
 type QueueItem = {
   id: string;
@@ -12,6 +17,7 @@ type QueueItem = {
 type DraftInsight = {
   id: string;
   title: string;
+  slug: string;
   href: string;
   type: "article" | "calculator";
   audience: string;
@@ -67,6 +73,35 @@ export type DashboardData = {
     item?: QueueItem;
     description: string;
   }>;
+  sprintB: {
+    clusters: Array<{
+      slug: string;
+      label: string;
+      readyCount: number;
+      publishedCount: number;
+      missingCorePages: number;
+      nextPages: Array<{
+        title: string;
+        slug: string;
+        kind: "hub" | "calculator" | "article";
+        status: "published" | "ready-now" | "blocked" | "missing" | "existing-hub" | "missing-hub";
+      }>;
+    }>;
+    roadmap: Array<{
+      cluster: string;
+      title: string;
+      slug: string;
+      kind: "hub" | "calculator" | "article";
+      priorityTier: "tier-1" | "tier-2" | "tier-3";
+      status: "published" | "ready-now" | "blocked" | "missing" | "existing-hub" | "missing-hub";
+      href?: string;
+    }>;
+    contentGaps: Array<{
+      path: string;
+      hits: number;
+      lastSeenAt?: string;
+    }>;
+  };
   workflowSlices: {
     batches: Array<{ label: string; count: number }>;
     audiences: Array<{ label: string; count: number }>;
@@ -215,6 +250,7 @@ const buildDraftInsight = (
 ): DraftInsight => ({
   id: String(doc.id ?? ""),
   title: asString(doc.title) ?? "Untitled",
+  slug: asString(doc.slug) ?? "",
   href: `${adminRoute === "/" ? "" : adminRoute}/collections/${collection}/${String(doc.id ?? "")}`,
   type: collection === "articles" ? "article" : "calculator",
   audience: asString(doc.audience) ?? "both",
@@ -255,6 +291,18 @@ const buildCountList = (items: DraftInsight[], mapper: (item: DraftInsight) => s
     .map(([label, count]) => ({ label, count }))
     .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
     .slice(0, 8);
+
+const relationID = (value: unknown) => {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  if (value && typeof value === "object" && "id" in (value as Record<string, unknown>)) {
+    return String((value as Record<string, unknown>).id);
+  }
+
+  return undefined;
+};
 
 export const loadDashboardData = async (
   payload: Payload,
@@ -528,6 +576,26 @@ export const loadDashboardData = async (
     ),
   ]);
 
+  const clusterDraftInsights = draftInsights.map((item) => {
+    const originalDoc =
+      item.type === "calculator"
+        ? (draftCalculatorsResult.docs as CollectionDoc[]).find((doc) => String(doc.id ?? "") === item.id)
+        : (draftArticlesResult.docs as CollectionDoc[]).find((doc) => String(doc.id ?? "") === item.id);
+
+    const categoryID =
+      item.type === "calculator"
+        ? relationID(originalDoc?.category)
+        : relationID(originalDoc?.relatedCategory);
+
+    return {
+      ...item,
+      categoryID,
+      rawStatus:
+        asString(originalDoc?._status) === "published" ||
+        asString(originalDoc?.editorialStatus) === "published",
+    };
+  });
+
   const readyToPublish = draftInsights
     .filter((item) => item.blockers.length === 0)
     .slice(0, 6);
@@ -566,6 +634,93 @@ export const loadDashboardData = async (
     statuses: buildCountList(draftInsights, (item) => item.editorialStatus ?? "draft"),
     slots: buildCountList(draftInsights, (item) => item.slot ?? "none"),
   };
+
+  const categoryDocsResult = await payload.find({
+    collection: "calculator-categories",
+    depth: 0,
+    overrideAccess: true,
+    pagination: false,
+    limit: 100,
+    draft: true,
+  });
+
+  const categorySlugByID = new Map(
+    (categoryDocsResult.docs as CollectionDoc[]).map((doc) => [
+      String(doc.id ?? ""),
+      asString(doc.slug) ?? "",
+    ]),
+  );
+
+  const sprintBClusterPages = clusterDraftInsights.map((item) => ({
+    ...item,
+    clusterSlug: item.categoryID ? (categorySlugByID.get(item.categoryID) ?? "") : "",
+  }));
+
+  const roadmap = SPRINT_B_30_PAGE_ROADMAP.map((page) => {
+    if (page.kind === "hub") {
+      const exists = (categoryDocsResult.docs as CollectionDoc[]).some(
+        (doc) => asString(doc.slug) === page.slug,
+      );
+      return {
+        cluster: page.cluster,
+        title: page.title,
+        slug: page.slug,
+        kind: page.kind,
+        priorityTier: page.priorityTier,
+        status: exists ? ("existing-hub" as const) : ("missing-hub" as const),
+        href: exists ? `/calculatoare/${page.slug}` : undefined,
+      };
+    }
+
+    const matchingDraft = sprintBClusterPages.find((item) => item.slug === page.slug);
+    const status = matchingDraft
+      ? matchingDraft.rawStatus
+        ? ("published" as const)
+        : matchingDraft.blockers.length === 0
+        ? ("ready-now" as const)
+        : ("blocked" as const)
+      : ("missing" as const);
+
+    return {
+      cluster: page.cluster,
+      title: page.title,
+      slug: page.slug,
+      kind: page.kind,
+      priorityTier: page.priorityTier,
+      status,
+      href: matchingDraft?.href,
+    };
+  });
+
+  const notFoundSummary = summarizeNotFounds(
+    (notFoundResult.docs as CollectionDoc[]).map((doc) => ({
+      path: asString(doc.path) ?? "/",
+      hits: asNumber(doc.hits) || 0,
+      source: asString(doc.source),
+      lastSeenAt: asString(doc.lastSeenAt),
+    })),
+  );
+
+  const sprintBClusters = SPRINT_B_CLUSTERS.map((cluster) => {
+    const clusterItems = sprintBClusterPages.filter((item) => item.clusterSlug === cluster.slug);
+    const nextPages = roadmap
+      .filter((page) => page.cluster === cluster.slug)
+      .slice(0, 4);
+
+    const presentSlugs = new Set(clusterItems.map((item) => item.slug));
+    const missingCorePages =
+      cluster.coreCalculators.filter((slug) => !presentSlugs.has(slug)).length +
+      cluster.coreArticles.filter((slug) => !presentSlugs.has(slug)).length;
+
+    return {
+      slug: cluster.slug,
+      label: cluster.label,
+      readyCount: clusterItems.filter((item) => item.blockers.length === 0).length,
+      publishedCount: clusterItems.filter((item) => item.rawStatus).length,
+      missingCorePages,
+      nextPages,
+    };
+  });
 
   const recentPublished = [
     ...(recentArticlesResult.docs as CollectionDoc[]).map((doc) => ({
@@ -651,6 +806,11 @@ export const loadDashboardData = async (
           : "Nu exista calculator publish-ready pentru seara.",
       },
     ],
+    sprintB: {
+      clusters: sprintBClusters,
+      roadmap: roadmap.slice(0, 10),
+      contentGaps: notFoundSummary.topContentGaps.slice(0, 5),
+    },
     workflowSlices,
     recentPublished,
     closeToReady,
