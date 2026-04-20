@@ -425,6 +425,93 @@ async function DashboardHomeInner(
                 textTransform: "uppercase",
               }}
             >
+              Roadmap executie
+            </p>
+            <p
+              style={{
+                color: "#334155",
+                fontSize: "0.92rem",
+                lineHeight: 1.55,
+                margin: "0.8rem 0 0",
+              }}
+            >
+              Focus curent: <strong>{data.executionRoadmap.currentFocus}</strong>
+            </p>
+            <div style={{ display: "grid", gap: "0.85rem", marginTop: "1rem" }}>
+              {data.executionRoadmap.sprints.map((sprint) => (
+                <div
+                  key={sprint.id}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.9rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.94rem" }}>
+                    {sprint.id} | {sprint.title}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    status: {sprint.status}
+                  </span>
+                  <p
+                    style={{
+                      color: "#334155",
+                      fontSize: "0.86rem",
+                      lineHeight: 1.55,
+                      margin: "0.55rem 0 0",
+                    }}
+                  >
+                    {sprint.goal}
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginTop: "0.65rem" }}>
+                    {sprint.summary.map((item) => (
+                      <span
+                        key={`${sprint.id}-${item.label}`}
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid #cbd5e1",
+                          borderRadius: "999px",
+                          color: "#1e293b",
+                          fontSize: "0.76rem",
+                          fontWeight: 700,
+                          padding: "0.25rem 0.55rem",
+                        }}
+                      >
+                        {item.label}: {item.value}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0f766e",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
               Sprint B pe clustere
             </p>
             <div style={{ display: "grid", gap: "0.85rem", marginTop: "1rem" }}>
@@ -578,6 +665,52 @@ async function DashboardHomeInner(
               ) : (
                 <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, margin: 0 }}>
                   Nu avem in top 404 un content gap real care sa ceara actiune imediata.
+                </p>
+              )}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#1d4ed8",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Urmatoarele mutari
+            </p>
+            <div style={{ display: "grid", gap: "0.65rem", marginTop: "1rem" }}>
+              {data.executionRoadmap.nextMoves.length > 0 ? (
+                data.executionRoadmap.nextMoves.map((item) => (
+                  <div
+                    key={item}
+                    style={{
+                      background: "#eff6ff",
+                      border: "1px solid #bfdbfe",
+                      borderRadius: "14px",
+                      color: "#1d4ed8",
+                      fontSize: "0.86rem",
+                      fontWeight: 700,
+                      padding: "0.8rem 0.9rem",
+                    }}
+                  >
+                    {item}
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#64748b", fontSize: "0.92rem", lineHeight: 1.5, margin: 0 }}>
+                  Nu exista inca suficiente date pentru urmatoarele mutari.
                 </p>
               )}
             </div>

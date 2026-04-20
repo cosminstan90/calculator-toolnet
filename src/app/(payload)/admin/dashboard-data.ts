@@ -4,6 +4,7 @@ import {
   SPRINT_B_CLUSTERS,
 } from "../../../lib/seo-roadmap.ts";
 import { summarizeNotFounds } from "../../../lib/not-found-analysis.ts";
+import { EXECUTION_SPRINTS } from "../../../lib/execution-roadmap.ts";
 
 type QueueItem = {
   id: string;
@@ -100,6 +101,18 @@ export type DashboardData = {
       path: string;
       hits: number;
       lastSeenAt?: string;
+    }>;
+  };
+  executionRoadmap: {
+    currentFocus: string;
+    nextMoves: string[];
+    sprints: Array<{
+      id: "sprint-1" | "sprint-2" | "sprint-3" | "sprint-4";
+      title: string;
+      status: "not-started" | "in-progress" | "complete";
+      goal: string;
+      summary: Array<{ label: string; value: string }>;
+      nextActions: string[];
     }>;
   };
   workflowSlices: {
@@ -722,6 +735,113 @@ export const loadDashboardData = async (
     };
   });
 
+  const roadmapTier1 = roadmap.filter((page) => page.priorityTier === "tier-1");
+  const roadmapTier2 = roadmap.filter((page) => page.priorityTier === "tier-2");
+  const roadmapTier1Done = roadmapTier1.filter(
+    (page) => page.status === "published" || page.status === "ready-now" || page.status === "existing-hub",
+  );
+  const roadmapTier2Done = roadmapTier2.filter(
+    (page) => page.status === "published" || page.status === "ready-now" || page.status === "existing-hub",
+  );
+
+  const executionRoadmap = {
+    currentFocus: "sprint-1",
+    nextMoves: [
+      ...closeToReady.slice(0, 3).map((item) => `${item.type}: ${item.slug}`),
+      ...needsEditorialReview.slice(0, 2).map((item) => `review: ${item.slug}`),
+      ...(notFoundSummary.topContentGaps[0] ? [`content-gap: ${notFoundSummary.topContentGaps[0].path}`] : []),
+    ].slice(0, 6),
+    sprints: EXECUTION_SPRINTS.map((sprint): DashboardData["executionRoadmap"]["sprints"][number] => {
+      if (sprint.id === "sprint-1") {
+        const status: DashboardData["executionRoadmap"]["sprints"][number]["status"] =
+          roadmapTier1Done.length === 0
+            ? "not-started"
+            : roadmapTier1Done.length >= roadmapTier1.length
+              ? "complete"
+              : "in-progress";
+
+        return {
+          id: sprint.id,
+          title: sprint.title,
+          status,
+          goal: sprint.goal,
+          summary: [
+            { label: "tier-1 gata", value: `${roadmapTier1Done.length}/${roadmapTier1.length}` },
+            { label: "ready now", value: String(readyToPublish.length) },
+            { label: "blocked but close", value: String(closeToReady.length) },
+          ],
+          nextActions: closeToReady.slice(0, 4).map((item) => `${item.type}: ${item.slug}`),
+        };
+      }
+
+      if (sprint.id === "sprint-2") {
+        const status: DashboardData["executionRoadmap"]["sprints"][number]["status"] =
+          roadmapTier1Done.length >= Math.max(6, Math.floor(roadmapTier1.length / 2))
+          ? "in-progress"
+          : "not-started";
+
+        return {
+          id: sprint.id,
+          title: sprint.title,
+          status,
+          goal: sprint.goal,
+          summary: [
+            { label: "clustere", value: String(sprintBClusters.length) },
+            { label: "content gaps", value: String(notFoundSummary.topContentGaps.length) },
+            { label: "hub-uri", value: String(roadmap.filter((page) => page.kind === "hub").length) },
+          ],
+          nextActions: [
+            "aplica internal linking pe tier-1",
+            ...(notFoundSummary.topContentGaps[0] ? [`recupereaza ${notFoundSummary.topContentGaps[0].path}`] : []),
+          ],
+        };
+      }
+
+      if (sprint.id === "sprint-3") {
+        const status: DashboardData["executionRoadmap"]["sprints"][number]["status"] =
+          roadmapTier2Done.length === 0
+            ? "not-started"
+            : roadmapTier2Done.length >= roadmapTier2.length
+              ? "complete"
+              : "in-progress";
+
+        return {
+          id: sprint.id,
+          title: sprint.title,
+          status,
+          goal: sprint.goal,
+          summary: [
+            { label: "tier-2 gata", value: `${roadmapTier2Done.length}/${roadmapTier2.length}` },
+            {
+              label: "missing core pages",
+              value: String(sprintBClusters.reduce((total, cluster) => total + cluster.missingCorePages, 0)),
+            },
+          ],
+          nextActions: roadmapTier2
+            .filter((page) => page.status === "blocked" || page.status === "missing")
+            .slice(0, 4)
+            .map((page) => `${page.kind}: ${page.slug}`),
+        };
+      }
+
+      return {
+        id: sprint.id,
+        title: sprint.title,
+        status: affiliateSummary.length > 0 ? ("in-progress" as const) : ("not-started" as const),
+        goal: sprint.goal,
+        summary: [
+          { label: "affiliate sources", value: String(topAffiliateSources.length) },
+          { label: "affiliate categories", value: String(topAffiliateCategories.length) },
+          { label: "candidate pages", value: String(roadmapTier1.filter((page) => page.kind !== "hub").length) },
+        ],
+        nextActions: [
+          "separa traffic pages de money pages",
+          "mapeaza CTA-uri doar dupa consolidarea tier-1",
+        ],
+      };
+    }),
+  };
+
   const recentPublished = [
     ...(recentArticlesResult.docs as CollectionDoc[]).map((doc) => ({
       id: String(doc.id ?? ""),
@@ -811,6 +931,7 @@ export const loadDashboardData = async (
       roadmap: roadmap.slice(0, 10),
       contentGaps: notFoundSummary.topContentGaps.slice(0, 5),
     },
+    executionRoadmap,
     workflowSlices,
     recentPublished,
     closeToReady,
