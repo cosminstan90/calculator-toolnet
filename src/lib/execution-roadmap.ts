@@ -40,7 +40,7 @@ export const EXECUTION_SPRINTS: ExecutionSprint[] = [
   {
     id: "sprint-4",
     title: "Monetization Readiness",
-    goal: "Separăm paginile de trafic de cele cu intentie comerciala si pregatim monetizarea.",
+    goal: "Separam paginile de trafic de cele cu intentie comerciala si pregatim monetizarea.",
     focusesOn: ["high-intent pages", "support pages", "monetization candidates"],
     completionRule: [
       "exista lista clara de money pages si support pages",
@@ -48,3 +48,4 @@ export const EXECUTION_SPRINTS: ExecutionSprint[] = [
     ],
   },
 ];
+
