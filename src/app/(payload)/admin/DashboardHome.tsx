@@ -742,6 +742,185 @@ async function DashboardHomeInner(
                 textTransform: "uppercase",
               }}
             >
+              Publish cockpit
+            </p>
+            <p
+              style={{
+                color: "#334155",
+                fontSize: "0.92rem",
+                lineHeight: 1.55,
+                margin: "0.8rem 0 0",
+              }}
+            >
+              ready acum: <strong>{data.publishCockpit.readyCount}</strong>
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginTop: "0.8rem" }}>
+              {data.publishCockpit.readyByType.map((item) => (
+                <span
+                  key={item.label}
+                  style={{
+                    background: "#ecfeff",
+                    border: "1px solid #a5f3fc",
+                    borderRadius: "999px",
+                    color: "#155e75",
+                    fontSize: "0.76rem",
+                    fontWeight: 700,
+                    padding: "0.25rem 0.55rem",
+                  }}
+                >
+                  {item.label}: {item.count}
+                </span>
+              ))}
+            </div>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.publishCockpit.topReady.map((item) => (
+                <div
+                  key={`ready-${item.slug}`}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.85rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                    {item.title}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    {formatDocType(item.type)} | {item.slug} | prioritate {item.priority}
+                    {item.batch ? ` | ${item.batch}` : ""}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.publishCockpit.batchCommands.map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: "#0f172a",
+                    borderRadius: "14px",
+                    color: "#e2e8f0",
+                    padding: "0.85rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ display: "block", fontSize: "0.86rem" }}>{item.label}</strong>
+                  <code
+                    style={{
+                      display: "block",
+                      fontSize: "0.8rem",
+                      lineHeight: 1.5,
+                      marginTop: "0.45rem",
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {item.command}
+                  </code>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#7c3aed",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Cluster focus
+            </p>
+            <p
+              style={{
+                color: "#334155",
+                fontSize: "0.92rem",
+                lineHeight: 1.55,
+                margin: "0.8rem 0 0",
+              }}
+            >
+              focus curent: <strong>{data.clusterFocus.currentCluster}</strong>
+            </p>
+            <div style={{ display: "grid", gap: "0.8rem", marginTop: "1rem" }}>
+              {data.clusterFocus.clusters.map((cluster) => (
+                <div
+                  key={`focus-${cluster.slug}`}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.9rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                    {cluster.slug}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    tier-1 ready: {cluster.readyTier1} | tier-1 blocked: {cluster.blockedTier1} | tier-2 open: {cluster.tier2TargetsOpen} | linking: {cluster.linkingTasksOpen}
+                  </span>
+                  <div style={{ display: "grid", gap: "0.45rem", marginTop: "0.6rem" }}>
+                    {cluster.nextMoves.map((move) => (
+                      <span key={`${cluster.slug}-${move}`} style={{ color: "#334155", fontSize: "0.86rem" }}>
+                        {move}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0f766e",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
               Pagini de executat acum
             </p>
             <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>

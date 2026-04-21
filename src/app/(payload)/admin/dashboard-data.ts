@@ -156,6 +156,29 @@ export type DashboardData = {
       status: "published" | "ready-now" | "blocked" | "missing";
     }>;
   };
+  publishCockpit: {
+    readyCount: number;
+    readyByType: Array<{ label: string; count: number }>;
+    batchCommands: Array<{ label: string; command: string }>;
+    topReady: Array<{
+      title: string;
+      slug: string;
+      type: "article" | "calculator";
+      priority: number;
+      batch?: string;
+    }>;
+  };
+  clusterFocus: {
+    currentCluster: string;
+    clusters: Array<{
+      slug: string;
+      readyTier1: number;
+      blockedTier1: number;
+      tier2TargetsOpen: number;
+      linkingTasksOpen: number;
+      nextMoves: string[];
+    }>;
+  };
   executionRoadmap: {
     currentFocus: string;
     nextMoves: string[];
@@ -868,6 +891,81 @@ export const loadDashboardData = async (
       .slice(0, 10),
   };
 
+  const publishCalculators = readyToPublish.filter((item) => item.type === "calculator");
+  const publishArticles = readyToPublish.filter((item) => item.type === "article");
+  const publishCockpit = {
+    readyCount: readyToPublish.length,
+    readyByType: [
+      { label: "calculatoare", count: publishCalculators.length },
+      { label: "articole", count: publishArticles.length },
+    ],
+    batchCommands: [
+      ...(publishCalculators.length > 0
+        ? [
+            {
+              label: "Queue complete calculatoare",
+              command: `npm run ops:queue-complete -- --collection=calculators --slugs=${publishCalculators
+                .map((item) => item.slug)
+                .join(",")}`,
+            },
+          ]
+        : []),
+      ...(publishArticles.length > 0
+        ? [
+            {
+              label: "Queue complete articole",
+              command: `npm run ops:queue-complete -- --collection=articles --slugs=${publishArticles
+                .map((item) => item.slug)
+                .join(",")}`,
+            },
+          ]
+        : []),
+    ],
+    topReady: readyToPublish.slice(0, 6).map((item) => ({
+      title: item.title,
+      slug: item.slug,
+      type: item.type,
+      priority: item.priority,
+      batch: item.batch,
+    })),
+  };
+
+  const clusterFocus = {
+    currentCluster:
+      sprintBClusters
+        .slice()
+        .sort((left, right) => {
+          const leftScore = left.readyCount + left.missingCorePages;
+          const rightScore = right.readyCount + right.missingCorePages;
+          return rightScore - leftScore;
+        })[0]?.slug ?? "credite-si-economii",
+    clusters: sprintBClusters.map((cluster) => ({
+      slug: cluster.slug,
+      readyTier1: pageExecution.tier1Queue.filter(
+        (page) => page.cluster === cluster.slug && page.status === "ready-now",
+      ).length,
+      blockedTier1: pageExecution.tier1Queue.filter(
+        (page) => page.cluster === cluster.slug && page.status === "blocked",
+      ).length,
+      tier2TargetsOpen: pageExecution.tier2Queue.filter(
+        (page) => page.cluster === cluster.slug && (page.status === "blocked" || page.status === "missing"),
+      ).length,
+      linkingTasksOpen: pageExecution.tier1Queue.filter(
+        (page) => page.cluster === cluster.slug && page.executionFocus === "linking si consolidare",
+      ).length,
+      nextMoves: [
+        ...pageExecution.tier1Queue
+          .filter((page) => page.cluster === cluster.slug && page.status !== "published")
+          .slice(0, 2)
+          .map((page) => `${page.executionFocus}: ${page.slug}`),
+        ...pageExecution.tier2Queue
+          .filter((page) => page.cluster === cluster.slug && (page.status === "blocked" || page.status === "missing"))
+          .slice(0, 2)
+          .map((page) => `tier-2: ${page.slug}`),
+      ].slice(0, 4),
+    })),
+  };
+
   const roadmapTier1 = roadmap.filter((page) => page.priorityTier === "tier-1");
   const roadmapTier2 = roadmap.filter((page) => page.priorityTier === "tier-2");
   const roadmapTier1Done = roadmapTier1.filter(
@@ -1086,6 +1184,8 @@ export const loadDashboardData = async (
         }),
     },
     pageExecution,
+    publishCockpit,
+    clusterFocus,
     executionRoadmap,
     workflowSlices,
     recentPublished,
