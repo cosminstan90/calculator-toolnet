@@ -734,6 +734,121 @@ async function DashboardHomeInner(
           >
             <p
               style={{
+                color: "#0f766e",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Pagini de executat acum
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.pageExecution.tier1Queue.map((page) => (
+                <div
+                  key={`tier1-${page.slug}`}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.85rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                    {page.title}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    {page.cluster} | {page.kind} | {page.status}
+                  </span>
+                  <span
+                    style={{
+                      color: "#0f766e",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      fontWeight: 700,
+                      marginTop: "0.35rem",
+                    }}
+                  >
+                    focus: {page.executionFocus}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#0369a1",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Tier-2 in lucru
+            </p>
+            <div style={{ display: "grid", gap: "0.75rem", marginTop: "1rem" }}>
+              {data.pageExecution.tier2Queue.map((page) => (
+                <div
+                  key={`tier2-${page.slug}`}
+                  style={{
+                    borderBottom: "1px solid #e2e8f0",
+                    paddingBottom: "0.75rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                    {page.slug}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    {page.cluster} | {page.kind} | {page.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </article>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
                 color: "#0369a1",
                 fontSize: "0.78rem",
                 fontWeight: 700,

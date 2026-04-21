@@ -140,6 +140,22 @@ export type DashboardData = {
       status: "published" | "ready-now" | "blocked" | "missing";
     }>;
   };
+  pageExecution: {
+    tier1Queue: Array<{
+      slug: string;
+      title: string;
+      cluster: string;
+      kind: "calculator" | "article";
+      status: "published" | "ready-now" | "blocked" | "missing";
+      executionFocus: string;
+    }>;
+    tier2Queue: Array<{
+      slug: string;
+      cluster: string;
+      kind: "calculator" | "article";
+      status: "published" | "ready-now" | "blocked" | "missing";
+    }>;
+  };
   executionRoadmap: {
     currentFocus: string;
     nextMoves: string[];
@@ -821,6 +837,37 @@ export const loadDashboardData = async (
     classification: classifyMonetization(page.slug, page.title, page.kind),
   }));
 
+  const pageExecution = {
+    tier1Queue: roadmap
+      .filter((page) => page.priorityTier === "tier-1" && page.kind !== "hub")
+      .slice(0, 10)
+      .map((page) => ({
+        slug: page.slug,
+        title: page.title,
+        cluster: page.cluster,
+        kind: page.kind as "calculator" | "article",
+        status: page.status as "published" | "ready-now" | "blocked" | "missing",
+        executionFocus:
+          page.status === "blocked"
+            ? "deblocare editoriala"
+            : page.status === "ready-now"
+              ? "publicare"
+              : page.status === "published"
+                ? "linking si consolidare"
+                : "creare pagina",
+      })),
+    tier2Queue: sprint3Clusters
+      .flatMap((cluster) =>
+        cluster.priorityTargets.map((page) => ({
+          slug: page.slug,
+          cluster: cluster.slug,
+          kind: page.kind,
+          status: page.status,
+        })),
+      )
+      .slice(0, 10),
+  };
+
   const roadmapTier1 = roadmap.filter((page) => page.priorityTier === "tier-1");
   const roadmapTier2 = roadmap.filter((page) => page.priorityTier === "tier-2");
   const roadmapTier1Done = roadmapTier1.filter(
@@ -1038,6 +1085,7 @@ export const loadDashboardData = async (
           return page;
         }),
     },
+    pageExecution,
     executionRoadmap,
     workflowSlices,
     recentPublished,
