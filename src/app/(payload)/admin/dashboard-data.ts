@@ -5,6 +5,14 @@ import {
 } from "../../../lib/seo-roadmap.ts";
 import { summarizeNotFounds } from "../../../lib/not-found-analysis.ts";
 import { EXECUTION_SPRINTS } from "../../../lib/execution-roadmap.ts";
+import { SPRINT_3_CONTENT_RULES, SPRINT_3_TIER_2_TARGETS } from "../../../lib/sprint-3.ts";
+import {
+  SPRINT_4_CTA_SURFACES,
+  SPRINT_4_MONEY_PAGE_PATTERNS,
+  SPRINT_4_SUPPORT_PAGE_PATTERNS,
+} from "../../../lib/sprint-4.ts";
+
+type Sprint3ClusterSlug = keyof typeof SPRINT_3_TIER_2_TARGETS;
 
 type QueueItem = {
   id: string;
@@ -101,6 +109,35 @@ export type DashboardData = {
       path: string;
       hits: number;
       lastSeenAt?: string;
+    }>;
+  };
+  sprint3: {
+    contentRules: string[];
+    clusters: Array<{
+      slug: string;
+      label: string;
+      priorityTargets: Array<{
+        slug: string;
+        kind: "calculator" | "article";
+        status: "published" | "ready-now" | "blocked" | "missing";
+      }>;
+      missingCoreCalculators: number;
+      missingCoreArticles: number;
+    }>;
+  };
+  sprint4: {
+    ctaSurfaces: string[];
+    moneyCandidates: Array<{
+      slug: string;
+      cluster: string;
+      kind: "calculator" | "article";
+      status: "published" | "ready-now" | "blocked" | "missing";
+    }>;
+    supportPages: Array<{
+      slug: string;
+      cluster: string;
+      kind: "calculator" | "article";
+      status: "published" | "ready-now" | "blocked" | "missing";
     }>;
   };
   executionRoadmap: {
@@ -315,6 +352,21 @@ const relationID = (value: unknown) => {
   }
 
   return undefined;
+};
+
+const classifyMonetization = (slug: string, title: string, kind: "hub" | "calculator" | "article") => {
+  if (kind === "hub") return "traffic-page" as const;
+  const haystack = `${slug} ${title}`.toLowerCase();
+
+  if (SPRINT_4_MONEY_PAGE_PATTERNS.some((pattern) => haystack.includes(pattern))) {
+    return "money-page-candidate" as const;
+  }
+
+  if (SPRINT_4_SUPPORT_PAGE_PATTERNS.some((pattern) => haystack.includes(pattern))) {
+    return "support-page" as const;
+  }
+
+  return "traffic-page" as const;
 };
 
 export const loadDashboardData = async (
@@ -735,6 +787,40 @@ export const loadDashboardData = async (
     };
   });
 
+  const sprint3Clusters = SPRINT_B_CLUSTERS.map((cluster) => {
+    const priorityTargets = (
+      SPRINT_3_TIER_2_TARGETS[cluster.slug as Sprint3ClusterSlug] ?? []
+    ).map((slug) => {
+      const page = roadmap.find((item) => item.slug === slug);
+      return {
+        slug,
+        kind: (page?.kind === "article" ? "article" : "calculator") as "calculator" | "article",
+        status: (page?.status ?? "missing") as "published" | "ready-now" | "blocked" | "missing",
+      };
+    });
+
+    return {
+      slug: cluster.slug,
+      label: cluster.label,
+      priorityTargets,
+      missingCoreCalculators: cluster.coreCalculators.filter(
+        (slug) => !roadmap.some((page) => page.slug === slug && page.status !== "missing"),
+      ).length,
+      missingCoreArticles: cluster.coreArticles.filter(
+        (slug) => !roadmap.some((page) => page.slug === slug && page.status !== "missing"),
+      ).length,
+    };
+  });
+
+  const sprint4Pages = roadmap.filter((page) => page.kind !== "hub");
+  const sprint4Classified = sprint4Pages.map((page) => ({
+    slug: page.slug,
+    cluster: page.cluster,
+    kind: page.kind as "calculator" | "article",
+    status: page.status as "published" | "ready-now" | "blocked" | "missing",
+    classification: classifyMonetization(page.slug, page.title, page.kind),
+  }));
+
   const roadmapTier1 = roadmap.filter((page) => page.priorityTier === "tier-1");
   const roadmapTier2 = roadmap.filter((page) => page.priorityTier === "tier-2");
   const roadmapTier1Done = roadmapTier1.filter(
@@ -930,6 +1016,27 @@ export const loadDashboardData = async (
       clusters: sprintBClusters,
       roadmap: roadmap.slice(0, 10),
       contentGaps: notFoundSummary.topContentGaps.slice(0, 5),
+    },
+    sprint3: {
+      contentRules: [...SPRINT_3_CONTENT_RULES],
+      clusters: sprint3Clusters,
+    },
+    sprint4: {
+      ctaSurfaces: [...SPRINT_4_CTA_SURFACES],
+      moneyCandidates: sprint4Classified
+        .filter((page) => page.classification === "money-page-candidate")
+        .slice(0, 8)
+        .map(({ classification, ...page }) => {
+          void classification;
+          return page;
+        }),
+      supportPages: sprint4Classified
+        .filter((page) => page.classification === "support-page")
+        .slice(0, 8)
+        .map(({ classification, ...page }) => {
+          void classification;
+          return page;
+        }),
     },
     executionRoadmap,
     workflowSlices,

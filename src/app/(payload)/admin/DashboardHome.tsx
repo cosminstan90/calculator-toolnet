@@ -734,6 +734,167 @@ async function DashboardHomeInner(
           >
             <p
               style={{
+                color: "#0369a1",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Sprint 3 | Tier-2 execution
+            </p>
+            <div style={{ display: "grid", gap: "0.8rem", marginTop: "1rem" }}>
+              {data.sprint3.clusters.map((cluster) => (
+                <div
+                  key={cluster.slug}
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "14px",
+                    padding: "0.9rem 0.95rem",
+                  }}
+                >
+                  <strong style={{ color: "#0f172a", display: "block", fontSize: "0.95rem" }}>
+                    {cluster.label}
+                  </strong>
+                  <span
+                    style={{
+                      color: "#475569",
+                      display: "block",
+                      fontSize: "0.84rem",
+                      marginTop: "0.3rem",
+                    }}
+                  >
+                    lipsuri calculatoare: {cluster.missingCoreCalculators} | lipsuri articole: {cluster.missingCoreArticles}
+                  </span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginTop: "0.6rem" }}>
+                    {cluster.priorityTargets.map((page) => (
+                      <span
+                        key={`${cluster.slug}-${page.slug}`}
+                        style={{
+                          background: "#ffffff",
+                          border: "1px solid #cbd5e1",
+                          borderRadius: "999px",
+                          color: "#1e293b",
+                          fontSize: "0.76rem",
+                          fontWeight: 700,
+                          padding: "0.25rem 0.55rem",
+                        }}
+                      >
+                        {page.slug} | {page.status}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginTop: "1rem" }}>
+              {data.sprint3.contentRules.map((rule) => (
+                <span
+                  key={rule}
+                  style={{
+                    background: "#eff6ff",
+                    border: "1px solid #bfdbfe",
+                    borderRadius: "999px",
+                    color: "#1d4ed8",
+                    fontSize: "0.76rem",
+                    fontWeight: 700,
+                    padding: "0.25rem 0.55rem",
+                  }}
+                >
+                  {rule}
+                </span>
+              ))}
+            </div>
+          </article>
+
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#7c3aed",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                margin: 0,
+                textTransform: "uppercase",
+              }}
+            >
+              Sprint 4 | Monetization readiness
+            </p>
+            <div style={{ display: "grid", gap: "0.7rem", marginTop: "1rem" }}>
+              <div>
+                <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                  Money page candidates
+                </strong>
+                <div style={{ display: "grid", gap: "0.55rem", marginTop: "0.6rem" }}>
+                  {data.sprint4.moneyCandidates.map((page) => (
+                    <span key={`money-${page.slug}`} style={{ color: "#334155", fontSize: "0.88rem" }}>
+                      {page.cluster} | {page.slug} | {page.status}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginTop: "0.75rem" }}>
+                <strong style={{ color: "#0f172a", display: "block", fontSize: "0.92rem" }}>
+                  Support pages
+                </strong>
+                <div style={{ display: "grid", gap: "0.55rem", marginTop: "0.6rem" }}>
+                  {data.sprint4.supportPages.map((page) => (
+                    <span key={`support-${page.slug}`} style={{ color: "#334155", fontSize: "0.88rem" }}>
+                      {page.cluster} | {page.slug} | {page.status}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginTop: "1rem" }}>
+                {data.sprint4.ctaSurfaces.map((surface) => (
+                  <span
+                    key={surface}
+                    style={{
+                      background: "#faf5ff",
+                      border: "1px solid #e9d5ff",
+                      borderRadius: "999px",
+                      color: "#7c3aed",
+                      fontSize: "0.76rem",
+                      fontWeight: 700,
+                      padding: "0.25rem 0.55rem",
+                    }}
+                  >
+                    {surface}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          }}
+        >
+          <article
+            style={{
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "20px",
+              padding: "1.25rem",
+            }}
+          >
+            <p
+              style={{
                 color: "#0f766e",
                 fontSize: "0.78rem",
                 fontWeight: 700,

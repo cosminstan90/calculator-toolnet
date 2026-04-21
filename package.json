@@ -24,6 +24,7 @@
     "ops:sprint-1-batch": "node --import tsx scripts/sprint-1-batch.mjs",
     "ops:sprint-2-batch": "node --import tsx scripts/sprint-2-batch.mjs",
     "ops:sprint-3-batch": "node --import tsx scripts/sprint-3-batch.mjs",
+    "ops:cluster-execution": "node --import tsx scripts/cluster-execution.mjs",
     "ops:internal-linking-audit": "node --import tsx scripts/internal-linking-audit.mjs",
     "ops:content-gap-recovery": "node --import tsx scripts/content-gap-recovery.mjs",
     "ops:monetization-readiness": "node --import tsx scripts/monetization-readiness.mjs",
