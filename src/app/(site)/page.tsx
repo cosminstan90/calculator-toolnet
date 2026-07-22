@@ -18,10 +18,25 @@ import {
   fallbackCategories,
   fallbackHeroHighlights,
 } from "@/lib/frontend-fallbacks";
-import { buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import { buildMetadata, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import Link from "next/link";
 
 export const revalidate = 900;
+
+const defaultHomeTitle = "Calculatoare Online - calcule utile, explicate pe inteles";
+const defaultHomeDescription =
+  "Calculatoare online pentru nutritie si antrenament, auto, energie si conversii, cu formule explicate, exemple practice si continut util pentru decizii rapide.";
+
+export async function generateMetadata() {
+  const homepage = await getHomepageContent();
+
+  return buildMetadata({
+    title: homepage?.seo?.metaTitle ?? defaultHomeTitle,
+    description: homepage?.seo?.metaDescription ?? defaultHomeDescription,
+    path: homepage?.seo?.canonicalPath ?? "/",
+    noIndex: homepage?.seo?.noIndex,
+  });
+}
 
 export default async function HomePage() {
   const [homepage, categories, calculators, articles] = await Promise.all([
