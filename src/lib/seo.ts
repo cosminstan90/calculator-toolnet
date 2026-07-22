@@ -87,7 +87,12 @@ export const buildOrganizationJsonLd = () => ({
   "@type": "Organization",
   name: siteConfig.name,
   url: absoluteURL("/"),
-  logo: absoluteURL("/logo.svg"),
+  logo: {
+    "@type": "ImageObject",
+    url: absoluteURL("/logo.png"),
+    width: 512,
+    height: 512,
+  },
   email: organizationConfig.supportEmail,
   contactPoint: [
     {
@@ -323,7 +328,9 @@ export const buildArticleJsonLd = (args: {
     name: siteConfig.name,
     logo: {
       "@type": "ImageObject",
-      url: absoluteURL("/logo.svg"),
+      url: absoluteURL("/logo.png"),
+      width: 512,
+      height: 512,
     },
   },
 });
