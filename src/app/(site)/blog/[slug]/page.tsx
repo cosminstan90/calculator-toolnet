@@ -28,6 +28,11 @@ type Params = Promise<{ slug: string }>;
 
 export const revalidate = 900;
 
+// See src/app/(site)/autori/[slug]/page.tsx for why this is required for ISR.
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);

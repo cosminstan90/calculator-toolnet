@@ -33,6 +33,11 @@ type Params = Promise<{ categorySlug: string; calculatorSlug: string }>;
 
 export const revalidate = 900;
 
+// See src/app/(site)/autori/[slug]/page.tsx for why this is required for ISR.
+export async function generateStaticParams() {
+  return [] as Array<{ categorySlug: string; calculatorSlug: string }>;
+}
+
 const splitParagraphs = (value: string) =>
   value
     .split(/\n\s*\n/g)

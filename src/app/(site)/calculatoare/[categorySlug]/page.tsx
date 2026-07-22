@@ -27,6 +27,11 @@ type Params = Promise<{ categorySlug: string }>;
 
 export const revalidate = 900;
 
+// See src/app/(site)/autori/[slug]/page.tsx for why this is required for ISR.
+export async function generateStaticParams() {
+  return [];
+}
+
 const categoryPlaybooks: Record<
   string,
   {

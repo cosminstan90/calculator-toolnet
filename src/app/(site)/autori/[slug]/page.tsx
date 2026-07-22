@@ -18,6 +18,15 @@ type Params = Promise<{ slug: string }>;
 
 export const revalidate = 900;
 
+// Empty array + default dynamicParams=true enables on-demand ISR: the
+// first request for a given slug renders and caches it, subsequent
+// requests within `revalidate` are served from the Full Route Cache.
+// Without this export, dynamic segments never enter the route cache at
+// all regardless of `revalidate` (see generateStaticParams docs).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const author = await getPublicAuthorBySlug(slug);
