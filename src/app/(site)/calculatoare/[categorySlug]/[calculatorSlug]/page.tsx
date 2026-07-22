@@ -15,6 +15,7 @@ import {
 } from "@/lib/content";
 import {
   buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
   buildMetadata,
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
@@ -141,6 +142,7 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             path: `/calculatoare/${categorySlug}/${calculator.slug}`,
             applicationCategory: calculator.category?.name ?? "Calculator",
           }),
+          ...(calculator.faq.length > 0 ? [buildFaqJsonLd(calculator.faq)] : []),
         ]}
       />
 
