@@ -14,6 +14,7 @@ import {
   listRelatedCalculators,
 } from "@/lib/content";
 import {
+  applicationCategoryForSlug,
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
   buildMetadata,
@@ -140,7 +141,9 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             name: calculator.title,
             description: calculator.shortDescription,
             path: `/calculatoare/${categorySlug}/${calculator.slug}`,
-            applicationCategory: calculator.category?.name ?? "Calculator",
+            applicationCategory: applicationCategoryForSlug(calculator.category?.slug),
+            datePublished: calculator.publishedAt,
+            dateModified: calculator.updatedAt,
           }),
           ...(calculator.faq.length > 0 ? [buildFaqJsonLd(calculator.faq)] : []),
         ]}

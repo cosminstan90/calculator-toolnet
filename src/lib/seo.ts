@@ -207,11 +207,30 @@ export const buildProfilePageJsonLd = (args: {
   url: absoluteURL(args.path),
 });
 
+const applicationCategoryBySlug: Record<string, string> = {
+  "nutritie-si-antrenament": "HealthApplication",
+  auto: "UtilitiesApplication",
+  energie: "UtilitiesApplication",
+  "energie-pentru-casa": "UtilitiesApplication",
+  conversii: "UtilitiesApplication",
+  constructii: "UtilitiesApplication",
+  afaceri: "BusinessApplication",
+  finante: "FinanceApplication",
+  "credite-si-economii": "FinanceApplication",
+  "salarii-si-taxe": "FinanceApplication",
+  imobiliare: "FinanceApplication",
+};
+
+export const applicationCategoryForSlug = (categorySlug?: string): string =>
+  (categorySlug && applicationCategoryBySlug[categorySlug]) || "UtilitiesApplication";
+
 export const buildWebApplicationJsonLd = (args: {
   name: string;
   description: string;
   path: string;
   applicationCategory: string;
+  datePublished?: string;
+  dateModified?: string;
 }) => ({
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -219,6 +238,8 @@ export const buildWebApplicationJsonLd = (args: {
   description: args.description,
   url: absoluteURL(args.path),
   applicationCategory: args.applicationCategory,
+  datePublished: args.datePublished,
+  dateModified: args.dateModified ?? args.datePublished,
   operatingSystem: "All",
   browserRequirements: "Requires JavaScript",
   inLanguage: "ro",
