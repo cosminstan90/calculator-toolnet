@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 
 import { adminsAndSelf, isAdmin } from "../access.ts";
+import { createSlugHook } from "../fields/slug.ts";
 
 export const Users: CollectionConfig = {
   slug: "users",
@@ -52,7 +53,11 @@ export const Users: CollectionConfig = {
       name: "profileSlug",
       type: "text",
       admin: {
-        description: "Slug public pentru pagina de autor. Daca lipseste, folosim un fallback stabil.",
+        description:
+          "Slug public pentru pagina de autor. Se genereaza automat din nume daca este lasat gol.",
+      },
+      hooks: {
+        beforeValidate: [createSlugHook("name")],
       },
     },
     {

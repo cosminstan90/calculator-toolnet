@@ -9,7 +9,7 @@ const formatSlug = (value: string): string => {
   });
 };
 
-const createSlugHook =
+export const createSlugHook =
   (fallbackField = "title"): FieldHook =>
   ({ value, data }) => {
     if (typeof value === "string" && value.trim().length > 0) {
