@@ -64,7 +64,7 @@ export const CalculatorRunner = ({ calculatorKey }: CalculatorRunnerProps) => {
                       [input.name]: event.target.value,
                     }))
                   }
-                  className="w-full rounded-[1.35rem] border border-white/12 bg-white/6 px-4 py-3 text-sm text-white outline-none ring-emerald-300 transition focus:ring"
+                  className="w-full rounded-[1.35rem] border border-white/12 bg-white/6 px-4 py-3 text-base text-white outline-none ring-emerald-300 transition focus:ring"
                 >
                   {input.options?.map((option) => (
                     <option key={option.value} value={option.value} className="text-slate-950">
@@ -85,7 +85,7 @@ export const CalculatorRunner = ({ calculatorKey }: CalculatorRunnerProps) => {
                       [input.name]: event.target.value,
                     }))
                   }
-                  className="w-full rounded-[1.35rem] border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder:text-slate-400 outline-none ring-emerald-300 transition focus:ring"
+                  className="w-full rounded-[1.35rem] border border-white/12 bg-white/6 px-4 py-3 text-base text-white placeholder:text-slate-400 outline-none ring-emerald-300 transition focus:ring"
                 />
               )}
             </label>

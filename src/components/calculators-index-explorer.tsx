@@ -54,7 +54,7 @@ export const CalculatorsIndexExplorer = ({
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="BMI, TDEE, consum, kW in CP..."
-            className="min-w-0 flex-1 rounded-full border border-white/12 bg-white/8 px-4 py-3 text-sm text-white placeholder:text-slate-400 outline-none ring-emerald-300 transition focus:ring"
+            className="min-w-0 flex-1 rounded-full border border-white/12 bg-white/8 px-4 py-3 text-base text-white placeholder:text-slate-400 outline-none ring-emerald-300 transition focus:ring"
           />
           <button
             type="submit"
