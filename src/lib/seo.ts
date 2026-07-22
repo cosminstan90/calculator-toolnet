@@ -208,13 +208,13 @@ export const buildProfilePageJsonLd = (args: {
 });
 
 const applicationCategoryBySlug: Record<string, string> = {
-  "nutritie-si-antrenament": "HealthApplication",
+  fitness: "HealthApplication",
   auto: "UtilitiesApplication",
   energie: "UtilitiesApplication",
   "energie-pentru-casa": "UtilitiesApplication",
   conversii: "UtilitiesApplication",
   constructii: "UtilitiesApplication",
-  afaceri: "BusinessApplication",
+  business: "BusinessApplication",
   finante: "FinanceApplication",
   "credite-si-economii": "FinanceApplication",
   "salarii-si-taxe": "FinanceApplication",
