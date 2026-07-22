@@ -46,12 +46,12 @@
     "ops:import-content": "node scripts/import-content.mjs"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.80.0",
-    "@payloadcms/next": "^3.80.0",
-    "@payloadcms/plugin-seo": "^3.80.0",
-    "@payloadcms/richtext-lexical": "^3.80.0",
-    "next": "16.2.1",
-    "payload": "^3.80.0",
+    "@payloadcms/db-postgres": "^3.86.0",
+    "@payloadcms/next": "^3.86.0",
+    "@payloadcms/plugin-seo": "^3.86.0",
+    "@payloadcms/richtext-lexical": "^3.86.0",
+    "next": "^16.2.11",
+    "payload": "^3.86.0",
     "pg": "^8.20.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -67,5 +67,9 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "overrides": {
+    "sharp": "0.35.3",
+    "undici": "7.28.0"
   }
 }
