@@ -43,7 +43,8 @@
     "ops:perf-snapshot": "node --import tsx scripts/perf-snapshot.mjs",
     "ops:validate-content": "node scripts/validate-content.mjs",
     "ops:seo-audit": "node scripts/seo-audit.mjs",
-    "ops:import-content": "node scripts/import-content.mjs"
+    "ops:import-content": "node scripts/import-content.mjs",
+    "ops:regenerate-content": "node scripts/regenerate-calculator-content.mjs"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.86.0",

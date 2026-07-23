@@ -8,6 +8,7 @@ import {
   computeEditorialCompletion,
 } from "./editorial-checklist.ts";
 import { ensureCalculatorFaq } from "./calculator-content.ts";
+import { pick } from "./content-variation.ts";
 import type { Payload } from "payload";
 
 type BootstrapOptions = { force?: boolean };
@@ -821,7 +822,7 @@ const categoryFrames = {
     caution:
       "In nutritie si antrenament, rezultatul merita corelat cu obiectivul, istoricul personal si cu alte repere relevante, nu folosit izolat.",
     linkingLead:
-      "Din acelasi cluster merita sa legi calculatorul de alte tool-uri care rafineaza interpretarea rezultatului.",
+      "Merita sa legi calculatorul de alte tool-uri din aceeasi zona, care rafineaza interpretarea rezultatului.",
   },
   auto: {
     audience:
@@ -837,7 +838,7 @@ const categoryFrames = {
     caution:
       "In energie si electricitate, rezultatul matematic este clar, dar consumul real depinde si de randament, factor de putere sau mod de folosire.",
     linkingLead:
-      "Un calculator de energie performeaza mai bine SEO cand este conectat natural cu alte conversii si cu ghiduri explicative.",
+      "Rezultatul are mai mult sens cand il legi de alte conversii si de ghidurile explicative din aceeasi zona.",
   },
   "energie-pentru-casa": {
     audience:
@@ -853,7 +854,7 @@ const categoryFrames = {
     caution:
       "La conversii simple, avantajul competitiv nu vine doar din formula, ci din claritatea explicatiei si din contextul util oferit pe pagina.",
     linkingLead:
-      "Conversiile tind sa capteze cautari answer-first, asa ca merita sustinute prin linkuri spre alte conversii si spre pagini explicative.",
+      "Cand cauti o conversie vrei raspunsul imediat, dar merita sustinut cu linkuri spre alte conversii si pagini explicative.",
   },
   constructii: {
     audience:
@@ -869,7 +870,7 @@ const categoryFrames = {
     caution:
       "In afaceri, formula este utila ca reper rapid, dar rezultatul trebuie completat cu taxe, comisioane, discounturi si contextul real al pietei.",
     linkingLead:
-      "Internal linking-ul este valoros aici pentru ca utilizatorul cauta de obicei mai multe unghiuri ale aceleiasi decizii: marja, markup, profit si ROI.",
+      "Cauti de obicei mai multe unghiuri ale aceleiasi decizii, asa ca merita sa verifici si marja, markup, profit si ROI.",
   },
   finante: {
     audience:
@@ -1006,7 +1007,7 @@ const buildFallbackCalculatorMeta = (
 
   return {
     shortDescription: `${definition.summary} Pagina ofera formula explicata, exemple de calcul si context util pentru interpretarea rezultatului.`,
-    intro: `${definition.title} te ajuta sa obtii un raspuns rapid, dar si sa intelegi ce inseamna valoarea calculata in practica. Pagina foloseste ${definition.formulaName.toLowerCase()} si este gandita pentru cautari cu intentie clara, answer-first.`,
+    intro: `${definition.title} te ajuta sa obtii un raspuns rapid, dar si sa intelegi ce inseamna valoarea calculata in practica. Pagina foloseste ${definition.formulaName.toLowerCase()} si iti da direct raspunsul, fara pasi in plus.`,
     interpretationNotes: `${categoryFrame.caution} Rezultatul trebuie verificat in functie de datele introduse si de scenariul real in care folosesti calculatorul.`,
     isFeatured: false,
     sortOrder: 200 + CALCULATOR_KEYS.indexOf(key),
@@ -1126,7 +1127,7 @@ const categorySeeds: CategorySeed[] = [
     slug: "conversii",
     summary: "Convertori rapizi pentru unitati uzuale si formule folosite frecvent.",
     introContent:
-      "Categoria Conversii este construita pentru cautari recurente si answer-first, dar fiecare pagina merge dincolo de formula simpla si adauga exemple, explicatii si legaturi catre alte conversii utile.",
+      "Categoria Conversii iti da raspunsul rapid la intrebari recurente, dar fiecare pagina merge dincolo de formula simpla si adauga exemple, explicatii si legaturi catre alte conversii utile.",
     sortOrder: 40,
     isFeatured: false,
   },
@@ -2205,7 +2206,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     example: "La 420.000 lei cost marfa vanduta si 70.000 lei stoc mediu, rotatia este 6 ori in perioada analizata.",
     faq: [
       { question: "Rotatie mare inseamna automat situatie buna?", answer: "Nu mereu. Poate insemna si stoc insuficient, rupturi de disponibilitate sau presiune pe supply." },
-      { question: "Cu ce o leg in acelasi cluster?", answer: "Cu venit tinta si profit, mai ales daca lucrezi cu capital blocat in marfa." },
+      { question: "Cu ce alt calculator il combin?", answer: "Cu venit tinta si profit, mai ales daca lucrezi cu capital blocat in marfa." },
     ],
     relatedCalculatorKeys: ["target-revenue", "gross-profit", "net-profit"],
     relatedArticleSlugs: ["rotatia-stocului-explicata-pentru-ecommerce-si-retail"],
@@ -2228,7 +2229,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
   },
   "monthly-electricity-bill": {
     shortDescription: "Transforma consumul lunar total intr-o factura estimata si intr-un cost anual usor de comparat, ca sa vezi repede ce muta cu adevarat bugetul casei.",
-    intro: "Calculatorul de factura de curent este una dintre cele mai bune pagini din clusterul de energie pentru casa, pentru ca leaga direct consumul real de bani, de obiceiuri si de decizii despre eficienta sau fotovoltaice.",
+    intro: "Calculatorul de factura de curent este unul dintre cele mai utile calculatoare din energia pentru casa, pentru ca leaga direct consumul real de bani, de obiceiuri si de decizii despre eficienta sau fotovoltaice.",
     interpretationNotes: "Pretul final pe kWh si costurile fixe pot varia intre furnizori, contracte si perioade. Foloseste-l ca reper comparativ, nu ca factura exacta, iar pentru decizii importante testeaza si un scenariu prudent, si unul optimist.",
     isFeatured: true,
     sortOrder: 20,
@@ -2271,7 +2272,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
         eyebrow: "Ce muta factura",
         title: "Cele trei variabile care conteaza cel mai mult",
         intro:
-          "Pagina este buna pentru answer-first, dar devine si mai utila cand separi clar consumul, tariful si costurile fixe.",
+          "Iti da raspunsul rapid, dar devine si mai util cand separi clar consumul, tariful si costurile fixe.",
         tone: "mist",
         items: [
           {
@@ -2354,7 +2355,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
   },
   "solar-payback": {
     shortDescription: "Arata in cati ani se poate amortiza un sistem fotovoltaic dupa cost, economii si mentenanta, ca sa nu confunzi entuziasmul investitiei cu randamentul ei real.",
-    intro: "Calculatorul de amortizare pentru panouri fotovoltaice este una dintre cele mai importante pagini de decizie din clusterul de energie pentru casa, pentru ca transforma discutia despre panouri din promisiune vaga in scenariu economic clar.",
+    intro: "Calculatorul de amortizare pentru panouri fotovoltaice este unul dintre cele mai importante instrumente de decizie in energia pentru casa, pentru ca transforma discutia despre panouri din promisiune vaga in scenariu economic clar.",
     interpretationNotes: "Amortizarea este foarte sensibila la pretul energiei, autoconsum, granturi si costuri reale de exploatare. Nu o citi ca promisiune fixa si nu te opri la un singur scenariu optimist.",
     isFeatured: true,
     sortOrder: 60,
@@ -2585,7 +2586,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     example: "Pentru un sistem de 6,3 kWp cu raport 1,15, invertorul recomandat poate cobori spre zona de 5,5 kW.",
     faq: [
       { question: "Un invertor mai mare este automat mai bun?", answer: "Nu. Supradimensionarea sau subdimensionarea trebuie gandite in contextul sistemului complet." },
-      { question: "Cu ce il leg in cluster?", answer: "Cu puterea sistemului, productia estimata si suprafata disponibila." },
+      { question: "Cu ce alt calculator il combin?", answer: "Cu puterea sistemului, productia estimata si suprafata disponibila." },
     ],
     relatedCalculatorKeys: ["solar-system-size", "solar-panel-count", "solar-production"],
     relatedArticleSlugs: ["cum-alegi-corect-puterea-invertorului-fotovoltaic"],
@@ -2649,7 +2650,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     example: "La o productie anuala buna, emisiile evitate pot ajunge intr-o zona care face vizibil si beneficiul de mediu, nu doar pe cel economic.",
     faq: [
       { question: "Este CO2-ul evitat un beneficiu financiar direct?", answer: "Nu direct, dar poate conta in evaluarea generala a investitiei si a impactului ei." },
-      { question: "Cu ce il leg in cluster?", answer: "Cu productie si amortizare, ca sa vezi investitia si prin lentila de mediu." },
+      { question: "Cu ce alt calculator il combin?", answer: "Cu productie si amortizare, ca sa vezi investitia si prin lentila de mediu." },
     ],
     relatedCalculatorKeys: ["solar-production", "solar-payback", "solar-system-size"],
     relatedArticleSlugs: ["cat-co2-poti-evita-cu-un-sistem-fotovoltaic"],
@@ -2658,7 +2659,7 @@ const calculatorMeta: Partial<Record<CalculatorKey, CalculatorMeta>> = {
     shortDescription:
       "Aduna pretul locuintei cu costurile initiale, renovarea, mobilarea si rezerva, ca sa vezi bugetul real al achizitiei, nu doar pretul din anunt.",
     intro:
-      "Calculatorul de cost total de achizitie locuinta este una dintre cele mai importante pagini din clusterul imobiliar, pentru ca muta atentia de la pretul proprietatii la proiectul complet pe care chiar trebuie sa il finantezi.",
+      "Calculatorul de cost total de achizitie locuinta este unul dintre cele mai importante calculatoare imobiliare, pentru ca muta atentia de la pretul proprietatii la proiectul complet pe care chiar trebuie sa il finantezi.",
     interpretationNotes:
       "Rezultatul devine util doar daca tratezi separat costurile de inchidere, renovarea, mobilarea si rezerva. Exact aici se rupe de obicei diferenta dintre o achizitie suportabila pe hartie si una care iti tensioneaza imediat lichiditatea.",
     isFeatured: true,
@@ -2959,7 +2960,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "ghid-conversii-kg-lb-cm-inch",
     title: "Ghid rapid pentru conversii kg-lb si cm-inch in contexte de zi cu zi",
     excerpt: "Conversiile simple apar in fitness, shopping, retete si specificatii tehnice. Iata cum le folosesti fara sa gresesti unitatile.",
-    content: "Conversiile intre kilograme si livre sau intre centimetri si inch apar peste tot: in surse internationale, in magazine, in fitness, in retete sau in specificatii tehnice.\n\nFormula este simpla, dar nevoia utilizatorului nu este doar matematica. De cele mai multe ori, persoana care cauta o conversie vrea o confirmare rapida, fara risc de eroare si fara sa piarda timp cu formule memorate pe jumatate.\n\nExact de aceea paginile de conversie functioneaza bine atunci cand ofera un raspuns instant, dar si cateva exemple usor de recunoscut. O valoare convertita capata mai mult sens cand este ancorata intr-un context real: greutate corporala, marime de produs, dimensiunea unui obiect sau temperatura dintr-o reteta.\n\nDin punct de vedere SEO, aceste cautari sunt answer-first, dar nu trebuie tratate ca pagini goale. Un minim de context si cateva legaturi catre conversii apropiate ajuta atat utilizatorul, cat si arhitectura interna a site-ului.\n\nUn convertor bun reduce frictiunea. Iti da raspunsul imediat, te lasa sa verifici rapid si te trimite mai departe doar atunci cand are sens sa continui cu o alta conversie sau cu o pagina mai explicativa.",
+    content: "Conversiile intre kilograme si livre sau intre centimetri si inch apar peste tot: in surse internationale, in magazine, in fitness, in retete sau in specificatii tehnice.\n\nFormula este simpla, dar nevoia utilizatorului nu este doar matematica. De cele mai multe ori, persoana care cauta o conversie vrea o confirmare rapida, fara risc de eroare si fara sa piarda timp cu formule memorate pe jumatate.\n\nExact de aceea paginile de conversie functioneaza bine atunci cand ofera un raspuns instant, dar si cateva exemple usor de recunoscut. O valoare convertita capata mai mult sens cand este ancorata intr-un context real: greutate corporala, marime de produs, dimensiunea unui obiect sau temperatura dintr-o reteta.\n\nO conversie ceruta rapid nu trebuie insa sa fie o pagina goala - un minim de context si cateva legaturi catre conversii apropiate ajuta la exact acelasi lucru pentru care ai deschis pagina.\n\nUn convertor bun reduce frictiunea. Iti da raspunsul imediat, te lasa sa verifici rapid si te trimite mai departe doar atunci cand are sens sa continui cu o alta conversie sau cu o pagina mai explicativa.",
     articleType: "guide",
     relatedCategorySlug: "conversii",
     relatedCalculatorKeys: ["kg-lb", "cm-inch", "temperature-converter"],
@@ -3003,7 +3004,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cost-pe-kilometru-vs-cost-total-drum",
     title: "Cost pe kilometru vs cost total de drum: ce iti spune fiecare si cand merita sa le compari",
     excerpt: "Cele doua estimari raspund la intrebari diferite. Una te ajuta la comparatii rapide, cealalta la bugetarea unui traseu.",
-    content: "Costul pe kilometru si costul total al unui drum par calcule apropiate, dar servesc scopuri diferite. Exact de aceea merita sa le pui impreuna in acelasi cluster de continut.\n\nCostul pe kilometru este util atunci cand vrei un reper rapid si comparabil. Iti arata cum se schimba bugetul atunci cand variaza consumul sau pretul carburantului si te ajuta sa compari doua masini ori doua stiluri de condus fara sa pornesti mereu de la o distanta anume.\n\nCostul total de drum raspunde unei alte intrebari: cat te costa traseul pe care urmeaza sa il faci. Aici conteaza distanta, consumul, pretul carburantului si, uneori, chiar timpul estimat daca vrei sa pui planificarea in acelasi tablou.\n\nIn practica, cele doua calcule functioneaza mai bine impreuna. Unul iti da unitatea de comparatie, celalalt iti da suma concreta. Cand le legi si de consumul real, estimarile devin mult mai utile decat cifrele teoretice din acte sau din bord.\n\nDin perspectiva utilizatorului, aceasta este diferenta dintre o pagina care afiseaza un singur rezultat si un hub care chiar ajuta la decizie. Iar din perspectiva SEO, exact aici internal linking-ul devine natural: cost, consum si timp fac parte din aceeasi intentie de cautare.",
+    content: "Costul pe kilometru si costul total al unui drum par calcule apropiate, dar servesc scopuri diferite. Exact de aceea merita sa le privesti impreuna, nu izolat.\n\nCostul pe kilometru este util atunci cand vrei un reper rapid si comparabil. Iti arata cum se schimba bugetul atunci cand variaza consumul sau pretul carburantului si te ajuta sa compari doua masini ori doua stiluri de condus fara sa pornesti mereu de la o distanta anume.\n\nCostul total de drum raspunde unei alte intrebari: cat te costa traseul pe care urmeaza sa il faci. Aici conteaza distanta, consumul, pretul carburantului si, uneori, chiar timpul estimat daca vrei sa pui planificarea in acelasi tablou.\n\nIn practica, cele doua calcule functioneaza mai bine impreuna. Unul iti da unitatea de comparatie, celalalt iti da suma concreta. Cand le legi si de consumul real, estimarile devin mult mai utile decat cifrele teoretice din acte sau din bord.\n\nAsta e diferenta dintre o pagina care iti afiseaza un singur rezultat si una care chiar te ajuta sa decizi: cost, consum si timp merg impreuna, nu izolat.",
     articleType: "comparison",
     relatedCategorySlug: "auto",
     relatedCalculatorKeys: ["cost-per-km", "trip-fuel-cost", "fuel-consumption"],
@@ -3025,7 +3026,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-calculezi-suprafata-unei-camere-corect",
     title: "Cum calculezi suprafata unei camere corect inainte de renovare sau amenajare",
     excerpt: "Suprafata unei camere este baza pentru vopsea, gresie, parchet si multe alte estimari de materiale.",
-    content: "Suprafata unei camere pare un calcul simplu, dar in practica este una dintre cele mai importante valori pentru orice renovare. Daca pleci de la o suprafata gresita, toate estimarile urmatoare risca sa fie prea mici sau prea mari.\n\nPentru camerele dreptunghiulare, formula de baza este simpla: lungime inmultita cu latime. Problemele apar atunci cand incaperea are nise, retrageri, colturi atipice sau zone care nu trebuie incluse in acelasi calcul. In aceste situatii, cea mai buna metoda este sa imparti spatiul in forme mai mici si sa aduni apoi suprafetele.\n\nPerimetrul este si el util, chiar daca multi il ignora. Te ajuta la plinte, baghete sau estimari laterale, iar impreuna cu suprafata ofera o imagine mult mai clara asupra camerei.\n\nOdata ce ai suprafata corecta, restul calculelor devin mai fiabile: vopsea, gresie, faianta, parchet sau chiar bugete orientative pentru materiale. Exact de aceea pagina merita legata de alte calculatoare din acelasi cluster si nu tratata ca un tool izolat.\n\nPrivita corect, suprafata unei camere nu este doar o cifra. Este baza de lucru pentru aproape orice estimare practica din amenajari.",
+    content: "Suprafata unei camere pare un calcul simplu, dar in practica este una dintre cele mai importante valori pentru orice renovare. Daca pleci de la o suprafata gresita, toate estimarile urmatoare risca sa fie prea mici sau prea mari.\n\nPentru camerele dreptunghiulare, formula de baza este simpla: lungime inmultita cu latime. Problemele apar atunci cand incaperea are nise, retrageri, colturi atipice sau zone care nu trebuie incluse in acelasi calcul. In aceste situatii, cea mai buna metoda este sa imparti spatiul in forme mai mici si sa aduni apoi suprafetele.\n\nPerimetrul este si el util, chiar daca multi il ignora. Te ajuta la plinte, baghete sau estimari laterale, iar impreuna cu suprafata ofera o imagine mult mai clara asupra camerei.\n\nOdata ce ai suprafata corecta, restul calculelor devin mai fiabile: vopsea, gresie, faianta, parchet sau chiar bugete orientative pentru materiale. Exact de aceea merita sa verifici si celelalte calculatoare din amenajari, nu doar suprafata luata separat.\n\nPrivita corect, suprafata unei camere nu este doar o cifra. Este baza de lucru pentru aproape orice estimare practica din amenajari.",
     articleType: "guide",
     relatedCategorySlug: "constructii",
     relatedCalculatorKeys: ["room-area", "paint-coverage", "laminate-flooring"],
@@ -3058,7 +3059,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-calculezi-necesarul-de-gresie-si-faianta",
     title: "Cum calculezi necesarul de gresie si faianta fara sa ignori pierderile reale",
     excerpt: "Suprafata utila nu este suficienta. Pentru o comanda buna conteaza si pierderile, taieturile si tipul de montaj.",
-    content: "Necesarul de gresie si faianta nu inseamna doar sa imparti suprafata la acoperirea unei cutii. In practica, pierderile fac o diferenta reala, iar ele pot varia mult in functie de montaj, model si forma spatiului.\n\nUn montaj drept pe o camera simpla poate avea pierderi moderate, in timp ce un montaj diagonal sau o zona cu multe colturi si decupaje cere de obicei mai multa rezerva. Exact aici calculatorul devine util: pleaca de la suprafata, dar introduce si procentul de pierderi.\n\nAcest lucru este important mai ales pentru comenzi, unde lipsa unei singure cutii poate crea intarzieri, diferente de lot sau costuri suplimentare. O estimare putin mai prudenta este de multe ori mai utila decat una perfect optimista.\n\nPagina functioneaza cel mai bine cand este legata de calculatorul de suprafata si de alte tool-uri de finisaje. Asa utilizatorul poate trece natural de la o nevoie la alta fara sa se intoarca la cautare de fiecare data.\n\nCa produs editorial, acest tip de calculator performeaza bine tocmai pentru ca raspunde unei intrebari foarte practice si repetabile.",
+    content: "Necesarul de gresie si faianta nu inseamna doar sa imparti suprafata la acoperirea unei cutii. In practica, pierderile fac o diferenta reala, iar ele pot varia mult in functie de montaj, model si forma spatiului.\n\nUn montaj drept pe o camera simpla poate avea pierderi moderate, in timp ce un montaj diagonal sau o zona cu multe colturi si decupaje cere de obicei mai multa rezerva. Exact aici calculatorul devine util: pleaca de la suprafata, dar introduce si procentul de pierderi.\n\nAcest lucru este important mai ales pentru comenzi, unde lipsa unei singure cutii poate crea intarzieri, diferente de lot sau costuri suplimentare. O estimare putin mai prudenta este de multe ori mai utila decat una perfect optimista.\n\nPagina functioneaza cel mai bine cand este legata de calculatorul de suprafata si de alte tool-uri de finisaje. Asa utilizatorul poate trece natural de la o nevoie la alta fara sa se intoarca la cautare de fiecare data.\n\nE genul de calculator la care revii de fiecare data cand incepi o comanda noua, tocmai pentru ca raspunde unei intrebari foarte practice si repetabile.",
     articleType: "guide",
     relatedCategorySlug: "constructii",
     relatedCalculatorKeys: ["tile-coverage", "laminate-flooring", "room-area"],
@@ -3069,7 +3070,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "food-cost-explicat-pentru-horeca",
     title: "Food cost explicat simplu pentru horeca: ce iti spune si ce nu iti spune",
     excerpt: "Food cost-ul este un indicator foarte util, dar nu trebuie confundat cu profitul final al business-ului.",
-    content: "Food cost-ul este unul dintre cele mai cautate calcule din horeca pentru ca ofera rapid un reper usor de inteles. Practic, iti arata ce procent din pretul de vanzare este consumat de ingredientele directe.\n\nValoarea lui este mare mai ales in comparatii: intre produse, intre perioade sau intre doua variante de reteta. Tocmai de aceea calculatorul este util pentru decizii rapide de meniu si pricing.\n\nTotusi, food cost-ul nu spune singur intreaga poveste. Chiria, personalul, livrarea, pierderile, ambalajele si costurile operationale pot schimba radical imaginea finala. De aceea un food cost bun nu inseamna automat si un produs foarte profitabil.\n\nCea mai buna utilizare este sa il pui alaturi de marja, markup si, in anumite cazuri, break-even. Atunci incepi sa vezi nu doar costul ingredientelor, ci si sustenabilitatea comerciala a produsului.\n\nPentru `toolnet.ro`, pagina asta este un punct foarte bun de intrare in clusterul business si horeca.",
+    content: "Food cost-ul este unul dintre cele mai cautate calcule din horeca pentru ca ofera rapid un reper usor de inteles. Practic, iti arata ce procent din pretul de vanzare este consumat de ingredientele directe.\n\nValoarea lui este mare mai ales in comparatii: intre produse, intre perioade sau intre doua variante de reteta. Tocmai de aceea calculatorul este util pentru decizii rapide de meniu si pricing.\n\nTotusi, food cost-ul nu spune singur intreaga poveste. Chiria, personalul, livrarea, pierderile, ambalajele si costurile operationale pot schimba radical imaginea finala. De aceea un food cost bun nu inseamna automat si un produs foarte profitabil.\n\nCea mai buna utilizare este sa il pui alaturi de marja, markup si, in anumite cazuri, break-even. Atunci incepi sa vezi nu doar costul ingredientelor, ci si sustenabilitatea comerciala a produsului.\n\nDaca lucrezi in horeca, merita sa il verifici regulat, nu doar o data la lansarea unui produs nou.",
     articleType: "guide",
     relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["food-cost", "profit-margin", "markup"],
@@ -3080,7 +3081,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "marja-vs-markup-explicate-simplu",
     title: "Marja vs markup explicate simplu: de ce par apropiate, dar nu sunt acelasi lucru",
     excerpt: "Marja si markup-ul pleaca de la aceleasi doua valori, dar raspund la intrebari diferite.",
-    content: "Marja si markup-ul sunt confundate frecvent pentru ca folosesc aceleasi componente: costul si pretul de vanzare. Diferenta reala vine din baza la care raportezi profitul.\n\nMarja iti spune ce procent din pretul final ramane dupa costul direct. Markup-ul iti spune cu cat ai crescut costul ca sa ajungi la pret. Tocmai de aceea cele doua procente nu vor avea aceeasi valoare chiar daca pleaca de la aceleasi cifre.\n\nIn practica, marja este adesea mai utila pentru analiza performantei comerciale, in timp ce markup-ul este foarte folosit in pricing atunci cand pretul se construieste pornind de la cost. Daca le amesteci, poti lua decizii gresite sau poti compara incorect produse si oferte.\n\nDe aceea cele doua calculatoare merita sa stea impreuna in acelasi cluster. Utilizatorul cauta de multe ori exact aceasta diferenta si are nevoie de o explicatie simpla, nu doar de formula.\n\nCand adaugi si break-even sau ROI in acelasi traseu, hub-ul business incepe sa capete consistenta reala.",
+    content: "Marja si markup-ul sunt confundate frecvent pentru ca folosesc aceleasi componente: costul si pretul de vanzare. Diferenta reala vine din baza la care raportezi profitul.\n\nMarja iti spune ce procent din pretul final ramane dupa costul direct. Markup-ul iti spune cu cat ai crescut costul ca sa ajungi la pret. Tocmai de aceea cele doua procente nu vor avea aceeasi valoare chiar daca pleaca de la aceleasi cifre.\n\nIn practica, marja este adesea mai utila pentru analiza performantei comerciale, in timp ce markup-ul este foarte folosit in pricing atunci cand pretul se construieste pornind de la cost. Daca le amesteci, poti lua decizii gresite sau poti compara incorect produse si oferte.\n\nDe aceea merita sa le calculezi impreuna, nu pe rand - cauti de multe ori exact aceasta diferenta si ai nevoie de o explicatie simpla, nu doar de formula.\n\nCand adaugi si break-even sau ROI in aceeasi analiza, imaginea comerciala devine mult mai completa.",
     articleType: "comparison",
     relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["profit-margin", "markup", "break-even"],
@@ -3091,7 +3092,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-calculezi-pragul-de-rentabilitate",
     title: "Cum calculezi pragul de rentabilitate si de ce merita sa-l verifici inainte de orice forecast optimist",
     excerpt: "Break-even-ul iti arata cand nu mai esti pe pierdere, iar asta il face extrem de util in orice scenariu comercial simplu.",
-    content: "Pragul de rentabilitate este unul dintre acele calcule care simplifica foarte bine o intrebare importanta: cate unitati trebuie sa vinzi pana cand iti acoperi costurile fixe. Din acest motiv este util in business, dar si in proiecte mici sau produse noi.\n\nFormula de baza porneste de la contributia pe unitate, adica diferenta dintre pretul de vanzare si costul variabil direct. Cand aceasta contributie este mica, pragul urca repede si modelul devine mai greu de sustinut.\n\nBreak-even-ul nu spune totul despre business, dar este foarte bun ca filtru rapid. Iti arata daca un scenariu are macar o baza rezonabila inainte sa mergi mai departe in forecast-uri optimiste.\n\nIn combinatie cu marja si ROI-ul, calculatorul devine si mai util. Un produs poate avea marja acceptabila, dar sa aiba nevoie de un volum greu de atins ca sa iasa din pierdere.\n\nDe aceea, pentru clusterul business, break-even-ul este una dintre piesele centrale.",
+    content: "Pragul de rentabilitate este unul dintre acele calcule care simplifica foarte bine o intrebare importanta: cate unitati trebuie sa vinzi pana cand iti acoperi costurile fixe. Din acest motiv este util in business, dar si in proiecte mici sau produse noi.\n\nFormula de baza porneste de la contributia pe unitate, adica diferenta dintre pretul de vanzare si costul variabil direct. Cand aceasta contributie este mica, pragul urca repede si modelul devine mai greu de sustinut.\n\nBreak-even-ul nu spune totul despre business, dar este foarte bun ca filtru rapid. Iti arata daca un scenariu are macar o baza rezonabila inainte sa mergi mai departe in forecast-uri optimiste.\n\nIn combinatie cu marja si ROI-ul, calculatorul devine si mai util. Un produs poate avea marja acceptabila, dar sa aiba nevoie de un volum greu de atins ca sa iasa din pierdere.\n\nDe aceea, pentru orice decizie comerciala, break-even-ul este unul dintre calculele centrale.",
     articleType: "guide",
     relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["break-even", "profit-margin", "roi"],
@@ -3102,7 +3103,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-evaluezi-un-roi-fara-sa-fortezi-cifrele",
     title: "Cum evaluezi un ROI fara sa fortezi cifrele doar ca sa iasa bine pe hartie",
     excerpt: "ROI-ul este foarte util pentru comparatii rapide, dar devine periculos daca ignori timpul, riscul si costurile ascunse.",
-    content: "ROI-ul este popular pentru ca rezuma repede rentabilitatea unei investitii intr-un singur procent. Tocmai de aceea este foarte util pentru comparatii rapide intre scenarii sau proiecte.\n\nProblema apare atunci cand procentul este folosit fara context. Doua investitii pot avea acelasi ROI, dar una poate cere mult mai mult timp, risc sau capital blocat. In aceste cazuri, procentul singur devine prea simplificator.\n\nTotusi, ca prim filtru, ROI-ul este excelent. Iti arata profitul net raportat la suma investita si te ajuta sa respingi rapid scenarii slabe sau sa compari optiuni apropiate.\n\nPentru decizii mai bune, merita sa il folosesti alaturi de marja, break-even si, uneori, cash flow. Asa obtii nu doar un procent frumos, ci si o imagine mai stabila asupra investitiei.\n\nIn produsul nostru, ROI-ul este un calculator foarte bun pentru a ancora clusterul business spre cautari mai strategice si mai comerciale.",
+    content: "ROI-ul este popular pentru ca rezuma repede rentabilitatea unei investitii intr-un singur procent. Tocmai de aceea este foarte util pentru comparatii rapide intre scenarii sau proiecte.\n\nProblema apare atunci cand procentul este folosit fara context. Doua investitii pot avea acelasi ROI, dar una poate cere mult mai mult timp, risc sau capital blocat. In aceste cazuri, procentul singur devine prea simplificator.\n\nTotusi, ca prim filtru, ROI-ul este excelent. Iti arata profitul net raportat la suma investita si te ajuta sa respingi rapid scenarii slabe sau sa compari optiuni apropiate.\n\nPentru decizii mai bune, merita sa il folosesti alaturi de marja, break-even si, uneori, cash flow. Asa obtii nu doar un procent frumos, ci si o imagine mai stabila asupra investitiei.\n\nFoloseste-l ca prim filtru rapid, apoi treci la marja si break-even pentru o imagine completa a deciziei.",
     articleType: "guide",
     relatedCategorySlug: "afaceri",
     relatedCalculatorKeys: ["roi", "break-even", "profit-margin"],
@@ -3135,7 +3136,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-calculezi-discountul-real",
     title: "Cum calculezi discountul real si de ce procentul afisat nu spune mereu toata povestea",
     excerpt: "Promotiile suna bine in procente, dar decizia buna vine din pretul final si din comparatia cu baza reala.",
-    content: "Discountul este unul dintre cele mai cautate calcule comerciale pentru ca pare foarte simplu si foarte intuitiv. Totusi, in practica, utilizatorii se pot lasa pacaliti usor de felul in care este prezentat procentul.\n\nUn discount de 20% este relevant doar daca stii pretul initial real si poti compara pretul final cu alternativele. Daca baza initiala este umflata sau daca apar costuri suplimentare, procentul in sine devine mai putin important.\n\nCalculatorul de discount are rolul bun de a transforma procentul intr-o suma concreta. Asta ajuta mult in achizitii, oferte, pricing intern si verificarea rapida a unei promotii. Pentru firme mici, utilitatea este la fel de clara in negociere sau in scenarii de marja.\n\nLegatura cu procent invers si TVA este fireasca. Uneori nu vrei doar pretul final, ci si pretul de plecare sau comparatia intre net si brut. De aceea acest calculator sta bine intr-un cluster financiar mai larg.\n\nPe scurt, discountul real nu se judeca doar dupa procentul afisat. Se judeca dupa baza folosita, suma economisita si pretul final obtinut.",
+    content: "Discountul este unul dintre cele mai cautate calcule comerciale pentru ca pare foarte simplu si foarte intuitiv. Totusi, in practica, utilizatorii se pot lasa pacaliti usor de felul in care este prezentat procentul.\n\nUn discount de 20% este relevant doar daca stii pretul initial real si poti compara pretul final cu alternativele. Daca baza initiala este umflata sau daca apar costuri suplimentare, procentul in sine devine mai putin important.\n\nCalculatorul de discount are rolul bun de a transforma procentul intr-o suma concreta. Asta ajuta mult in achizitii, oferte, pricing intern si verificarea rapida a unei promotii. Pentru firme mici, utilitatea este la fel de clara in negociere sau in scenarii de marja.\n\nLegatura cu procent invers si TVA este fireasca. Uneori nu vrei doar pretul final, ci si pretul de plecare sau comparatia intre net si brut. De aceea merita sa il folosesti impreuna cu celelalte calculatoare financiare, nu izolat.\n\nPe scurt, discountul real nu se judeca doar dupa procentul afisat. Se judeca dupa baza folosita, suma economisita si pretul final obtinut.",
     articleType: "guide",
     relatedCategorySlug: "finante",
     relatedCalculatorKeys: ["discount", "reverse-percentage", "percentage-of-number"],
@@ -3146,7 +3147,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "tva-inclus-vs-tva-exclus",
     title: "TVA inclus vs TVA exclus: cum gandesti corect cand treci de la net la brut si inapoi",
     excerpt: "TVA-ul pare banal pana cand lucrezi cu suma gresita. Diferenta dintre net si brut merita inteleasa clar.",
-    content: "TVA-ul este un calcul simplu doar pana in momentul in care nu mai stii daca suma de la care pleci este neta sau bruta. Exact aici apar multe erori practice, mai ales in oferte, facturi si comparatii rapide de pret.\n\nDaca pleci de la suma fara TVA, ai nevoie de calculatorul clasic de TVA. Daca pleci de la totalul cu TVA inclus, trebuie sa lucrezi invers si sa separi componenta fiscala de baza neta. Cele doua scenarii folosesc formule diferite si nu se pot amesteca.\n\nPentru utilizatori individuali, asta inseamna preturi si comparatii mai curate. Pentru firme mici, inseamna verificari mai rapide si mai putine confuzii in lucru zilnic.\n\nCa produs editorial, TVA-ul este o pagina foarte bună pentru ca uneste intentia answer-first cu nevoia de clarificare. Utilizatorul nu vrea doar o cifră, ci și certitudinea că lucrează cu suma corectă.\n\nDe aceea merită să tratăm netul și brutul ca două pagini surori și să le legăm natural de procente, discount și calcule comerciale.",
+    content: "TVA-ul este un calcul simplu doar pana in momentul in care nu mai stii daca suma de la care pleci este neta sau bruta. Exact aici apar multe erori practice, mai ales in oferte, facturi si comparatii rapide de pret.\n\nDaca pleci de la suma fara TVA, ai nevoie de calculatorul clasic de TVA. Daca pleci de la totalul cu TVA inclus, trebuie sa lucrezi invers si sa separi componenta fiscala de baza neta. Cele doua scenarii folosesc formule diferite si nu se pot amesteca.\n\nPentru utilizatori individuali, asta inseamna preturi si comparatii mai curate. Pentru firme mici, inseamna verificari mai rapide si mai putine confuzii in lucru zilnic.\n\nTVA-ul e util tocmai pentru ca raspunde repede, dar iti da si claritatea de care ai nevoie. Nu vrei doar o cifră, ci și certitudinea că lucrezi cu suma corectă.\n\nDe aceea merită să tratăm netul și brutul ca două pagini surori și să le legăm natural de procente, discount și calcule comerciale.",
     articleType: "comparison",
     relatedCategorySlug: "finante",
     relatedCalculatorKeys: ["vat", "reverse-vat", "percentage-of-number"],
@@ -3179,7 +3180,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-estimezi-un-obiectiv-de-economisire",
     title: "Cum estimezi un obiectiv de economisire pornind de la termen, nu doar de la suma dorita",
     excerpt: "Tinta finala este doar o parte din calcul. Ritmul lunar si termenul schimba complet fezabilitatea planului.",
-    content: "Mulți utilizatori pornesc de la suma pe care vor să o strângă și abia apoi descoperă că termenul ales face diferența dintre un plan realist și unul foarte tensionat. De aceea calculatorul de obiectiv economisire este util tocmai pentru această verificare rapidă.\n\nDacă știi suma finală și perioada, poți vedea imediat ritmul lunar necesar. Apoi poți ajusta termenul, dobânda sau valoarea țintei până când planul devine sustenabil.\n\nAici apare și valoarea editorială a paginii: nu afișează doar o contribuție lunară, ci te ajută să gândești mai realist relația dintre dorință, timp și disciplină financiară. Pentru un avans, un fond de urgență sau o achiziție mare, asta contează mult.\n\nLegătura cu economiile lunare și dobânda compusă este naturală. Uneori pleci de la ritmul lunar și vezi unde ajungi; alteori pleci de la țintă și vezi cât trebuie să pui deoparte.\n\nAcesta este motivul pentru care pagina merită construită ca parte dintr-un mini-cluster financiar, nu ca un calculator izolat.",
+    content: "Mulți utilizatori pornesc de la suma pe care vor să o strângă și abia apoi descoperă că termenul ales face diferența dintre un plan realist și unul foarte tensionat. De aceea calculatorul de obiectiv economisire este util tocmai pentru această verificare rapidă.\n\nDacă știi suma finală și perioada, poți vedea imediat ritmul lunar necesar. Apoi poți ajusta termenul, dobânda sau valoarea țintei până când planul devine sustenabil.\n\nUtilitatea reala nu sta doar in contribuția lunară afișată, ci te ajută să gândești mai realist relația dintre dorință, timp și disciplină financiară. Pentru un avans, un fond de urgență sau o achiziție mare, asta contează mult.\n\nLegătura cu economiile lunare și dobânda compusă este naturală. Uneori pleci de la ritmul lunar și vezi unde ajungi; alteori pleci de la țintă și vezi cât trebuie să pui deoparte.\n\nDe aceea merită să il folosești impreuna cu economiile lunare și dobânda compusă, nu izolat.",
     articleType: "guide",
     relatedCategorySlug: "finante",
     relatedCalculatorKeys: ["savings-goal", "monthly-savings", "compound-interest"],
@@ -3227,7 +3228,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cate-ore-lucrezi-intr-o-luna-de-fapt",
     title: "Cate ore lucrezi intr-o luna de fapt si de ce raspunsul conteaza mai mult decat pare",
     excerpt: "Numarul de ore lucrate schimba comparatia dintre oferte, tarife si asteptari de volum. Iata cum il folosesti corect.",
-    content: "Multi utilizatori pornesc de la ideea ca o luna inseamna acelasi numar de ore de fiecare data. In practica, zilele lucratoare variaza, iar asta schimba imediat orice comparatie care depinde de timpul efectiv lucrat.\n\nCalculatorul de ore lucrate pe luna este foarte simplu, dar tocmai de aceea util. El iti ofera baza de care ai nevoie pentru a transforma salariul intr-un tarif orar, pentru a compara doua programe sau pentru a intelege mai bine volumul lunar de munca.\n\nIn plus, este un calculator bun pentru decizii de planning. Daca stii cate ore apar in luna curenta, poti construi mai realist scenarii despre venit, cost orar sau distributia timpului intre activitati.\n\nMerita totusi sa privesti rezultatul cu un pic de prudenta. Turele, orele suplimentare, concediile sau zilele libere suplimentare pot schimba imaginea finala.\n\nCa pagina de produs, acest calculator functioneaza bine cand este conectat de tarif orar, venit anual si crestere salariala. Singur este simplu; in cluster devine un reper foarte util pentru decizie.",
+    content: "Multi utilizatori pornesc de la ideea ca o luna inseamna acelasi numar de ore de fiecare data. In practica, zilele lucratoare variaza, iar asta schimba imediat orice comparatie care depinde de timpul efectiv lucrat.\n\nCalculatorul de ore lucrate pe luna este foarte simplu, dar tocmai de aceea util. El iti ofera baza de care ai nevoie pentru a transforma salariul intr-un tarif orar, pentru a compara doua programe sau pentru a intelege mai bine volumul lunar de munca.\n\nIn plus, este un calculator bun pentru decizii de planning. Daca stii cate ore apar in luna curenta, poti construi mai realist scenarii despre venit, cost orar sau distributia timpului intre activitati.\n\nMerita totusi sa privesti rezultatul cu un pic de prudenta. Turele, orele suplimentare, concediile sau zilele libere suplimentare pot schimba imaginea finala.\n\nAcest calculator functioneaza si mai bine cand il combini cu tariful orar, venitul anual si cresterea salariala. Singur e simplu; impreuna cu celelalte devine un reper foarte util pentru decizie.",
     articleType: "explainer",
     relatedCategorySlug: "salarii-si-taxe",
     relatedCalculatorKeys: ["monthly-work-hours", "hourly-rate", "annual-income"],
@@ -3253,7 +3254,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-estimezi-venitul-anual-fara-sa-amesteci-bonusurile-cu-salariul",
     title: "Cum estimezi venitul anual fara sa amesteci bonusurile cu salariul lunar",
     excerpt: "Venitul anual clarifica mult mai bine comparatiile atunci cand bonusurile si lunile suplimentare fac parte din pachet.",
-    content: "Venitul lunar este util pentru ritmul zilnic al bugetului, dar nu este intotdeauna suficient atunci cand vrei sa compari doua oferte sau sa planifici realist anul urmator.\n\nIn multe cazuri apar bonusuri, prime, a 13-a luna sau alte componente care schimba imaginea finala. Daca le amesteci direct cu salariul lunar, comparatia devine mai confuza, nu mai clara.\n\nCalculatorul de venit anual este folositor tocmai pentru ca separa aceste elemente si le aduce la un numitor comun: totalul pe an. Din acel moment devine mai usor sa compari doua scenarii salariale, doua roluri sau doua structuri diferite de compensare.\n\nMai mult, venitul anual este un punct de pornire bun si pentru planificare. Il poti conecta de cresterea salariala, de taxare efectiva sau de obiective financiare mai mari.\n\nCa produs editorial, aceasta pagina este valoroasa pentru ca nu ofera doar un total. Te invata sa compari mai corect si sa vezi dincolo de suma lunara afisata prima data intr-o oferta.",
+    content: "Venitul lunar este util pentru ritmul zilnic al bugetului, dar nu este intotdeauna suficient atunci cand vrei sa compari doua oferte sau sa planifici realist anul urmator.\n\nIn multe cazuri apar bonusuri, prime, a 13-a luna sau alte componente care schimba imaginea finala. Daca le amesteci direct cu salariul lunar, comparatia devine mai confuza, nu mai clara.\n\nCalculatorul de venit anual este folositor tocmai pentru ca separa aceste elemente si le aduce la un numitor comun: totalul pe an. Din acel moment devine mai usor sa compari doua scenarii salariale, doua roluri sau doua structuri diferite de compensare.\n\nMai mult, venitul anual este un punct de pornire bun si pentru planificare. Il poti conecta de cresterea salariala, de taxare efectiva sau de obiective financiare mai mari.\n\nUtilitatea reala nu sta doar in totalul afisat. Te ajuta sa compari mai corect si sa vezi dincolo de suma lunara afisata prima data intr-o oferta.",
     articleType: "guide",
     relatedCategorySlug: "salarii-si-taxe",
     relatedCalculatorKeys: ["annual-income", "salary-increase", "effective-tax-rate"],
@@ -3318,7 +3319,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "cum-planifici-economii-pe-termen-lung-pentru-obiective-mari",
     title: "Cum planifici economii pe termen lung pentru obiective mari fara sa te bazezi doar pe optimism",
     excerpt: "Cand obiectivul este mare, ai nevoie de ritm, termen si un scenariu mai realist decat pare la prima vedere.",
-    content: "Obiectivele financiare mari par descurajante tocmai pentru ca distanta dintre situatia actuala si suma finala este mare. Din acest motiv, multi oameni ori nu incep deloc, ori pornesc cu un plan prea optimist ca sa fie sustenabil.\n\nCalculatorul de termen pentru obiectiv de economisire si cel de dobanda economii ajuta exact aici. Unul iti spune in cat timp ajungi la tinta, celalalt iti arata cum se schimba rezultatul cand adaugi constanta si randament.\n\nValoarea lor reala nu este doar in cifra finala, ci in faptul ca iti permit sa schimbi usor variabilele si sa vezi ce este realist. Poate ca nu trebuie sa dublezi contributia lunara; poate este suficient sa extinzi termenul sau sa separi mai clar obiectivele.\n\nPentru produsul nostru, aceste pagini merita sa formeze un mini-cluster coerent alaturi de fondul de urgenta si economiile pentru pensie. Acolo incepe cu adevarat zona de decision support financiar.\n\nUn plan bun de economisire pe termen lung nu este cel mai spectaculos din prima zi, ci cel pe care il poti tine si ajusta fara sa te rupi de realitate dupa primele luni.",
+    content: "Obiectivele financiare mari par descurajante tocmai pentru ca distanta dintre situatia actuala si suma finala este mare. Din acest motiv, multi oameni ori nu incep deloc, ori pornesc cu un plan prea optimist ca sa fie sustenabil.\n\nCalculatorul de termen pentru obiectiv de economisire si cel de dobanda economii ajuta exact aici. Unul iti spune in cat timp ajungi la tinta, celalalt iti arata cum se schimba rezultatul cand adaugi constanta si randament.\n\nValoarea lor reala nu este doar in cifra finala, ci in faptul ca iti permit sa schimbi usor variabilele si sa vezi ce este realist. Poate ca nu trebuie sa dublezi contributia lunara; poate este suficient sa extinzi termenul sau sa separi mai clar obiectivele.\n\nMerita sa le folosesti impreuna cu calculatorul de fond de urgenta si cel de economii pentru pensie, ca sa vezi intreg tabloul financiar, nu doar o bucata din el.\n\nUn plan bun de economisire pe termen lung nu este cel mai spectaculos din prima zi, ci cel pe care il poti tine si ajusta fara sa te rupi de realitate dupa primele luni.",
     articleType: "guide",
     relatedCategorySlug: "credite-si-economii",
     relatedCalculatorKeys: ["goal-timeline", "savings-interest", "retirement-savings"],
@@ -3331,7 +3332,7 @@ const articleSeeds: ArticleSeed[] = [
     slug: "leasing-vs-credit-cum-compari-corect-doua-scenarii-de-finantare",
     title: "Leasing vs credit: cum compari corect doua scenarii de finantare fara sa te blochezi in rata lunara",
     excerpt: "Leasingul si creditul pot parea apropiate la nivel de rata, dar costul total si flexibilitatea conteaza la fel de mult.",
-    content: "Comparatia dintre leasing si credit este una dintre cele mai interesante pentru ca ambele produse pot rezolva aceeasi nevoie, dar o fac in moduri diferite. De aceea utilizatorul nu are nevoie doar de o formula, ci de o comparatie structurata bine.\n\nCalculatorul de leasing vs credit face un prim pas bun: pune in aceeasi imagine avansul, rata lunara, perioada si costul final. Astfel vezi rapid care scenariu este mai ieftin in forma lui cea mai simpla.\n\nTotusi, o decizie buna nu se opreste aici. In practica intervin fiscalitatea, proprietatea finala, valoarea reziduala, flexibilitatea operationala si profilul utilizatorului. Exact de aceea pagina trebuie construita ca instrument de comparatie initiala, nu ca verdict unic.\n\nValoarea editoriala mare vine din faptul ca utilizatorul ajunge natural apoi la cost total credit, la avans si la rata suportabila. Acolo se leaga frumos si clusterul credite-si-economii.\n\nDaca vrei sa compari corect doua scenarii de finantare, incepe cu costul total, dar nu uita sa citesti si ce tip de obligatie iti asumi pe toata perioada contractului.",
+    content: "Comparatia dintre leasing si credit este una dintre cele mai interesante pentru ca ambele produse pot rezolva aceeasi nevoie, dar o fac in moduri diferite. De aceea utilizatorul nu are nevoie doar de o formula, ci de o comparatie structurata bine.\n\nCalculatorul de leasing vs credit face un prim pas bun: pune in aceeasi imagine avansul, rata lunara, perioada si costul final. Astfel vezi rapid care scenariu este mai ieftin in forma lui cea mai simpla.\n\nTotusi, o decizie buna nu se opreste aici. In practica intervin fiscalitatea, proprietatea finala, valoarea reziduala, flexibilitatea operationala si profilul utilizatorului. Exact de aceea pagina trebuie construita ca instrument de comparatie initiala, nu ca verdict unic.\n\nDe aici merita sa continui natural cu costul total al creditului, avansul si rata suportabila, ca sa vezi toata imaginea, nu doar comparatia initiala.\n\nDaca vrei sa compari corect doua scenarii de finantare, incepe cu costul total, dar nu uita sa citesti si ce tip de obligatie iti asumi pe toata perioada contractului.",
     articleType: "comparison",
     relatedCategorySlug: "credite-si-economii",
     relatedCalculatorKeys: ["lease-vs-loan", "loan-total-cost", "down-payment"],
@@ -3976,7 +3977,41 @@ const bootstrapRedirects = async (payload: Payload, force: boolean) => {
   return getCounterSummary(results);
 };
 
+const seoBodyIntroPool: ReadonlyArray<
+  (title: string, formulaName: string, audience: string) => string
+> = [
+  (title, formulaName, audience) =>
+    `${title} iti da un raspuns rapid, calculat cu ${formulaName.toLowerCase()}, insotit de explicatia de unde vine cifra si de context ca sa stii cand o poti folosi cu incredere. E util mai ales ${audience}.`,
+  (title, formulaName, audience) =>
+    `Cu ${title.toLowerCase()} obtii direct rezultatul, dar pagina merge un pas mai departe si arata si logica din spate: formula (${formulaName.toLowerCase()}) si ${audience}.`,
+  (title, formulaName, audience) =>
+    `${title} foloseste ${formulaName.toLowerCase()} ca sa iti arate rapid rezultatul, fara sa te lase doar cu o cifra goala pe ecran - explicam si de unde vine, si ${audience}.`,
+  (title, formulaName, audience) =>
+    `Cand ai nevoie de un raspuns rapid, ${title.toLowerCase()} il ofera direct, calculat prin ${formulaName.toLowerCase()}. Pagina explica insa si contextul practic: ${audience}.`,
+];
+
+const seoBodyVerifyPool: ReadonlyArray<
+  (example: string, interpretationNotes: string) => string
+> = [
+  (example, interpretationNotes) =>
+    `Pentru un rezultat relevant, verifica unitatile introduse si foloseste valori realiste - un numar gresit la intrare da un rezultat gresit, oricat de corecta ar fi formula. ${example} La fel de important e ce faci cu rezultatul: ${interpretationNotes}`,
+  (example, interpretationNotes) =>
+    `Rezultatul e doar atat de bun pe cat sunt datele introduse, asa ca merita sa verifici valorile inainte sa tragi o concluzie. ${example} Iar dupa calcul: ${interpretationNotes}`,
+  (example, interpretationNotes) =>
+    `${example} Un calcul corect matematic nu inseamna insa automat o concluzie corecta - conteaza si cum citesti rezultatul. ${interpretationNotes}`,
+  (example, interpretationNotes) =>
+    `Inainte sa te bazezi pe cifra afisata, verifica daca valorile introduse reflecta situatia ta reala, nu un scenariu aproximativ. ${example} ${interpretationNotes}`,
+];
+
+const seoBodyClosingPool: ReadonlyArray<string> = [
+  "",
+  " Daca vrei sa aprofundezi subiectul, paginile de mai jos completeaza bine acest calcul.",
+  " Impreuna cu instrumentele de mai sus, poti privi rezultatul dintr-un unghi mai complet.",
+  " Restul paginilor din aceeasi zona te ajuta sa completezi tabloul, nu doar cifra izolata.",
+];
+
 const buildCalculatorSeoBody = (
+  key: CalculatorKey,
   definition: ReturnType<typeof getCalculatorDefinition>,
   meta: CalculatorMeta
 ) => {
@@ -4000,26 +4035,89 @@ const buildCalculatorSeoBody = (
     : "";
 
   return [
-    `${definition.title} este construit pentru situatiile in care vrei un raspuns rapid, dar si suficient context ca sa nu ramai doar cu o cifra afisata pe ecran. Formula folosita aici este ${definition.formulaName}, iar pagina explica pe scurt de unde vine rezultatul si in ce scenarii este util. In practica, acest tip de calcul apare ${categoryFrame.audience}, motiv pentru care am pastrat pagina simpla la nivel de UX, dar mai bogata in continut editorial.`,
-    `Ca sa obtii un rezultat relevant, merita sa verifici unitatile introduse, sa completezi campurile cu valori realiste si sa refaci scenariul ori de cate ori datele se schimba. ${meta.example} Dupa calcul, interpretarea rezultatului conteaza la fel de mult ca formula in sine: ${meta.interpretationNotes} Tocmai de aceea pagina include exemple, intrebari frecvente si explicatii care reduc riscul de interpretare prea rapida sau prea simplista.`,
-    `${categoryFrame.caution} ${categoryFrame.linkingLead}${relatedToolsSentence}${relatedArticlesSentence} In felul acesta, pagina nu functioneaza doar ca un tool izolat, ci ca o parte dintr-un hub SEO in care utilizatorul poate aprofunda usor subiectul si poate ajunge la alte raspunsuri complementare.`,
+    pick(`${key}-seo-p1`, seoBodyIntroPool)(
+      definition.title,
+      definition.formulaName,
+      categoryFrame.audience
+    ),
+    pick(`${key}-seo-p2`, seoBodyVerifyPool)(meta.example, meta.interpretationNotes),
+    `${categoryFrame.caution} ${categoryFrame.linkingLead}${relatedToolsSentence}${relatedArticlesSentence}${pick(`${key}-seo-p3`, seoBodyClosingPool)}`,
   ].join("\n\n");
 };
 
+const storyTitlePool: ReadonlyArray<(title: string) => string> = [
+  (title) => `Cum folosesti ${title.toLowerCase()} fara sa ramai doar la cifra finala`,
+  (title) => `Ce sa faci dupa ce ${title.toLowerCase()} iti da rezultatul`,
+  (title) => `${title}: de la formula la o decizie concreta`,
+];
+
+const storyBodyPool: ReadonlyArray<string> = [
+  " Cifra afisata e doar inceputul - urmatorul pas e sa o compari, sa o verifici sau sa decizi ceva pe baza ei.",
+  " Foloseste rezultatul ca punct de plecare pentru o comparatie sau o decizie, nu ca raspuns final in sine.",
+  " Odata ce ai rezultatul, urmatoarea intrebare fireasca e ce faci cu el - de-aia pagina continua cu exemple si context, nu se opreste la cifra.",
+];
+
+const factsIntroPool: ReadonlyArray<string> = [
+  "Formula rezolva calculul instant, dar exemplele si explicatiile de mai jos te ajuta sa citesti corect rezultatul.",
+  "Rezultatul apare imediat; partea utila vine din cum il interpretezi, nu doar din cifra in sine.",
+  "Calculul e rapid, insa merita cateva secunde in plus pentru context inainte sa te bazezi pe el.",
+];
+
+const inputFieldDetailPool: ReadonlyArray<string> = [
+  "Campurile sunt gandite sa fie usor de completat pe mobil si desktop, fara pasi inutili.",
+  "Le completezi in cateva secunde, fara informatii de care nu ai nevoie.",
+];
+
+const outputFieldDetailPool: ReadonlyArray<string> = [
+  "Rezultatul principal e insotit de unitati clare si de o explicatie pentru interpretare.",
+  "Fiecare rezultat vine cu unitatea de masura si o scurta explicatie, nu doar o cifra goala.",
+];
+
+const categoryFactDetailPool: ReadonlyArray<(categoryName: string) => string> = [
+  (categoryName) => `Il gasesti in categoria ${categoryName.toLowerCase()}, alaturi de alte calculatoare din aceeasi zona.`,
+  (categoryName) => `Face parte din categoria ${categoryName.toLowerCase()}, utila daca vrei sa compari mai multe unghiuri ale aceleiasi decizii.`,
+];
+
+const relatedCalculatorDescriptionPool: ReadonlyArray<(title: string) => string> = [
+  (title) => `Completeaza analiza cu ${title.toLowerCase()}.`,
+  (title) => `Merita comparat si cu ${title.toLowerCase()} pentru o imagine mai completa.`,
+  (title) => `Un pas firesc urmator: ${title.toLowerCase()}.`,
+];
+
+const categoryHubDescriptionPool: ReadonlyArray<(categoryName: string) => string> = [
+  (categoryName) => `Aici gasesti toate calculatoarele din ${categoryName.toLowerCase()}.`,
+  (categoryName) => `Vezi restul calculatoarelor din categoria ${categoryName.toLowerCase()}.`,
+];
+
+const allCalculatorsDescriptionPool: ReadonlyArray<string> = [
+  "Lista completa, daca vrei sa cauti alt tip de calcul.",
+  "Util daca vrei sa navighezi direct spre alt calculator.",
+];
+
+const linksBlockIntroPool: ReadonlyArray<string> = [
+  "Linkurile de mai jos sunt alese sa completeze rezultatul de mai sus, nu doar recomandari la intamplare.",
+  "Daca vrei sa mergi mai departe cu subiectul, astea sunt urmatoarele pagini utile.",
+  "Continua cu paginile de mai jos daca ai nevoie de mai mult context sau de o comparatie.",
+];
+
 const buildCalculatorBlocks = (
+  key: CalculatorKey,
   definition: ReturnType<typeof getCalculatorDefinition>,
   meta: CalculatorMeta
 ) => {
   const categoryName =
     categorySeeds.find((seed) => seed.slug === definition.categorySlug)?.name ??
     definition.categorySlug.replace(/-/g, " ");
-  const calculatorLinks = (meta.relatedCalculatorKeys ?? []).map((relatedKey) => {
+  const calculatorLinks = (meta.relatedCalculatorKeys ?? []).map((relatedKey, index) => {
     const relatedDefinition = getCalculatorDefinition(relatedKey);
 
     return {
       label: relatedDefinition.title,
       href: `/calculatoare/${relatedDefinition.categorySlug}/${relatedDefinition.slug}`,
-      description: `Completeaza analiza cu ${relatedDefinition.title.toLowerCase()} si mergi mai departe pe aceeasi intentie de cautare.`,
+      description: pick(
+        `${key}-rel-${index}`,
+        relatedCalculatorDescriptionPool
+      )(relatedDefinition.title),
     };
   });
 
@@ -4031,7 +4129,7 @@ const buildCalculatorBlocks = (
       href: `/blog/${slug}`,
       description:
         article?.excerpt ??
-        "Articol explicativ pentru utilizatorii care vor mai mult context decat formula de baza.",
+        "Articol explicativ pentru cititorii care vor mai mult context decat formula de baza.",
     };
   });
 
@@ -4041,14 +4139,12 @@ const buildCalculatorBlocks = (
     {
       label: `Toate calculatoarele din ${categoryName}`,
       href: `/calculatoare/${definition.categorySlug}`,
-      description:
-        "Hub-ul de categorie grupeaza tool-uri apropiate semantic si intareste linking-ul intern din acelasi cluster.",
+      description: pick(`${key}-hub`, categoryHubDescriptionPool)(categoryName),
     },
     {
       label: "Vezi toate calculatoarele",
       href: "/calculatoare",
-      description:
-        "Indexul general este util pentru navigare, descoperire si distribuirea autoritatii interne spre paginile importante.",
+      description: pick(`${key}-all`, allCalculatorsDescriptionPool),
     },
   ].slice(0, 6);
 
@@ -4056,35 +4152,31 @@ const buildCalculatorBlocks = (
     {
       blockType: "story",
       eyebrow: "Context util",
-      title: `Cum folosesti ${definition.title.toLowerCase()} fara sa ramai doar la cifra finala`,
-      body: `${definition.formulaDescription} Scopul paginii este sa ofere un raspuns rapid, dar si context practic pentru urmatorul pas: comparatie, estimare, decizie sau verificare.`,
+      title: pick(`${key}-story-title`, storyTitlePool)(definition.title),
+      body: `${definition.formulaDescription}${pick(`${key}-story-body`, storyBodyPool)}`,
       tone: "mist",
     },
     {
       blockType: "facts",
       eyebrow: "Dintr-o privire",
       title: "Ce merita sa urmaresti pe aceasta pagina",
-      intro:
-        "Formula rezolva calculul instant, dar valoarea SEO vine din claritate, exemple si din legaturile spre alte pagini relevante.",
+      intro: pick(`${key}-facts-intro`, factsIntroPool),
       tone: "sand",
       items: [
         {
           value: String(definition.inputs.length),
           label: "campuri de intrare",
-          detail:
-            "Campurile sunt gandite sa fie usor de completat pe mobil si desktop, fara pasi inutili.",
+          detail: pick(`${key}-facts-inputs`, inputFieldDetailPool),
         },
         {
           value: String(definition.outputs.length),
           label: "rezultate afisate",
-          detail:
-            "Rezultatul principal este insotit de unitati clare si de explicatii pentru interpretare.",
+          detail: pick(`${key}-facts-outputs`, outputFieldDetailPool),
         },
         {
-          value: definition.categorySlug,
-          label: "cluster tematic",
-          detail:
-            "Pagina este ancorata intr-o categorie care ajuta la linking intern si la dezvoltarea content hub-ului.",
+          value: categoryName,
+          label: "categorie",
+          detail: pick(`${key}-facts-category`, categoryFactDetailPool)(categoryName),
         },
       ],
     },
@@ -4097,10 +4189,9 @@ const buildCalculatorBlocks = (
   if (linkItems.length >= 2) {
     blocks.push({
       blockType: "links",
-      eyebrow: "Internal linking",
-      title: "Continua natural spre pagini utile din acelasi hub",
-      intro:
-        "Linkurile de mai jos sunt alese ca extensii firesti ale intentiei de cautare, nu doar ca recomandari generice.",
+      eyebrow: "Continua lectura",
+      title: "Pagini utile din acelasi subiect",
+      intro: pick(`${key}-links-intro`, linksBlockIntroPool),
       tone: "night",
       items: linkItems,
     });
@@ -4114,7 +4205,7 @@ const buildCategoryBlocks = (seed: CategorySeed) => [
     blockType: "story",
     eyebrow: `Categorie: ${seed.name}`,
     title: `Hub-ul ${seed.name.toLowerCase()} trebuie sa combine raspunsul rapid cu contextul util.`,
-    body: `${seed.introContent} Internal linking-ul dintre calculatoare si articole este parte din produs, nu un artificiu de final.`,
+    body: `${seed.introContent} Calculatoarele si articolele de mai jos se completeaza intre ele, nu functioneaza izolat.`,
     tone: "night",
   },
 ];
@@ -4249,7 +4340,7 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       formulaReference: formulaMap.get(key),
       shortDescription: meta.shortDescription,
       intro: meta.intro,
-      seoBody: buildCalculatorSeoBody(definition, meta),
+      seoBody: buildCalculatorSeoBody(key, definition, meta),
       interpretationNotes: meta.interpretationNotes,
       examples: (meta.examples ?? [{ title: "Exemplu de calcul", narrative: meta.example }]).map(
         (example) => ({
@@ -4274,7 +4365,7 @@ const bootstrapCalculators = async (payload: Payload, force: boolean) => {
       editorialCompletion: computeEditorialCompletion(
         buildEditorialChecklistSeed(publishCalculator ? "published" : "ready_for_review"),
       ),
-      contentBlocks: buildCalculatorBlocks(definition, meta),
+      contentBlocks: buildCalculatorBlocks(key, definition, meta),
       seo: buildSeoPayload({
         metaTitle: meta.seo?.metaTitle ?? `${definition.title} online`,
         metaDescription: meta.seo?.metaDescription ?? meta.shortDescription,
@@ -4456,6 +4547,85 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
           .filter(Boolean),
       },
     });
+  }
+
+  return getCounterSummary(results);
+};
+
+// Targeted refresh for calculator content that's generated from templates
+// (seoBody, contentBlocks, faq) - does NOT touch title, category, dates,
+// editorial status, or any hand-written meta field. Safe to re-run any time
+// the generator functions above change, without risk to unrelated content.
+export const regenerateCalculatorContent = async (payload: Payload): Promise<CounterSummary> => {
+  const results: SeedItemResult[] = [];
+  const calculators = await payload.find({
+    collection: "calculators",
+    depth: 0,
+    pagination: false,
+    limit: 200,
+    overrideAccess: true,
+  });
+
+  for (const key of CALCULATOR_KEYS) {
+    const definition = getCalculatorDefinition(key);
+    const meta: CalculatorMeta = calculatorMeta[key] ?? buildFallbackCalculatorMeta(key, definition);
+    const doc = calculators.docs.find(
+      (entry) => readStringField(entry as { [key: string]: unknown }, "calculatorKey") === key
+    );
+
+    if (!doc) {
+      results.push({ key, status: "skipped" });
+      continue;
+    }
+
+    await payload.update({
+      collection: "calculators",
+      id: doc.id,
+      overrideAccess: true,
+      draft: false,
+      data: {
+        seoBody: buildCalculatorSeoBody(key, definition, meta),
+        contentBlocks: buildCalculatorBlocks(key, definition, meta),
+        faq: ensureCalculatorFaq(key, meta.faq),
+      },
+    });
+    results.push({ key, status: "updated" });
+  }
+
+  return getCounterSummary(results);
+};
+
+// Targeted refresh for article body text only - re-syncs `content` from
+// articleSeeds without touching publishedAt, author, editorial status or
+// any other field (unlike bootstrapArticles, which resets publishedAt to
+// "now" on every run and would clobber real publish dates).
+export const regenerateArticleContent = async (payload: Payload): Promise<CounterSummary> => {
+  const results: SeedItemResult[] = [];
+
+  for (const seed of articleSeeds) {
+    const existing = await payload.find({
+      collection: "articles",
+      depth: 0,
+      limit: 1,
+      pagination: false,
+      overrideAccess: true,
+      where: { slug: { equals: seed.slug } },
+    });
+    const doc = existing.docs[0];
+
+    if (!doc) {
+      results.push({ key: seed.slug, status: "skipped" });
+      continue;
+    }
+
+    await payload.update({
+      collection: "articles",
+      id: doc.id,
+      overrideAccess: true,
+      draft: false,
+      data: { content: seed.content },
+    });
+    results.push({ key: seed.slug, status: "updated" });
   }
 
   return getCounterSummary(results);
