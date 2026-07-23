@@ -20,7 +20,6 @@ import { recordNotFoundEvent } from "@/lib/routing";
 import { adsConfig } from "@/lib/ads";
 import { getCommercialCta } from "@/lib/commercial-cta";
 import { organizationConfig } from "@/lib/site";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -59,11 +58,8 @@ export default async function BlogArticlePage({ params }: { params: Params }) {
   const article = await getArticleBySlug(slug);
 
   if (!article) {
-    const headerStore = await headers();
     await recordNotFoundEvent({
       path: `/blog/${slug}`,
-      referer: headerStore.get("referer"),
-      userAgent: headerStore.get("user-agent"),
       method: "GET",
       source: "blog-route",
     });

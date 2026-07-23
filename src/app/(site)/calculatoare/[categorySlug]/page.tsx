@@ -19,7 +19,6 @@ import {
 } from "@/lib/seo";
 import { adsConfig } from "@/lib/ads";
 import { recordNotFoundEvent } from "@/lib/routing";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -210,11 +209,8 @@ export default async function CategoryPage({ params }: { params: Params }) {
   const category = await getCategoryBySlug(categorySlug);
 
   if (!category) {
-    const headerStore = await headers();
     await recordNotFoundEvent({
       path: `/calculatoare/${categorySlug}`,
-      referer: headerStore.get("referer"),
-      userAgent: headerStore.get("user-agent"),
       method: "GET",
       source: "category-route",
     });

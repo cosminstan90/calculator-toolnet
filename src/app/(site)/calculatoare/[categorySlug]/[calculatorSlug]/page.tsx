@@ -24,7 +24,6 @@ import { adsConfig } from "@/lib/ads";
 import { getCommercialCta } from "@/lib/commercial-cta";
 import { buildDecisionSupport } from "@/lib/decision-support";
 import { recordNotFoundEvent } from "@/lib/routing";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
@@ -77,11 +76,8 @@ export default async function CalculatorPage({ params }: { params: Params }) {
   const calculator = await getCalculatorByRoute({ categorySlug, calculatorSlug });
 
   if (!calculator) {
-    const headerStore = await headers();
     await recordNotFoundEvent({
       path: `/calculatoare/${categorySlug}/${calculatorSlug}`,
-      referer: headerStore.get("referer"),
-      userAgent: headerStore.get("user-agent"),
       method: "GET",
       source: "calculator-route",
     });
