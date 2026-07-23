@@ -8,6 +8,7 @@ import { EditorialBlocks } from "@/components/editorial-blocks";
 import { JsonLd } from "@/components/json-ld";
 import {
   buildArticlePath,
+  buildAuthorPath,
   buildCalculatorPath,
   getCalculatorByRoute,
   listSuggestedArticlesForCalculator,
@@ -145,6 +146,13 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             applicationCategory: applicationCategoryForSlug(calculator.category?.slug),
             datePublished: calculator.publishedAt,
             dateModified: calculator.updatedAt,
+            author: calculator.reviewer
+              ? {
+                  name: calculator.reviewer.name,
+                  path: buildAuthorPath(calculator.reviewer),
+                  jobTitle: calculator.reviewer.jobTitle,
+                }
+              : undefined,
           }),
           ...(calculator.faq.length > 0 ? [buildFaqJsonLd(calculator.faq)] : []),
         ]}
@@ -162,13 +170,24 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             </div>
             <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">{calculator.title}</h1>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">{calculator.intro}</p>
-            {calculator.publishedAt || calculator.updatedAt ? (
+            {calculator.publishedAt || calculator.updatedAt || calculator.reviewer ? (
               <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-300/85">
                 {calculator.publishedAt ? (
                   <span>Publicat: {formatDate(calculator.publishedAt)}</span>
                 ) : null}
                 {calculator.updatedAt && calculator.updatedAt !== calculator.publishedAt ? (
                   <span>Actualizat: {formatDate(calculator.updatedAt)}</span>
+                ) : null}
+                {calculator.reviewer ? (
+                  <span>
+                    Verificat de{" "}
+                    <Link
+                      href={buildAuthorPath(calculator.reviewer)}
+                      className="underline decoration-white/30 underline-offset-2 hover:text-white"
+                    >
+                      {calculator.reviewer.name}
+                    </Link>
+                  </span>
                 ) : null}
               </div>
             ) : null}

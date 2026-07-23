@@ -195,6 +195,15 @@ export const Calculators: CollectionConfig = {
       relationTo: "formula-library",
     },
     {
+      name: "reviewer",
+      type: "relationship",
+      relationTo: "users",
+      index: true,
+      admin: {
+        description: "Persoana care a verificat formula si claritatea continutului acestei pagini.",
+      },
+    },
+    {
       name: "shortDescription",
       type: "textarea",
       required: true,

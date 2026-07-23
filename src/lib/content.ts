@@ -115,6 +115,7 @@ export type CalculatorDoc = {
   faq: Array<{ question: string; answer: string }>;
   audience: Audience;
   category?: RelationDoc;
+  reviewer?: PublicAuthor;
   relatedCalculators: RelationDoc[];
   relatedArticles: RelationDoc[];
   publishedAt?: string;
@@ -412,6 +413,7 @@ const mapCalculator = (doc: RawDoc): CalculatorDoc => ({
     : [],
   audience: asAudience(doc.audience),
   category: mapRelation(doc.category),
+  reviewer: mapPublicAuthor(asObject<RawDoc>(doc.reviewer) ?? {}),
   relatedCalculators: Array.isArray(doc.relatedCalculators)
     ? doc.relatedCalculators
         .map((item) => mapRelation(item))

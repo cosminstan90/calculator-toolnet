@@ -236,6 +236,11 @@ export const buildWebApplicationJsonLd = (args: {
   applicationCategory: string;
   datePublished?: string;
   dateModified?: string;
+  author?: {
+    name: string;
+    path: string;
+    jobTitle?: string;
+  };
 }) => ({
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -245,6 +250,14 @@ export const buildWebApplicationJsonLd = (args: {
   applicationCategory: args.applicationCategory,
   datePublished: args.datePublished,
   dateModified: args.dateModified ?? args.datePublished,
+  author: args.author
+    ? {
+        "@type": "Person",
+        name: args.author.name,
+        url: absoluteURL(args.author.path),
+        jobTitle: args.author.jobTitle,
+      }
+    : undefined,
   operatingSystem: "All",
   browserRequirements: "Requires JavaScript",
   inLanguage: "ro",
