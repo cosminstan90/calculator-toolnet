@@ -4556,7 +4556,10 @@ const bootstrapArticles = async (payload: Payload, force: boolean) => {
 // (seoBody, contentBlocks, faq) - does NOT touch title, category, dates,
 // editorial status, or any hand-written meta field. Safe to re-run any time
 // the generator functions above change, without risk to unrelated content.
-export const regenerateCalculatorContent = async (payload: Payload): Promise<CounterSummary> => {
+export const regenerateCalculatorContent = async (
+  payload: Payload,
+  onProgress?: (key: string, status: SeedStatus) => void
+): Promise<CounterSummary> => {
   const results: SeedItemResult[] = [];
   const calculators = await payload.find({
     collection: "calculators",
@@ -4575,6 +4578,7 @@ export const regenerateCalculatorContent = async (payload: Payload): Promise<Cou
 
     if (!doc) {
       results.push({ key, status: "skipped" });
+      onProgress?.(key, "skipped");
       continue;
     }
 
@@ -4590,6 +4594,7 @@ export const regenerateCalculatorContent = async (payload: Payload): Promise<Cou
       },
     });
     results.push({ key, status: "updated" });
+    onProgress?.(key, "updated");
   }
 
   return getCounterSummary(results);
@@ -4599,7 +4604,10 @@ export const regenerateCalculatorContent = async (payload: Payload): Promise<Cou
 // articleSeeds without touching publishedAt, author, editorial status or
 // any other field (unlike bootstrapArticles, which resets publishedAt to
 // "now" on every run and would clobber real publish dates).
-export const regenerateArticleContent = async (payload: Payload): Promise<CounterSummary> => {
+export const regenerateArticleContent = async (
+  payload: Payload,
+  onProgress?: (key: string, status: SeedStatus) => void
+): Promise<CounterSummary> => {
   const results: SeedItemResult[] = [];
 
   for (const seed of articleSeeds) {
@@ -4615,6 +4623,7 @@ export const regenerateArticleContent = async (payload: Payload): Promise<Counte
 
     if (!doc) {
       results.push({ key: seed.slug, status: "skipped" });
+      onProgress?.(seed.slug, "skipped");
       continue;
     }
 
@@ -4626,6 +4635,7 @@ export const regenerateArticleContent = async (payload: Payload): Promise<Counte
       data: { content: seed.content },
     });
     results.push({ key: seed.slug, status: "updated" });
+    onProgress?.(seed.slug, "updated");
   }
 
   return getCounterSummary(results);

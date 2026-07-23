@@ -50,12 +50,19 @@ const { getPayload } = await import("payload");
 
 const payload = await getPayload({ config });
 
-try {
-  const calculators = await regenerateCalculatorContent(payload);
-  console.log("[regenerate-content] calculators:", JSON.stringify(calculators, null, 2));
+const stamp = () => new Date().toISOString().slice(11, 23);
+const logProgress = (key, status) => {
+  process.stdout.write(`[${stamp()}] ${status}: ${key}\n`);
+};
 
-  const articles = await regenerateArticleContent(payload);
-  console.log("[regenerate-content] articles:", JSON.stringify(articles, null, 2));
+try {
+  console.log(`[${stamp()}] starting calculators...`);
+  const calculators = await regenerateCalculatorContent(payload, logProgress);
+  console.log("[regenerate-content] calculators:", JSON.stringify(calculators.created, null, 2), calculators.updated, calculators.skipped);
+
+  console.log(`[${stamp()}] starting articles...`);
+  const articles = await regenerateArticleContent(payload, logProgress);
+  console.log("[regenerate-content] articles summary:", "updated:", articles.updated, "skipped:", articles.skipped);
 } finally {
   await payload.destroy();
 }
