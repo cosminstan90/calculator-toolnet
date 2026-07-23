@@ -1,6 +1,7 @@
-import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
+import type { CollectionAfterChangeHook, CollectionBeforeChangeHook, CollectionConfig } from "payload";
 
 import { computeEditorialCompletion } from "../../lib/editorial-checklist.ts";
+import { notifyIndexNow } from "../../lib/indexnow.ts";
 import {
   cmsStaffFieldAccess,
   isAdmin,
@@ -78,6 +79,13 @@ const setPublishedAt: CollectionBeforeChangeHook = async ({
   return data;
 };
 
+const pingIndexNowOnPublish: CollectionAfterChangeHook = ({ doc }) => {
+  if (doc?._status === "published" && doc.slug) {
+    void notifyIndexNow([`/blog/${doc.slug}`]);
+  }
+  return doc;
+};
+
 export const Articles: CollectionConfig = {
   slug: "articles",
   admin: {
@@ -106,6 +114,7 @@ export const Articles: CollectionConfig = {
   },
   hooks: {
     beforeChange: [setPublishedAt],
+    afterChange: [pingIndexNowOnPublish],
   },
   fields: [
     { name: "title", type: "text", required: true },

@@ -5,7 +5,8 @@ import {
 } from "../../lib/calculator-registry.ts";
 import { buildDefaultCalculatorFaq } from "../../lib/calculator-content.ts";
 import { computeEditorialCompletion as computeChecklistCompletion } from "../../lib/editorial-checklist.ts";
-import type { CollectionBeforeChangeHook, CollectionConfig } from "payload";
+import { notifyIndexNow } from "../../lib/indexnow.ts";
+import type { CollectionAfterChangeHook, CollectionBeforeChangeHook, CollectionConfig } from "payload";
 
 import {
   buildEditorialChecklistField,
@@ -97,6 +98,34 @@ const syncCalculatorRegistry: CollectionBeforeChangeHook = async ({
   return data;
 };
 
+const pingIndexNowOnPublish: CollectionAfterChangeHook = async ({ doc, req }) => {
+  if (doc?._status !== "published" || !doc.slug) {
+    return doc;
+  }
+
+  const categoryID = typeof doc.category === "object" ? doc.category?.id : doc.category;
+  if (!categoryID) {
+    return doc;
+  }
+
+  try {
+    const category = await req.payload.findByID({
+      collection: "calculator-categories",
+      id: categoryID,
+      depth: 0,
+      overrideAccess: true,
+    });
+    const categorySlug = asString((category as { [key: string]: unknown })?.slug);
+    if (categorySlug) {
+      void notifyIndexNow([`/calculatoare/${categorySlug}/${doc.slug}`]);
+    }
+  } catch {
+    // Best-effort notification only - never block the save.
+  }
+
+  return doc;
+};
+
 export const Calculators: CollectionConfig = {
   slug: "calculators",
   admin: {
@@ -125,6 +154,7 @@ export const Calculators: CollectionConfig = {
   },
   hooks: {
     beforeChange: [syncCalculatorRegistry],
+    afterChange: [pingIndexNowOnPublish],
   },
   fields: [
     { name: "title", type: "text", required: true },

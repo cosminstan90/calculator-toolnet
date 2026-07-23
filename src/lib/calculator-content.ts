@@ -16,24 +16,24 @@ const howQuestionPool = [
 
 const interpretationAnswerPool = [
   (inputList: string) =>
-    `Rezultatul e corect matematic pornind de la ${inputList} pe care le-ai introdus, dar sensul lui depinde de contextul tau real - nu il citi izolat de restul situatiei.`,
+    `Rezultatul e corect matematic pornind de la ${inputList} pe care le-ai introdus, dar sensul lui depinde de contextul tau real. Doua persoane pot introduce date diferite si pot ajunge la aceeasi cifra, insa concluziile lor practice pot fi complet diferite - nu il citi izolat de restul situatiei tale.`,
   (inputList: string) =>
-    `Matematic, calculul e exact pentru ${inputList} completate. Ce faci mai departe cu numarul respectiv depinde insa de obiectivul tau concret.`,
+    `Matematic, calculul e exact pentru ${inputList} completate, asa ca poti avea incredere in cifra afisata ca atare. Ce faci mai departe cu acel numar depinde insa de obiectivul tau concret: aceeasi valoare poate fi un semnal bun pentru un scenariu si unul de atentie pentru altul.`,
   (inputList: string) =>
-    `Formula proceseaza corect ${inputList}, insa rezultatul e un punct de plecare, nu un verdict - il interpretezi in functie de ce vrei sa decizi.`,
+    `Formula proceseaza corect ${inputList}, insa rezultatul e un punct de plecare, nu un verdict final. Il interpretezi in functie de ce vrei sa decizi - o comparatie intre optiuni, o estimare pentru planificare sau doar o verificare rapida a unei presupuneri pe care o aveai deja.`,
   (inputList: string) =>
-    `Cifra afisata reflecta fidel ${inputList} pe care le-ai completat. Utilitatea ei reala apare cand o compari cu un reper sau cu un scenariu anterior.`,
+    `Cifra afisata reflecta fidel ${inputList} pe care le-ai completat, deci nu e nevoie sa te indoiesti de calculul in sine. Utilitatea ei reala apare insa cand o compari cu un reper cunoscut sau cu un scenariu anterior, nu cand o citesti izolat, fara niciun punct de comparatie.`,
 ];
 
 const redoAnswerPool = [
   (title: string) =>
-    `Refa calculul de fiecare data cand se schimba una dintre valorile de intrare - altfel ${title.toLowerCase()} iti arata un rezultat vechi, nu situatia actuala.`,
+    `Refa calculul de fiecare data cand se schimba una dintre valorile de intrare - altfel ${title.toLowerCase()} iti arata un rezultat vechi, nu situatia actuala. Nu exista un interval fix de recalculare; conteaza doar cat de mult s-au schimbat datele reale fata de ultima rulare.`,
   (title: string) =>
-    `Cel mai simplu reper: daca datele din formular nu mai reflecta realitatea, rezultatul lui ${title.toLowerCase()} nu mai e de incredere pana nu il actualizezi.`,
+    `Cel mai simplu reper: daca datele din formular nu mai reflecta realitatea - un pret nou, o greutate schimbata, un venit diferit - rezultatul lui ${title.toLowerCase()} nu mai e de incredere pana nu il actualizezi. Un calcul vechi cu date vechi poate induce in eroare mai mult decat lipsa oricarui calcul.`,
   (title: string) =>
-    `Merita sa repeti calculul periodic, mai ales daca il folosesti pentru o decizie care se intinde pe mai mult timp - o singura rulare nu ramane valabila la nesfarsit.`,
+    `Merita sa repeti calculul periodic, mai ales daca il folosesti pentru o decizie care se intinde pe mai mult timp - o singura rulare nu ramane valabila la nesfarsit. Pentru decizii mari, e util sa compari mai multe rulari facute la interval de cateva saptamani, nu doar una singura.`,
   (title: string) =>
-    `Nu exista un interval fix, dar orice schimbare relevanta in datele tale e un motiv bun sa rulezi din nou ${title.toLowerCase()} inainte sa te bazezi pe cifra veche.`,
+    `Nu exista un interval fix, dar orice schimbare relevanta in datele tale e un motiv bun sa rulezi din nou ${title.toLowerCase()} inainte sa te bazezi pe cifra veche. Trateaza rezultatul ca pe o fotografie a momentului actual, nu ca pe o valoare fixa, valabila permanent.`,
 ];
 
 const redoQuestionPool = [

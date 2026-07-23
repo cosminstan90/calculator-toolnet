@@ -1,9 +1,17 @@
-﻿import type { CollectionConfig } from "payload";
+﻿import type { CollectionAfterChangeHook, CollectionConfig } from "payload";
 
 import { isAdmin, isAdminOrEditor } from "../access.ts";
 import { contentBlocksField } from "../fields/contentBlocks.ts";
 import { seoFieldGroup } from "../fields/seo.ts";
 import { slugField } from "../fields/slug.ts";
+import { notifyIndexNow } from "../../lib/indexnow.ts";
+
+const pingIndexNowOnPublish: CollectionAfterChangeHook = ({ doc }) => {
+  if (doc?._status === "published" && doc.slug) {
+    void notifyIndexNow([`/calculatoare/${doc.slug}`]);
+  }
+  return doc;
+};
 
 export const CalculatorCategories: CollectionConfig = {
   slug: "calculator-categories",
@@ -19,6 +27,9 @@ export const CalculatorCategories: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [pingIndexNowOnPublish],
   },
   fields: [
     { name: "name", type: "text", required: true },

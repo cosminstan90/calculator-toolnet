@@ -18,6 +18,7 @@ import {
   applicationCategoryForSlug,
   buildBreadcrumbJsonLd,
   buildFaqJsonLd,
+  buildHowToJsonLd,
   buildMetadata,
   buildWebApplicationJsonLd,
 } from "@/lib/seo";
@@ -155,6 +156,9 @@ export default async function CalculatorPage({ params }: { params: Params }) {
               : undefined,
           }),
           ...(calculator.faq.length > 0 ? [buildFaqJsonLd(calculator.faq)] : []),
+          ...(calculator.howToSteps.length > 0
+            ? [buildHowToJsonLd({ name: `Cum folosesti ${calculator.title.toLowerCase()}`, steps: calculator.howToSteps })]
+            : []),
         ]}
       />
 
@@ -170,6 +174,11 @@ export default async function CalculatorPage({ params }: { params: Params }) {
             </div>
             <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">{calculator.title}</h1>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">{calculator.intro}</p>
+            {calculator.examples[0] ? (
+              <p className="mt-4 max-w-3xl rounded-2xl border border-emerald-300/25 bg-emerald-300/10 px-4 py-3 text-sm leading-7 text-emerald-100">
+                {calculator.examples[0].narrative}
+              </p>
+            ) : null}
             {calculator.publishedAt || calculator.updatedAt || calculator.reviewer ? (
               <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-300/85">
                 {calculator.publishedAt ? (
@@ -209,6 +218,25 @@ export default async function CalculatorPage({ params }: { params: Params }) {
       <div className="mt-8">
         <CalculatorRunnerLazy calculatorKey={calculator.calculatorKey} />
       </div>
+
+      {calculator.howToSteps.length > 0 ? (
+        <section className="cv-auto mt-8 rounded-[2rem] border border-slate-200 bg-white/70 p-6 sm:p-8">
+          <p className="section-kicker">Pasii de urmat</p>
+          <ol className="mt-4 grid gap-3 sm:grid-cols-3">
+            {calculator.howToSteps.map((step, index) => (
+              <li
+                key={step}
+                className="rounded-[1.25rem] border border-slate-300/70 bg-white/70 p-4"
+              >
+                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                  Pasul {index + 1}
+                </span>
+                <p className="mt-2 text-sm leading-6 text-slate-800">{step}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
 
       <section className="cv-auto paper-panel mt-8 rounded-[2rem] p-6 sm:p-8">
         <p className="section-kicker">Raspuns rapid</p>

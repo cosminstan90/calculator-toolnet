@@ -273,6 +273,17 @@ export const buildWebApplicationJsonLd = (args: {
   },
 });
 
+export const buildHowToJsonLd = (args: { name: string; steps: string[] }) => ({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: args.name,
+  step: args.steps.map((step, index) => ({
+    "@type": "HowToStep",
+    position: index + 1,
+    text: step,
+  })),
+});
+
 export const buildFaqJsonLd = (items: Array<{ question: string; answer: string }>) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
