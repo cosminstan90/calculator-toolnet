@@ -4641,6 +4641,52 @@ export const regenerateArticleContent = async (
   return getCounterSummary(results);
 };
 
+// Targeted refresh for category display text only - re-syncs name/summary/
+// introContent/contentBlocks from categorySeeds without touching slug,
+// sortOrder, isFeatured, or seo (unlike bootstrapCategories, which would
+// overwrite the whole doc including any hand-edited admin fields).
+export const regenerateCategoryContent = async (
+  payload: Payload,
+  onProgress?: (key: string, status: SeedStatus) => void
+): Promise<CounterSummary> => {
+  const results: SeedItemResult[] = [];
+
+  for (const seed of categorySeeds) {
+    const existing = await payload.find({
+      collection: "calculator-categories",
+      depth: 0,
+      limit: 1,
+      pagination: false,
+      overrideAccess: true,
+      where: { slug: { equals: seed.slug } },
+    });
+    const doc = existing.docs[0];
+
+    if (!doc) {
+      results.push({ key: seed.slug, status: "skipped" });
+      onProgress?.(seed.slug, "skipped");
+      continue;
+    }
+
+    await payload.update({
+      collection: "calculator-categories",
+      id: doc.id,
+      overrideAccess: true,
+      draft: false,
+      data: {
+        name: seed.name,
+        summary: seed.summary,
+        introContent: seed.introContent,
+        contentBlocks: buildCategoryBlocks(seed),
+      },
+    });
+    results.push({ key: seed.slug, status: "updated" });
+    onProgress?.(seed.slug, "updated");
+  }
+
+  return getCounterSummary(results);
+};
+
 export const bootstrapCms = async (payload: Payload, options: BootstrapOptions = {}): Promise<BootstrapCmsResult> => {
   const force = options.force === true;
   const homepage = await bootstrapHomepage(payload, force);

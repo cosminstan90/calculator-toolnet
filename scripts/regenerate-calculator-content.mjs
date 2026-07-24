@@ -45,7 +45,7 @@ const config = await (importedConfig.default ?? importedConfig);
 config.telemetry = false;
 
 const importedBootstrap = await import(pathToFileURL(bootstrapPath).href);
-const { regenerateCalculatorContent, regenerateArticleContent } = importedBootstrap;
+const { regenerateCalculatorContent, regenerateArticleContent, regenerateCategoryContent } = importedBootstrap;
 const { getPayload } = await import("payload");
 
 const payload = await getPayload({ config });
@@ -63,6 +63,10 @@ try {
   console.log(`[${stamp()}] starting articles...`);
   const articles = await regenerateArticleContent(payload, logProgress);
   console.log("[regenerate-content] articles summary:", "updated:", articles.updated, "skipped:", articles.skipped);
+
+  console.log(`[${stamp()}] starting categories...`);
+  const categories = await regenerateCategoryContent(payload, logProgress);
+  console.log("[regenerate-content] categories summary:", "updated:", categories.updated, "skipped:", categories.skipped);
 } finally {
   await payload.destroy();
 }
