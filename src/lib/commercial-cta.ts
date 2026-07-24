@@ -54,7 +54,7 @@ const audienceLabel = (audience: Audience) => {
     return "pentru firme";
   }
 
-  return "pentru persoane si firme";
+  return "pentru persoane și firme";
 };
 
 export const getAffiliateDestination = (offerKey: string) => {
@@ -109,42 +109,42 @@ export const getCommercialCta = (args: {
     return {
       label:
         args.kind === "category"
-          ? "Compara ofertele relevante"
-          : "Vezi oferta recomandata",
+          ? "Compară ofertele relevante"
+          : "Vezi oferta recomandată",
       href,
       title:
         args.kind === "category"
-          ? "Daca vrei sa treci de la simulare la compararea ofertelor reale"
+          ? "Dacă vrei să treci de la simulare la compararea ofertelor reale"
           : args.kind === "calculator"
-          ? "Daca vrei sa mergi de la estimare la oferta concreta"
-          : "Daca vrei sa compari si o oferta concreta",
-      body: `Pagina este construita ${audienceLabel(args.audience)}, iar dupa calcul poate fi util sa compari si o oferta reala din piata pentru credite, economii sau produse financiare.`,
+          ? "Dacă vrei să mergi de la estimare la oferta concretă"
+          : "Dacă vrei să compari și o ofertă concretă",
+      body: `Pagina este construită ${audienceLabel(args.audience)}, iar după calcul poate fi util să compari și o ofertă reală din piață pentru credite, economii sau produse financiare.`,
       disclaimer:
-        "Unele recomandari pot fi afiliate. Alege doar dupa ce compari conditiile reale, costurile si eligibilitatea.",
+        "Unele recomandări pot fi afiliate. Alege doar după ce compari condițiile reale, costurile și eligibilitatea.",
     };
   }
 
   if (offerKey === "business") {
     return {
-      label: "Vezi solutia recomandata",
+      label: "Vezi soluția recomandată",
       href,
-      title: "Daca vrei sa treci de la calcul la implementare",
+      title: "Dacă vrei să treci de la calcul la implementare",
       body:
-        "Dupa marja, markup, ROI sau break-even, urmatorul pas natural este sa compari si un instrument sau serviciu care te ajuta sa aplici decizia in operare.",
+        "După marjă, markup, ROI sau break-even, următorul pas natural este să compari și un instrument sau serviciu care te ajută să aplici decizia în operare.",
       disclaimer:
-        "Recomandarea poate include link afiliat. Verifica potrivirea cu dimensiunea firmei, procesele si costurile tale reale.",
+        "Recomandarea poate include link afiliat. Verifică potrivirea cu dimensiunea firmei, procesele și costurile tale reale.",
     };
   }
 
   if (offerKey === "energy") {
     return {
-      label: "Compara optiunile",
+      label: "Compară opțiunile",
       href,
-      title: "Daca vrei sa compari si produse sau servicii relevante",
+      title: "Dacă vrei să compari și produse sau servicii relevante",
       body:
-        "Dupa estimarea consumului sau a costului, poate fi util sa vezi si o oferta concreta pentru echipamente, solutii energetice sau furnizori relevanti.",
+        "După estimarea consumului sau a costului, poate fi util să vezi și o ofertă concretă pentru echipamente, soluții energetice sau furnizori relevanți.",
       disclaimer:
-        "Unele recomandari pot fi afiliate. Verifica specificatiile tehnice si costul total inainte de alegere.",
+        "Unele recomandări pot fi afiliate. Verifică specificațiile tehnice și costul total înainte de alegere.",
     };
   }
 
@@ -152,21 +152,21 @@ export const getCommercialCta = (args: {
     return {
       label: "Vezi recomandarea",
       href,
-      title: "Daca vrei sa compari si o optiune practica din piata",
+      title: "Dacă vrei să compari și o opțiune practică din piață",
       body:
-        "Pe paginile auto, dupa estimarea costului sau a consumului, urmatorul pas firesc poate fi compararea unei oferte, a unui serviciu sau a unui produs relevant.",
+        "Pe paginile auto, după estimarea costului sau a consumului, următorul pas firesc poate fi compararea unei oferte, a unui serviciu sau a unui produs relevant.",
       disclaimer:
-        "Linkul poate fi afiliat. Compara pretul final, conditiile si disponibilitatea inainte sa iei o decizie.",
+        "Linkul poate fi afiliat. Compară prețul final, condițiile și disponibilitatea înainte să iei o decizie.",
     };
   }
 
   return {
     label: "Vezi ofertele utile",
     href,
-    title: "Daca vrei sa mergi de la estimare la achizitie",
+    title: "Dacă vrei să mergi de la estimare la achiziție",
     body:
-      "Dupa ce ai o estimare de materiale sau cost, poate fi util sa compari si produse sau servicii concrete legate de lucrarea ta.",
+      "După ce ai o estimare de materiale sau cost, poate fi util să compari și produse sau servicii concrete legate de lucrarea ta.",
     disclaimer:
-      "Linkul poate fi afiliat. Verifica acoperirea, consumul real si conditiile de livrare inainte de comanda.",
+      "Linkul poate fi afiliat. Verifică acoperirea, consumul real și condițiile de livrare înainte de comandă.",
   };
 };

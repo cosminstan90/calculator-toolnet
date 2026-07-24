@@ -206,15 +206,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-bmi-imc",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Calculeaza indicele de masa corporala pornind de la greutate si inaltime.",
-    formulaName: "Indicele de masa corporala",
-    formulaExpression: "BMI = greutate (kg) / [inaltime (m)]^2",
+      "Calculează indicele de masă corporală pornind de la greutate și înălțime.",
+    formulaName: "Indicele de masă corporală",
+    formulaExpression: "BMI = greutate (kg) / [înălțime (m)]^2",
     formulaDescription:
-      "Indicele de masa corporala imparte greutatea exprimata in kilograme la patratul inaltimii exprimate in metri.",
+      "Indicele de masă corporală împarte greutatea exprimată în kilograme la pătratul înălțimii exprimate în metri.",
     howToSteps: [
-      "Introdu greutatea in kilograme.",
-      "Introdu inaltimea in centimetri.",
-      "Citeste BMI-ul calculat automat si compara-l cu intervalele standard.",
+      "Introdu greutatea în kilograme.",
+      "Introdu înălțimea în centimetri.",
+      "Citește BMI-ul calculat automat și compară-l cu intervalele standard.",
     ],
     inputs: [
       {
@@ -230,7 +230,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "heightCm",
-        label: "Inaltime",
+        label: "Înălțime",
         type: "number",
         unit: "cm",
         min: 100,
@@ -260,16 +260,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-metabolism-bazal",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza metabolismul bazal prin formula Mifflin-St Jeor.",
+      "Estimează metabolismul bazal prin formula Mifflin-St Jeor.",
     formulaName: "Mifflin-St Jeor",
     formulaExpression:
-      "BMR barbati = 10W + 6.25H - 5A + 5; BMR femei = 10W + 6.25H - 5A - 161",
+      "BMR bărbați = 10W + 6.25H - 5A + 5; BMR femei = 10W + 6.25H - 5A - 161",
     formulaDescription:
-      "Formula Mifflin-St Jeor foloseste greutatea, inaltimea, varsta si sexul pentru a estima necesarul energetic in repaus.",
+      "Formula Mifflin-St Jeor folosește greutatea, înălțimea, vârsta și sexul pentru a estima necesarul energetic în repaus.",
     howToSteps: [
-      "Selecteaza sexul biologic pentru formula de baza.",
-      "Completeaza varsta, greutatea si inaltimea.",
-      "Rezultatul arata cate calorii ar consuma corpul in repaus pe parcursul unei zile.",
+      "Selectează sexul biologic pentru formula de bază.",
+      "Completează vârsta, greutatea și înălțimea.",
+      "Rezultatul arată câte calorii ar consuma corpul în repaus pe parcursul unei zile.",
     ],
     inputs: [
       {
@@ -279,13 +279,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         required: true,
         defaultValue: "male",
         options: [
-          { label: "Barbat", value: "male" },
+          { label: "Bărbat", value: "male" },
           { label: "Femeie", value: "female" },
         ],
       },
       {
         name: "age",
-        label: "Varsta",
+        label: "Vârsta",
         type: "number",
         unit: "ani",
         min: 15,
@@ -307,7 +307,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "heightCm",
-        label: "Inaltime",
+        label: "Înălțime",
         type: "number",
         unit: "cm",
         min: 100,
@@ -335,15 +335,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-necesar-caloric-zilnic",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Combina BMR-ul cu activitatea zilnica pentru a estima caloriile de mentinere.",
+      "Combină BMR-ul cu activitatea zilnică pentru a estima caloriile de menținere.",
     formulaName: "TDEE = BMR x factor de activitate",
     formulaExpression: "TDEE = BMR x nivel de activitate",
     formulaDescription:
-      "Total Daily Energy Expenditure inmulteste metabolismul bazal cu un factor care reflecta activitatea ta obisnuita.",
+      "Total Daily Energy Expenditure înmulțește metabolismul bazal cu un factor care reflectă activitatea ta obișnuită.",
     howToSteps: [
-      "Introdu aceleasi date de baza folosite pentru BMR.",
-      "Alege nivelul de activitate care descrie media saptamanii.",
-      "Rezultatul indica aportul caloric orientativ pentru mentinere.",
+      "Introdu aceleași date de bază folosite pentru BMR.",
+      "Alege nivelul de activitate care descrie media săptămânii.",
+      "Rezultatul indică aportul caloric orientativ pentru menținere.",
     ],
     inputs: [
       {
@@ -353,13 +353,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         required: true,
         defaultValue: "male",
         options: [
-          { label: "Barbat", value: "male" },
+          { label: "Bărbat", value: "male" },
           { label: "Femeie", value: "female" },
         ],
       },
       {
         name: "age",
-        label: "Varsta",
+        label: "Vârsta",
         type: "number",
         unit: "ani",
         min: 15,
@@ -381,7 +381,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "heightCm",
-        label: "Inaltime",
+        label: "Înălțime",
         type: "number",
         unit: "cm",
         min: 100,
@@ -398,7 +398,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         defaultValue: "moderate",
         options: [
           { label: "Sedentar", value: "sedentary" },
-          { label: "Usor activ", value: "light" },
+          { label: "Ușor activ", value: "light" },
           { label: "Moderat", value: "moderate" },
           { label: "Foarte activ", value: "active" },
           { label: "Sport intens", value: "athlete" },
@@ -430,19 +430,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "calorie-deficit": {
     key: "calorie-deficit",
-    title: "Calculator calorii pentru slabire",
+    title: "Calculator calorii pentru slăbire",
     slug: "calculator-calorii-slabire",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Transforma TDEE-ul intr-o tinta zilnica de calorii pentru deficit controlat.",
+      "Transformă TDEE-ul într-o țintă zilnică de calorii pentru deficit controlat.",
     formulaName: "Target caloric pentru deficit",
-    formulaExpression: "Calorii tinta = TDEE x factor deficit",
+    formulaExpression: "Calorii țintă = TDEE x factor deficit",
     formulaDescription:
-      "Poti porni de la TDEE si aplica un factor orientativ in functie de viteza de slabire dorita.",
+      "Poți porni de la TDEE și aplica un factor orientativ în funcție de viteză de slăbire dorită.",
     howToSteps: [
       "Introdu TDEE-ul estimat sau rezultat din calculatorul dedicat.",
       "Alege ritmul dorit pentru deficit.",
-      "Rezultatul iti arata aportul caloric si deficitul zilnic aproximativ.",
+      "Rezultatul îți arată aportul caloric și deficitul zilnic aproximativ.",
     ],
     inputs: [
       {
@@ -472,7 +472,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       {
         name: "targetCalories",
-        label: "Calorii tinta",
+        label: "Calorii țintă",
         unit: "kcal/zi",
         decimals: 0,
       },
@@ -499,15 +499,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-necesar-proteine",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza aportul zilnic de proteine pe baza greutatii si a obiectivului.",
+      "Estimează aportul zilnic de proteine pe baza greutatii și a obiectivului.",
     formulaName: "Proteine zilnice",
-    formulaExpression: "Proteine = greutate x factor in functie de obiectiv",
+    formulaExpression: "Proteine = greutate x factor în funcție de obiectiv",
     formulaDescription:
-      "Aportul de proteine este de obicei exprimat in grame per kilogram corp, iar factorul depinde de obiectivul principal.",
+      "Aportul de proteine este de obicei exprimat în grame per kilogram corp, iar factorul depinde de obiectivul principal.",
     howToSteps: [
-      "Introdu greutatea actuala.",
+      "Introdu greutatea actuală.",
       "Alege obiectivul principal.",
-      "Citeste rezultatul in grame pe zi si distribuie-l pe mesele principale.",
+      "Citește rezultatul în grame pe zi și distribuie-l pe mesele principale.",
     ],
     inputs: [
       {
@@ -528,9 +528,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         required: true,
         defaultValue: "maintenance",
         options: [
-          { label: "Mentinere", value: "maintenance" },
-          { label: "Slabire", value: "cut" },
-          { label: "Crestere musculara", value: "gain" },
+          { label: "Menținere", value: "maintenance" },
+          { label: "Slăbire", value: "cut" },
+          { label: "Creștere musculară", value: "gain" },
         ],
       },
     ],
@@ -552,20 +552,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "body-fat-us-navy": {
     key: "body-fat-us-navy",
-    title: "Calculator procent grasime corporala",
+    title: "Calculator procent grăsime corporală",
     slug: "calculator-grasime-corporala",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza procentul de grasime corporala folosind formula US Navy.",
+      "Estimează procentul de grăsime corporală folosind formula US Navy.",
     formulaName: "US Navy Body Fat",
     formulaExpression:
-      "Barbati: 495 / (1.0324 - 0.19077 * log10(talie-gat) + 0.15456 * log10(inaltime)) - 450; Femei: 495 / (1.29579 - 0.35004 * log10(talie+sold-gat) + 0.22100 * log10(inaltime)) - 450",
+      "Bărbați: 495 / (1.0324 - 0.19077 * log10(talie-gât) + 0.15456 * log10(înălțime)) - 450; Femei: 495 / (1.29579 - 0.35004 * log10(talie+sold-gât) + 0.22100 * log10(înălțime)) - 450",
     formulaDescription:
-      "Formula US Navy foloseste circumferinte corporale si inaltimea pentru a estima procentul de grasime corporala.",
+      "Formula US Navy folosește circumferințe corporale și înălțimea pentru a estima procentul de grăsime corporală.",
     howToSteps: [
-      "Selecteaza sexul.",
-      "Introdu inaltimea si circumferintele cerute.",
-      "Citeste estimarea procentului de grasime corporala.",
+      "Selectează sexul.",
+      "Introdu înălțimea și circumferințele cerute.",
+      "Citește estimarea procentului de grăsime corporală.",
     ],
     inputs: [
       {
@@ -575,13 +575,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         required: true,
         defaultValue: "male",
         options: [
-          { label: "Barbat", value: "male" },
+          { label: "Bărbat", value: "male" },
           { label: "Femeie", value: "female" },
         ],
       },
       {
         name: "heightCm",
-        label: "Inaltime",
+        label: "Înălțime",
         type: "number",
         unit: "cm",
         min: 100,
@@ -592,7 +592,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "neckCm",
-        label: "Circumferinta gat",
+        label: "Circumferința gât",
         type: "number",
         unit: "cm",
         min: 20,
@@ -603,7 +603,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "waistCm",
-        label: "Circumferinta talie",
+        label: "Circumferința talie",
         type: "number",
         unit: "cm",
         min: 40,
@@ -614,7 +614,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "hipCm",
-        label: "Circumferinta sold",
+        label: "Circumferința sold",
         type: "number",
         unit: "cm",
         min: 50,
@@ -627,7 +627,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       {
         name: "bodyFatPercent",
-        label: "Grasime corporala estimata",
+        label: "Grăsime corporală estimată",
         unit: "%",
         decimals: 2,
       },
@@ -653,20 +653,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "ideal-weight": {
     key: "ideal-weight",
-    title: "Calculator greutate ideala",
+    title: "Calculator greutate ideală",
     slug: "calculator-greutate-ideala",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza greutatea ideala folosind formula Devine.",
+      "Estimează greutatea ideală folosind formula Devine.",
     formulaName: "Formula Devine",
     formulaExpression:
-      "Barbati: 50 + 2.3 x (inaltime in inch - 60); Femei: 45.5 + 2.3 x (inaltime in inch - 60)",
+      "Bărbați: 50 + 2.3 x (înălțime în inch - 60); Femei: 45.5 + 2.3 x (înălțime în inch - 60)",
     formulaDescription:
-      "Formula Devine este folosita frecvent ca reper orientativ pentru greutatea ideala in functie de inaltime si sex.",
+      "Formula Devine este folosită frecvent ca reper orientativ pentru greutatea ideală în funcție de înălțime și sex.",
     howToSteps: [
-      "Selecteaza sexul.",
-      "Introdu inaltimea in centimetri.",
-      "Citeste greutatea ideala estimata.",
+      "Selectează sexul.",
+      "Introdu înălțimea în centimetri.",
+      "Citește greutatea ideală estimată.",
     ],
     inputs: [
       {
@@ -676,13 +676,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         required: true,
         defaultValue: "male",
         options: [
-          { label: "Barbat", value: "male" },
+          { label: "Bărbat", value: "male" },
           { label: "Femeie", value: "female" },
         ],
       },
       {
         name: "heightCm",
-        label: "Inaltime",
+        label: "Înălțime",
         type: "number",
         unit: "cm",
         min: 100,
@@ -695,7 +695,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       {
         name: "idealWeightKg",
-        label: "Greutate ideala estimata",
+        label: "Greutate ideală estimată",
         unit: "kg",
         decimals: 1,
       },
@@ -710,19 +710,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "water-intake": {
     key: "water-intake",
-    title: "Calculator aport zilnic de apa",
+    title: "Calculator aport zilnic de apă",
     slug: "calculator-aport-zilnic-apa",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza aportul zilnic de apa in functie de greutate.",
-    formulaName: "Necesar orientativ de apa",
+      "Estimează aportul zilnic de apă în funcție de greutate.",
+    formulaName: "Necesar orientativ de apă",
     formulaExpression: "Apa (ml/zi) = greutate (kg) x 35",
     formulaDescription:
-      "O regula simpla si frecvent folosita este 35 ml de apa pe kilogram corp, ajustata ulterior dupa clima si activitate.",
+      "O regulă simplă și frecvent folosită este 35 ml de apă pe kilogram corp, ajustată ulterior după climă și activitate.",
     howToSteps: [
-      "Introdu greutatea actuala.",
-      "Calculatorul estimeaza necesarul zilnic in mililitri si litri.",
-      "Ajusteaza dupa activitate, temperatura si particularitati personale.",
+      "Introdu greutatea actuală.",
+      "Calculatorul estimează necesarul zilnic în mililitri și litri.",
+      "Ajustează după activitate, temperatură și particularități personale.",
     ],
     inputs: [
       {
@@ -761,24 +761,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "one-rep-max": {
     key: "one-rep-max",
-    title: "Calculator repetare maxima (1RM)",
+    title: "Calculator repetare maximă (1RM)",
     slug: "calculator-repetare-maxima-1rm",
     categorySlug: "nutritie-si-antrenament",
     summary:
-      "Estimeaza repetarea maxima folosind formula Epley.",
+      "Estimează repetarea maximă folosind formula Epley.",
     formulaName: "Formula Epley",
-    formulaExpression: "1RM = greutate x (1 + repetari / 30)",
+    formulaExpression: "1RM = greutate x (1 + repetări / 30)",
     formulaDescription:
-      "Formula Epley este una dintre cele mai simple metode pentru a estima greutatea maxima pe o singura repetare pornind de la o serie submaximala.",
+      "Formula Epley este una dintre cele mai simple metode pentru a estima greutatea maximă pe o singură repetare pornind de la o serie submaximală.",
     howToSteps: [
-      "Introdu greutatea ridicata.",
-      "Introdu numarul de repetari realizate.",
-      "Citeste 1RM-ul estimat si procentele utile pentru antrenament.",
+      "Introdu greutatea ridicată.",
+      "Introdu numărul de repetări realizate.",
+      "Citește 1RM-ul estimat și procentele utile pentru antrenament.",
     ],
     inputs: [
       {
         name: "weightKg",
-        label: "Greutate ridicata",
+        label: "Greutate ridicată",
         type: "number",
         unit: "kg",
         min: 1,
@@ -789,7 +789,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "reps",
-        label: "Repetari",
+        label: "Repetări",
         type: "number",
         min: 1,
         max: 20,
@@ -826,20 +826,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-consum-combustibil",
     categorySlug: "auto",
     summary:
-      "Calculeaza consumul mediu in litri la 100 km.",
+      "Calculează consumul mediu în litri la 100 km.",
     formulaName: "Consum mediu auto",
-    formulaExpression: "Consum (l/100 km) = litri consumati / kilometri x 100",
+    formulaExpression: "Consum (l/100 km) = litri consumați / kilometri x 100",
     formulaDescription:
-      "Formula standard pentru consumul mediu porneste de la litrii consumati si distanta parcursa.",
+      "Formula standard pentru consumul mediu pornește de la litrii consumați și distanță parcursă.",
     howToSteps: [
-      "Introdu distanta parcursa.",
-      "Introdu litrii consumati pe acea distanta.",
-      "Rezultatul afiseaza consumul mediu raportat la 100 km.",
+      "Introdu distanță parcursă.",
+      "Introdu litrii consumați pe acea distanță.",
+      "Rezultatul afișează consumul mediu raportat la 100 km.",
     ],
     inputs: [
       {
         name: "distanceKm",
-        label: "Distanta",
+        label: "Distanță",
         type: "number",
         unit: "km",
         min: 1,
@@ -879,25 +879,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "trip-fuel-cost": {
     key: "trip-fuel-cost",
-    title: "Calculator cost calatorie auto",
+    title: "Calculator cost călătorie auto",
     slug: "calculator-cost-calatorie-auto",
     categorySlug: "auto",
     summary:
-      "Estimeaza litrii necesari si costul carburantului pentru un drum.",
-    formulaName: "Cost calatorie auto",
+      "Estimează litrii necesari și costul carburantului pentru un drum.",
+    formulaName: "Cost călătorie auto",
     formulaExpression:
-      "Litri necesari = distanta x consum / 100; cost = litri necesari x pret/litru",
+      "Litri necesari = distanță x consum / 100; cost = litri necesari x preț/litru",
     formulaDescription:
-      "Pornesti de la consumul mediu exprimat in l/100 km si de la pretul carburantului pentru a estima costul unui traseu.",
+      "Pornești de la consumul mediu exprimat în l/100 km și de la prețul carburantului pentru a estima costul unui traseu.",
     howToSteps: [
-      "Introdu distanta calatoriei.",
-      "Completeaza consumul mediu al masinii.",
-      "Adauga pretul pe litru si citeste costul estimat.",
+      "Introdu distanță călătoriei.",
+      "Completează consumul mediu al mașinii.",
+      "Adaugă prețul pe litru și citește costul estimat.",
     ],
     inputs: [
       {
         name: "distanceKm",
-        label: "Distanta",
+        label: "Distanță",
         type: "number",
         unit: "km",
         min: 1,
@@ -919,7 +919,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "fuelPrice",
-        label: "Pret carburant",
+        label: "Preț carburant",
         type: "number",
         unit: "lei/l",
         min: 0.1,
@@ -960,15 +960,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-cost-pe-kilometru",
     categorySlug: "auto",
     summary:
-      "Afla cat te costa carburantul pe fiecare kilometru parcurs.",
+      "Află cât te costă carburantul pe fiecare kilometru parcurs.",
     formulaName: "Cost pe kilometru",
-    formulaExpression: "Cost/km = (consum l/100 km x pret/litru) / 100",
+    formulaExpression: "Cost/km = (consum l/100 km x preț/litru) / 100",
     formulaDescription:
-      "Formula transforma consumul mediu si pretul carburantului intr-un cost mediu pe kilometru.",
+      "Formula transformă consumul mediu și prețul carburantului într-un cost mediu pe kilometru.",
     howToSteps: [
       "Introdu consumul mediu.",
-      "Introdu pretul carburantului pe litru.",
-      "Citeste costul estimat pentru 1 km si 100 km.",
+      "Introdu prețul carburantului pe litru.",
+      "Citește costul estimat pentru 1 km și 100 km.",
     ],
     inputs: [
       {
@@ -984,7 +984,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "fuelPrice",
-        label: "Pret carburant",
+        label: "Preț carburant",
         type: "number",
         unit: "lei/l",
         min: 0.1,
@@ -1009,24 +1009,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "travel-time": {
     key: "travel-time",
-    title: "Calculator timp calatorie",
+    title: "Calculator timp călătorie",
     slug: "calculator-timp-calatorie",
     categorySlug: "auto",
     summary:
-      "Estimeaza durata unui drum in functie de distanta si viteza medie.",
-    formulaName: "Timp = distanta / viteza",
-    formulaExpression: "Timp (ore) = distanta (km) / viteza medie (km/h)",
+      "Estimează durata unui drum în funcție de distanță și viteză medie.",
+    formulaName: "Timp = distanță / viteză",
+    formulaExpression: "Timp (ore) = distanță (km) / viteză medie (km/h)",
     formulaDescription:
-      "Durata unei calatorii se estimeaza impartind distanta la viteza medie realista.",
+      "Durata unei călătorii se estimează împărțind distanță la viteză medie realistă.",
     howToSteps: [
-      "Introdu distanta traseului.",
-      "Introdu viteza medie estimata.",
-      "Citeste durata in ore si minute.",
+      "Introdu distanță traseului.",
+      "Introdu viteză medie estimată.",
+      "Citește durata în ore și minute.",
     ],
     inputs: [
       {
         name: "distanceKm",
-        label: "Distanta",
+        label: "Distanță",
         type: "number",
         unit: "km",
         min: 1,
@@ -1037,7 +1037,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "averageSpeed",
-        label: "Viteza medie",
+        label: "Viteză medie",
         type: "number",
         unit: "km/h",
         min: 1,
@@ -1063,30 +1063,30 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     },
   },  "kw-cp": {
     key: "kw-cp",
-    title: "Convertor KW in CP",
+    title: "Convertor KW în CP",
     slug: "convertor-kw-in-cp",
     categorySlug: "energie",
     summary:
-      "Converteste kilowati in cai putere si invers.",
+      "Convertește kilowați în cai putere și invers.",
     formulaName: "Conversie KW <-> CP",
     formulaExpression: "CP = kW x 1.35962; kW = CP / 1.35962",
     formulaDescription:
-      "Conversia dintre kilowati si cai putere foloseste un factor fix de aproximativ 1.35962.",
+      "Conversia dintre kilowați și cai putere folosește un factor fix de aproximativ 1.35962.",
     howToSteps: [
-      "Alege directia conversiei.",
-      "Introdu valoarea initiala.",
-      "Citeste imediat valoarea convertita.",
+      "Alege direcția conversiei.",
+      "Introdu valoarea inițială.",
+      "Citește imediat valoarea convertită.",
     ],
     inputs: [
       {
         name: "mode",
-        label: "Directia conversiei",
+        label: "Direcția conversiei",
         type: "select",
         required: true,
         defaultValue: "kw-to-cp",
         options: [
-          { label: "kW in CP", value: "kw-to-cp" },
-          { label: "CP in kW", value: "cp-to-kw" },
+          { label: "kW în CP", value: "kw-to-cp" },
+          { label: "CP în kW", value: "cp-to-kw" },
         ],
       },
       {
@@ -1123,16 +1123,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-cost-consum-electric",
     categorySlug: "energie",
     summary:
-      "Estimeaza consumul lunar si costul energiei electrice.",
+      "Estimează consumul lunar și costul energiei electrice.",
     formulaName: "Cost consum electric",
     formulaExpression:
-      "kWh/zi = (W / 1000) x ore; cost = kWh x pret pe kWh",
+      "kWh/zi = (W / 1000) x ore; cost = kWh x preț pe kWh",
     formulaDescription:
-      "Pornesti de la puterea aparatului, durata de functionare si pretul energiei pentru a estima costuri lunare si anuale.",
+      "Pornești de la puterea aparatului, durata de funcționare și prețul energiei pentru a estima costuri lunare și anuale.",
     howToSteps: [
-      "Introdu puterea aparatului in wati.",
-      "Completeaza numarul de ore de utilizare pe zi.",
-      "Adauga pretul pe kWh si citeste consumul lunar si costul estimat.",
+      "Introdu puterea aparatului în wați.",
+      "Completează numărul de ore de utilizare pe zi.",
+      "Adaugă prețul pe kWh și citește consumul lunar și costul estimat.",
     ],
     inputs: [
       {
@@ -1159,7 +1159,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "pricePerKwh",
-        label: "Pret energie",
+        label: "Preț energie",
         type: "number",
         unit: "lei/kWh",
         min: 0.01,
@@ -1205,19 +1205,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "amps-to-watts": {
     key: "amps-to-watts",
-    title: "Convertor amperi in wati",
+    title: "Convertor amperi în wați",
     slug: "convertor-amperi-in-wati",
     categorySlug: "energie",
     summary:
-      "Converteste amperi in wati pornind de la tensiune.",
-    formulaName: "Putere electrica",
+      "Convertește amperi în wați pornind de la tensiune.",
+    formulaName: "Putere electrică",
     formulaExpression: "W = A x V",
     formulaDescription:
-      "In curent continuu sau in estimari simple, puterea in wati este produsul dintre intensitate si tensiune.",
+      "În curent continuu sau în estimari simple, puterea în wați este produsul dintre intensitate și tensiune.",
     howToSteps: [
       "Introdu amperii.",
-      "Introdu tensiunea in volti.",
-      "Citeste puterea rezultata in wati si kilowati.",
+      "Introdu tensiunea în volti.",
+      "Citește puterea rezultată în wați și kilowați.",
     ],
     inputs: [
       {
@@ -1257,19 +1257,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "watts-to-kwh": {
     key: "watts-to-kwh",
-    title: "Calculator W in kWh",
+    title: "Calculator W în kWh",
     slug: "calculator-wati-in-kwh",
     categorySlug: "energie",
     summary:
-      "Transforma puterea in wati si timpul de functionare in consum energetic.",
+      "Transformă puterea în wați și timpul de funcționare în consum energetic.",
     formulaName: "Consum energetic",
     formulaExpression: "kWh = (W / 1000) x ore",
     formulaDescription:
-      "Pentru a estima consumul energetic, puterea in wati se converteste in kilowati si se inmulteste cu numarul de ore.",
+      "Pentru a estima consumul energetic, puterea în wați se convertește în kilowați și se înmulțește cu numărul de ore.",
     howToSteps: [
-      "Introdu puterea aparatului in wati.",
-      "Introdu numarul de ore de functionare.",
-      "Citeste consumul rezultat in kWh.",
+      "Introdu puterea aparatului în wați.",
+      "Introdu numărul de ore de funcționare.",
+      "Citește consumul rezultat în kWh.",
     ],
     inputs: [
       {
@@ -1285,7 +1285,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "hours",
-        label: "Timp de functionare",
+        label: "Timp de funcționare",
         type: "number",
         unit: "ore",
         min: 0,
@@ -1305,30 +1305,30 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "kg-lb": {
     key: "kg-lb",
-    title: "Convertor kg in lb",
+    title: "Convertor kg în lb",
     slug: "convertor-kg-in-lb",
     categorySlug: "conversii",
     summary:
-      "Converteste kilograme in livre si invers.",
-    formulaName: "Conversie masa",
+      "Convertește kilograme în livre și invers.",
+    formulaName: "Conversie masă",
     formulaExpression: "lb = kg x 2.20462; kg = lb / 2.20462",
     formulaDescription:
-      "Conversia dintre kilograme si livre foloseste factorul fix 2.20462.",
+      "Conversia dintre kilograme și livre folosește factorul fix 2.20462.",
     howToSteps: [
       "Alege sensul conversiei.",
-      "Introdu valoarea initiala.",
-      "Citeste rezultatul convertit automat.",
+      "Introdu valoarea inițială.",
+      "Citește rezultatul convertit automat.",
     ],
     inputs: [
       {
         name: "mode",
-        label: "Directia conversiei",
+        label: "Direcția conversiei",
         type: "select",
         required: true,
         defaultValue: "kg-to-lb",
         options: [
-          { label: "kg in lb", value: "kg-to-lb" },
-          { label: "lb in kg", value: "lb-to-kg" },
+          { label: "kg în lb", value: "kg-to-lb" },
+          { label: "lb în kg", value: "lb-to-kg" },
         ],
       },
       {
@@ -1354,30 +1354,30 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "cm-inch": {
     key: "cm-inch",
-    title: "Convertor cm in inch",
+    title: "Convertor cm în inch",
     slug: "convertor-cm-in-inch",
     categorySlug: "conversii",
     summary:
-      "Converteste centimetri in inch si invers.",
+      "Convertește centimetri în inch și invers.",
     formulaName: "Conversie lungime",
     formulaExpression: "inch = cm / 2.54; cm = inch x 2.54",
     formulaDescription:
-      "Conversia dintre centimetri si inch foloseste raportul fix de 2.54 centimetri pentru un inch.",
+      "Conversia dintre centimetri și inch folosește raportul fix de 2.54 centimetri pentru un inch.",
     howToSteps: [
       "Alege sensul conversiei.",
-      "Introdu valoarea initiala.",
-      "Citeste rezultatul convertit automat.",
+      "Introdu valoarea inițială.",
+      "Citește rezultatul convertit automat.",
     ],
     inputs: [
       {
         name: "mode",
-        label: "Directia conversiei",
+        label: "Direcția conversiei",
         type: "select",
         required: true,
         defaultValue: "cm-to-inch",
         options: [
-          { label: "cm in inch", value: "cm-to-inch" },
-          { label: "inch in cm", value: "inch-to-cm" },
+          { label: "cm în inch", value: "cm-to-inch" },
+          { label: "inch în cm", value: "inch-to-cm" },
         ],
       },
       {
@@ -1407,31 +1407,31 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "convertor-celsius-fahrenheit",
     categorySlug: "conversii",
     summary:
-      "Converteste temperaturile din Celsius in Fahrenheit si invers.",
-    formulaName: "Conversie temperatura",
+      "Convertește temperaturile din Celsius în Fahrenheit și invers.",
+    formulaName: "Conversie temperatură",
     formulaExpression: "F = C x 9/5 + 32; C = (F - 32) x 5/9",
     formulaDescription:
-      "Cele doua formule standard convertesc temperaturile intre cele mai folosite scari in contexte internationale.",
+      "Cele două formule standard convertesc temperaturile între cele mai folosite scari în contexte internaționale.",
     howToSteps: [
       "Alege sensul conversiei.",
-      "Introdu temperatura initiala.",
-      "Citeste rezultatul convertit automat.",
+      "Introdu temperatură inițială.",
+      "Citește rezultatul convertit automat.",
     ],
     inputs: [
       {
         name: "mode",
-        label: "Directia conversiei",
+        label: "Direcția conversiei",
         type: "select",
         required: true,
         defaultValue: "c-to-f",
         options: [
-          { label: "Celsius in Fahrenheit", value: "c-to-f" },
-          { label: "Fahrenheit in Celsius", value: "f-to-c" },
+          { label: "Celsius în Fahrenheit", value: "c-to-f" },
+          { label: "Fahrenheit în Celsius", value: "f-to-c" },
         ],
       },
       {
         name: "value",
-        label: "Temperatura",
+        label: "Temperatură",
         type: "number",
         step: 0.1,
         required: true,
@@ -1441,7 +1441,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       {
         name: "convertedValue",
-        label: "Temperatura convertita",
+        label: "Temperatură convertită",
         decimals: 2,
       },
     ],
@@ -1457,24 +1457,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "percentage-of-number": {
     key: "percentage-of-number",
-    title: "Calculator procent din numar",
+    title: "Calculator procent din număr",
     slug: "calculator-procent-din-numar",
     categorySlug: "finante",
     summary:
-      "Calculeaza rapid cat inseamna un procent dintr-o valoare data.",
-    formulaName: "Procent din numar",
+      "Calculează rapid cât înseamnă un procent dintr-o valoare dată.",
+    formulaName: "Procent din număr",
     formulaExpression: "Rezultat = valoare x procent / 100",
     formulaDescription:
-      "Formula standard pentru procent din numar inmulteste valoarea de baza cu procentul si imparte rezultatul la 100.",
+      "Formula standard pentru procent din număr înmulțește valoarea de bază cu procentul și împarte rezultatul la 100.",
     howToSteps: [
-      "Introdu valoarea de baza.",
-      "Introdu procentul pe care vrei sa il aplici.",
-      "Citeste imediat suma rezultata.",
+      "Introdu valoarea de bază.",
+      "Introdu procentul pe care vrei să îl aplici.",
+      "Citește imediat suma rezultată.",
     ],
     inputs: [
       {
         name: "baseValue",
-        label: "Valoare de baza",
+        label: "Valoare de bază",
         type: "number",
         min: 0,
         max: 1000000000,
@@ -1503,24 +1503,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "percentage-change": {
     key: "percentage-change",
-    title: "Calculator diferenta procentuala",
+    title: "Calculator diferență procentuală",
     slug: "calculator-diferenta-procentuala",
     categorySlug: "finante",
     summary:
-      "Arata cu cat a crescut sau a scazut o valoare in procente intre doua momente.",
-    formulaName: "Diferenta procentuala",
-    formulaExpression: "Variatie (%) = (valoare noua - valoare veche) / valoare veche x 100",
+      "Arată cu cât a crescut sau a scăzut o valoare în procente între două momente.",
+    formulaName: "Diferență procentuală",
+    formulaExpression: "Variație (%) = (valoare nouă - valoare veche) / valoare veche x 100",
     formulaDescription:
-      "Diferenta procentuala compara valoarea noua cu cea initiala si arata ritmul de crestere sau scadere in procente.",
+      "Diferență procentuală compară valoarea nouă cu cea inițială și arată ritmul de creștere sau scădere în procente.",
     howToSteps: [
-      "Introdu valoarea initiala.",
-      "Introdu valoarea noua.",
-      "Citeste diferenta absoluta si variatia procentuala.",
+      "Introdu valoarea inițială.",
+      "Introdu valoarea nouă.",
+      "Citește diferență absolută și variația procentuală.",
     ],
     inputs: [
       {
         name: "initialValue",
-        label: "Valoare initiala",
+        label: "Valoare inițială",
         type: "number",
         min: 0.01,
         max: 1000000000,
@@ -1530,7 +1530,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "newValue",
-        label: "Valoare noua",
+        label: "Valoare nouă",
         type: "number",
         min: 0,
         max: 1000000000,
@@ -1540,8 +1540,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "absoluteChange", label: "Diferenta absoluta", decimals: 2 },
-      { name: "percentageChange", label: "Diferenta procentuala", unit: "%", decimals: 2 },
+      { name: "absoluteChange", label: "Diferență absolută", decimals: 2 },
+      { name: "percentageChange", label: "Diferență procentuală", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
       const initialValue = Math.max(parseNumber(values.initialValue), 0.01);
@@ -1559,16 +1559,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-procent-invers",
     categorySlug: "finante",
     summary:
-      "Afla valoarea initiala atunci cand stii rezultatul final si procentul de crestere sau reducere.",
+      "Află valoarea inițială atunci când știi rezultatul final și procentul de creștere sau reducere.",
     formulaName: "Procent invers",
     formulaExpression:
-      "Valoare initiala = valoare finala / (1 +/- procent / 100)",
+      "Valoare inițială = valoare finală / (1 +/- procent / 100)",
     formulaDescription:
-      "Calculatorul inverseaza o crestere sau o reducere procentuala pentru a estima valoarea de pornire.",
+      "Calculatorul inversează o creștere sau o reducere procentuală pentru a estima valoarea de pornire.",
     howToSteps: [
-      "Alege daca procentul a fost aplicat ca reducere sau ca majorare.",
-      "Introdu valoarea finala si procentul folosit.",
-      "Citeste valoarea initiala estimata.",
+      "Alege dacă procentul a fost aplicat ca reducere sau ca majorare.",
+      "Introdu valoarea finală și procentul folosit.",
+      "Citește valoarea inițială estimată.",
     ],
     inputs: [
       {
@@ -1584,7 +1584,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "finalValue",
-        label: "Valoare finala",
+        label: "Valoare finală",
         type: "number",
         min: 0,
         max: 1000000000,
@@ -1605,7 +1605,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "initialValue", label: "Valoare initiala", decimals: 2 },
+      { name: "initialValue", label: "Valoare inițială", decimals: 2 },
     ],
     compute: (values) => {
       const mode = parseText(values.mode);
@@ -1623,20 +1623,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-discount",
     categorySlug: "finante",
     summary:
-      "Calculeaza valoarea reducerii si pretul final dupa aplicarea unui discount procentual.",
+      "Calculează valoarea reducerii și prețul final după aplicarea unui discount procentual.",
     formulaName: "Discount procentual",
-    formulaExpression: "Reducere = pret initial x procent / 100; pret final = pret initial - reducere",
+    formulaExpression: "Reducere = preț initial x procent / 100; preț final = preț initial - reducere",
     formulaDescription:
-      "Discountul procentual porneste de la pretul initial si scade procentul selectat pentru a obtine reducerea si pretul final.",
+      "Discountul procentual pornește de la prețul initial și scade procentul selectat pentru a obține reducerea și prețul final.",
     howToSteps: [
-      "Introdu pretul initial.",
+      "Introdu prețul initial.",
       "Introdu procentul de discount.",
-      "Citeste reducerea si pretul final.",
+      "Citește reducerea și prețul final.",
     ],
     inputs: [
       {
         name: "initialPrice",
-        label: "Pret initial",
+        label: "Preț initial",
         type: "number",
         unit: "lei",
         min: 0,
@@ -1659,7 +1659,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "discountAmount", label: "Reducere", unit: "lei", decimals: 2 },
-      { name: "finalPrice", label: "Pret final", unit: "lei", decimals: 2 },
+      { name: "finalPrice", label: "Preț final", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const initialPrice = parseNumber(values.initialPrice);
@@ -1676,20 +1676,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-tva",
     categorySlug: "finante",
     summary:
-      "Adauga TVA peste o suma neta si afiseaza separat baza, TVA-ul si totalul.",
+      "Adaugă TVA peste o sumă netă și afișează separat baza, TVA-ul și totalul.",
     formulaName: "TVA adaugat peste net",
-    formulaExpression: "TVA = baza neta x cota TVA / 100; total = baza neta + TVA",
+    formulaExpression: "TVA = baza netă x cota TVA / 100; total = baza netă + TVA",
     formulaDescription:
-      "Calculatorul TVA porneste de la suma neta si aplica cota de TVA pentru a obtine valoarea taxei si totalul cu TVA inclus.",
+      "Calculatorul TVA pornește de la suma netă și aplică cota de TVA pentru a obține valoarea taxei și totalul cu TVA inclus.",
     howToSteps: [
-      "Introdu suma neta.",
+      "Introdu suma netă.",
       "Alege sau introdu cota TVA.",
-      "Citeste TVA-ul si suma totala cu TVA.",
+      "Citește TVA-ul și suma totală cu TVA.",
     ],
     inputs: [
       {
         name: "netAmount",
-        label: "Suma fara TVA",
+        label: "Suma fără TVA",
         type: "number",
         unit: "lei",
         min: 0,
@@ -1729,15 +1729,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-tva-invers",
     categorySlug: "finante",
     summary:
-      "Scoate TVA-ul dintr-o suma bruta si afiseaza baza neta si taxa corespunzatoare.",
+      "Scoate TVA-ul dintr-o sumă brută și afișează baza netă și taxa corespunzătoare.",
     formulaName: "TVA scos din brut",
-    formulaExpression: "Baza neta = suma bruta / (1 + cota TVA / 100); TVA = suma bruta - baza neta",
+    formulaExpression: "Baza netă = suma brută / (1 + cota TVA / 100); TVA = suma brută - baza netă",
     formulaDescription:
-      "Calculatorul TVA invers porneste de la totalul cu TVA inclus si separa baza neta de componenta fiscala.",
+      "Calculatorul TVA invers pornește de la totalul cu TVA inclus și separă baza netă de componentă fiscală.",
     howToSteps: [
       "Introdu suma cu TVA inclus.",
       "Alege sau introdu cota TVA.",
-      "Citeste baza neta si valoarea TVA-ului inclus.",
+      "Citește baza netă și valoarea TVA-ului inclus.",
     ],
     inputs: [
       {
@@ -1764,7 +1764,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "netAmount", label: "Suma fara TVA", unit: "lei", decimals: 2 },
+      { name: "netAmount", label: "Suma fără TVA", unit: "lei", decimals: 2 },
       { name: "vatAmount", label: "TVA inclus", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -1779,24 +1779,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "compound-interest": {
     key: "compound-interest",
-    title: "Calculator dobanda compusa",
+    title: "Calculator dobânda compusă",
     slug: "calculator-dobanda-compusa",
     categorySlug: "finante",
     summary:
-      "Estimeaza valoarea viitoare a unei sume investite cu dobanda compusa.",
-    formulaName: "Dobanda compusa",
-    formulaExpression: "FV = principal x (1 + rata / capitalizari)^ (capitalizari x ani)",
+      "Estimează valoarea viitoare a unei sume investite cu dobânda compusă.",
+    formulaName: "Dobânda compusă",
+    formulaExpression: "FV = principal x (1 + rata / capitalizări)^ (capitalizări x ani)",
     formulaDescription:
-      "Dobanda compusa creste capitalul initial prin reinvestirea castigurilor la fiecare perioada de capitalizare.",
+      "Dobânda compusă crește capitalul initial prin reinvestirea câștigurilor la fiecare perioada de capitalizare.",
     howToSteps: [
-      "Introdu suma initiala.",
-      "Introdu rata anuala, numarul de ani si frecventa capitalizarii.",
-      "Citeste valoarea finala si castigul total.",
+      "Introdu suma inițială.",
+      "Introdu rata anuală, numărul de ani și frecvența capitalizării.",
+      "Citește valoarea finală și câștigul total.",
     ],
     inputs: [
       {
         name: "principal",
-        label: "Suma initiala",
+        label: "Suma inițială",
         type: "number",
         unit: "lei",
         min: 0,
@@ -1807,7 +1807,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -1829,7 +1829,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "compoundsPerYear",
-        label: "Capitalizari pe an",
+        label: "Capitalizări pe an",
         type: "number",
         min: 1,
         max: 365,
@@ -1840,7 +1840,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "futureValue", label: "Valoare viitoare", unit: "lei", decimals: 2 },
-      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobânda acumulată", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const principal = parseNumber(values.principal);
@@ -1861,21 +1861,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-economii-lunare",
     categorySlug: "finante",
     summary:
-      "Estimeaza cat se aduna in timp din economii lunare recurente, cu sau fara dobanda.",
-    formulaName: "Valoare viitoare a unei anuitati",
+      "Estimează cât se adună în timp din economii lunare recurente, cu sau fără dobânda.",
+    formulaName: "Valoare viitoare a unei anuități",
     formulaExpression:
-      "FV = contributie lunara x [((1 + rata lunara)^luni - 1) / rata lunara]",
+      "FV = contribuție lunară x [((1 + rata lunară)^luni - 1) / rata lunară]",
     formulaDescription:
-      "Economiile lunare recurente pot fi proiectate in timp folosind rata lunara a dobanzii si numarul total de luni.",
+      "Economiile lunare recurente pot fi proiectate în timp folosind rata lunară a dobânzii și numărul total de luni.",
     howToSteps: [
-      "Introdu suma economisita lunar.",
-      "Introdu dobanda anuala si numarul de ani.",
-      "Citeste totalul acumulat si contributia proprie.",
+      "Introdu suma economisită lunar.",
+      "Introdu dobânda anuală și numărul de ani.",
+      "Citește totalul acumulat și contribuția proprie.",
     ],
     inputs: [
       {
         name: "monthlyContribution",
-        label: "Economisire lunara",
+        label: "Economisire lunară",
         type: "number",
         unit: "lei",
         min: 0,
@@ -1886,7 +1886,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -1909,8 +1909,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "futureValue", label: "Total acumulat", unit: "lei", decimals: 2 },
-      { name: "totalContributions", label: "Contributii proprii", unit: "lei", decimals: 2 },
-      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+      { name: "totalContributions", label: "Contribuții proprii", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobânda acumulată", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const monthlyContribution = parseNumber(values.monthlyContribution);
@@ -1935,16 +1935,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-obiectiv-economisire",
     categorySlug: "finante",
     summary:
-      "Arata cati bani trebuie sa pui lunar pentru a atinge o tinta financiara intr-un anumit termen.",
-    formulaName: "Contributie lunara pentru obiectiv",
+      "Arată câți bani trebuie să pui lunar pentru a atinge o țintă financiară într-un anumit termen.",
+    formulaName: "Contribuție lunară pentru obiectiv",
     formulaExpression:
-      "Contributie = tinta x rata lunara / ((1 + rata lunara)^luni - 1)",
+      "Contribuție = țintă x rata lunară / ((1 + rata lunară)^luni - 1)",
     formulaDescription:
-      "Calculatorul inverseaza formula valorii viitoare pentru a estima economisirea lunara necesara catre o tinta finala.",
+      "Calculatorul inversează formula valorii viitoare pentru a estima economisirea lunară necesară către o țintă finală.",
     howToSteps: [
-      "Introdu suma pe care vrei sa o strangi.",
-      "Introdu dobanda anuala si perioada.",
-      "Citeste contributia lunara necesara.",
+      "Introdu suma pe care vrei să o strângi.",
+      "Introdu dobânda anuală și perioada.",
+      "Citește contribuția lunară necesară.",
     ],
     inputs: [
       {
@@ -1960,7 +1960,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -1982,7 +1982,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "monthlyContribution", label: "Economisire lunara necesara", unit: "lei", decimals: 2 },
+      { name: "monthlyContribution", label: "Economisire lunară necesară", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const targetAmount = parseNumber(values.targetAmount);
@@ -2004,16 +2004,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-rata-credit",
     categorySlug: "finante",
     summary:
-      "Estimeaza rata lunara, costul total si dobanda totala pentru un credit cu rambursare in rate egale.",
-    formulaName: "Rata lunara anuitate",
+      "Estimează rata lunară, costul total și dobânda totală pentru un credit cu rambursare în rate egale.",
+    formulaName: "Rata lunară anuitate",
     formulaExpression:
-      "Rata = credit x rata lunara / (1 - (1 + rata lunara)^-luni)",
+      "Rata = credit x rata lunară / (1 - (1 + rata lunară)^-luni)",
     formulaDescription:
-      "Pentru creditele cu rate egale, rata lunara se calculeaza pornind de la suma imprumutata, dobanda anuala si numarul total de luni.",
+      "Pentru creditele cu rate egale, rata lunară se calculează pornind de la suma împrumutată, dobânda anuală și numărul total de luni.",
     howToSteps: [
-      "Introdu suma imprumutata.",
-      "Introdu dobanda anuala si perioada creditului.",
-      "Citeste rata lunara, costul total si dobanda platita.",
+      "Introdu suma împrumutată.",
+      "Introdu dobânda anuală și perioada creditului.",
+      "Citește rata lunară, costul total și dobânda plătită.",
     ],
     inputs: [
       {
@@ -2029,7 +2029,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -2051,9 +2051,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "monthlyPayment", label: "Rata lunara", unit: "lei", decimals: 2 },
+      { name: "monthlyPayment", label: "Rata lunară", unit: "lei", decimals: 2 },
       { name: "totalCost", label: "Cost total", unit: "lei", decimals: 2 },
-      { name: "totalInterest", label: "Dobanda totala", unit: "lei", decimals: 2 },
+      { name: "totalInterest", label: "Dobânda totală", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const loanAmount = parseNumber(values.loanAmount);
@@ -2074,19 +2074,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "room-area": {
     key: "room-area",
-    title: "Calculator suprafata camera",
+    title: "Calculator suprafață cameră",
     slug: "calculator-suprafata-camera",
     categorySlug: "constructii",
     summary:
-      "Calculeaza suprafata si perimetrul unei camere pornind de la lungime si latime.",
-    formulaName: "Suprafata si perimetru dreptunghi",
-    formulaExpression: "Suprafata = lungime x latime; Perimetru = 2 x (lungime + latime)",
+      "Calculează suprafață și perimetrul unei camere pornind de la lungime și lățime.",
+    formulaName: "Suprafață și perimetru dreptunghi",
+    formulaExpression: "Suprafață = lungime x lățime; Perimetru = 2 x (lungime + lățime)",
     formulaDescription:
-      "Formula standard pentru o camera dreptunghiulara foloseste lungimea si latimea pentru a estima suprafata utila si perimetrul.",
+      "Formula standard pentru o cameră dreptunghiulară folosește lungimea și lățimea pentru a estima suprafață utilă și perimetrul.",
     howToSteps: [
-      "Introdu lungimea camerei in metri.",
-      "Introdu latimea camerei in metri.",
-      "Citeste suprafata si perimetrul rezultate.",
+      "Introdu lungimea camerei în metri.",
+      "Introdu lățimea camerei în metri.",
+      "Citește suprafață și perimetrul rezultate.",
     ],
     inputs: [
       {
@@ -2102,7 +2102,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "widthM",
-        label: "Latime",
+        label: "Lățime",
         type: "number",
         unit: "m",
         min: 0.1,
@@ -2113,7 +2113,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "areaSqm", label: "Suprafata", unit: "mp", decimals: 2 },
+      { name: "areaSqm", label: "Suprafață", unit: "mp", decimals: 2 },
       { name: "perimeterM", label: "Perimetru", unit: "m", decimals: 2 },
     ],
     compute: (values) => {
@@ -2131,15 +2131,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-volum-beton",
     categorySlug: "constructii",
     summary:
-      "Estimeaza volumul de beton necesar pentru fundatii, placi sau alte turnari simple.",
+      "Estimează volumul de beton necesar pentru fundații, plăci sau alte turnări simple.",
     formulaName: "Volum dreptunghiular",
-    formulaExpression: "Volum = lungime x latime x grosime",
+    formulaExpression: "Volum = lungime x lățime x grosime",
     formulaDescription:
-      "Volumul de beton pentru o forma simpla se estimeaza inmultind lungimea si latimea in metri cu grosimea exprimata in metri.",
+      "Volumul de beton pentru o formă simplă se estimează înmulțind lungimea și lățimea în metri cu grosimea exprimată în metri.",
     howToSteps: [
-      "Introdu lungimea si latimea zonei in metri.",
-      "Introdu grosimea stratului in centimetri.",
-      "Citeste volumul rezultat in metri cubi si litri.",
+      "Introdu lungimea și lățimea zonei în metri.",
+      "Introdu grosimea stratului în centimetri.",
+      "Citește volumul rezultat în metri cubi și litri.",
     ],
     inputs: [
       {
@@ -2155,7 +2155,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "widthM",
-        label: "Latime",
+        label: "Lățime",
         type: "number",
         unit: "m",
         min: 0.1,
@@ -2197,20 +2197,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-necesar-vopsea",
     categorySlug: "constructii",
     summary:
-      "Estimeaza cata vopsea iti trebuie in functie de suprafata, numarul de straturi si acoperirea declarata.",
+      "Estimează câtă vopsea îți trebuie în funcție de suprafață, numărul de straturi și acoperirea declarată.",
     formulaName: "Necesar vopsea",
-    formulaExpression: "Litri necesari = (suprafata x straturi) / acoperire pe litru",
+    formulaExpression: "Litri necesari = (suprafață x straturi) / acoperire pe litru",
     formulaDescription:
-      "Necesarul de vopsea se estimeaza impartind suprafata totala ajustata cu numarul de straturi la acoperirea declarata de produs.",
+      "Necesarul de vopsea se estimează împărțind suprafață totală ajustată cu numărul de straturi la acoperirea declarată de produs.",
     howToSteps: [
-      "Introdu suprafata de vopsit in metri patrati.",
-      "Alege cate straturi vrei sa aplici si acoperirea produsului.",
-      "Citeste litrii necesari si numarul estimat de galeti de 10 litri.",
+      "Introdu suprafață de vopsit în metri pătrați.",
+      "Alege câte straturi vrei să aplici și acoperirea produsului.",
+      "Citește litrii necesari și numărul estimat de găleți de 10 litri.",
     ],
     inputs: [
       {
         name: "areaSqm",
-        label: "Suprafata",
+        label: "Suprafață",
         type: "number",
         unit: "mp",
         min: 0.1,
@@ -2221,7 +2221,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "coats",
-        label: "Numar straturi",
+        label: "Număr straturi",
         type: "number",
         min: 1,
         max: 10,
@@ -2242,8 +2242,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "litersNeeded", label: "Vopsea necesara", unit: "l", decimals: 2 },
-      { name: "buckets10L", label: "Galeti de 10 l", decimals: 0 },
+      { name: "litersNeeded", label: "Vopsea necesară", unit: "l", decimals: 2 },
+      { name: "buckets10L", label: "Găleți de 10 l", decimals: 0 },
     ],
     compute: (values) => {
       const litersNeeded =
@@ -2257,24 +2257,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "tile-coverage": {
     key: "tile-coverage",
-    title: "Calculator necesar gresie si faianta",
+    title: "Calculator necesar gresie și faianță",
     slug: "calculator-necesar-gresie-faianta",
     categorySlug: "constructii",
     summary:
-      "Estimeaza suprafata cu pierderi si numarul de cutii pentru gresie sau faianta.",
+      "Estimează suprafață cu pierderi și numărul de cutii pentru gresie sau faianță.",
     formulaName: "Necesar finisaj cu pierderi",
-    formulaExpression: "Suprafata necesara = suprafata x (1 + pierderi); cutii = suprafata necesara / acoperire cutie",
+    formulaExpression: "Suprafață necesară = suprafață x (1 + pierderi); cutii = suprafață necesară / acoperire cutie",
     formulaDescription:
-      "Necesarul de gresie sau faianta se estimeaza adaugand un procent de pierderi peste suprafata utila si impartind apoi la acoperirea unei cutii.",
+      "Necesarul de gresie sau faianță se estimează adăugând un procent de pierderi peste suprafață utilă și împărțind apoi la acoperirea unei cutii.",
     howToSteps: [
-      "Introdu suprafata totala de acoperit.",
-      "Alege procentul de pierderi si acoperirea unei cutii.",
-      "Citeste suprafata ajustata si numarul de cutii necesare.",
+      "Introdu suprafață totală de acoperit.",
+      "Alege procentul de pierderi și acoperirea unei cutii.",
+      "Citește suprafață ajustată și numărul de cutii necesare.",
     ],
     inputs: [
       {
         name: "areaSqm",
-        label: "Suprafata",
+        label: "Suprafață",
         type: "number",
         unit: "mp",
         min: 0.1,
@@ -2307,7 +2307,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "requiredAreaSqm", label: "Suprafata ajustata", unit: "mp", decimals: 2 },
+      { name: "requiredAreaSqm", label: "Suprafață ajustată", unit: "mp", decimals: 2 },
       { name: "boxesNeeded", label: "Cutii necesare", decimals: 0 },
     ],
     compute: (values) => {
@@ -2327,20 +2327,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-necesar-parchet",
     categorySlug: "constructii",
     summary:
-      "Estimeaza numarul de pachete de parchet necesare pentru o camera sau o zona de lucru.",
-    formulaName: "Necesar parchet cu rezerva",
-    formulaExpression: "Suprafata necesara = suprafata x (1 + rezerva); pachete = suprafata necesara / acoperire pachet",
+      "Estimează numărul de pachete de parchet necesare pentru o cameră sau o zonă de lucru.",
+    formulaName: "Necesar parchet cu rezervă",
+    formulaExpression: "Suprafață necesară = suprafață x (1 + rezervă); pachete = suprafață necesară / acoperire pachet",
     formulaDescription:
-      "Necesarul de parchet se calculeaza pe baza suprafetei, a rezervei pentru taieturi si a acoperirii declarate pe pachet.",
+      "Necesarul de parchet se calculează pe baza suprafeței, a rezervei pentru taieturi și a acoperirii declarate pe pachet.",
     howToSteps: [
-      "Introdu suprafata de acoperit.",
-      "Introdu procentul de rezerva si acoperirea pe pachet.",
-      "Citeste suprafata ajustata si numarul de pachete necesare.",
+      "Introdu suprafață de acoperit.",
+      "Introdu procentul de rezervă și acoperirea pe pachet.",
+      "Citește suprafață ajustată și numărul de pachete necesare.",
     ],
     inputs: [
       {
         name: "areaSqm",
-        label: "Suprafata",
+        label: "Suprafață",
         type: "number",
         unit: "mp",
         min: 0.1,
@@ -2351,7 +2351,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "wastePercent",
-        label: "Rezerva pentru taieturi",
+        label: "Rezervă pentru taieturi",
         type: "number",
         unit: "%",
         min: 0,
@@ -2373,7 +2373,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "requiredAreaSqm", label: "Suprafata ajustata", unit: "mp", decimals: 2 },
+      { name: "requiredAreaSqm", label: "Suprafață ajustată", unit: "mp", decimals: 2 },
       { name: "packagesNeeded", label: "Pachete necesare", decimals: 0 },
     ],
     compute: (values) => {
@@ -2389,19 +2389,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "food-cost": {
     key: "food-cost",
-    title: "Calculator cost reteta (food cost)",
+    title: "Calculator cost rețetă (food cost)",
     slug: "calculator-cost-reteta",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza food cost-ul si profitul brut pe portie pornind de la costul ingredientelor si pretul de vanzare.",
-    formulaName: "Cost reteta",
-    formulaExpression: "Cost reteta (%) = cost ingrediente / pret vanzare x 100",
+      "Calculează food cost-ul și profitul brut pe porție pornind de la costul ingredientelor și prețul de vânzare.",
+    formulaName: "Cost rețetă",
+    formulaExpression: "Cost rețetă (%) = cost ingrediente / preț vânzare x 100",
     formulaDescription:
-      "Costul retetei raporteaza costul ingredientelor la pretul de vanzare pentru a arata ce pondere consuma materia prima din pretul final.",
+      "Costul rețetei raportează costul ingredientelor la prețul de vânzare pentru a arăta ce pondere consuma materia prima din prețul final.",
     howToSteps: [
-      "Introdu costul ingredientelor pentru o portie.",
-      "Introdu pretul de vanzare al portiei.",
-      "Citeste procentul costului de reteta si profitul brut rezultat.",
+      "Introdu costul ingredientelor pentru o porție.",
+      "Introdu prețul de vânzare al portiei.",
+      "Citește procentul costului de rețetă și profitul brut rezultat.",
     ],
     inputs: [
       {
@@ -2417,7 +2417,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "sellingPrice",
-        label: "Pret de vanzare",
+        label: "Preț de vânzare",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -2446,15 +2446,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-marja-profit",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza marja de profit si profitul brut pornind de la cost si pretul de vanzare.",
+      "Calculează marja de profit și profitul brut pornind de la cost și prețul de vânzare.",
     formulaName: "Marja profit",
-    formulaExpression: "Marja (%) = (pret vanzare - cost) / pret vanzare x 100",
+    formulaExpression: "Marja (%) = (preț vânzare - cost) / preț vânzare x 100",
     formulaDescription:
-      "Marja de profit arata ce procent din pretul de vanzare ramane dupa ce scazi costul direct.",
+      "Marja de profit arată ce procent din prețul de vânzare rămâne după ce scazi costul direct.",
     howToSteps: [
       "Introdu costul produsului sau serviciului.",
-      "Introdu pretul de vanzare.",
-      "Citeste profitul brut si marja rezultata.",
+      "Introdu prețul de vânzare.",
+      "Citește profitul brut și marja rezultată.",
     ],
     inputs: [
       {
@@ -2470,7 +2470,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "sellingPrice",
-        label: "Pret de vanzare",
+        label: "Preț de vânzare",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -2500,15 +2500,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-adaos-comercial",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza markup-ul comercial pornind de la cost si pretul de vanzare.",
+      "Calculează markup-ul comercial pornind de la cost și prețul de vânzare.",
     formulaName: "Markup comercial",
-    formulaExpression: "Markup (%) = (pret vanzare - cost) / cost x 100",
+    formulaExpression: "Markup (%) = (preț vânzare - cost) / cost x 100",
     formulaDescription:
-      "Markup-ul arata cu cat ai crescut costul de baza pentru a ajunge la pretul de vanzare.",
+      "Markup-ul arată cu cât ai crescut costul de bază pentru a ajunge la prețul de vânzare.",
     howToSteps: [
       "Introdu costul direct.",
-      "Introdu pretul de vanzare.",
-      "Citeste markup-ul si profitul brut rezultat.",
+      "Introdu prețul de vânzare.",
+      "Citește markup-ul și profitul brut rezultat.",
     ],
     inputs: [
       {
@@ -2524,7 +2524,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "sellingPrice",
-        label: "Pret de vanzare",
+        label: "Preț de vânzare",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -2554,15 +2554,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-prag-rentabilitate",
     categorySlug: "afaceri",
     summary:
-      "Estimeaza pragul de rentabilitate in unitati pornind de la costuri fixe, cost variabil si pret de vanzare.",
+      "Estimează pragul de rentabilitate în unități pornind de la costuri fixe, cost variabil și preț de vânzare.",
     formulaName: "Prag de rentabilitate",
-    formulaExpression: "Prag rentabilitate unitati = costuri fixe / (pret de vanzare - cost variabil/unitate)",
+    formulaExpression: "Prag rentabilitate unități = costuri fixe / (preț de vânzare - cost variabil/unitate)",
     formulaDescription:
-      "Pragul de rentabilitate arata cate unitati trebuie sa vinzi pana cand acoperi costurile fixe si nu mai esti pe pierdere.",
+      "Pragul de rentabilitate arată câte unități trebuie să vinzi până când acoperi costurile fixe și nu mai ești pe pierdere.",
     howToSteps: [
       "Introdu costurile fixe totale.",
-      "Introdu pretul de vanzare si costul variabil per unitate.",
-      "Citeste contributia pe unitate si pragul de rentabilitate estimat.",
+      "Introdu prețul de vânzare și costul variabil per unitate.",
+      "Citește contribuția pe unitate și pragul de rentabilitate estimat.",
     ],
     inputs: [
       {
@@ -2578,7 +2578,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "sellingPrice",
-        label: "Pret de vanzare/unitate",
+        label: "Preț de vânzare/unitate",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -2600,7 +2600,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "contributionPerUnit", label: "Contributie/unitate", unit: "lei", decimals: 2 },
+      { name: "contributionPerUnit", label: "Contribuție/unitate", unit: "lei", decimals: 2 },
       { name: "breakEvenUnits", label: "Prag rentabilitate", unit: "unitati", decimals: 0 },
     ],
     compute: (values) => {
@@ -2622,20 +2622,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-roi",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza rentabilitatea unei investitii pornind de la costul investitiei si castigul obtinut.",
+      "Calculează rentabilitatea unei investiții pornind de la costul investiției și câștigul obținut.",
     formulaName: "Return on Investment",
-    formulaExpression: "ROI (%) = (castig net / investitie) x 100",
+    formulaExpression: "ROI (%) = (câștig net / investiție) x 100",
     formulaDescription:
-      "ROI-ul compara castigul net ramas dupa recuperarea investitiei cu suma investita initial.",
+      "ROI-ul compară câștigul net ramas după recuperarea investiției cu suma investită initial.",
     howToSteps: [
-      "Introdu costul investitiei.",
-      "Introdu incasarile sau valoarea obtinuta.",
-      "Citeste profitul net si ROI-ul rezultat.",
+      "Introdu costul investiției.",
+      "Introdu încasările sau valoarea obținută.",
+      "Citește profitul net și ROI-ul rezultat.",
     ],
     inputs: [
       {
         name: "investmentCost",
-        label: "Investitie",
+        label: "Investiție",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -2646,7 +2646,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "returnValue",
-        label: "Valoare obtinuta",
+        label: "Valoare obținută",
         type: "number",
         unit: "lei",
         min: 0,
@@ -2672,20 +2672,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "salary-increase": {
     key: "salary-increase",
-    title: "Calculator crestere salariala",
+    title: "Calculator creștere salarială",
     slug: "calculator-crestere-salariala",
     categorySlug: "salarii-si-taxe",
     summary:
-      "Compara salariul actual cu salariul tinta si vezi diferenta in lei si in procente.",
-    formulaName: "Crestere salariala",
+      "Compară salariul actual cu salariul țintă și vezi diferență în lei și în procente.",
+    formulaName: "Creștere salarială",
     formulaExpression:
-      "Diferenta = salariu tinta - salariu actual; Crestere (%) = diferenta / salariu actual x 100",
+      "Diferență = salariu țintă - salariu actual; Creștere (%) = diferență / salariu actual x 100",
     formulaDescription:
-      "Calculatorul transforma diferenta dintre salariul actual si cel tinta intr-o crestere absoluta si procentuala.",
+      "Calculatorul transformă diferență dintre salariul actual și cel țintă într-o creștere absolută și procentuală.",
     howToSteps: [
       "Introdu salariul actual.",
-      "Introdu salariul tinta sau oferta noua.",
-      "Citeste cresterea in lei si in procente.",
+      "Introdu salariul țintă sau oferta nouă.",
+      "Citește creșterea în lei și în procente.",
     ],
     inputs: [
       {
@@ -2701,7 +2701,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "targetSalary",
-        label: "Salariu tinta",
+        label: "Salariu țintă",
         type: "number",
         unit: "lei",
         min: 0,
@@ -2712,8 +2712,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "increaseAmount", label: "Crestere in lei", unit: "lei", decimals: 2 },
-      { name: "increasePercent", label: "Crestere procentuala", unit: "%", decimals: 2 },
+      { name: "increaseAmount", label: "Creștere în lei", unit: "lei", decimals: 2 },
+      { name: "increasePercent", label: "Creștere procentuală", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
       const currentSalary = Math.max(parseNumber(values.currentSalary), 0.01);
@@ -2731,15 +2731,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-tarif-orar-din-salariu",
     categorySlug: "salarii-si-taxe",
     summary:
-      "Transforma salariul lunar intr-un tarif orar orientativ, pornind de la numarul de ore lucrate.",
+      "Transformă salariul lunar într-un tarif orar orientativ, pornind de la numărul de ore lucrate.",
     formulaName: "Tarif orar",
-    formulaExpression: "Tarif orar = venit lunar / ore lucrate in luna",
+    formulaExpression: "Tarif orar = venit lunar / ore lucrate în lună",
     formulaDescription:
-      "Tariful orar rezulta din impartirea venitului lunar la numarul total de ore lucrate in aceeasi perioada.",
+      "Tariful orar rezultă din împărțirea venitului lunar la numărul total de ore lucrate în aceeași perioada.",
     howToSteps: [
-      "Introdu venitul lunar pe care vrei sa-l transformi in tarif orar.",
-      "Introdu numarul de ore lucrate in luna.",
-      "Citeste valoarea orientativa pe ora.",
+      "Introdu venitul lunar pe care vrei să-l transformi în tarif orar.",
+      "Introdu numărul de ore lucrate în lună.",
+      "Citește valoarea orientativă pe oră.",
     ],
     inputs: [
       {
@@ -2778,24 +2778,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "monthly-work-hours": {
     key: "monthly-work-hours",
-    title: "Calculator ore lucrate pe luna",
+    title: "Calculator ore lucrate pe lună",
     slug: "calculator-ore-lucrate-pe-luna",
     categorySlug: "salarii-si-taxe",
     summary:
-      "Estimeaza numarul total de ore lucrate intr-o luna pe baza zilelor lucratoare si a programului zilnic.",
-    formulaName: "Ore lucrate pe luna",
-    formulaExpression: "Ore lunare = zile lucratoare x ore pe zi",
+      "Estimează numărul total de ore lucrate într-o lună pe baza zilelor lucrătoare și a programului zilnic.",
+    formulaName: "Ore lucrate pe lună",
+    formulaExpression: "Ore lunare = zile lucrătoare x ore pe zi",
     formulaDescription:
-      "Numarul total de ore lucrate intr-o luna se obtine inmultind zilele lucratoare cu durata programului zilnic.",
+      "Numărul total de ore lucrate într-o lună se obține înmulțind zilele lucrătoare cu durata programului zilnic.",
     howToSteps: [
-      "Introdu numarul de zile lucratoare relevante pentru luna analizata.",
-      "Introdu numarul de ore lucrate intr-o zi obisnuita.",
-      "Citeste totalul de ore pentru luna respectiva.",
+      "Introdu numărul de zile lucrătoare relevante pentru luna analizată.",
+      "Introdu numărul de ore lucrate într-o zi obișnuită.",
+      "Citește totalul de ore pentru luna respectivă.",
     ],
     inputs: [
       {
         name: "workDays",
-        label: "Zile lucratoare",
+        label: "Zile lucrătoare",
         type: "number",
         unit: "zile",
         min: 1,
@@ -2833,15 +2833,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-venit-anual",
     categorySlug: "salarii-si-taxe",
     summary:
-      "Transforma venitul lunar intr-o estimare anuala si permite adaugarea bonusurilor sau a lunilor suplimentare.",
+      "Transformă venitul lunar într-o estimare anuală și permite adăugarea bonusurilor sau a lunilor suplimentare.",
     formulaName: "Venit anual",
-    formulaExpression: "Venit anual = venit lunar x luni platite + bonusuri",
+    formulaExpression: "Venit anual = venit lunar x luni plătite + bonusuri",
     formulaDescription:
-      "Venitul anual rezulta din inmultirea venitului lunar cu numarul de luni platite, la care se pot adauga bonusuri sau venituri suplimentare.",
+      "Venitul anual rezultă din înmulțirea venitului lunar cu numărul de luni plătite, la care se pot adaugă bonusuri sau venituri suplimentare.",
     howToSteps: [
       "Introdu venitul lunar mediu.",
-      "Alege numarul de luni platite sau valoarea suplimentara pentru bonusuri.",
-      "Citeste venitul anual estimat.",
+      "Alege numărul de luni plătite sau valoarea suplimentară pentru bonusuri.",
+      "Citește venitul anual estimat.",
     ],
     inputs: [
       {
@@ -2857,7 +2857,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "paidMonths",
-        label: "Luni platite",
+        label: "Luni plătite",
         type: "number",
         unit: "luni",
         min: 1,
@@ -2896,16 +2896,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-taxare-efectiva-salariu",
     categorySlug: "salarii-si-taxe",
     summary:
-      "Porneste de la brut si net pentru a vedea diferenta absoluta si rata efectiva de taxare.",
+      "Pornește de la brut și net pentru a vedea diferență absolută și rata efectiva de taxare.",
     formulaName: "Taxare efectiva",
     formulaExpression:
       "Taxe totale = brut - net; Taxare efectiva (%) = taxe totale / brut x 100",
     formulaDescription:
-      "Calculatorul compara venitul brut cu venitul net pentru a estima rapid cat reprezinta taxele si contributiile in termeni absoluti si procentuali.",
+      "Calculatorul compară venitul brut cu venitul net pentru a estima rapid cât reprezintă taxele și contribuțiile în termeni absoluți și procentuali.",
     howToSteps: [
       "Introdu venitul brut.",
-      "Introdu venitul net corespunzator.",
-      "Citeste suma taxelor si rata efectiva rezultata.",
+      "Introdu venitul net corespunzător.",
+      "Citește suma taxelor și rata efectiva rezultată.",
     ],
     inputs: [
       {
@@ -2932,7 +2932,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "taxAmount", label: "Taxe si contributii", unit: "lei", decimals: 2 },
+      { name: "taxAmount", label: "Taxe și contribuții", unit: "lei", decimals: 2 },
       { name: "effectiveTaxRate", label: "Rata efectiva", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
@@ -2947,20 +2947,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "credit-affordability": {
     key: "credit-affordability",
-    title: "Calculator rata maxima suportabila",
+    title: "Calculator rata maximă suportabilă",
     slug: "calculator-rata-maxima-suportabila",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza rata lunara maxima si suma finantabila pornind de la venit, cheltuieli, dobanda si perioada.",
-    formulaName: "Rata suportabila si suma finantabila",
+      "Estimează rata lunară maximă și suma finanțabilă pornind de la venit, cheltuieli, dobânda și perioada.",
+    formulaName: "Rata suportabilă și suma finanțabilă",
     formulaExpression:
-      "Rata maxima = venit net x grad de indatorare - alte rate; Suma finantabila = rata x [1 - (1 + i)^-n] / i",
+      "Rata maximă = venit net x grad de îndatorare - alte rate; Suma finanțabilă = rata x [1 - (1 + i)^-n] / i",
     formulaDescription:
-      "Calculatorul porneste de la un prag de indatorare ales de utilizator si transforma rata lunara maxima intr-o estimare a sumei care poate fi finantata.",
+      "Calculatorul pornește de la un prag de îndatorare ales de utilizator și transformă rata lunară maximă într-o estimare a sumei care poate fi finanțată.",
     howToSteps: [
-      "Introdu venitul lunar net si ratele existente.",
-      "Alege pragul de indatorare, dobanda si perioada creditului.",
-      "Citeste rata maxima si suma finantabila estimata.",
+      "Introdu venitul lunar net și ratele existente.",
+      "Alege pragul de îndatorare, dobânda și perioada creditului.",
+      "Citește rata maximă și suma finanțabilă estimată.",
     ],
     inputs: [
       {
@@ -2987,7 +2987,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "debtRatio",
-        label: "Grad de indatorare",
+        label: "Grad de îndatorare",
         type: "number",
         unit: "%",
         min: 1,
@@ -2998,7 +2998,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualInterestRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -3020,8 +3020,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "maxPayment", label: "Rata maxima", unit: "lei", decimals: 2 },
-      { name: "maxLoanAmount", label: "Suma finantabila", unit: "lei", decimals: 2 },
+      { name: "maxPayment", label: "Rata maximă", unit: "lei", decimals: 2 },
+      { name: "maxLoanAmount", label: "Suma finanțabilă", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const monthlyIncome = parseNumber(values.monthlyIncome);
@@ -3044,19 +3044,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "debt-to-income": {
     key: "debt-to-income",
-    title: "Calculator grad de indatorare",
+    title: "Calculator grad de îndatorare",
     slug: "calculator-grad-de-indatorare",
     categorySlug: "credite-si-economii",
     summary:
-      "Arata ce procent din venitul lunar este deja consumat de rate si plati recurente.",
+      "Arată ce procent din venitul lunar este deja consumat de rate și plăți recurente.",
     formulaName: "Debt-to-income",
-    formulaExpression: "Grad de indatorare = plati lunare recurente / venit lunar x 100",
+    formulaExpression: "Grad de îndatorare = plăți lunare recurente / venit lunar x 100",
     formulaDescription:
-      "Gradul de indatorare compara toate platile recurente de datorii cu venitul disponibil intr-o luna obisnuita.",
+      "Gradul de îndatorare compară toate platile recurente de datorii cu venitul disponibil într-o lună obișnuită.",
     howToSteps: [
-      "Introdu venitul lunar relevant pentru comparatie.",
-      "Introdu totalul ratelor sau platilor recurente.",
-      "Citeste procentul de indatorare rezultat.",
+      "Introdu venitul lunar relevant pentru comparație.",
+      "Introdu totalul ratelor sau plăților recurente.",
+      "Citește procentul de îndatorare rezultat.",
     ],
     inputs: [
       {
@@ -3072,7 +3072,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyDebtPayments",
-        label: "Plati recurente",
+        label: "Plăți recurente",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3083,7 +3083,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "debtToIncome", label: "Grad de indatorare", unit: "%", decimals: 2 },
+      { name: "debtToIncome", label: "Grad de îndatorare", unit: "%", decimals: 2 },
       { name: "remainingIncome", label: "Venit ramas", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -3101,21 +3101,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-cost-total-credit",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza rata lunara, suma totala platita si dobanda totala pentru un credit in rate egale.",
+      "Estimează rata lunară, suma totală plătită și dobânda totală pentru un credit în rate egale.",
     formulaName: "Cost total credit",
     formulaExpression:
-      "Rata = credit x rata lunara / (1 - (1 + rata lunara)^-luni); Cost total = rata x luni",
+      "Rata = credit x rata lunară / (1 - (1 + rata lunară)^-luni); Cost total = rata x luni",
     formulaDescription:
-      "Calculatorul foloseste formula anuitatii pentru a transforma suma imprumutata, dobanda si perioada in cost lunar si cost total.",
+      "Calculatorul folosește formula anuității pentru a transforma suma împrumutată, dobânda și perioada în cost lunar și cost total.",
     howToSteps: [
-      "Introdu suma imprumutata.",
-      "Introdu dobanda anuala si perioada in luni.",
-      "Citeste rata lunara, costul total si dobanda totala.",
+      "Introdu suma împrumutată.",
+      "Introdu dobânda anuală și perioada în luni.",
+      "Citește rata lunară, costul total și dobânda totală.",
     ],
     inputs: [
       {
         name: "principal",
-        label: "Suma imprumutata",
+        label: "Suma împrumutată",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -3126,7 +3126,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualInterestRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -3148,9 +3148,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "monthlyPayment", label: "Rata lunara", unit: "lei", decimals: 2 },
+      { name: "monthlyPayment", label: "Rata lunară", unit: "lei", decimals: 2 },
       { name: "totalCost", label: "Cost total", unit: "lei", decimals: 2 },
-      { name: "totalInterest", label: "Dobanda totala", unit: "lei", decimals: 2 },
+      { name: "totalInterest", label: "Dobânda totală", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const principal = Math.max(parseNumber(values.principal), 0.01);
@@ -3173,20 +3173,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "refinance-savings": {
     key: "refinance-savings",
-    title: "Calculator economie refinantare",
+    title: "Calculator economie refinanțare",
     slug: "calculator-economie-refinantare",
     categorySlug: "credite-si-economii",
     summary:
-      "Compara rata veche cu rata noua si estimeaza economia lunara, economia totala si pragul de recuperare a costurilor.",
-    formulaName: "Economii refinantare",
+      "Compară rata veche cu rata nouă și estimează economia lunară, economia totală și pragul de recuperare a costurilor.",
+    formulaName: "Economii refinanțare",
     formulaExpression:
-      "Economie lunara = rata veche - rata noua; Economie neta = economie lunara x luni ramase - cost refinantare",
+      "Economie lunară = rata veche - rata nouă; Economie netă = economie lunară x luni rămase - cost refinanțare",
     formulaDescription:
-      "Calculatorul compara direct cele doua scenarii de plata si arata in cat timp se recupereaza costul refinantarii.",
+      "Calculatorul compară direct cele două scenarii de plată și arată în cât timp se recuperează costul refinanțării.",
     howToSteps: [
-      "Introdu rata veche, rata noua si lunile ramase.",
-      "Adauga costul refinantarii.",
-      "Citeste economia lunara, economia neta si pragul de recuperare.",
+      "Introdu rata veche, rata nouă și lunile rămase.",
+      "Adaugă costul refinanțării.",
+      "Citește economia lunară, economia netă și pragul de recuperare.",
     ],
     inputs: [
       {
@@ -3202,7 +3202,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "newMonthlyPayment",
-        label: "Rata noua",
+        label: "Rata nouă",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3213,7 +3213,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "remainingMonths",
-        label: "Luni ramase",
+        label: "Luni rămase",
         type: "number",
         unit: "luni",
         min: 1,
@@ -3224,7 +3224,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "refinanceCost",
-        label: "Cost refinantare",
+        label: "Cost refinanțare",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3235,8 +3235,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "monthlySavings", label: "Economie lunara", unit: "lei", decimals: 2 },
-      { name: "netSavings", label: "Economie neta", unit: "lei", decimals: 2 },
+      { name: "monthlySavings", label: "Economie lunară", unit: "lei", decimals: 2 },
+      { name: "netSavings", label: "Economie netă", unit: "lei", decimals: 2 },
       { name: "breakEvenMonths", label: "Recuperare cost", unit: "luni", decimals: 1 },
     ],
     compute: (values) => {
@@ -3258,19 +3258,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "emergency-fund": {
     key: "emergency-fund",
-    title: "Calculator fond de urgenta",
+    title: "Calculator fond de urgență",
     slug: "calculator-fond-de-urgenta",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza marimea fondului de urgenta pornind de la cheltuielile lunare si numarul de luni de acoperire dorit.",
-    formulaName: "Fond de urgenta",
-    formulaExpression: "Fond de urgenta = cheltuieli lunare x luni de acoperire",
+      "Estimează mărimea fondului de urgență pornind de la cheltuielile lunare și numărul de luni de acoperire dorit.",
+    formulaName: "Fond de urgență",
+    formulaExpression: "Fond de urgență = cheltuieli lunare x luni de acoperire",
     formulaDescription:
-      "Fondul de urgenta este estimat simplu, prin inmultirea cheltuielilor lunare esentiale cu perioada de acoperire dorita.",
+      "Fondul de urgență este estimat simplu, prin înmulțirea cheltuielilor lunare esențiale cu perioada de acoperire dorită.",
     howToSteps: [
-      "Introdu cheltuielile lunare esentiale.",
-      "Alege cate luni vrei sa acoperi.",
-      "Citeste suma-tinta pentru fondul de urgenta.",
+      "Introdu cheltuielile lunare esențiale.",
+      "Alege câte luni vrei să acoperi.",
+      "Citește suma-țintă pentru fondul de urgență.",
     ],
     inputs: [
       {
@@ -3309,25 +3309,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "savings-interest": {
     key: "savings-interest",
-    title: "Calculator dobanda economii",
+    title: "Calculator dobânda economii",
     slug: "calculator-dobanda-economii",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza valoarea finala a economiilor pornind de la suma initiala, contributie lunara, dobanda si perioada.",
+      "Estimează valoarea finală a economiilor pornind de la suma inițială, contribuție lunară, dobânda și perioada.",
     formulaName: "Valoare viitoare economii",
     formulaExpression:
-      "FV = suma initiala x (1 + i)^n + contributie lunara x [((1 + i)^n - 1) / i]",
+      "FV = suma inițială x (1 + i)^n + contribuție lunară x [((1 + i)^n - 1) / i]",
     formulaDescription:
-      "Calculatorul combina capitalul initial cu depunerile lunare si capitalizarea dobanzii pentru a estima evolutia economiilor.",
+      "Calculatorul combină capitalul initial cu depunerile lunare și capitalizarea dobânzii pentru a estima evoluția economiilor.",
     howToSteps: [
-      "Introdu suma initiala si contributia lunara.",
-      "Adauga dobanda anuala si perioada.",
-      "Citeste valoarea finala si castigul total din dobanda.",
+      "Introdu suma inițială și contribuția lunară.",
+      "Adaugă dobânda anuală și perioada.",
+      "Citește valoarea finală și câștigul total din dobânda.",
     ],
     inputs: [
       {
         name: "initialAmount",
-        label: "Suma initiala",
+        label: "Suma inițială",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3338,7 +3338,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyContribution",
-        label: "Contributie lunara",
+        label: "Contribuție lunară",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3349,7 +3349,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualInterestRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -3371,8 +3371,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "futureValue", label: "Valoare finala", unit: "lei", decimals: 2 },
-      { name: "interestEarned", label: "Dobanda acumulata", unit: "lei", decimals: 2 },
+      { name: "futureValue", label: "Valoare finală", unit: "lei", decimals: 2 },
+      { name: "interestEarned", label: "Dobânda acumulată", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const initialAmount = parseNumber(values.initialAmount);
@@ -3399,21 +3399,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-economii-pensie",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza cat se poate acumula pentru pensie dintr-o contributie lunara, un randament anual si un orizont lung de timp.",
+      "Estimează cât se poate acumula pentru pensie dintr-o contribuție lunară, un randament anual și un orizont lung de timp.",
     formulaName: "Economii pentru pensie",
     formulaExpression:
-      "FV = contributie lunara x [((1 + i)^n - 1) / i], cu capitalizare lunara",
+      "FV = contribuție lunară x [((1 + i)^n - 1) / i], cu capitalizare lunară",
     formulaDescription:
-      "Calculatorul proiecteaza acumularea unei contributii lunare recurente pe termen lung, folosind o rata anuala de crestere aleasa de utilizator.",
+      "Calculatorul proiectează acumularea unei contribuții lunare recurente pe termen lung, folosind o rată anuală de creștere aleasă de utilizator.",
     howToSteps: [
-      "Introdu contributia lunara pe care o poti sustine.",
-      "Alege numarul de ani si randamentul anual orientativ.",
-      "Citeste suma finala estimata la finalul perioadei.",
+      "Introdu contribuția lunară pe care o poți susține.",
+      "Alege numărul de ani și randamentul anual orientativ.",
+      "Citește suma finală estimată la finalul perioadei.",
     ],
     inputs: [
       {
         name: "monthlyContribution",
-        label: "Contributie lunara",
+        label: "Contribuție lunară",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3424,7 +3424,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "years",
-        label: "Ani pana la obiectiv",
+        label: "Ani până la obiectiv",
         type: "number",
         unit: "ani",
         min: 1,
@@ -3471,16 +3471,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-termen-obiectiv-economisire",
     categorySlug: "credite-si-economii",
     summary:
-      "Estimeaza in cate luni poti ajunge la o tinta pornind de la suma initiala, contributie lunara si dobanda.",
+      "Estimează în câte luni poți ajunge la o țintă pornind de la suma inițială, contribuție lunară și dobânda.",
     formulaName: "Termen obiectiv economisire",
     formulaExpression:
-      "Termenul se obtine iterativ pana cand suma acumulata depaseste tinta dorita.",
+      "Termenul se obține iterativ până când suma acumulată depășește țintă dorită.",
     formulaDescription:
-      "Calculatorul simuleaza evolutia lunara a economiilor pana cand valoarea acumulata atinge sau depaseste obiectivul final.",
+      "Calculatorul simulează evoluția lunară a economiilor până când valoarea acumulată atinge sau depășește obiectivul final.",
     howToSteps: [
-      "Introdu tinta finala, suma initiala si contributia lunara.",
-      "Adauga dobanda anuala orientativa.",
-      "Citeste numarul de luni si anii necesari pentru a atinge obiectivul.",
+      "Introdu țintă finală, suma inițială și contribuția lunară.",
+      "Adaugă dobânda anuală orientativă.",
+      "Citește numărul de luni și anii necesari pentru a atinge obiectivul.",
     ],
     inputs: [
       {
@@ -3496,7 +3496,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "initialAmount",
-        label: "Suma initiala",
+        label: "Suma inițială",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3507,7 +3507,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyContribution",
-        label: "Contributie lunara",
+        label: "Contribuție lunară",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3518,7 +3518,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualInterestRate",
-        label: "Dobanda anuala",
+        label: "Dobânda anuală",
         type: "number",
         unit: "%",
         min: 0,
@@ -3529,8 +3529,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "monthsToGoal", label: "Luni pana la obiectiv", unit: "luni", decimals: 0 },
-      { name: "yearsToGoal", label: "Ani pana la obiectiv", unit: "ani", decimals: 2 },
+      { name: "monthsToGoal", label: "Luni până la obiectiv", unit: "luni", decimals: 0 },
+      { name: "yearsToGoal", label: "Ani până la obiectiv", unit: "ani", decimals: 2 },
     ],
     compute: (values) => {
       const targetAmount = Math.max(parseNumber(values.targetAmount), 0.01);
@@ -3558,16 +3558,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-leasing-vs-credit",
     categorySlug: "credite-si-economii",
     summary:
-      "Compara costul total al doua scenarii de finantare pornind de la avans, rate lunare si costuri finale.",
-    formulaName: "Comparatie leasing vs credit",
+      "Compară costul total al două scenarii de finanțare pornind de la avans, rate lunare și costuri finale.",
+    formulaName: "Comparație leasing vs credit",
     formulaExpression:
-      "Cost total = avans + rata lunara x luni + cost final; Diferenta = scenariul A - scenariul B",
+      "Cost total = avans + rata lunară x luni + cost final; Diferență = scenariul A - scenariul B",
     formulaDescription:
-      "Calculatorul compara doua scenarii de finantare la nivel de cost total, folosind aceeasi perioada pentru o evaluare rapida.",
+      "Calculatorul compară două scenarii de finanțare la nivel de cost total, folosind aceeași perioada pentru o evaluare rapidă.",
     howToSteps: [
-      "Introdu avansul, rata si costul final pentru leasing.",
-      "Introdu aceleasi valori pentru credit.",
-      "Citeste costul total si diferenta dintre scenarii.",
+      "Introdu avansul, rata și costul final pentru leasing.",
+      "Introdu aceleași valori pentru credit.",
+      "Citește costul total și diferență dintre scenarii.",
     ],
     inputs: [
       {
@@ -3594,7 +3594,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "leaseResidualValue",
-        label: "Valoare reziduala",
+        label: "Valoare reziduală",
         type: "number",
         unit: "lei",
         min: 0,
@@ -3627,7 +3627,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "months",
-        label: "Perioada comparata",
+        label: "Perioada comparată",
         type: "number",
         unit: "luni",
         min: 1,
@@ -3640,7 +3640,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       { name: "leaseTotalCost", label: "Cost total leasing", unit: "lei", decimals: 2 },
       { name: "loanTotalCost", label: "Cost total credit", unit: "lei", decimals: 2 },
-      { name: "difference", label: "Diferenta", unit: "lei", decimals: 2 },
+      { name: "difference", label: "Diferență", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const leaseDownPayment = parseNumber(values.leaseDownPayment);
@@ -3666,20 +3666,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-avans",
     categorySlug: "credite-si-economii",
     summary:
-      "Calculeaza avansul necesar si suma finantata pornind de la pretul total si procentul de avans.",
-    formulaName: "Avans si suma finantata",
-    formulaExpression: "Avans = pret total x procent avans; Suma finantata = pret total - avans",
+      "Calculează avansul necesar și suma finanțată pornind de la prețul total și procentul de avans.",
+    formulaName: "Avans și suma finanțată",
+    formulaExpression: "Avans = preț total x procent avans; Suma finanțată = preț total - avans",
     formulaDescription:
-      "Calculatorul transforma un procent de avans intr-o suma concreta si arata ce parte ramane de finantat.",
+      "Calculatorul transformă un procent de avans într-o sumă concretă și arată ce parte rămâne de finanțat.",
     howToSteps: [
-      "Introdu pretul total al achizitiei.",
+      "Introdu prețul total al achiziției.",
       "Introdu procentul de avans dorit sau cerut.",
-      "Citeste suma avansului si suma ramasa pentru finantare.",
+      "Citește suma avansului și suma rămasă pentru finanțare.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret total",
+        label: "Preț total",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -3702,7 +3702,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "downPaymentAmount", label: "Avans necesar", unit: "lei", decimals: 2 },
-      { name: "financedAmount", label: "Suma finantata", unit: "lei", decimals: 2 },
+      { name: "financedAmount", label: "Suma finanțată", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
@@ -3720,15 +3720,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-randament-publicitate",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza ROAS-ul pornind de la bugetul de advertising si venitul atribuit campaniei.",
+      "Calculează ROAS-ul pornind de la bugetul de advertising și venitul atribuit campaniei.",
     formulaName: "ROAS",
     formulaExpression: "ROAS = venit atribuit / buget ads",
     formulaDescription:
-      "ROAS-ul arata de cate ori recuperezi bugetul de advertising prin venitul generat de campanie.",
+      "ROAS-ul arată de câte ori recuperezi bugetul de advertising prin venitul generat de campanie.",
     howToSteps: [
       "Introdu bugetul de advertising consumat.",
       "Introdu venitul atribuit campaniei.",
-      "Citeste multiplicatorul ROAS si venitul generat pentru fiecare leu investit.",
+      "Citește multiplicatorul ROAS și venitul generat pentru fiecare leu investit.",
     ],
     inputs: [
       {
@@ -3779,20 +3779,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-prag-roas-rentabil",
     categorySlug: "afaceri",
     summary:
-      "Arata ROAS-ul minim necesar pentru a acoperi costul variabil si pentru a nu ramane pe pierdere.",
+      "Arată ROAS-ul minim necesar pentru a acoperi costul variabil și pentru a nu rămâne pe pierdere.",
     formulaName: "Prag ROAS rentabil",
-    formulaExpression: "Prag ROAS rentabil = 100 / marja bruta (%)",
+    formulaExpression: "Prag ROAS rentabil = 100 / marja brută (%)",
     formulaDescription:
-      "ROAS-ul de break-even porneste din marja bruta disponibila pentru marketing si arata pragul minim la care campania nu mai pierde bani.",
+      "ROAS-ul de break-even pornește din marja brută disponibilă pentru marketing și arată pragul minim la care campania nu mai pierde bani.",
     howToSteps: [
-      "Introdu marja bruta disponibila dupa costurile directe.",
-      "Citeste ROAS-ul minim necesar pentru break-even.",
-      "Compara rezultatul cu ROAS-ul real al campaniilor tale.",
+      "Introdu marja brută disponibilă după costurile directe.",
+      "Citește ROAS-ul minim necesar pentru break-even.",
+      "Compară rezultatul cu ROAS-ul real al campaniilor tale.",
     ],
     inputs: [
       {
         name: "grossMarginPercent",
-        label: "Marja bruta disponibila",
+        label: "Marja brută disponibilă",
         type: "number",
         unit: "%",
         min: 0.1,
@@ -3804,7 +3804,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "breakEvenRoas", label: "Break-even ROAS", decimals: 2 },
-      { name: "adBudgetShare", label: "Pondere maxima ads", unit: "%", decimals: 2 },
+      { name: "adBudgetShare", label: "Pondere maximă ads", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
       const grossMarginPercent = Math.max(parseNumber(values.grossMarginPercent), 0.1);
@@ -3820,15 +3820,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-valoare-medie-comanda",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza valoarea medie a comenzii pornind de la venit si numarul total de comenzi.",
+      "Calculează valoarea medie a comenzii pornind de la venit și numărul total de comenzi.",
     formulaName: "Valoare medie comanda",
-    formulaExpression: "AOV = venit total / numar comenzi",
+    formulaExpression: "AOV = venit total / număr comenzi",
     formulaDescription:
-      "AOV-ul arata cati bani aduce in medie o comanda si ajuta la interpretarea mai buna a funnel-ului comercial.",
+      "AOV-ul arată câți bani aduce în medie o comandă și ajută la interpretarea mai bună a funnel-ului comercial.",
     howToSteps: [
-      "Introdu venitul total din perioada analizata.",
-      "Introdu numarul total de comenzi.",
-      "Citeste valoarea medie pe comanda.",
+      "Introdu venitul total din perioada analizată.",
+      "Introdu numărul total de comenzi.",
+      "Citește valoarea medie pe comanda.",
     ],
     inputs: [
       {
@@ -3844,7 +3844,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "orders",
-        label: "Numar comenzi",
+        label: "Număr comenzi",
         type: "number",
         unit: "comenzi",
         min: 1,
@@ -3869,15 +3869,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-rata-de-conversie",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza rata de conversie pornind de la vizitatori si conversii.",
+      "Calculează rata de conversie pornind de la vizitatori și conversii.",
     formulaName: "Rata de conversie",
     formulaExpression: "Conversion rate (%) = conversii / vizitatori x 100",
     formulaDescription:
-      "Rata de conversie arata ce procent din trafic face pasul dorit: comanda, lead sau alta actiune.",
+      "Rata de conversie arată ce procent din trafic face pasul dorit: comanda, lead sau alta acțiune.",
     howToSteps: [
-      "Introdu numarul total de vizitatori sau sesiuni.",
-      "Introdu numarul de conversii.",
-      "Citeste procentul de conversie.",
+      "Introdu numărul total de vizitatori sau sesiuni.",
+      "Introdu numărul de conversii.",
+      "Citește procentul de conversie.",
     ],
     inputs: [
       {
@@ -3920,15 +3920,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-cost-prospect",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza costul per lead pornind de la bugetul de marketing si numarul de lead-uri generate.",
+      "Calculează costul per lead pornind de la bugetul de marketing și numărul de lead-uri generate.",
     formulaName: "Cost per lead",
     formulaExpression: "CPL = cost marketing / lead-uri",
     formulaDescription:
-      "CPL-ul arata cat platesti in medie pentru un lead si este util cand compari canale sau campanii.",
+      "CPL-ul arată cât platești în medie pentru un lead și este util când compari canale sau campanii.",
     howToSteps: [
       "Introdu costul total al campaniei.",
       "Introdu lead-urile generate.",
-      "Citeste costul per lead.",
+      "Citește costul per lead.",
     ],
     inputs: [
       {
@@ -3965,24 +3965,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   cac: {
     key: "cac",
-    title: "Calculator cost achizitie client (CAC)",
+    title: "Calculator cost achiziție client (CAC)",
     slug: "calculator-cost-achizitie-client",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza costul de achizitie al unui client pornind de la costurile comerciale si numarul de clienti noi.",
-    formulaName: "Cost achizitie client",
-    formulaExpression: "CAC = cost total achizitie / clienti noi",
+      "Calculează costul de achiziție al unui client pornind de la costurile comerciale și numărul de clienți noi.",
+    formulaName: "Cost achiziție client",
+    formulaExpression: "CAC = cost total achiziție / clienți noi",
     formulaDescription:
-      "CAC-ul arata cat te costa in medie sa transformi prospectii in clienti noi intr-o perioada.",
+      "CAC-ul arată cât te costă în medie să transformi prospecții în clienți noi într-o perioadă.",
     howToSteps: [
-      "Introdu costurile de marketing si vanzari atribuite perioadei.",
-      "Introdu numarul de clienti noi.",
-      "Citeste costul mediu de achizitie per client.",
+      "Introdu costurile de marketing și vânzări atribuite perioadei.",
+      "Introdu numărul de clienți noi.",
+      "Citește costul mediu de achiziție per client.",
     ],
     inputs: [
       {
         name: "acquisitionCost",
-        label: "Cost total achizitie",
+        label: "Cost total achiziție",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -3993,7 +3993,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "newCustomers",
-        label: "Clienti noi",
+        label: "Clienți noi",
         type: "number",
         unit: "clienti",
         min: 1,
@@ -4014,19 +4014,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "target-revenue": {
     key: "target-revenue",
-    title: "Calculator venit tinta",
+    title: "Calculator venit țintă",
     slug: "calculator-venit-tinta",
     categorySlug: "afaceri",
     summary:
-      "Estimeaza venitul necesar pentru a acoperi costurile fixe si profitul tinta la o anumita marja.",
-    formulaName: "Venit tinta",
-    formulaExpression: "Venit tinta = (costuri fixe + profit tinta) / marja bruta",
+      "Estimează venitul necesar pentru a acoperi costurile fixe și profitul țintă la o anumită marja.",
+    formulaName: "Venit țintă",
+    formulaExpression: "Venit țintă = (costuri fixe + profit țintă) / marja brută",
     formulaDescription:
-      "Calculatorul porneste din marja disponibila si arata ce venit trebuie atins pentru a sustine costurile si obiectivul de profit.",
+      "Calculatorul pornește din marja disponibilă și arată ce venit trebuie atins pentru a susține costurile și obiectivul de profit.",
     howToSteps: [
       "Introdu costurile fixe lunare sau ale perioadei.",
-      "Introdu profitul tinta dorit.",
-      "Introdu marja bruta disponibila.",
+      "Introdu profitul țintă dorit.",
+      "Introdu marja brută disponibilă.",
     ],
     inputs: [
       {
@@ -4042,7 +4042,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "targetProfit",
-        label: "Profit tinta",
+        label: "Profit țintă",
         type: "number",
         unit: "lei",
         min: 0,
@@ -4053,7 +4053,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "grossMarginPercent",
-        label: "Marja bruta",
+        label: "Marja brută",
         type: "number",
         unit: "%",
         min: 0.1,
@@ -4063,7 +4063,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         defaultValue: 40,
       },
     ],
-    outputs: [{ name: "targetRevenue", label: "Venit tinta", unit: "lei", decimals: 2 }],
+    outputs: [{ name: "targetRevenue", label: "Venit țintă", unit: "lei", decimals: 2 }],
     compute: (values) => {
       const fixedCosts = parseNumber(values.fixedCosts);
       const targetProfit = parseNumber(values.targetProfit);
@@ -4079,15 +4079,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-profit-brut",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza profitul brut si marja bruta pornind de la venit si costuri directe.",
+      "Calculează profitul brut și marja brută pornind de la venit și costuri directe.",
     formulaName: "Profit brut",
     formulaExpression: "Profit brut = venit - costuri directe",
     formulaDescription:
-      "Profitul brut arata ce ramane dupa ce scazi costurile direct legate de livrarea produsului sau serviciului.",
+      "Profitul brut arată ce rămâne după ce scazi costurile direct legate de livrarea produsului sau serviciului.",
     howToSteps: [
-      "Introdu venitul din perioada analizata.",
+      "Introdu venitul din perioada analizată.",
       "Introdu costurile directe aferente.",
-      "Citeste profitul brut si marja bruta.",
+      "Citește profitul brut și marja brută.",
     ],
     inputs: [
       {
@@ -4115,7 +4115,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "grossProfit", label: "Profit brut", unit: "lei", decimals: 2 },
-      { name: "grossMargin", label: "Marja bruta", unit: "%", decimals: 2 },
+      { name: "grossMargin", label: "Marja brută", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
       const revenue = Math.max(parseNumber(values.revenue), 0.01);
@@ -4133,15 +4133,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-profit-net",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza profitul net orientativ pornind de la venit si costul total al perioadei.",
+      "Calculează profitul net orientativ pornind de la venit și costul total al perioadei.",
     formulaName: "Profit net",
     formulaExpression: "Profit net = venit total - cost total",
     formulaDescription:
-      "Calculatorul arata ce ramane dupa ce scazi toate costurile incluse in scenariul analizat.",
+      "Calculatorul arată ce rămâne după ce scazi toate costurile incluse în scenariul analizat.",
     howToSteps: [
       "Introdu venitul total.",
       "Introdu costurile totale ale perioadei.",
-      "Citeste profitul net si marja neta orientativa.",
+      "Citește profitul net și marja netă orientativă.",
     ],
     inputs: [
       {
@@ -4169,7 +4169,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "netProfit", label: "Profit net", unit: "lei", decimals: 2 },
-      { name: "netMargin", label: "Marja neta", unit: "%", decimals: 2 },
+      { name: "netMargin", label: "Marja netă", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
       const revenue = Math.max(parseNumber(values.revenue), 0.01);
@@ -4183,24 +4183,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "inventory-turnover": {
     key: "inventory-turnover",
-    title: "Calculator rotatie stoc",
+    title: "Calculator rotație stoc",
     slug: "calculator-rotatie-stoc",
     categorySlug: "afaceri",
     summary:
-      "Calculeaza de cate ori se roteste stocul intr-o perioada pornind de la costul marfii vandute si stocul mediu.",
-    formulaName: "Rotatie stoc",
-    formulaExpression: "Rotatie stoc = cost marfa vanduta / stoc mediu",
+      "Calculează de câte ori se rotește stocul într-o perioadă pornind de la costul mărfii vândute și stocul mediu.",
+    formulaName: "Rotație stoc",
+    formulaExpression: "Rotație stoc = cost marfă vândută / stoc mediu",
     formulaDescription:
-      "Rotatia stocului arata cat de repede se transforma stocul in vanzari pe durata unei perioade analizate.",
+      "Rotația stocului arată cât de repede se transformă stocul în vânzări pe durata unei perioade analizate.",
     howToSteps: [
-      "Introdu costul marfii vandute in perioada analizata.",
+      "Introdu costul mărfii vândute în perioada analizată.",
       "Introdu stocul mediu.",
-      "Citeste numarul de rotatii si zilele medii pe stoc.",
+      "Citește numărul de rotații și zilele medii pe stoc.",
     ],
     inputs: [
       {
         name: "cogs",
-        label: "Cost marfa vanduta",
+        label: "Cost marfă vândută",
         type: "number",
         unit: "lei",
         min: 0,
@@ -4222,7 +4222,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "daysInPeriod",
-        label: "Zile in perioada",
+        label: "Zile în perioada",
         type: "number",
         unit: "zile",
         min: 1,
@@ -4233,7 +4233,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "inventoryTurnover", label: "Rotatie stoc", decimals: 2 },
+      { name: "inventoryTurnover", label: "Rotație stoc", decimals: 2 },
       { name: "daysOfInventory", label: "Zile medii pe stoc", unit: "zile", decimals: 2 },
     ],
     compute: (values) => {
@@ -4253,21 +4253,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-consum-aparat-electric",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza consumul lunar si costul anual pentru un aparat electric pornind de la putere si timp de utilizare.",
+      "Estimează consumul lunar și costul anual pentru un aparat electric pornind de la putere și timp de utilizare.",
     formulaName: "Consum aparat electric",
-    formulaExpression: "kWh = (W / 1000) x ore x zile; cost = kWh x pret/kWh",
+    formulaExpression: "kWh = (W / 1000) x ore x zile; cost = kWh x preț/kWh",
     formulaDescription:
-      "Calculatorul transforma puterea si timpul de utilizare intr-un consum estimat si il convertește in cost.",
+      "Calculatorul transformă puterea și timpul de utilizare într-un consum estimat și îl convertește în cost.",
     howToSteps: [
-      "Introdu puterea aparatului in wati.",
-      "Introdu numarul de ore folosite pe zi si zilele din luna.",
-      "Citeste consumul lunar si costul estimat.",
+      "Introdu puterea aparatului în wați.",
+      "Introdu numărul de ore folosite pe zi și zilele din lună.",
+      "Citește consumul lunar și costul estimat.",
     ],
     inputs: [
       { name: "powerWatts", label: "Putere aparat", type: "number", unit: "W", min: 1, max: 20000, step: 1, required: true, defaultValue: 1800 },
       { name: "hoursPerDay", label: "Ore pe zi", type: "number", unit: "ore", min: 0.1, max: 24, step: 0.1, required: true, defaultValue: 2 },
-      { name: "daysPerMonth", label: "Zile pe luna", type: "number", unit: "zile", min: 1, max: 31, step: 1, required: true, defaultValue: 30 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "daysPerMonth", label: "Zile pe lună", type: "number", unit: "zile", min: 1, max: 31, step: 1, required: true, defaultValue: 30 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
     ],
     outputs: [
       { name: "monthlyKwh", label: "Consum lunar", unit: "kWh", decimals: 2 },
@@ -4294,23 +4294,23 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-factura-curent",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza factura lunara si costul anual pornind de la consumul total si pretul pe kWh.",
+      "Estimează factura lunară și costul anual pornind de la consumul total și prețul pe kWh.",
     formulaName: "Factura de curent",
-    formulaExpression: "Factura = consum lunar x pret/kWh + costuri fixe",
+    formulaExpression: "Factura = consum lunar x preț/kWh + costuri fixe",
     formulaDescription:
-      "Calculatorul foloseste consumul lunar total, pretul energiei si un eventual cost fix pentru a estima factura.",
+      "Calculatorul folosește consumul lunar total, prețul energiei și un eventual cost fix pentru a estima factura.",
     howToSteps: [
-      "Introdu consumul lunar total in kWh.",
-      "Introdu pretul pe kWh si costurile fixe lunare, daca vrei.",
-      "Citeste factura estimata si costul anual.",
+      "Introdu consumul lunar total în kWh.",
+      "Introdu prețul pe kWh și costurile fixe lunare, dacă vrei.",
+      "Citește factura estimată și costul anual.",
     ],
     inputs: [
       { name: "monthlyConsumptionKwh", label: "Consum lunar", type: "number", unit: "kWh", min: 0.1, max: 100000, step: 0.1, required: true, defaultValue: 280 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
       { name: "fixedMonthlyFees", label: "Costuri fixe", type: "number", unit: "lei", min: 0, max: 10000, step: 0.01, required: true, defaultValue: 12 },
     ],
     outputs: [
-      { name: "monthlyBill", label: "Factura lunara", unit: "lei", decimals: 2 },
+      { name: "monthlyBill", label: "Factura lunară", unit: "lei", decimals: 2 },
       { name: "annualBill", label: "Cost anual", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -4330,20 +4330,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-necesar-sistem-fotovoltaic",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza puterea sistemului fotovoltaic necesar pornind de la consumul anual si procentul de acoperire dorit.",
+      "Estimează puterea sistemului fotovoltaic necesar pornind de la consumul anual și procentul de acoperire dorit.",
     formulaName: "Dimensionare sistem FV",
-    formulaExpression: "kWp necesari = (consum anual x acoperire) / productie specifica",
+    formulaExpression: "kWp necesari = (consum anual x acoperire) / producție specifică",
     formulaDescription:
-      "Calculatorul raporteaza consumul anual la productia specifica estimata pentru a aproxima puterea sistemului.",
+      "Calculatorul raportează consumul anual la producția specifică estimată pentru a aproxima puterea sistemului.",
     howToSteps: [
       "Introdu consumul anual total.",
       "Alege procentul de acoperire dorit.",
-      "Introdu productia specifica estimata in kWh/kWp/an.",
+      "Introdu producția specifică estimată în kWh/kWp/an.",
     ],
     inputs: [
       { name: "annualConsumptionKwh", label: "Consum anual", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 4200 },
-      { name: "coveragePercent", label: "Acoperire dorita", type: "number", unit: "%", min: 1, max: 100, step: 1, required: true, defaultValue: 90 },
-      { name: "specificYield", label: "Productie specifica", type: "number", unit: "kWh/kWp/an", min: 100, max: 3000, step: 1, required: true, defaultValue: 1350 },
+      { name: "coveragePercent", label: "Acoperire dorită", type: "number", unit: "%", min: 1, max: 100, step: 1, required: true, defaultValue: 90 },
+      { name: "specificYield", label: "Producție specifică", type: "number", unit: "kWh/kWp/an", min: 100, max: 3000, step: 1, required: true, defaultValue: 1350 },
     ],
     outputs: [
       { name: "requiredSystemKwp", label: "Sistem necesar", unit: "kWp", decimals: 2 },
@@ -4359,28 +4359,28 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "solar-production": {
     key: "solar-production",
-    title: "Calculator productie fotovoltaica",
+    title: "Calculator producție fotovoltaică",
     slug: "calculator-productie-fotovoltaica",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza productia anuala si lunara medie a unui sistem fotovoltaic pornind de la puterea instalata si randamentul local.",
-    formulaName: "Productie fotovoltaica",
-    formulaExpression: "Productie anuala = kWp instalati x productie specifica",
+      "Estimează producția anuală și lunară medie a unui sistem fotovoltaic pornind de la puterea instalată și randamentul local.",
+    formulaName: "Producție fotovoltaică",
+    formulaExpression: "Producție anuală = kWp instalați x producție specifică",
     formulaDescription:
-      "Calculatorul foloseste puterea instalata si productia specifica anuala pentru a aproxima productia sistemului.",
+      "Calculatorul folosește puterea instalată și producția specifică anuală pentru a aproxima producția sistemului.",
     howToSteps: [
-      "Introdu puterea instalata in kWp.",
-      "Introdu productia specifica estimata.",
-      "Citeste productia anuala si media lunara.",
+      "Introdu puterea instalată în kWp.",
+      "Introdu producția specifică estimată.",
+      "Citește producția anuală și media lunară.",
     ],
     inputs: [
-      { name: "systemSizeKwp", label: "Putere instalata", type: "number", unit: "kWp", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 5.5 },
-      { name: "specificYield", label: "Productie specifica", type: "number", unit: "kWh/kWp/an", min: 100, max: 3000, step: 1, required: true, defaultValue: 1350 },
-      { name: "performanceFactor", label: "Factor performanta", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
+      { name: "systemSizeKwp", label: "Putere instalată", type: "number", unit: "kWp", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 5.5 },
+      { name: "specificYield", label: "Producție specifică", type: "number", unit: "kWh/kWp/an", min: 100, max: 3000, step: 1, required: true, defaultValue: 1350 },
+      { name: "performanceFactor", label: "Factor performanță", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
     ],
     outputs: [
-      { name: "annualProduction", label: "Productie anuala", unit: "kWh/an", decimals: 0 },
-      { name: "monthlyAverageProduction", label: "Medie lunara", unit: "kWh/luna", decimals: 0 },
+      { name: "annualProduction", label: "Producție anuală", unit: "kWh/an", decimals: 0 },
+      { name: "monthlyAverageProduction", label: "Medie lunară", unit: "kWh/luna", decimals: 0 },
     ],
     compute: (values) => {
       const systemSizeKwp = parseNumber(values.systemSizeKwp);
@@ -4395,28 +4395,28 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "solar-panel-count": {
     key: "solar-panel-count",
-    title: "Calculator numar panouri fotovoltaice",
+    title: "Calculator număr panouri fotovoltaice",
     slug: "calculator-numar-panouri-fotovoltaice",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Arata cate panouri si ce suprafata aproximativa iti trebuie pentru puterea dorita.",
-    formulaName: "Numar panouri",
-    formulaExpression: "Numar panouri = putere dorita / putere panou",
+      "Arată câte panouri și ce suprafață aproximativă îți trebuie pentru puterea dorită.",
+    formulaName: "Număr panouri",
+    formulaExpression: "Număr panouri = putere dorită / putere panou",
     formulaDescription:
-      "Calculatorul transforma puterea tinta a sistemului in numar de panouri si suprafata ocupata estimata.",
+      "Calculatorul transformă puterea țintă a sistemului în număr de panouri și suprafață ocupată estimată.",
     howToSteps: [
-      "Introdu puterea sistemului dorit in kWp.",
-      "Introdu puterea unui panou si suprafata aproximativa per panou.",
-      "Citeste numarul de panouri si suprafata ocupata.",
+      "Introdu puterea sistemului dorit în kWp.",
+      "Introdu puterea unui panou și suprafață aproximativă per panou.",
+      "Citește numărul de panouri și suprafață ocupată.",
     ],
     inputs: [
       { name: "targetSystemKwp", label: "Sistem dorit", type: "number", unit: "kWp", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 6 },
       { name: "panelPowerWatts", label: "Putere panou", type: "number", unit: "W", min: 100, max: 1000, step: 1, required: true, defaultValue: 450 },
-      { name: "panelArea", label: "Suprafata / panou", type: "number", unit: "mp", min: 0.5, max: 5, step: 0.01, required: true, defaultValue: 2.1 },
+      { name: "panelArea", label: "Suprafață / panou", type: "number", unit: "mp", min: 0.5, max: 5, step: 0.01, required: true, defaultValue: 2.1 },
     ],
     outputs: [
-      { name: "panelCount", label: "Numar panouri", unit: "panouri", decimals: 0 },
-      { name: "roofAreaNeeded", label: "Suprafata aproximativa", unit: "mp", decimals: 2 },
+      { name: "panelCount", label: "Număr panouri", unit: "panouri", decimals: 0 },
+      { name: "roofAreaNeeded", label: "Suprafață aproximativă", unit: "mp", decimals: 2 },
     ],
     compute: (values) => {
       const targetSystemKwp = parseNumber(values.targetSystemKwp);
@@ -4435,24 +4435,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-amortizare-panouri-fotovoltaice",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza in cati ani se amortizeaza un sistem fotovoltaic pornind de la cost, economii si mentenanta.",
+      "Estimează în câți ani se amortizează un sistem fotovoltaic pornind de la cost, economii și mentenanță.",
     formulaName: "Amortizare sistem FV",
-    formulaExpression: "Ani amortizare = investitie neta / economie anuala neta",
+    formulaExpression: "Ani amortizare = investiție netă / economie anuală netă",
     formulaDescription:
-      "Calculatorul compara investitia neta cu economiile anuale ramase dupa mentenanta estimata.",
+      "Calculatorul compară investiția netă cu economiile anuale rămase după mentenanță estimată.",
     howToSteps: [
-      "Introdu costul total si eventualul sprijin sau grant.",
-      "Introdu economiile anuale estimate si mentenanta anuala.",
-      "Citeste investitia neta si anii de amortizare.",
+      "Introdu costul total și eventualul sprijin sau grant.",
+      "Introdu economiile anuale estimate și mentenanță anuală.",
+      "Citește investiția netă și anii de amortizare.",
     ],
     inputs: [
       { name: "systemCost", label: "Cost sistem", type: "number", unit: "lei", min: 1, max: 100000000, step: 1, required: true, defaultValue: 32000 },
-      { name: "grantValue", label: "Grant / subventie", type: "number", unit: "lei", min: 0, max: 100000000, step: 1, required: true, defaultValue: 0 },
+      { name: "grantValue", label: "Grant / subvenție", type: "number", unit: "lei", min: 0, max: 100000000, step: 1, required: true, defaultValue: 0 },
       { name: "annualSavings", label: "Economii anuale", type: "number", unit: "lei/an", min: 0.01, max: 100000000, step: 1, required: true, defaultValue: 5200 },
-      { name: "annualMaintenance", label: "Mentenanta anuala", type: "number", unit: "lei/an", min: 0, max: 1000000, step: 1, required: true, defaultValue: 300 },
+      { name: "annualMaintenance", label: "Mentenanță anuală", type: "number", unit: "lei/an", min: 0, max: 1000000, step: 1, required: true, defaultValue: 300 },
     ],
     outputs: [
-      { name: "netInvestment", label: "Investitie neta", unit: "lei", decimals: 2 },
+      { name: "netInvestment", label: "Investiție netă", unit: "lei", decimals: 2 },
       { name: "paybackYears", label: "Amortizare", unit: "ani", decimals: 2 },
     ],
     compute: (values) => {
@@ -4470,29 +4470,29 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "ac-btu": {
     key: "ac-btu",
-    title: "Calculator BTU aer conditionat",
+    title: "Calculator BTU aer condiționat",
     slug: "calculator-btu-aer-conditionat",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza capacitatea necesara pentru aer conditionat pornind de la suprafata, inaltime si nivelul de insorire.",
+      "Estimează capacitatea necesară pentru aer condiționat pornind de la suprafață, înălțime și nivelul de însorire.",
     formulaName: "Necesar BTU",
-    formulaExpression: "BTU estimat = suprafata x factor baza x factori de ajustare",
+    formulaExpression: "BTU estimat = suprafață x factor baza x factori de ajustare",
     formulaDescription:
-      "Calculatorul foloseste suprafata camerei si factori simpli de ajustare pentru a aproxima capacitatea BTU potrivita.",
+      "Calculatorul folosește suprafață camerei și factori simpli de ajustare pentru a aproxima capacitatea BTU potrivită.",
     howToSteps: [
-      "Introdu suprafata camerei si inaltimea.",
-      "Alege nivelul de insorire si izolatia.",
-      "Citeste necesarul BTU si echivalentul aproximativ in kW.",
+      "Introdu suprafață camerei și înălțimea.",
+      "Alege nivelul de însorire și izolația.",
+      "Citește necesarul BTU și echivalentul aproximativ în kW.",
     ],
     inputs: [
-      { name: "area", label: "Suprafata", type: "number", unit: "mp", min: 1, max: 1000, step: 0.1, required: true, defaultValue: 26 },
-      { name: "ceilingHeight", label: "Inaltime", type: "number", unit: "m", min: 2, max: 5, step: 0.1, required: true, defaultValue: 2.6 },
-      { name: "sunFactor", label: "Factor insorire", type: "number", unit: "%", min: 80, max: 140, step: 1, required: true, defaultValue: 110 },
-      { name: "insulationFactor", label: "Factor izolatie", type: "number", unit: "%", min: 85, max: 125, step: 1, required: true, defaultValue: 100 },
+      { name: "area", label: "Suprafață", type: "number", unit: "mp", min: 1, max: 1000, step: 0.1, required: true, defaultValue: 26 },
+      { name: "ceilingHeight", label: "Înălțime", type: "number", unit: "m", min: 2, max: 5, step: 0.1, required: true, defaultValue: 2.6 },
+      { name: "sunFactor", label: "Factor însorire", type: "number", unit: "%", min: 80, max: 140, step: 1, required: true, defaultValue: 110 },
+      { name: "insulationFactor", label: "Factor izolație", type: "number", unit: "%", min: 85, max: 125, step: 1, required: true, defaultValue: 100 },
     ],
     outputs: [
       { name: "requiredBtu", label: "BTU recomandat", unit: "BTU/h", decimals: 0 },
-      { name: "requiredKw", label: "Putere echivalenta", unit: "kW", decimals: 2 },
+      { name: "requiredKw", label: "Putere echivalentă", unit: "kW", decimals: 2 },
     ],
     compute: (values) => {
       const area = parseNumber(values.area);
@@ -4509,24 +4509,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "heating-load": {
     key: "heating-load",
-    title: "Calculator necesar caldura locuinta",
+    title: "Calculator necesar căldură locuință",
     slug: "calculator-necesar-caldura-locuinta",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza necesarul de caldura pornind de la volum, izolatie si diferenta de temperatura.",
+      "Estimează necesarul de căldură pornind de la volum, izolație și diferență de temperatură.",
     formulaName: "Necesar termic",
     formulaExpression: "kW = volum x coeficient pierderi x deltaT / 1000",
     formulaDescription:
-      "Calculatorul foloseste volumul si un coeficient simplificat de pierderi pentru a aproxima necesarul termic.",
+      "Calculatorul folosește volumul și un coeficient simplificat de pierderi pentru a aproxima necesarul termic.",
     howToSteps: [
-      "Introdu suprafata si inaltimea locuintei.",
-      "Introdu diferenta de temperatura dorita si coeficientul de pierderi.",
-      "Citeste necesarul termic estimat.",
+      "Introdu suprafață și înălțimea locuinței.",
+      "Introdu diferență de temperatură dorită și coeficientul de pierderi.",
+      "Citește necesarul termic estimat.",
     ],
     inputs: [
-      { name: "area", label: "Suprafata", type: "number", unit: "mp", min: 1, max: 2000, step: 0.1, required: true, defaultValue: 120 },
-      { name: "ceilingHeight", label: "Inaltime", type: "number", unit: "m", min: 2, max: 5, step: 0.1, required: true, defaultValue: 2.6 },
-      { name: "temperatureDelta", label: "Delta temperatura", type: "number", unit: "°C", min: 1, max: 60, step: 1, required: true, defaultValue: 25 },
+      { name: "area", label: "Suprafață", type: "number", unit: "mp", min: 1, max: 2000, step: 0.1, required: true, defaultValue: 120 },
+      { name: "ceilingHeight", label: "Înălțime", type: "number", unit: "m", min: 2, max: 5, step: 0.1, required: true, defaultValue: 2.6 },
+      { name: "temperatureDelta", label: "Delta temperatură", type: "number", unit: "°C", min: 1, max: 60, step: 1, required: true, defaultValue: 25 },
       { name: "heatLossCoefficient", label: "Coeficient pierderi", type: "number", unit: "W/mc°C", min: 0.1, max: 3, step: 0.01, required: true, defaultValue: 0.6 },
     ],
     outputs: [
@@ -4545,26 +4545,26 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "heat-pump-size": {
     key: "heat-pump-size",
-    title: "Calculator dimensionare pompa de caldura",
+    title: "Calculator dimensionare pompă de căldură",
     slug: "calculator-dimensionare-pompa-de-caldura",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Porneste de la necesarul termic si adauga o marja prudenta pentru a aproxima puterea pompei de caldura.",
-    formulaName: "Dimensionare pompa de caldura",
-    formulaExpression: "Putere recomandata = necesar termic x factor de siguranta",
+      "Pornește de la necesarul termic și adaugă o marjă prudentă pentru a aproxima puterea pompei de căldură.",
+    formulaName: "Dimensionare pompă de căldură",
+    formulaExpression: "Putere recomandată = necesar termic x factor de siguranță",
     formulaDescription:
-      "Calculatorul aplica un factor de siguranta peste necesarul termic pentru a aproxima puterea recomandata.",
+      "Calculatorul aplică un factor de siguranță peste necesarul termic pentru a aproxima puterea recomandată.",
     howToSteps: [
       "Introdu necesarul termic estimat.",
-      "Alege marja de siguranta.",
-      "Citeste puterea recomandata a pompei.",
+      "Alege marja de siguranță.",
+      "Citește puterea recomandată a pompei.",
     ],
     inputs: [
       { name: "heatingLoadKw", label: "Necesar termic", type: "number", unit: "kW", min: 0.1, max: 200, step: 0.1, required: true, defaultValue: 8.5 },
-      { name: "safetyFactor", label: "Marja siguranta", type: "number", unit: "%", min: 100, max: 150, step: 1, required: true, defaultValue: 115 },
+      { name: "safetyFactor", label: "Marja siguranță", type: "number", unit: "%", min: 100, max: 150, step: 1, required: true, defaultValue: 115 },
     ],
     outputs: [
-      { name: "recommendedHeatPumpKw", label: "Pompa recomandata", unit: "kW", decimals: 2 },
+      { name: "recommendedHeatPumpKw", label: "Pompă recomandată", unit: "kW", decimals: 2 },
     ],
     compute: (values) => {
       const heatingLoadKw = parseNumber(values.heatingLoadKw);
@@ -4576,28 +4576,28 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "solar-battery-size": {
     key: "solar-battery-size",
-    title: "Calculator baterie fotovoltaica",
+    title: "Calculator baterie fotovoltaică",
     slug: "calculator-baterie-fotovoltaica",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza capacitatea unei baterii pornind de la consumul zilnic, orele de backup si adancimea de descarcare.",
+      "Estimează capacitatea unei baterii pornind de la consumul zilnic, orele de backup și adâncimea de descărcare.",
     formulaName: "Capacitate baterie",
-    formulaExpression: "Capacitate nominala = energie necesara / DoD",
+    formulaExpression: "Capacitate nominală = energie necesară / DoD",
     formulaDescription:
-      "Calculatorul foloseste energia pe care vrei sa o acoperi in backup si adancimea de descarcare pentru a aproxima bateria necesara.",
+      "Calculatorul folosește energia pe care vrei să o acoperi în backup și adâncimea de descărcare pentru a aproxima bateria necesară.",
     howToSteps: [
       "Introdu consumul mediu zilnic sau consumul care trebuie acoperit.",
-      "Introdu ce procent din consum vrei in backup si adancimea de descarcare.",
-      "Citeste capacitatea utila si capacitatea nominala estimata.",
+      "Introdu ce procent din consum vrei în backup și adâncimea de descărcare.",
+      "Citește capacitatea utilă și capacitatea nominală estimată.",
     ],
     inputs: [
       { name: "dailyConsumptionKwh", label: "Consum zilnic", type: "number", unit: "kWh/zi", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 12 },
       { name: "backupCoveragePercent", label: "Acoperire backup", type: "number", unit: "%", min: 1, max: 100, step: 1, required: true, defaultValue: 70 },
-      { name: "depthOfDischarge", label: "Adancime descarcare", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 90 },
+      { name: "depthOfDischarge", label: "Adâncime descărcare", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 90 },
     ],
     outputs: [
-      { name: "usableBatteryKwh", label: "Energie utila", unit: "kWh", decimals: 2 },
-      { name: "nominalBatteryKwh", label: "Capacitate nominala", unit: "kWh", decimals: 2 },
+      { name: "usableBatteryKwh", label: "Energie utilă", unit: "kWh", decimals: 2 },
+      { name: "nominalBatteryKwh", label: "Capacitate nominală", unit: "kWh", decimals: 2 },
     ],
     compute: (values) => {
       const dailyConsumptionKwh = parseNumber(values.dailyConsumptionKwh);
@@ -4616,19 +4616,19 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-consum-frigider",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza costul lunar si anual al frigiderului pornind de la consumul zilnic mediu.",
+      "Estimează costul lunar și anual al frigiderului pornind de la consumul zilnic mediu.",
     formulaName: "Consum frigider",
-    formulaExpression: "Consum lunar = kWh/zi x zile; cost = consum x pret/kWh",
+    formulaExpression: "Consum lunar = kWh/zi x zile; cost = consum x preț/kWh",
     formulaDescription:
-      "Calculatorul foloseste consumul mediu zilnic pentru a estima costul lunar si anual al frigiderului.",
+      "Calculatorul folosește consumul mediu zilnic pentru a estima costul lunar și anual al frigiderului.",
     howToSteps: [
       "Introdu consumul mediu zilnic al frigiderului.",
-      "Introdu pretul energiei electrice.",
-      "Citeste costul lunar si anual estimat.",
+      "Introdu prețul energiei electrice.",
+      "Citește costul lunar și anual estimat.",
     ],
     inputs: [
       { name: "dailyConsumptionKwh", label: "Consum zilnic", type: "number", unit: "kWh/zi", min: 0.01, max: 20, step: 0.01, required: true, defaultValue: 1.1 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
     ],
     outputs: [
       { name: "monthlyCost", label: "Cost lunar", unit: "lei", decimals: 2 },
@@ -4650,23 +4650,23 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-consum-boiler-electric",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza energia si costul pentru incalzirea apei in boiler pornind de la volum si diferenta de temperatura.",
+      "Estimează energia și costul pentru încălzirea apei în boiler pornind de la volum și diferență de temperatură.",
     formulaName: "Consum boiler",
     formulaExpression:
-      "kWh = litri x deltaT x 0.001163 / eficienta x cicluri",
+      "kWh = litri x deltaT x 0.001163 / eficiență x cicluri",
     formulaDescription:
-      "Calculatorul foloseste energia necesara pentru incalzirea apei si o ajusteaza cu eficienta sistemului.",
+      "Calculatorul folosește energia necesară pentru încălzirea apei și o ajustează cu eficiență sistemului.",
     howToSteps: [
-      "Introdu volumul de apa incalzit intr-un ciclu.",
-      "Introdu diferenta de temperatura si numarul de cicluri.",
-      "Citeste consumul si costul zilnic/lunar.",
+      "Introdu volumul de apă încălzit într-un ciclu.",
+      "Introdu diferență de temperatură și numărul de cicluri.",
+      "Citește consumul și costul zilnic/lunar.",
     ],
     inputs: [
       { name: "litersPerCycle", label: "Litri / ciclu", type: "number", unit: "litri", min: 1, max: 1000, step: 1, required: true, defaultValue: 80 },
-      { name: "temperatureRise", label: "Delta temperatura", type: "number", unit: "°C", min: 1, max: 80, step: 1, required: true, defaultValue: 35 },
+      { name: "temperatureRise", label: "Delta temperatură", type: "number", unit: "°C", min: 1, max: 80, step: 1, required: true, defaultValue: 35 },
       { name: "cyclesPerDay", label: "Cicluri / zi", type: "number", unit: "cicluri", min: 0.1, max: 20, step: 0.1, required: true, defaultValue: 1.2 },
-      { name: "efficiencyPercent", label: "Eficienta", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "efficiencyPercent", label: "Eficiență", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
     ],
     outputs: [
       { name: "dailyKwh", label: "Consum zilnic", unit: "kWh", decimals: 2 },
@@ -4688,25 +4688,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "ac-electricity-cost": {
     key: "ac-electricity-cost",
-    title: "Calculator consum aer conditionat",
+    title: "Calculator consum aer condiționat",
     slug: "calculator-consum-aer-conditionat",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza costul aerului conditionat pornind de la puterea medie consumata si timpul de functionare.",
-    formulaName: "Consum aer conditionat",
-    formulaExpression: "kWh = (kW medii x ore/zi x zile); cost = kWh x pret/kWh",
+      "Estimează costul aerului condiționat pornind de la puterea medie consumată și timpul de funcționare.",
+    formulaName: "Consum aer condiționat",
+    formulaExpression: "kWh = (kW medii x ore/zi x zile); cost = kWh x preț/kWh",
     formulaDescription:
-      "Calculatorul leaga puterea medie absorbita de durata de functionare pentru a estima costul real.",
+      "Calculatorul leagă puterea medie absorbită de durata de funcționare pentru a estima costul real.",
     howToSteps: [
-      "Introdu puterea medie absorbita a aparatului.",
-      "Introdu orele de functionare si numarul de zile.",
-      "Citeste costul lunar si sezonier.",
+      "Introdu puterea medie absorbită a aparatului.",
+      "Introdu orele de funcționare și numărul de zile.",
+      "Citește costul lunar și sezonier.",
     ],
     inputs: [
-      { name: "averagePowerKw", label: "Putere medie absorbita", type: "number", unit: "kW", min: 0.1, max: 20, step: 0.01, required: true, defaultValue: 0.9 },
+      { name: "averagePowerKw", label: "Putere medie absorbită", type: "number", unit: "kW", min: 0.1, max: 20, step: 0.01, required: true, defaultValue: 0.9 },
       { name: "hoursPerDay", label: "Ore / zi", type: "number", unit: "ore", min: 0.1, max: 24, step: 0.1, required: true, defaultValue: 8 },
-      { name: "daysPerMonth", label: "Zile / luna", type: "number", unit: "zile", min: 1, max: 31, step: 1, required: true, defaultValue: 30 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "daysPerMonth", label: "Zile / lună", type: "number", unit: "zile", min: 1, max: 31, step: 1, required: true, defaultValue: 30 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
     ],
     outputs: [
       { name: "monthlyKwh", label: "Consum lunar", unit: "kWh", decimals: 2 },
@@ -4733,28 +4733,28 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-economie-becuri-led",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Compara costul anual al becurilor clasice cu LED si estimeaza economia obtinuta.",
+      "Compară costul anual al becurilor clasice cu LED și estimează economia obținută.",
     formulaName: "Economie LED",
     formulaExpression:
-      "Economii = (consum vechi - consum LED) x ore x zile x pret/kWh",
+      "Economii = (consum vechi - consum LED) x ore x zile x preț/kWh",
     formulaDescription:
-      "Calculatorul compara doua puteri de iluminat pentru acelasi numar de becuri si acelasi timp de utilizare.",
+      "Calculatorul compară două puteri de iluminat pentru același număr de becuri și același timp de utilizare.",
     howToSteps: [
-      "Introdu puterea becurilor vechi si a becurilor LED.",
-      "Introdu numarul de becuri si timpul de folosire.",
-      "Citeste economia anuala si perioada de recuperare.",
+      "Introdu puterea becurilor vechi și a becurilor LED.",
+      "Introdu numărul de becuri și timpul de folosire.",
+      "Citește economia anuală și perioada de recuperare.",
     ],
     inputs: [
       { name: "oldBulbWatts", label: "Putere bec vechi", type: "number", unit: "W", min: 1, max: 1000, step: 1, required: true, defaultValue: 60 },
       { name: "ledBulbWatts", label: "Putere LED", type: "number", unit: "W", min: 1, max: 1000, step: 1, required: true, defaultValue: 9 },
-      { name: "bulbCount", label: "Numar becuri", type: "number", unit: "becuri", min: 1, max: 500, step: 1, required: true, defaultValue: 12 },
+      { name: "bulbCount", label: "Număr becuri", type: "number", unit: "becuri", min: 1, max: 500, step: 1, required: true, defaultValue: 12 },
       { name: "hoursPerDay", label: "Ore / zi", type: "number", unit: "ore", min: 0.1, max: 24, step: 0.1, required: true, defaultValue: 5 },
-      { name: "pricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "pricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
       { name: "upgradeCost", label: "Cost upgrade LED", type: "number", unit: "lei", min: 0, max: 100000, step: 1, required: true, defaultValue: 180 },
     ],
     outputs: [
       { name: "annualSavings", label: "Economii anuale", unit: "lei", decimals: 2 },
-      { name: "paybackMonths", label: "Recuperare investitie", unit: "luni", decimals: 1 },
+      { name: "paybackMonths", label: "Recuperare investiție", unit: "luni", decimals: 1 },
     ],
     compute: (values) => {
       const oldBulbWatts = parseNumber(values.oldBulbWatts);
@@ -4774,28 +4774,28 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "solar-roof-area": {
     key: "solar-roof-area",
-    title: "Calculator suprafata acoperis pentru panouri",
+    title: "Calculator suprafață acoperiș pentru panouri",
     slug: "calculator-suprafata-acoperis-panouri",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza cate panouri si ce putere maxima incap pe suprafata utila a acoperisului.",
-    formulaName: "Capacitate dupa suprafata acoperisului",
-    formulaExpression: "Panouri maxime = suprafata utila / suprafata panou",
+      "Estimează câte panouri și ce putere maximă încap pe suprafață utilă a acoperișului.",
+    formulaName: "Capacitate după suprafață acoperișului",
+    formulaExpression: "Panouri maxime = suprafață utilă / suprafață panou",
     formulaDescription:
-      "Calculatorul transforma suprafata utila in numar de panouri si putere maxima instalabila.",
+      "Calculatorul transformă suprafață utilă în număr de panouri și putere maximă instalabilă.",
     howToSteps: [
-      "Introdu suprafata utila reala a acoperisului.",
-      "Introdu suprafata si puterea unui panou.",
-      "Citeste numarul maxim de panouri si puterea totala.",
+      "Introdu suprafață utilă reală a acoperișului.",
+      "Introdu suprafață și puterea unui panou.",
+      "Citește numărul maxim de panouri și puterea totală.",
     ],
     inputs: [
-      { name: "usableRoofArea", label: "Suprafata utila", type: "number", unit: "mp", min: 1, max: 10000, step: 0.1, required: true, defaultValue: 42 },
-      { name: "panelArea", label: "Suprafata panou", type: "number", unit: "mp", min: 0.5, max: 5, step: 0.01, required: true, defaultValue: 2.1 },
+      { name: "usableRoofArea", label: "Suprafață utilă", type: "number", unit: "mp", min: 1, max: 10000, step: 0.1, required: true, defaultValue: 42 },
+      { name: "panelArea", label: "Suprafață panou", type: "number", unit: "mp", min: 0.5, max: 5, step: 0.01, required: true, defaultValue: 2.1 },
       { name: "panelPowerWatts", label: "Putere panou", type: "number", unit: "W", min: 100, max: 1000, step: 1, required: true, defaultValue: 450 },
     ],
     outputs: [
       { name: "maxPanels", label: "Panouri maxime", unit: "panouri", decimals: 0 },
-      { name: "maxSystemKwp", label: "Putere maxima", unit: "kWp", decimals: 2 },
+      { name: "maxSystemKwp", label: "Putere maximă", unit: "kWp", decimals: 2 },
     ],
     compute: (values) => {
       const usableRoofArea = parseNumber(values.usableRoofArea);
@@ -4814,15 +4814,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-putere-invertor-fotovoltaic",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza puterea invertorului pornind de la puterea DC a sistemului si raportul DC/AC dorit.",
+      "Estimează puterea invertorului pornind de la puterea DC a sistemului și raportul DC/AC dorit.",
     formulaName: "Dimensionare invertor",
     formulaExpression: "Invertor AC = kWp DC / raport DC-AC",
     formulaDescription:
-      "Calculatorul foloseste puterea sistemului si un raport DC/AC pentru a aproxima invertorul potrivit.",
+      "Calculatorul folosește puterea sistemului și un raport DC/AC pentru a aproxima invertorul potrivit.",
     howToSteps: [
-      "Introdu puterea sistemului in kWp.",
+      "Introdu puterea sistemului în kWp.",
       "Introdu raportul DC/AC dorit.",
-      "Citeste puterea aproximativa a invertorului.",
+      "Citește puterea aproximativă a invertorului.",
     ],
     inputs: [
       { name: "systemSizeKwp", label: "Sistem DC", type: "number", unit: "kWp", min: 0.1, max: 1000, step: 0.1, required: true, defaultValue: 6.3 },
@@ -4845,25 +4845,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-autoconsum-fotovoltaic",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Imparte productia fotovoltaica intre autoconsum si energie injectata, apoi o raporteaza la consumul casei.",
-    formulaName: "Autoconsum si injectare",
+      "Împarte producția fotovoltaică între autoconsum și energie injectată, apoi o raportează la consumul casei.",
+    formulaName: "Autoconsum și injectare",
     formulaExpression:
-      "Autoconsum = productie x procent autoconsum; injectare = productie - autoconsum",
+      "Autoconsum = producție x procent autoconsum; injectare = producție - autoconsum",
     formulaDescription:
-      "Calculatorul estimeaza cat din productie folosesti direct si cat ajunge in retea.",
+      "Calculatorul estimează cât din producție folosești direct și cât ajunge în rețea.",
     howToSteps: [
-      "Introdu productia anuala estimata.",
+      "Introdu producția anuală estimată.",
       "Introdu procentul de autoconsum dorit sau observat.",
-      "Citeste energia autoconsumata, injectata si acoperirea consumului.",
+      "Citește energia autoconsumată, injectată și acoperirea consumului.",
     ],
     inputs: [
-      { name: "annualProductionKwh", label: "Productie anuala", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
+      { name: "annualProductionKwh", label: "Producție anuală", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
       { name: "annualConsumptionKwh", label: "Consum anual", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 4200 },
       { name: "selfConsumptionPercent", label: "Autoconsum", type: "number", unit: "%", min: 1, max: 100, step: 1, required: true, defaultValue: 45 },
     ],
     outputs: [
       { name: "selfConsumedKwh", label: "Autoconsum", unit: "kWh/an", decimals: 0 },
-      { name: "exportedKwh", label: "Injectat in retea", unit: "kWh/an", decimals: 0 },
+      { name: "exportedKwh", label: "Injectat în rețea", unit: "kWh/an", decimals: 0 },
       { name: "consumptionCoverage", label: "Acoperire consum", unit: "%", decimals: 2 },
     ],
     compute: (values) => {
@@ -4885,23 +4885,23 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-autonomie-ups",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza cate ore de backup obtii dintr-o baterie sau un UPS la o anumita sarcina.",
+      "Estimează câte ore de backup obții dintr-o baterie sau un UPS la o anumită sarcina.",
     formulaName: "Autonomie UPS",
     formulaExpression:
-      "Ore = (Ah x V x DoD x eficienta) / W sarcina",
+      "Ore = (Ah x V x DoD x eficiență) / W sarcina",
     formulaDescription:
-      "Calculatorul foloseste energia disponibila in baterie si puterea consumatorilor pentru a aproxima autonomia.",
+      "Calculatorul folosește energia disponibilă în baterie și puterea consumatorilor pentru a aproxima autonomia.",
     howToSteps: [
-      "Introdu tensiunea, capacitatea bateriei si sarcina in wati.",
-      "Introdu eficienta si adancimea de descarcare.",
-      "Citeste autonomia estimata in ore si minute.",
+      "Introdu tensiunea, capacitatea bateriei și sarcina în wați.",
+      "Introdu eficiență și adâncimea de descărcare.",
+      "Citește autonomia estimată în ore și minute.",
     ],
     inputs: [
       { name: "batteryVoltage", label: "Tensiune baterie", type: "number", unit: "V", min: 1, max: 500, step: 1, required: true, defaultValue: 24 },
       { name: "batteryCapacityAh", label: "Capacitate baterie", type: "number", unit: "Ah", min: 1, max: 10000, step: 1, required: true, defaultValue: 100 },
       { name: "loadWatts", label: "Sarcina", type: "number", unit: "W", min: 1, max: 100000, step: 1, required: true, defaultValue: 300 },
-      { name: "efficiencyPercent", label: "Eficienta", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 90 },
-      { name: "depthOfDischarge", label: "Adancime descarcare", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 80 },
+      { name: "efficiencyPercent", label: "Eficiență", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 90 },
+      { name: "depthOfDischarge", label: "Adâncime descărcare", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 80 },
     ],
     outputs: [
       { name: "runtimeHours", label: "Autonomie", unit: "ore", decimals: 2 },
@@ -4924,32 +4924,32 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "heating-cost-comparison": {
     key: "heating-cost-comparison",
-    title: "Calculator cost incalzire gaz vs pompa de caldura",
+    title: "Calculator cost încălzire gaz vs pompă de căldură",
     slug: "calculator-cost-incalzire-gaz-vs-pompa-de-caldura",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Compara costul anual al incalzirii intre gaz si pompa de caldura pornind de la necesarul termic.",
-    formulaName: "Comparatie cost incalzire",
+      "Compară costul anual al încălzirii între gaz și pompă de căldură pornind de la necesarul termic.",
+    formulaName: "Comparație cost încălzire",
     formulaExpression:
-      "Cost gaz = necesar / eficienta x pret gaz; Cost pompa = necesar / COP x pret energie",
+      "Cost gaz = necesar / eficiență x preț gaz; Cost pompă = necesar / COP x preț energie",
     formulaDescription:
-      "Calculatorul raporteaza aceeasi nevoie de caldura la doua tehnologii diferite pentru a compara costul anual.",
+      "Calculatorul raportează aceeași nevoie de căldură la două tehnologii diferite pentru a compara costul anual.",
     howToSteps: [
-      "Introdu necesarul anual de caldura.",
-      "Introdu pretul gazului, eficienta centralei, pretul energiei si COP-ul pompei.",
-      "Citeste costurile anuale si diferenta.",
+      "Introdu necesarul anual de căldură.",
+      "Introdu prețul gazului, eficiență centralei, prețul energiei și COP-ul pompei.",
+      "Citește costurile anuale și diferență.",
     ],
     inputs: [
       { name: "annualHeatNeedKwh", label: "Necesar anual", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 14000 },
-      { name: "gasPricePerKwh", label: "Pret gaz", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.38 },
-      { name: "boilerEfficiencyPercent", label: "Eficienta centrala", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
-      { name: "electricityPricePerKwh", label: "Pret energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
-      { name: "heatPumpCop", label: "COP pompa", type: "number", min: 1, max: 10, step: 0.1, required: true, defaultValue: 3.4 },
+      { name: "gasPricePerKwh", label: "Preț gaz", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.38 },
+      { name: "boilerEfficiencyPercent", label: "Eficiență centrală", type: "number", unit: "%", min: 10, max: 100, step: 1, required: true, defaultValue: 92 },
+      { name: "electricityPricePerKwh", label: "Preț energie", type: "number", unit: "lei/kWh", min: 0.01, max: 10, step: 0.01, required: true, defaultValue: 0.95 },
+      { name: "heatPumpCop", label: "COP pompă", type: "number", min: 1, max: 10, step: 0.1, required: true, defaultValue: 3.4 },
     ],
     outputs: [
       { name: "gasAnnualCost", label: "Cost anual gaz", unit: "lei", decimals: 2 },
-      { name: "heatPumpAnnualCost", label: "Cost anual pompa", unit: "lei", decimals: 2 },
-      { name: "annualDifference", label: "Diferenta anuala", unit: "lei", decimals: 2 },
+      { name: "heatPumpAnnualCost", label: "Cost anual pompă", unit: "lei", decimals: 2 },
+      { name: "annualDifference", label: "Diferență anuală", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const annualHeatNeedKwh = parseNumber(values.annualHeatNeedKwh);
@@ -4972,18 +4972,18 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-economie-co2-panouri-fotovoltaice",
     categorySlug: "energie-pentru-casa",
     summary:
-      "Estimeaza emisiile evitate anual pornind de la productia fotovoltaica si factorul de emisii folosit.",
+      "Estimează emisiile evitate anual pornind de la producția fotovoltaică și factorul de emisii folosit.",
     formulaName: "CO2 evitat",
-    formulaExpression: "CO2 evitat = productie anuala x factor emisii",
+    formulaExpression: "CO2 evitat = producție anuală x factor emisii",
     formulaDescription:
-      "Calculatorul transforma energia produsa din panouri intr-o estimare simplificata a emisiilor evitate.",
+      "Calculatorul transformă energia produsă din panouri într-o estimare simplificată a emisiilor evitate.",
     howToSteps: [
-      "Introdu productia anuala estimata a sistemului.",
-      "Introdu factorul de emisii folosit pentru comparatie.",
-      "Citeste emisiile evitate in kg si tone.",
+      "Introdu producția anuală estimată a sistemului.",
+      "Introdu factorul de emisii folosit pentru comparație.",
+      "Citește emisiile evitate în kg și tone.",
     ],
     inputs: [
-      { name: "annualProductionKwh", label: "Productie anuala", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
+      { name: "annualProductionKwh", label: "Producție anuală", type: "number", unit: "kWh/an", min: 1, max: 1000000, step: 1, required: true, defaultValue: 6800 },
       { name: "emissionFactor", label: "Factor emisii", type: "number", unit: "kg CO2/kWh", min: 0.01, max: 2, step: 0.01, required: true, defaultValue: 0.3 },
     ],
     outputs: [
@@ -5002,24 +5002,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "price-per-sqm": {
     key: "price-per-sqm",
-    title: "Calculator pret pe mp",
+    title: "Calculator preț pe mp",
     slug: "calculator-pret-pe-mp",
     categorySlug: "imobiliare",
     summary:
-      "Calculeaza pretul pe metru patrat pornind de la pretul total al proprietatii si suprafata utila.",
-    formulaName: "Pret pe metru patrat",
-    formulaExpression: "Pret/mp = pret total / suprafata utila",
+      "Calculează prețul pe metru pătrat pornind de la prețul total al proprietății și suprafață utilă.",
+    formulaName: "Preț pe metru pătrat",
+    formulaExpression: "Preț/mp = preț total / suprafață utilă",
     formulaDescription:
-      "Calculatorul imparte pretul total al proprietatii la suprafata utila pentru a obtine un reper comparabil intre anunturi sau scenarii.",
+      "Calculatorul împarte prețul total al proprietății la suprafață utilă pentru a obține un reper comparabil între anunțuri sau scenarii.",
     howToSteps: [
-      "Introdu pretul total cerut sau negociat.",
-      "Introdu suprafata utila folosita in comparatie.",
-      "Citeste pretul pe mp si foloseste-l pentru a compara proprietati similare.",
+      "Introdu prețul total cerut sau negociat.",
+      "Introdu suprafață utilă folosită în comparație.",
+      "Citește prețul pe mp și folosește-l pentru a compara proprietăți similare.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret total",
+        label: "Preț total",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -5030,7 +5030,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "usableArea",
-        label: "Suprafata utila",
+        label: "Suprafață utilă",
         type: "number",
         unit: "mp",
         min: 1,
@@ -5040,7 +5040,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         defaultValue: 72,
       },
     ],
-    outputs: [{ name: "pricePerSqm", label: "Pret pe mp", unit: "lei/mp", decimals: 2 }],
+    outputs: [{ name: "pricePerSqm", label: "Preț pe mp", unit: "lei/mp", decimals: 2 }],
     compute: (values) => {
       const purchasePrice = parseNumber(values.purchasePrice);
       const usableArea = Math.max(parseNumber(values.usableArea), 0.01);
@@ -5051,25 +5051,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "property-down-payment": {
     key: "property-down-payment",
-    title: "Calculator avans locuinta",
+    title: "Calculator avans locuință",
     slug: "calculator-avans-locuinta",
     categorySlug: "imobiliare",
     summary:
-      "Transforma procentul de avans intr-o suma concreta si arata cat ramane de finantat pentru achizitia unei locuinte.",
-    formulaName: "Avans locuinta",
+      "Transformă procentul de avans într-o sumă concretă și arată cât rămâne de finanțat pentru achiziția unei locuințe.",
+    formulaName: "Avans locuință",
     formulaExpression:
-      "Avans = pret total x procent avans; suma finantata = pret total - avans",
+      "Avans = preț total x procent avans; suma finanțată = preț total - avans",
     formulaDescription:
-      "Calculatorul transforma rapid procentul de avans intr-o suma concreta si estimeaza partea ramasa pentru finantare.",
+      "Calculatorul transformă rapid procentul de avans într-o sumă concretă și estimează partea rămasă pentru finanțare.",
     howToSteps: [
-      "Introdu pretul total al proprietatii.",
-      "Introdu procentul de avans pe care vrei sa-l testezi.",
-      "Citeste suma avansului si suma care ramane de finantat.",
+      "Introdu prețul total al proprietății.",
+      "Introdu procentul de avans pe care vrei să-l testezi.",
+      "Citește suma avansului și suma care rămâne de finanțat.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret proprietate",
+        label: "Preț proprietate",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -5092,7 +5092,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "downPaymentAmount", label: "Avans", unit: "lei", decimals: 2 },
-      { name: "financedAmount", label: "Suma finantata", unit: "lei", decimals: 2 },
+      { name: "financedAmount", label: "Suma finanțată", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const purchasePrice = Math.max(parseNumber(values.purchasePrice), 0.01);
@@ -5106,25 +5106,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "property-total-purchase-cost": {
     key: "property-total-purchase-cost",
-    title: "Calculator cost total achizitie locuinta",
+    title: "Calculator cost total achiziție locuință",
     slug: "calculator-cost-total-achizitie-locuinta",
     categorySlug: "imobiliare",
     summary:
-      "Leaga pretul locuintei de taxele si costurile initiale, renovare, mobilare si o marja de rezerva.",
+      "Leagă prețul locuinței de taxele și costurile inițiale, renovare, mobilare și o marjă de rezervă.",
     formulaName: "Cost total proiect imobiliar",
     formulaExpression:
-      "Cost total = pret proprietate + costuri inchidere + renovare + mobilare + rezerva",
+      "Cost total = preț proprietate + costuri închidere + renovare + mobilare + rezervă",
     formulaDescription:
-      "Calculatorul separa pretul proprietatii de costurile initiale suplimentare si aplica o rezerva simpla pentru bugetare mai prudenta.",
+      "Calculatorul separă prețul proprietății de costurile inițiale suplimentare și aplică o rezervă simplă pentru bugetare mai prudentă.",
     howToSteps: [
-      "Introdu pretul proprietatii si costurile de inchidere estimate.",
-      "Adauga bugetul pentru renovare si mobilare.",
-      "Alege o marja de rezerva si citeste costul total estimat.",
+      "Introdu prețul proprietății și costurile de închidere estimate.",
+      "Adaugă bugetul pentru renovare și mobilare.",
+      "Alege o marjă de rezervă și citește costul total estimat.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret proprietate",
+        label: "Preț proprietate",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -5135,7 +5135,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "closingCosts",
-        label: "Costuri inchidere",
+        label: "Costuri închidere",
         type: "number",
         unit: "lei",
         min: 0,
@@ -5168,7 +5168,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "contingencyPercent",
-        label: "Rezerva buget",
+        label: "Rezervă buget",
         type: "number",
         unit: "%",
         min: 0,
@@ -5180,7 +5180,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "baseProjectCost", label: "Cost proiect", unit: "lei", decimals: 2 },
-      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezervă", unit: "lei", decimals: 2 },
       { name: "totalProjectCost", label: "Cost total", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -5201,25 +5201,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "rent-vs-buy": {
     key: "rent-vs-buy",
-    title: "Calculator chirie vs cumparare",
+    title: "Calculator chirie vs cumpărare",
     slug: "calculator-chirie-vs-cumparare",
     categorySlug: "imobiliare",
     summary:
-      "Compara costul cumulat al chiriei cu costul unui scenariu de proprietate pe acelasi interval de timp.",
-    formulaName: "Comparatie chirie vs cumparare",
+      "Compară costul cumulat al chiriei cu costul unui scenariu de proprietate pe același interval de timp.",
+    formulaName: "Comparație chirie vs cumpărare",
     formulaExpression:
-      "Chirie totala = chirie lunara x 12 x ani; Cost proprietate = cost initial + cost lunar x 12 x ani",
+      "Chirie totală = chirie lunară x 12 x ani; Cost proprietate = cost initial + cost lunar x 12 x ani",
     formulaDescription:
-      "Calculatorul compara rapid doua scenarii de locuire folosind acelasi orizont de timp si aceeasi unitate monetara.",
+      "Calculatorul compară rapid două scenarii de locuire folosind același orizont de timp și aceeași unitate monetară.",
     howToSteps: [
-      "Introdu chiria lunara si costul lunar al scenariului de proprietate.",
-      "Adauga costul initial al cumpararii si perioada de comparatie.",
-      "Citeste costul cumulat pentru ambele scenarii si diferenta dintre ele.",
+      "Introdu chiria lunară și costul lunar al scenariului de proprietate.",
+      "Adaugă costul initial al cumpărării și perioada de comparație.",
+      "Citește costul cumulat pentru ambele scenarii și diferență dintre ele.",
     ],
     inputs: [
       {
         name: "monthlyRent",
-        label: "Chirie lunara",
+        label: "Chirie lunară",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5241,7 +5241,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "upfrontBuyingCost",
-        label: "Cost initial cumparare",
+        label: "Cost initial cumpărare",
         type: "number",
         unit: "lei",
         min: 0,
@@ -5252,7 +5252,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "years",
-        label: "Perioada comparata",
+        label: "Perioada comparată",
         type: "number",
         unit: "ani",
         min: 1,
@@ -5270,7 +5270,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
         unit: "lei",
         decimals: 2,
       },
-      { name: "difference", label: "Diferenta", unit: "lei", decimals: 2 },
+      { name: "difference", label: "Diferență", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const monthlyRent = parseNumber(values.monthlyRent);
@@ -5292,20 +5292,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-buget-renovare",
     categorySlug: "imobiliare",
     summary:
-      "Estimeaza bugetul de renovare pornind de la suprafata, costul pe mp si o rezerva pentru surprizele din lucrare.",
+      "Estimează bugetul de renovare pornind de la suprafață, costul pe mp și o rezervă pentru surprizele din lucrare.",
     formulaName: "Buget renovare",
-    formulaExpression: "Buget = suprafata x cost/mp + rezerva",
+    formulaExpression: "Buget = suprafață x cost/mp + rezervă",
     formulaDescription:
-      "Calculatorul foloseste un cost mediu pe mp si adauga o rezerva procentuala pentru a aproxima mai prudent bugetul de renovare.",
+      "Calculatorul folosește un cost mediu pe mp și adaugă o rezervă procentuală pentru a aproxima mai prudent bugetul de renovare.",
     howToSteps: [
-      "Introdu suprafata care intra in renovare.",
-      "Introdu costul estimat pe mp si rezerva dorita.",
-      "Citeste bugetul de baza, rezerva si totalul proiectului.",
+      "Introdu suprafață care intră în renovare.",
+      "Introdu costul estimat pe mp și rezervă dorită.",
+      "Citește bugetul de bază, rezervă și totalul proiectului.",
     ],
     inputs: [
       {
         name: "area",
-        label: "Suprafata renovata",
+        label: "Suprafață renovată",
         type: "number",
         unit: "mp",
         min: 1,
@@ -5327,7 +5327,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "contingencyPercent",
-        label: "Rezerva",
+        label: "Rezervă",
         type: "number",
         unit: "%",
         min: 0,
@@ -5338,8 +5338,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "baseBudget", label: "Buget de baza", unit: "lei", decimals: 2 },
-      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "baseBudget", label: "Buget de bază", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezervă", unit: "lei", decimals: 2 },
       { name: "totalBudget", label: "Buget total", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -5361,20 +5361,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-buget-mobilare",
     categorySlug: "imobiliare",
     summary:
-      "Estimeaza bugetul de mobilare si electrocasnice pornind de la numarul de camere si o rezerva de buget.",
+      "Estimează bugetul de mobilare și electrocasnice pornind de la numărul de camere și o rezervă de buget.",
     formulaName: "Buget mobilare",
-    formulaExpression: "Buget = camere x buget/camera + electrocasnice + rezerva",
+    formulaExpression: "Buget = camere x buget/camera + electrocasnice + rezervă",
     formulaDescription:
-      "Calculatorul transforma o estimare pe camera intr-un buget total si adauga separat costul pentru electrocasnice si o marja de rezerva.",
+      "Calculatorul transformă o estimare pe camera într-un buget total și adaugă separat costul pentru electrocasnice și o marjă de rezervă.",
     howToSteps: [
-      "Introdu numarul de camere si bugetul estimat per camera.",
-      "Adauga bugetul pentru electrocasnice si rezerva dorita.",
-      "Citeste bugetul de baza si totalul recomandat.",
+      "Introdu numărul de camere și bugetul estimat per camera.",
+      "Adaugă bugetul pentru electrocasnice și rezervă dorită.",
+      "Citește bugetul de bază și totalul recomandat.",
     ],
     inputs: [
       {
         name: "rooms",
-        label: "Numar camere",
+        label: "Număr camere",
         type: "number",
         unit: "camere",
         min: 1,
@@ -5407,7 +5407,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "contingencyPercent",
-        label: "Rezerva",
+        label: "Rezervă",
         type: "number",
         unit: "%",
         min: 0,
@@ -5418,8 +5418,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "baseBudget", label: "Buget de baza", unit: "lei", decimals: 2 },
-      { name: "contingencyAmount", label: "Rezerva", unit: "lei", decimals: 2 },
+      { name: "baseBudget", label: "Buget de bază", unit: "lei", decimals: 2 },
+      { name: "contingencyAmount", label: "Rezervă", unit: "lei", decimals: 2 },
       { name: "totalBudget", label: "Buget total", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -5438,20 +5438,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "monthly-home-budget": {
     key: "monthly-home-budget",
-    title: "Calculator buget lunar locuinta",
+    title: "Calculator buget lunar locuință",
     slug: "calculator-buget-lunar-locuinta",
     categorySlug: "imobiliare",
     summary:
-      "Aduna chiria sau rata cu utilitatile, administrarea, mentenanta si asigurarea pentru a vedea costul lunar total al locuirii.",
-    formulaName: "Buget lunar locuinta",
+      "Adună chiria sau rata cu utilitățile, administrarea, mentenanță și asigurarea pentru a vedea costul lunar total al locuirii.",
+    formulaName: "Buget lunar locuință",
     formulaExpression:
-      "Cost lunar total = rata sau chirie + utilitati + administrare + mentenanta + asigurare",
+      "Cost lunar total = rata sau chirie + utilități + administrare + mentenanță + asigurare",
     formulaDescription:
-      "Calculatorul aduna principalele costuri recurente ale unei locuinte pentru a oferi o imagine mai realista a presiunii lunare asupra bugetului.",
+      "Calculatorul adună principalele costuri recurente ale unei locuințe pentru a oferi o imagine mai realistă a presiunii lunare asupra bugetului.",
     howToSteps: [
-      "Introdu rata sau chiria lunara.",
-      "Adauga utilitatile si celelalte costuri recurente.",
-      "Citeste costul lunar si anual al locuintei.",
+      "Introdu rata sau chiria lunară.",
+      "Adaugă utilitățile și celelalte costuri recurente.",
+      "Citește costul lunar și anual al locuinței.",
     ],
     inputs: [
       {
@@ -5467,7 +5467,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "utilities",
-        label: "Utilitati",
+        label: "Utilități",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5489,7 +5489,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "maintenanceReserve",
-        label: "Rezerva mentenanta",
+        label: "Rezervă mentenanță",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5530,24 +5530,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "price-negotiation": {
     key: "price-negotiation",
-    title: "Calculator negociere pret proprietate",
+    title: "Calculator negociere preț proprietate",
     slug: "calculator-negociere-pret-proprietate",
     categorySlug: "imobiliare",
     summary:
-      "Arata rapid pretul negociat si economia obtinuta pornind de la pretul cerut si discountul estimat.",
-    formulaName: "Negociere pret",
-    formulaExpression: "Pret negociat = pret cerut x (1 - discount%); economie = diferenta",
+      "Arată rapid prețul negociat și economia obținută pornind de la prețul cerut și discountul estimat.",
+    formulaName: "Negociere preț",
+    formulaExpression: "Preț negociat = preț cerut x (1 - discount%); economie = diferență",
     formulaDescription:
-      "Calculatorul transforma un discount procentual intr-o economie concreta si intr-un pret final de comparat cu alte anunturi.",
+      "Calculatorul transformă un discount procentual într-o economie concretă și într-un preț final de comparat cu alte anunțuri.",
     howToSteps: [
-      "Introdu pretul cerut al proprietatii.",
-      "Introdu discountul pe care vrei sa-l testezi.",
-      "Citeste pretul negociat si economia potentiala.",
+      "Introdu prețul cerut al proprietății.",
+      "Introdu discountul pe care vrei să-l testezi.",
+      "Citește prețul negociat și economia potențială.",
     ],
     inputs: [
       {
         name: "askingPrice",
-        label: "Pret cerut",
+        label: "Preț cerut",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -5569,7 +5569,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "negotiatedPrice", label: "Pret negociat", unit: "lei", decimals: 2 },
+      { name: "negotiatedPrice", label: "Preț negociat", unit: "lei", decimals: 2 },
       { name: "savingsAmount", label: "Economie", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
@@ -5584,25 +5584,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "space-per-person": {
     key: "space-per-person",
-    title: "Calculator spatiu pe persoana",
+    title: "Calculator spațiu pe persoană",
     slug: "calculator-spatiu-pe-persoana",
     categorySlug: "imobiliare",
     summary:
-      "Raporteaza suprafata utila si numarul de camere la numarul de persoane din locuinta pentru o comparatie mai practica.",
-    formulaName: "Spatiu pe persoana",
+      "Raportează suprafață utilă și numărul de camere la numărul de persoane din locuință pentru o comparație mai practică.",
+    formulaName: "Spațiu pe persoană",
     formulaExpression:
-      "mp/persoana = suprafata utila / persoane; camere/persoana = camere / persoane",
+      "mp/persoană = suprafață utilă / persoane; camere/persoană = camere / persoane",
     formulaDescription:
-      "Calculatorul transforma suprafata si numarul de camere intr-un reper simplu pentru compararea configuratiilor de locuire.",
+      "Calculatorul transformă suprafață și numărul de camere într-un reper simplu pentru compararea configurațiilor de locuire.",
     howToSteps: [
-      "Introdu suprafata utila si numarul de camere.",
-      "Introdu numarul de persoane care vor folosi locuinta.",
-      "Citeste suprafata si camerele disponibile per persoana.",
+      "Introdu suprafață utilă și numărul de camere.",
+      "Introdu numărul de persoane care vor folosi locuință.",
+      "Citește suprafață și camerele disponibile per persoană.",
     ],
     inputs: [
       {
         name: "usableArea",
-        label: "Suprafata utila",
+        label: "Suprafață utilă",
         type: "number",
         unit: "mp",
         min: 1,
@@ -5613,7 +5613,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "rooms",
-        label: "Numar camere",
+        label: "Număr camere",
         type: "number",
         unit: "camere",
         min: 1,
@@ -5624,7 +5624,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "residents",
-        label: "Numar persoane",
+        label: "Număr persoane",
         type: "number",
         unit: "persoane",
         min: 1,
@@ -5635,8 +5635,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "sqmPerPerson", label: "mp per persoana", unit: "mp", decimals: 2 },
-      { name: "roomsPerPerson", label: "Camere per persoana", decimals: 2 },
+      { name: "sqmPerPerson", label: "mp per persoană", unit: "mp", decimals: 2 },
+      { name: "roomsPerPerson", label: "Camere per persoană", decimals: 2 },
     ],
     compute: (values) => {
       const usableArea = parseNumber(values.usableArea);
@@ -5650,25 +5650,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "mortgage-buffer": {
     key: "mortgage-buffer",
-    title: "Calculator buffer rata locuinta",
+    title: "Calculator buffer rata locuință",
     slug: "calculator-buffer-rata-locuinta",
     categorySlug: "imobiliare",
     summary:
-      "Arata ce spatiu ramane in buget dupa costul locuintei si o rezerva minima de siguranta.",
-    formulaName: "Buffer dupa costul locuintei",
+      "Arată ce spațiu rămâne în buget după costul locuinței și o rezervă minimă de siguranță.",
+    formulaName: "Buffer după costul locuinței",
     formulaExpression:
-      "Buffer = venit net - cost locuinta; buffer dupa rezerva = buffer - venit x rezerva%",
+      "Buffer = venit net - cost locuință; buffer după rezervă = buffer - venit x rezervă%",
     formulaDescription:
-      "Calculatorul nu spune daca o locuinta este automat accesibila, dar arata rapid cat spatiu lunar mai ramane dupa costul principal si o rezerva prudenta.",
+      "Calculatorul nu spune dacă o locuință este automat accesibilă, dar arată rapid cât spațiu lunar mai rămâne după costul principal și o rezervă prudentă.",
     howToSteps: [
-      "Introdu venitul lunar net al gospodariei.",
-      "Introdu costul lunar al locuintei si rezerva de siguranta dorita.",
-      "Citeste ponderea locuintei in venit si bufferul ramas dupa rezerva.",
+      "Introdu venitul lunar net al gospodăriei.",
+      "Introdu costul lunar al locuinței și rezervă de siguranță dorită.",
+      "Citește ponderea locuinței în venit și bufferul ramas după rezervă.",
     ],
     inputs: [
       {
         name: "householdNetIncome",
-        label: "Venit net gospodarie",
+        label: "Venit net gospodărie",
         type: "number",
         unit: "lei/luna",
         min: 0.01,
@@ -5679,7 +5679,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyHousingCost",
-        label: "Cost lunar locuinta",
+        label: "Cost lunar locuință",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5690,7 +5690,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "reservePercent",
-        label: "Rezerva minima",
+        label: "Rezervă minimă",
         type: "number",
         unit: "%",
         min: 0,
@@ -5701,9 +5701,9 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "housingSharePercent", label: "Pondere locuinta", unit: "%", decimals: 2 },
+      { name: "housingSharePercent", label: "Pondere locuință", unit: "%", decimals: 2 },
       { name: "monthlyBuffer", label: "Buffer ramas", unit: "lei", decimals: 2 },
-      { name: "bufferAfterReserve", label: "Buffer dupa rezerva", unit: "lei", decimals: 2 },
+      { name: "bufferAfterReserve", label: "Buffer după rezervă", unit: "lei", decimals: 2 },
     ],
     compute: (values) => {
       const householdNetIncome = Math.max(parseNumber(values.householdNetIncome), 0.01);
@@ -5724,21 +5724,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-randament-chirie",
     categorySlug: "imobiliare",
     summary:
-      "Calculeaza randamentul brut si net din chirie pornind de la pretul proprietatii, chiria lunara si costurile anuale.",
+      "Calculează randamentul brut și net din chirie pornind de la prețul proprietății, chiria lunară și costurile anuale.",
     formulaName: "Randament chirie",
     formulaExpression:
-      "Randament brut = chirie anuala / pret; randament net = (chirie anuala - costuri) / pret",
+      "Randament brut = chirie anuală / preț; randament net = (chirie anuală - costuri) / preț",
     formulaDescription:
-      "Calculatorul separa randamentul brut de cel net pentru a arata mai clar ce ramane dupa costurile recurente.",
+      "Calculatorul separă randamentul brut de cel net pentru a arăta mai clar ce rămâne după costurile recurente.",
     howToSteps: [
-      "Introdu pretul proprietatii si chiria lunara estimata.",
-      "Adauga costurile anuale recurente asociate inchirierii.",
-      "Citeste randamentul brut, randamentul net si venitul net anual.",
+      "Introdu prețul proprietății și chiria lunară estimată.",
+      "Adaugă costurile anuale recurente asociate închirierii.",
+      "Citește randamentul brut, randamentul net și venitul net anual.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret proprietate",
+        label: "Preț proprietate",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -5749,7 +5749,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyRent",
-        label: "Chirie lunara",
+        label: "Chirie lunară",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5794,15 +5794,15 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-randament-capital-propriu",
     categorySlug: "imobiliare",
     summary:
-      "Compara fluxul anual de numerar cu banii proprii investiti intr-o proprietate pentru a estima randamentul cash-on-cash.",
+      "Compară fluxul anual de numerar cu banii proprii investiți într-o proprietate pentru a estima randamentul cash-on-cash.",
     formulaName: "Cash-on-cash return",
     formulaExpression: "CoC = flux net anual / capital propriu investit",
     formulaDescription:
-      "Calculatorul raporteaza fluxul net anual la banii proprii blocati in achizitie, renovare si costuri initiale.",
+      "Calculatorul raportează fluxul net anual la banii proprii blocați în achiziție, renovare și costuri inițiale.",
     howToSteps: [
-      "Introdu fluxul net anual estimat dupa costuri.",
-      "Introdu capitalul propriu investit in proiect.",
-      "Citeste randamentul cash-on-cash si echivalentul lunar al fluxului.",
+      "Introdu fluxul net anual estimat după costuri.",
+      "Introdu capitalul propriu investit în proiect.",
+      "Citește randamentul cash-on-cash și echivalentul lunar al fluxului.",
     ],
     inputs: [
       {
@@ -5843,25 +5843,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "vacancy-loss": {
     key: "vacancy-loss",
-    title: "Calculator pierdere din vacanta",
+    title: "Calculator pierdere din vacanță",
     slug: "calculator-pierdere-din-vacanta-la-inchiriere",
     categorySlug: "imobiliare",
     summary:
-      "Estimeaza cat venit se pierde anual din lunile sau procentele de neocupare ale unei proprietati de inchiriat.",
-    formulaName: "Pierdere din vacanta",
+      "Estimează cât venit se pierde anual din lunile sau procentele de neocupare ale unei proprietăți de închiriat.",
+    formulaName: "Pierdere din vacanță",
     formulaExpression:
-      "Pierdere anuala = chirie anuala potentiala x rata de neocupare",
+      "Pierdere anuală = chirie anuală potențială x rata de neocupare",
     formulaDescription:
-      "Calculatorul transforma rata de neocupare intr-o pierdere anuala usor de comparat cu randamentul sau cu costurile fixe ale proprietatii.",
+      "Calculatorul transformă rata de neocupare într-o pierdere anuală ușor de comparat cu randamentul sau cu costurile fixe ale proprietății.",
     howToSteps: [
-      "Introdu chiria lunara potentiala.",
-      "Introdu rata de neocupare estimata.",
-      "Citeste pierderea anuala si chiria efectiv colectata.",
+      "Introdu chiria lunară potențială.",
+      "Introdu rata de neocupare estimată.",
+      "Citește pierderea anuală și chiria efectiv colectată.",
     ],
     inputs: [
       {
         name: "monthlyRent",
-        label: "Chirie lunara potentiala",
+        label: "Chirie lunară potențială",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5885,13 +5885,13 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     outputs: [
       {
         name: "annualVacancyLoss",
-        label: "Pierdere anuala",
+        label: "Pierdere anuală",
         unit: "lei/an",
         decimals: 2,
       },
       {
         name: "collectedAnnualRent",
-        label: "Chirie anuala colectata",
+        label: "Chirie anuală colectată",
         unit: "lei/an",
         decimals: 2,
       },
@@ -5909,24 +5909,24 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "rent-increase": {
     key: "rent-increase",
-    title: "Calculator crestere chirie",
+    title: "Calculator creștere chirie",
     slug: "calculator-crestere-chirie",
     categorySlug: "imobiliare",
     summary:
-      "Proiecteaza cum se schimba chiria lunara in timp cand aplici un ritm anual de crestere.",
-    formulaName: "Crestere chirie",
-    formulaExpression: "Chirie viitoare = chirie curenta x (1 + crestere)^ani",
+      "Proiectează cum se schimbă chiria lunară în timp când aplici un ritm anual de creștere.",
+    formulaName: "Creștere chirie",
+    formulaExpression: "Chirie viitoare = chirie curentă x (1 + creștere)^ani",
     formulaDescription:
-      "Calculatorul foloseste o crestere anuala compusa pentru a arata cum evolueaza chiria intr-un interval de timp ales.",
+      "Calculatorul folosește o creștere anuală compusă pentru a arăta cum evoluează chiria într-un interval de timp ales.",
     howToSteps: [
-      "Introdu chiria lunara curenta.",
-      "Introdu cresterea anuala si numarul de ani.",
-      "Citeste chiria lunara proiectata si cresterea absoluta.",
+      "Introdu chiria lunară curentă.",
+      "Introdu creșterea anuală și numărul de ani.",
+      "Citește chiria lunară proiectată și creșterea absolută.",
     ],
     inputs: [
       {
         name: "currentRent",
-        label: "Chirie curenta",
+        label: "Chirie curentă",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -5937,7 +5937,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualIncreasePercent",
-        label: "Crestere anuala",
+        label: "Creștere anuală",
         type: "number",
         unit: "%",
         min: -50,
@@ -5959,8 +5959,8 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
     ],
     outputs: [
-      { name: "projectedRent", label: "Chirie proiectata", unit: "lei/luna", decimals: 2 },
-      { name: "increaseAmount", label: "Crestere absoluta", unit: "lei/luna", decimals: 2 },
+      { name: "projectedRent", label: "Chirie proiectată", unit: "lei/luna", decimals: 2 },
+      { name: "increaseAmount", label: "Creștere absolută", unit: "lei/luna", decimals: 2 },
     ],
     compute: (values) => {
       const currentRent = parseNumber(values.currentRent);
@@ -5979,20 +5979,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-marja-flip-imobiliar",
     categorySlug: "imobiliare",
     summary:
-      "Compara costul total al unui proiect de revanzare cu pretul de iesire pentru a estima profitul si marja.",
+      "Compară costul total al unui proiect de revânzare cu prețul de ieșire pentru a estima profitul și marja.",
     formulaName: "Marja flip imobiliar",
-    formulaExpression: "Profit = pret vanzare - cost total; Marja = profit / pret vanzare",
+    formulaExpression: "Profit = preț vânzare - cost total; Marja = profit / preț vânzare",
     formulaDescription:
-      "Calculatorul aduna pretul de achizitie, renovarea si costurile de detinere pentru a vedea ce ramane la vanzare.",
+      "Calculatorul adună prețul de achiziție, renovarea și costurile de deținere pentru a vedea ce rămâne la vânzare.",
     howToSteps: [
-      "Introdu pretul de achizitie, renovarea si costurile de detinere.",
-      "Introdu pretul de vanzare estimat.",
-      "Citeste costul total, profitul si marja proiectului.",
+      "Introdu prețul de achiziție, renovarea și costurile de deținere.",
+      "Introdu prețul de vânzare estimat.",
+      "Citește costul total, profitul și marja proiectului.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret achizitie",
+        label: "Preț achiziție",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -6014,7 +6014,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "holdingCosts",
-        label: "Costuri detinere",
+        label: "Costuri deținere",
         type: "number",
         unit: "lei",
         min: 0,
@@ -6025,7 +6025,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "salePrice",
-        label: "Pret vanzare",
+        label: "Preț vânzare",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -6060,20 +6060,20 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-cost-administrare-proprietate",
     categorySlug: "imobiliare",
     summary:
-      "Estimeaza costul administrarii unei proprietati de inchiriat pornind de la chirie, comision si costurile fixe de operare.",
+      "Estimează costul administrării unei proprietăți de închiriat pornind de la chirie, comision și costurile fixe de operare.",
     formulaName: "Cost administrare proprietate",
     formulaExpression: "Cost administrare = chirie x comision + cost fix",
     formulaDescription:
-      "Calculatorul aduna comisionul variabil aplicat la chirie cu costurile fixe de administrare pentru a estima costul anual.",
+      "Calculatorul adună comisionul variabil aplicat la chirie cu costurile fixe de administrare pentru a estima costul anual.",
     howToSteps: [
-      "Introdu chiria lunara estimata si procentul de administrare.",
-      "Adauga eventualele costuri fixe lunare.",
-      "Citeste costul lunar si anual al administrarii.",
+      "Introdu chiria lunară estimată și procentul de administrare.",
+      "Adaugă eventualele costuri fixe lunare.",
+      "Citește costul lunar și anual al administrării.",
     ],
     inputs: [
       {
         name: "monthlyRent",
-        label: "Chirie lunara",
+        label: "Chirie lunară",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -6122,25 +6122,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "closing-cost-share": {
     key: "closing-cost-share",
-    title: "Calculator pondere costuri inchidere",
+    title: "Calculator pondere costuri închidere",
     slug: "calculator-pondere-costuri-inchidere",
     categorySlug: "imobiliare",
     summary:
-      "Arata ce pondere au costurile de inchidere in pretul proprietatii si cat capital total trebuie alocat la start.",
-    formulaName: "Pondere costuri inchidere",
+      "Arată ce pondere au costurile de închidere în prețul proprietății și cât capital total trebuie alocat la start.",
+    formulaName: "Pondere costuri închidere",
     formulaExpression:
-      "Pondere = costuri inchidere / pret proprietate; total initial = pret + costuri",
+      "Pondere = costuri închidere / preț proprietate; total initial = preț + costuri",
     formulaDescription:
-      "Calculatorul transforma costurile de inchidere intr-o pondere usor de comparat intre scenarii si arata capitalul initial total.",
+      "Calculatorul transformă costurile de închidere într-o pondere ușor de comparat între scenarii și arată capitalul initial total.",
     howToSteps: [
-      "Introdu pretul proprietatii si costurile de inchidere estimate.",
-      "Citeste ponderea lor in pret si suma totala alocata la start.",
-      "Compara mai multe scenarii daca ai variante diferite de finantare sau tranzactie.",
+      "Introdu prețul proprietății și costurile de închidere estimate.",
+      "Citește ponderea lor în preț și suma totală alocată la start.",
+      "Compară mai multe scenarii dacă ai variante diferite de finanțare sau tranzacție.",
     ],
     inputs: [
       {
         name: "purchasePrice",
-        label: "Pret proprietate",
+        label: "Preț proprietate",
         type: "number",
         unit: "lei",
         min: 0.01,
@@ -6151,7 +6151,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "closingCosts",
-        label: "Costuri inchidere",
+        label: "Costuri închidere",
         type: "number",
         unit: "lei",
         min: 0,
@@ -6176,25 +6176,25 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
   },
   "room-rental-income": {
     key: "room-rental-income",
-    title: "Calculator venit inchiriere pe camera",
+    title: "Calculator venit închiriere pe camera",
     slug: "calculator-venit-inchiriere-pe-camera",
     categorySlug: "imobiliare",
     summary:
-      "Estimeaza venitul lunar si anual cand inchiriezi pe camera, pornind de la numarul de camere, chiria per camera si gradul de ocupare.",
-    formulaName: "Venit inchiriere pe camera",
+      "Estimează venitul lunar și anual când închiriezi pe camera, pornind de la numărul de camere, chiria per camera și gradul de ocupare.",
+    formulaName: "Venit închiriere pe camera",
     formulaExpression:
       "Venit lunar = camere x chirie/camera x ocupare; venit anual = venit lunar x 12",
     formulaDescription:
-      "Calculatorul foloseste numarul de camere si gradul de ocupare pentru a aproxima venitul posibil din inchirierea pe camera.",
+      "Calculatorul folosește numărul de camere și gradul de ocupare pentru a aproxima venitul posibil din închirierea pe camera.",
     howToSteps: [
-      "Introdu numarul de camere inchiriate si chiria lunara per camera.",
+      "Introdu numărul de camere închiriate și chiria lunară per camera.",
       "Introdu gradul de ocupare mediu.",
-      "Citeste venitul lunar si anual estimat.",
+      "Citește venitul lunar și anual estimat.",
     ],
     inputs: [
       {
         name: "roomsRented",
-        label: "Camere inchiriate",
+        label: "Camere închiriate",
         type: "number",
         unit: "camere",
         min: 1,
@@ -6247,21 +6247,21 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-costuri-recurente-proprietate",
     categorySlug: "imobiliare",
     summary:
-      "Aduna administrarea, reparatiile si asigurarea pentru a vedea costul anual recurent al unei proprietati.",
+      "Adună administrarea, reparațiile și asigurarea pentru a vedea costul anual recurent al unei proprietăți.",
     formulaName: "Costuri recurente proprietate",
     formulaExpression:
-      "Cost anual = administrare lunara x 12 + reparatii anuale + asigurare anuala",
+      "Cost anual = administrare lunară x 12 + reparații anuale + asigurare anuală",
     formulaDescription:
-      "Calculatorul este util pentru bugetarea costurilor recurente atunci cand compari randamentul sau presiunea pe cash-flow.",
+      "Calculatorul este util pentru bugetarea costurilor recurente atunci când compari randamentul sau presiunea pe cash-flow.",
     howToSteps: [
       "Introdu costul lunar de administrare.",
-      "Adauga reparatiile si asigurarea anuala.",
-      "Citeste costul anual total si media lunara aferenta.",
+      "Adaugă reparațiile și asigurarea anuală.",
+      "Citește costul anual total și media lunară aferentă.",
     ],
     inputs: [
       {
         name: "monthlyServiceCharge",
-        label: "Administrare lunara",
+        label: "Administrare lunară",
         type: "number",
         unit: "lei/luna",
         min: 0,
@@ -6272,7 +6272,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualRepairs",
-        label: "Reparatii anuale",
+        label: "Reparații anuale",
         type: "number",
         unit: "lei/an",
         min: 0,
@@ -6283,7 +6283,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "annualInsurance",
-        label: "Asigurare anuala",
+        label: "Asigurare anuală",
         type: "number",
         unit: "lei/an",
         min: 0,
@@ -6295,7 +6295,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     ],
     outputs: [
       { name: "annualTotal", label: "Cost anual", unit: "lei/an", decimals: 2 },
-      { name: "monthlyAverage", label: "Medie lunara", unit: "lei/luna", decimals: 2 },
+      { name: "monthlyAverage", label: "Medie lunară", unit: "lei/luna", decimals: 2 },
     ],
     compute: (values) => {
       const monthlyServiceCharge = parseNumber(values.monthlyServiceCharge);
@@ -6314,16 +6314,16 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
     slug: "calculator-prag-ocupare-rentabil",
     categorySlug: "imobiliare",
     summary:
-      "Arata ce grad minim de ocupare iti trebuie ca sa acoperi costurile fixe lunare ale unei proprietati de inchiriat.",
+      "Arată ce grad minim de ocupare îți trebuie ca să acoperi costurile fixe lunare ale unei proprietăți de închiriat.",
     formulaName: "Prag ocupare rentabil",
     formulaExpression:
       "Ocupare break-even = costuri fixe lunare / venit potential lunar",
     formulaDescription:
-      "Calculatorul transforma costurile fixe si chiria potentiala intr-un prag minim de ocupare util pentru scenarii prudente.",
+      "Calculatorul transformă costurile fixe și chiria potențială într-un prag minim de ocupare util pentru scenarii prudente.",
     howToSteps: [
-      "Introdu costurile fixe lunare ale proprietatii.",
-      "Introdu venitul lunar potential la ocupare completa.",
-      "Citeste pragul minim de ocupare si bufferul ramas la ocupare completa.",
+      "Introdu costurile fixe lunare ale proprietății.",
+      "Introdu venitul lunar potential la ocupare completă.",
+      "Citește pragul minim de ocupare și bufferul ramas la ocupare completă.",
     ],
     inputs: [
       {
@@ -6358,7 +6358,7 @@ export const CALCULATOR_DEFINITIONS: Record<CalculatorKey, CalculatorDefinition>
       },
       {
         name: "monthlyBufferAtFullOccupancy",
-        label: "Buffer la ocupare completa",
+        label: "Buffer la ocupare completă",
         unit: "lei/luna",
         decimals: 2,
       },

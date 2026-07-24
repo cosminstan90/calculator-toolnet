@@ -32,37 +32,37 @@ const audienceLabel = (audience: Audience) => {
     return "pentru firme";
   }
 
-  return "pentru persoane si firme";
+  return "pentru persoane și firme";
 };
 
 const defaultGuidance: CategoryGuidance = {
   summary:
-    "Rezultatul ar trebui folosit ca punct de pornire pentru o decizie mai buna, nu ca raspuns final rupt de context.",
+    "Rezultatul ar trebui folosit ca punct de pornire pentru o decizie mai bună, nu ca răspuns final rupt de context.",
   checks: [
-    "Verifica unitatile introduse si ordinea marimilor din formular.",
-    "Refa calculul cu un scenariu conservator si cu unul optimist.",
-    "Compara rezultatul cu cel putin un calculator sau articol conex.",
+    "Verifică unitățile introduse și ordinea mărimilor din formular.",
+    "Refă calculul cu un scenariu conservator și cu unul optimist.",
+    "Compară rezultatul cu cel puțin un calculator sau articol conex.",
   ],
   mistakes: [
-    "Sa tratezi cifra obtinuta ca verdict final, nu ca punct de pornire.",
-    "Sa compari rezultate din scenarii construite pe unitati sau ipoteze diferite.",
-    "Sa ignori limitarile formulei atunci cand decizia are miza mare.",
+    "Să tratezi cifra obținută ca verdict final, nu ca punct de pornire.",
+    "Să compari rezultate din scenarii construite pe unități sau ipoteze diferite.",
+    "Să ignori limitările formulei atunci când decizia are miză mare.",
   ],
   nextSteps: [
-    "Vezi cum se schimba rezultatul daca modifici valorile principale din formular.",
-    "Continua cu un calculator sau ghid conex pentru validare suplimentara.",
-    "Foloseste rezultatul intr-o decizie concreta, nu doar ca informatie izolata.",
+    "Vezi cum se schimbă rezultatul dacă modifici valorile principale din formular.",
+    "Continuă cu un calculator sau ghid conex pentru validare suplimentară.",
+    "Folosește rezultatul într-o decizie concretă, nu doar ca informație izolată.",
   ],
   sections: [
     {
-      title: "Cand merita sa folosesti pagina",
+      title: "Când merită să folosești pagina",
       body:
-        "Pagina este utila atunci cand vrei un raspuns rapid, dar si suficient context cat sa poti transforma rezultatul intr-un pas practic.",
+        "Pagina este utilă atunci când vrei un răspuns rapid, dar și suficient context cât să poți transforma rezultatul într-un pas practic.",
     },
     {
-      title: "Cum citesti rezultatul",
+      title: "Cum citești rezultatul",
       body:
-        "Cifra finala are valoare doar daca este comparata cu scenariul real, cu limitele formulei si cu alternativele pe care le ai la indemana.",
+        "Cifra finală are valoare doar dacă este comparată cu scenariul real, cu limitele formulei și cu alternativele pe care le ai la îndemână.",
     },
   ],
 };
@@ -70,342 +70,342 @@ const defaultGuidance: CategoryGuidance = {
 const categoryGuidance: Record<string, CategoryGuidance> = {
   "nutritie-si-antrenament": {
     summary:
-      "In nutritie si antrenament, rezultatul te ajuta sa calibrezi aportul, ritmul sau asteptarile, dar merita mereu citit impreuna cu contextul tau real.",
+      "În nutriție și antrenament, rezultatul te ajută să calibrezi aportul, ritmul sau așteptările, dar merită mereu citit împreună cu contextul tău real.",
     checks: [
-      "Verifica daca datele introduse sunt actuale: greutate, inaltime, varsta, nivel de activitate.",
-      "Nu interpreta rezultatul izolat daca obiectivul tau este performanta, recompozitie sau sanatate metabolica.",
-      "Compara cifra obtinuta cu alte repere apropiate, nu doar cu o singura eticheta.",
+      "Verifică dacă datele introduse sunt actuale: greutate, înălțime, vârstă, nivel de activitate.",
+      "Nu interpreta rezultatul izolat dacă obiectivul tău este performanță, recompoziție sau sănătate metabolică.",
+      "Compară cifra obținută cu alte repere apropiate, nu doar cu o singură etichetă.",
     ],
     mistakes: [
-      "Sa interpretezi rezultatul ca diagnostic medical sau nutritional complet.",
-      "Sa alegi un target fix fara sa il verifici in evolutia reala de cateva saptamani.",
-      "Sa ignori contextul personal: antrenament, masa musculara, istoric metabolic.",
+      "Să interpretezi rezultatul ca diagnostic medical sau nutrițional complet.",
+      "Să alegi un target fix fără să îl verifici în evoluția reală de câteva săptămâni.",
+      "Să ignori contextul personal: antrenament, masă musculară, istoric metabolic.",
     ],
     nextSteps: [
-      "Continua cu un calculator complementar din nutritie sau compozitie corporala.",
-      "Foloseste rezultatul pentru a seta un interval, nu un target rigid.",
-      "Revino si recalculeaza dupa schimbari de greutate, rutina sau obiectiv.",
+      "Continuă cu un calculator complementar din nutriție sau compoziție corporală.",
+      "Folosește rezultatul pentru a seta un interval, nu un target rigid.",
+      "Revino și recalculează după schimbări de greutate, rutină sau obiectiv.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa alegi mai bine intre mentinere, deficit, surplus sau ajustari ale planului de antrenament si alimentatie.",
+          "Te ajută să alegi mai bine între menținere, deficit, surplus sau ajustări ale planului de antrenament și alimentație.",
       },
       {
-        title: "Ce sa nu fortezi",
+        title: "Ce să nu forțezi",
         body:
-          "Un rezultat matematic util nu inseamna automat recomandare medicala sau nutritionala completa. Pastreaza-l ca reper, nu ca verdict.",
+          "Un rezultat matematic util nu înseamnă automat recomandare medicală sau nutrițională completă. Păstrează-l ca reper, nu ca verdict.",
       },
     ],
   },
   auto: {
     summary:
-      "In zona auto, calculatorul trebuie sa clarifice costul sau timpul real al drumului, nu doar sa afiseze o valoare frumoasa pe hartie.",
+      "În zona auto, calculatorul trebuie să clarifice costul sau timpul real al drumului, nu doar să afișeze o valoare frumoasă pe hârtie.",
     checks: [
-      "Introdu valori cat mai apropiate de consumul tau real, nu doar de specificatia producatorului.",
-      "Ia in calcul traficul, incarcare masinii, traseul si preturile diferite la combustibil.",
-      "Verifica daca decizia depinde de cost total, cost pe kilometru sau timp estimat.",
+      "Introdu valori cât mai apropiate de consumul tău real, nu doar de specificația producătorului.",
+      "Ia în calcul traficul, încărcarea mașinii, traseul și prețurile diferite la combustibil.",
+      "Verifică dacă decizia depinde de cost total, cost pe kilometru sau timp estimat.",
     ],
     mistakes: [
-      "Sa folosesti consumul idealizat din fabrica in locul unei valori apropiate de practica.",
-      "Sa compari drumuri foarte diferite ca si cum ar fi acelasi scenariu.",
-      "Sa iei costul estimat ca valoare garantata, nu ca interval orientativ.",
+      "Să folosești consumul idealizat din fabrică în locul unei valori apropiate de practică.",
+      "Să compari drumuri foarte diferite ca și cum ar fi același scenariu.",
+      "Să iei costul estimat ca valoare garantată, nu ca interval orientativ.",
     ],
     nextSteps: [
-      "Compara doua scenarii de drum sau doua valori de consum.",
+      "Compară două scenarii de drum sau două valori de consum.",
       "Deschide un calculator conex pentru cost total, consum sau timp.",
-      "Foloseste rezultatul ca baza pentru buget, nu ca valoare garantata.",
+      "Folosește rezultatul ca bază pentru buget, nu ca valoare garantată.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa alegi ruta, bugetul sau scenariul de cost mai realist inainte sa pleci la drum sau sa compari masini.",
+          "Te ajută să alegi ruta, bugetul sau scenariul de cost mai realist înainte să pleci la drum sau să compari mașini.",
       },
       {
-        title: "Ce sa verifici dupa calcul",
+        title: "Ce să verifici după calcul",
         body:
-          "Fa o comparatie rapida intre consum estimat si consum observat in practica. Diferenta dintre ele este deseori mai importanta decat cifra initiala.",
+          "Fă o comparație rapidă între consum estimat și consum observat în practică. Diferența dintre ele este deseori mai importantă decât cifra inițială.",
       },
     ],
   },
   energie: {
     summary:
-      "La energie si conversii tehnice, valoarea corecta este importanta, dar si contextul in care o folosesti schimba semnificativ decizia.",
+      "La energie și conversii tehnice, valoarea corectă este importantă, dar și contextul în care o folosești schimbă semnificativ decizia.",
     checks: [
-      "Verifica unitatile si daca lucrezi cu putere, energie sau cost.",
+      "Verifică unitățile și dacă lucrezi cu putere, energie sau cost.",
       "Nu confunda consumul teoretic cu consumul real pe durata folosirii aparatului.",
-      "Daca decizia implica bani, compara si durata de utilizare sau tariful folosit.",
+      "Dacă decizia implică bani, compară și durata de utilizare sau tariful folosit.",
     ],
     mistakes: [
-      "Sa amesteci wati, kWh si costul final in acelasi pas.",
-      "Sa tratezi puterea nominala ca si cum ar fi consum constant in orice scenariu.",
-      "Sa uiti de timpul real de utilizare cand calculezi costul.",
+      "Să amesteci wați, kWh și costul final în același pas.",
+      "Să tratezi puterea nominală ca și cum ar fi consum constant în orice scenariu.",
+      "Să uiți de timpul real de utilizare când calculezi costul.",
     ],
     nextSteps: [
-      "Continua cu un calculator de cost sau consum complementar.",
-      "Testeaza mai multe valori pentru ore de utilizare sau putere nominala.",
-      "Pastreaza rezultatul ca reper tehnic si completeaza-l cu datele de factura sau specificatie reala.",
+      "Continuă cu un calculator de cost sau consum complementar.",
+      "Testează mai multe valori pentru ore de utilizare sau putere nominală.",
+      "Păstrează rezultatul ca reper tehnic și completează-l cu datele de factură sau specificație reală.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Este util pentru estimari de cost, comparatii intre aparate, alegerea unei solutii sau clarificarea unei conversii tehnice.",
+          "Este util pentru estimări de cost, comparații între aparate, alegerea unei soluții sau clarificarea unei conversii tehnice.",
       },
       {
-        title: "Ce sa nu pierzi din vedere",
+        title: "Ce să nu pierzi din vedere",
         body:
-          "Randamentul, variatia de consum si modul efectiv de utilizare pot schimba rezultatul final fata de scenariul idealizat.",
+          "Randamentul, variația de consum și modul efectiv de utilizare pot schimba rezultatul final față de scenariul idealizat.",
       },
     ],
   },
   "energie-pentru-casa": {
     summary:
-      "In energia pentru casa, calculatorul este util cand te ajuta sa legi consumul, costul si alegerea echipamentului de scenariul real din locuinta.",
+      "În energia pentru casă, calculatorul este util când te ajută să legi consumul, costul și alegerea echipamentului de scenariul real din locuință.",
     checks: [
-      "Verifica daca folosesti tariful, consumul si numarul de ore apropiate de situatia ta reala.",
-      "Pentru panouri, compara macar un scenariu prudent si unul optimist de productie.",
-      "Pentru climatizare sau incalzire, valideaza volumul, izolatia si conditiile reale ale casei.",
+      "Verifică dacă folosești tariful, consumul și numărul de ore apropiate de situația ta reală.",
+      "Pentru panouri, compară măcar un scenariu prudent și unul optimist de producție.",
+      "Pentru climatizare sau încălzire, validează volumul, izolația și condițiile reale ale casei.",
     ],
     mistakes: [
-      "Sa folosesti consumul teoretic al aparatelor ca si cum ar fi consum garantat in orice zi.",
-      "Sa tratezi productia fotovoltaica ca promisiune fixa, fara sa tii cont de orientare, umbrire sau autoconsum.",
-      "Sa alegi echipamente doar dupa puterea afisata, fara sa legi rezultatul de costul si scenariul real de utilizare.",
+      "Să folosești consumul teoretic al aparatelor ca și cum ar fi consum garantat în orice zi.",
+      "Să tratezi producția fotovoltaică ca promisiune fixă, fără să ții cont de orientare, umbrire sau autoconsum.",
+      "Să alegi echipamente doar după puterea afișată, fără să legi rezultatul de costul și scenariul real de utilizare.",
     ],
     nextSteps: [
-      "Compara costul actual cu un scenariu de reducere a consumului sau cu investitia in panouri.",
-      "Leaga calculul de un al doilea tool din aceeasi categorie: productie, amortizare, BTU sau necesar de caldura.",
-      "Foloseste ghidul editorial cand decizia implica achizitie de echipamente sau comparatii intre solutii.",
+      "Compară costul actual cu un scenariu de reducere a consumului sau cu investiția în panouri.",
+      "Leagă calculul de un al doilea tool din aceeași categorie: producție, amortizare, BTU sau necesar de căldură.",
+      "Folosește ghidul editorial când decizia implică achiziție de echipamente sau comparații între soluții.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa compari factura actuala cu scenarii de eficienta, panouri fotovoltaice, climatizare sau dimensionare a echipamentelor din casa.",
+          "Te ajută să compari factura actuală cu scenarii de eficiență, panouri fotovoltaice, climatizare sau dimensionare a echipamentelor din casă.",
       },
       {
         title: "Ce trebuie verificat separat",
         body:
-          "Tarifele reale, conditiile locuintei, orientarea acoperisului, randamentul echipamentelor si montajul pot schimba semnificativ rezultatul final.",
+          "Tarifele reale, condițiile locuinței, orientarea acoperișului, randamentul echipamentelor și montajul pot schimba semnificativ rezultatul final.",
       },
     ],
   },
   conversii: {
     summary:
-      "La conversii, miza nu este doar formula, ci sa folosesti rapid raspunsul corect in contextul potrivit.",
+      "La conversii, miza nu este doar formula, ci să folosești rapid răspunsul corect în contextul potrivit.",
     checks: [
-      "Verifica daca sensul conversiei este corect si daca unitatea finala este cea de care ai nevoie.",
-      "Cand valoarea urmeaza sa fie folosita in alt calcul, reia rapid pasul pentru confirmare.",
-      "Daca rezultatul pare neobisnuit, verifica punctul zecimal si unitatile introduse.",
+      "Verifică dacă sensul conversiei este corect și dacă unitatea finală este cea de care ai nevoie.",
+      "Când valoarea urmează să fie folosită în alt calcul, reia rapid pasul pentru confirmare.",
+      "Dacă rezultatul pare neobișnuit, verifică punctul zecimal și unitățile introduse.",
     ],
     mistakes: [
-      "Sa inversezi directia conversiei fara sa observi.",
-      "Sa copiezi o valoare fara unitatea finala atasata clar.",
-      "Sa folosesti o conversie aproximativa intr-un calcul care are nevoie de precizie mai buna.",
+      "Să inversezi direcția conversiei fără să observi.",
+      "Să copiezi o valoare fără unitatea finală atașată clar.",
+      "Să folosești o conversie aproximativă într-un calcul care are nevoie de precizie mai bună.",
     ],
     nextSteps: [
-      "Continua cu alta conversie apropiata daca lucrezi cu mai multe unitati.",
-      "Foloseste rezultatul imediat intr-un calculator care depinde de aceasta unitate.",
-      "Pastreaza pagina ca punct de verificare rapida pentru taskuri recurente.",
+      "Continuă cu altă conversie apropiată dacă lucrezi cu mai multe unități.",
+      "Folosește rezultatul imediat într-un calculator care depinde de această unitate.",
+      "Păstrează pagina ca punct de verificare rapidă pentru taskuri recurente.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Iti economiseste timp cand vrei sa confirmi rapid o valoare inainte de un calcul mai mare, o comanda sau o comparatie tehnica.",
+          "Îți economisește timp când vrei să confirmi rapid o valoare înainte de un calcul mai mare, o comandă sau o comparație tehnică.",
       },
       {
         title: "Unde apar erorile frecvent",
         body:
-          "Cele mai comune greseli vin din schimbarea directiei conversiei sau din copierea unei valori fara unitate clara.",
+          "Cele mai comune greșeli vin din schimbarea direcției conversiei sau din copierea unei valori fără unitate clară.",
       },
     ],
   },
   constructii: {
     summary:
-      "In constructii si amenajari, calculatorul te ajuta sa estimezi mai bine, dar decizia buna apare abia dupa ce adaugi pierderi si context real de santier.",
+      "În construcții și amenajări, calculatorul te ajută să estimezi mai bine, dar decizia bună apare abia după ce adaugi pierderi și context real de șantier.",
     checks: [
-      "Masoara din nou suprafetele sau volumele inainte sa folosesti rezultatul pentru achizitie.",
-      "Adauga marja pentru pierderi, taieturi, rosturi sau neregularitati.",
-      "Verifica daca produsul ales are randament sau acoperire diferita fata de scenariul standard.",
+      "Măsoară din nou suprafețele sau volumele înainte să folosești rezultatul pentru achiziție.",
+      "Adaugă marjă pentru pierderi, tăieturi, rosturi sau neregularități.",
+      "Verifică dacă produsul ales are randament sau acoperire diferită față de scenariul standard.",
     ],
     mistakes: [
-      "Sa cumperi fix cantitatea teoretica fara marja de pierdere.",
-      "Sa aplici randamentul unui produs pe alt material cu specificatii diferite.",
-      "Sa tratezi estimarea ca deviz final fara verificare pe lucrare.",
+      "Să cumperi fix cantitatea teoretică fără marjă de pierdere.",
+      "Să aplici randamentul unui produs pe alt material cu specificații diferite.",
+      "Să tratezi estimarea ca deviz final fără verificare pe lucrare.",
     ],
     nextSteps: [
-      "Compara necesarul brut cu necesarul plus pierderi.",
-      "Continua cu un calculator complementar de materiale sau suprafata.",
-      "Foloseste rezultatul intr-un deviz orientativ, nu ca unic reper de aprovizionare.",
+      "Compară necesarul brut cu necesarul plus pierderi.",
+      "Continuă cu un calculator complementar de materiale sau suprafață.",
+      "Folosește rezultatul într-un deviz orientativ, nu ca unic reper de aprovizionare.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa estimezi materiale, costuri si volum de lucru mai realist pentru renovari, finisaje sau lucrari simple.",
+          "Te ajută să estimezi materiale, costuri și volum de lucru mai realist pentru renovări, finisaje sau lucrări simple.",
       },
       {
-        title: "Ce sa nu fortezi",
+        title: "Ce să nu forțezi",
         body:
-          "Nu trata rezultatul ca necesar final de achizitie daca santierul are suprafete neregulate sau specificatii diferite de cele standard.",
+          "Nu trata rezultatul ca necesar final de achiziție dacă șantierul are suprafețe neregulate sau specificații diferite de cele standard.",
       },
     ],
   },
   afaceri: {
     summary:
-      "Pentru afaceri, un calculator bun trebuie sa scurteze drumul spre decizie: pret, marja, rentabilitate sau scenariu de operare.",
+      "Pentru afaceri, un calculator bun trebuie să scurteze drumul spre decizie: preț, marjă, rentabilitate sau scenariu de operare.",
     checks: [
-      "Verifica daca in calcul intra toate costurile relevante, nu doar costul direct evident.",
-      "Compara minim doua scenarii: conservator si optimist.",
-      "Nu lua decizia finala fara sa vezi si efectul taxelor, discounturilor sau comisioanelor.",
+      "Verifică dacă în calcul intră toate costurile relevante, nu doar costul direct evident.",
+      "Compară minim două scenarii: conservator și optimist.",
+      "Nu lua decizia finală fără să vezi și efectul taxelor, discounturilor sau comisioanelor.",
     ],
     mistakes: [
-      "Sa ignori costurile indirecte si sa ramai doar la costul de baza.",
-      "Sa compari scenarii comerciale diferite cu ipoteze inegale.",
-      "Sa folosesti formula ca verdict final fara context fiscal sau operational.",
+      "Să ignori costurile indirecte și să rămâi doar la costul de bază.",
+      "Să compari scenarii comerciale diferite cu ipoteze inegale.",
+      "Să folosești formula ca verdict final fără context fiscal sau operațional.",
     ],
     nextSteps: [
-      "Deschide un calculator conex pentru marja, markup, break-even sau ROI.",
-      "Foloseste rezultatul intr-un scenariu de ofertare, buget sau pricing.",
-      "Salveaza logica deciziei si compara rezultatul cu datele reale dupa implementare.",
+      "Deschide un calculator conex pentru marjă, markup, break-even sau ROI.",
+      "Folosește rezultatul într-un scenariu de ofertare, buget sau pricing.",
+      "Salvează logica deciziei și compară rezultatul cu datele reale după implementare.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Pagina este gandita pentru discutii rapide despre pret, profitabilitate, eficienta sau prag de rentabilitate.",
+          "Pagina este gândită pentru discuții rapide despre preț, profitabilitate, eficiență sau prag de rentabilitate.",
       },
       {
         title: "Ce trebuie validat separat",
         body:
-          "Formula ofera viteza, dar decizia de business are nevoie si de context comercial, fiscal si operational.",
+          "Formula oferă viteză, dar decizia de business are nevoie și de context comercial, fiscal și operațional.",
       },
     ],
   },
   finante: {
     summary:
-      "In finante, rezultatul conteaza doar daca stii exact ce compari: procent, baza de calcul, TVA, dobanda sau cost total.",
+      "În finanțe, rezultatul contează doar dacă știi exact ce compari: procent, bază de calcul, TVA, dobândă sau cost total.",
     checks: [
-      "Verifica daca pleci de la valoare neta, bruta, fara TVA sau cu TVA.",
-      "Testeaza un scenariu suplimentar cu comisioane, dobanda sau costuri recurente.",
-      "Nu interpreta un singur calcul fara sa verifici si impactul asupra cash-flow-ului sau bugetului.",
+      "Verifică dacă pleci de la valoare netă, brută, fără TVA sau cu TVA.",
+      "Testează un scenariu suplimentar cu comisioane, dobândă sau costuri recurente.",
+      "Nu interpreta un singur calcul fără să verifici și impactul asupra cash-flow-ului sau bugetului.",
     ],
     mistakes: [
-      "Sa amesteci procentele cu valorile absolute fara baza de calcul clara.",
-      "Sa compari TVA, discount sau dobanda pe sume exprimate diferit.",
-      "Sa folosesti un singur scenariu cand decizia depinde de mai multe ipoteze financiare.",
+      "Să amesteci procentele cu valorile absolute fără bază de calcul clară.",
+      "Să compari TVA, discount sau dobândă pe sume exprimate diferit.",
+      "Să folosești un singur scenariu când decizia depinde de mai multe ipoteze financiare.",
     ],
     nextSteps: [
-      "Continua cu un calculator financiar complementar pentru validare.",
-      "Compara rezultatul cu varianta inversa sau cu un scenariu alternativ.",
-      "Foloseste cifra obtinuta intr-o decizie de buget, economisire, pret sau creditare.",
+      "Continuă cu un calculator financiar complementar pentru validare.",
+      "Compară rezultatul cu varianta inversă sau cu un scenariu alternativ.",
+      "Folosește cifra obținută într-o decizie de buget, economisire, preț sau creditare.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Ajuta la evaluarea rapida a preturilor, ratelor, economiilor, taxelor sau comparatiilor procentuale.",
+          "Ajută la evaluarea rapidă a prețurilor, ratelor, economiilor, taxelor sau comparațiilor procentuale.",
       },
       {
         title: "Unde apare cea mai mare confuzie",
         body:
-          "Cele mai multe erori apar cand se amesteca procentele cu valorile absolute sau cand baza de calcul nu este clar definita.",
+          "Cele mai multe erori apar când se amestecă procentele cu valorile absolute sau când baza de calcul nu este clar definită.",
       },
     ],
   },
   "salarii-si-taxe": {
     summary:
-      "In salarii si taxare efectiva, calculatorul este util ca reper rapid, dar rezultatul trebuie citit impreuna cu orele lucrate, structura pachetului si contextul concret al ofertei.",
+      "În salarii și taxare efectivă, calculatorul este util ca reper rapid, dar rezultatul trebuie citit împreună cu orele lucrate, structura pachetului și contextul concret al ofertei.",
     checks: [
-      "Clarifica daca lucrezi cu net, brut, venit lunar, bonusuri sau scenarii mixte.",
-      "Verifica daca baza de comparatie este aceeasi pentru toate variantele analizate.",
-      "Leaga rezultatul de timpul real de lucru, nu doar de suma afisata lunar.",
+      "Clarifică dacă lucrezi cu net, brut, venit lunar, bonusuri sau scenarii mixte.",
+      "Verifică dacă baza de comparație este aceeași pentru toate variantele analizate.",
+      "Leagă rezultatul de timpul real de lucru, nu doar de suma afișată lunar.",
     ],
     mistakes: [
-      "Sa compari doua oferte doar prin suma lunara, fara bonusuri sau ore reale lucrate.",
-      "Sa tratezi rata efectiva drept explicatie fiscala completa, nu ca indicator orientativ.",
-      "Sa ignori venitul anual atunci cand compari pachete salariale diferite.",
+      "Să compari două oferte doar prin suma lunară, fără bonusuri sau ore reale lucrate.",
+      "Să tratezi rata efectivă drept explicație fiscală completă, nu ca indicator orientativ.",
+      "Să ignori venitul anual atunci când compari pachete salariale diferite.",
     ],
     nextSteps: [
-      "Compara cresterea salariala cu tariful orar si venitul anual pentru acelasi scenariu.",
-      "Testeaza atat varianta neta, cat si varianta bruta daca oferta este prezentata diferit.",
-      "Continua cu ghidurile conexe pentru a clarifica interpretarea rezultatului in negociere sau planning.",
+      "Compară creșterea salarială cu tariful orar și venitul anual pentru același scenariu.",
+      "Testează atât varianta netă, cât și varianta brută dacă oferta este prezentată diferit.",
+      "Continuă cu ghidurile conexe pentru a clarifica interpretarea rezultatului în negociere sau planning.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Pagina te ajuta sa compari oferte, sa intelegi mai clar valoarea reala a venitului si sa legi rapid salariul de timp, taxare sau venit anual.",
+          "Pagina te ajută să compari oferte, să înțelegi mai clar valoarea reală a venitului și să legi rapid salariul de timp, taxare sau venit anual.",
       },
       {
         title: "Ce trebuie validat separat",
         body:
-          "Detaliile fiscale concrete, regulile de payroll si structura completa a pachetului de compensare trebuie verificate separat fata de calculatorul orientativ.",
+          "Detaliile fiscale concrete, regulile de payroll și structura completă a pachetului de compensare trebuie verificate separat față de calculatorul orientativ.",
       },
     ],
   },
   "credite-si-economii": {
     summary:
-      "In credite si economii, rezultatul are valoare cand te ajuta sa compari scenarii reale, nu doar sa obtii o cifra izolata despre rata sau obiectiv.",
+      "În credite și economii, rezultatul are valoare când te ajută să compari scenarii reale, nu doar să obții o cifră izolată despre rată sau obiectiv.",
     checks: [
-      "Verifica daca toate valorile sunt exprimate in acelasi tip de suma: net, brut, fara comisioane sau cu costuri incluse.",
-      "Compara intotdeauna cel putin doua scenarii: conservator si optimist.",
-      "Leaga rezultatul de bugetul lunar, lichiditate si obiectivele pe termen mediu sau lung.",
+      "Verifică dacă toate valorile sunt exprimate în același tip de sumă: net, brut, fără comisioane sau cu costuri incluse.",
+      "Compară întotdeauna cel puțin două scenarii: conservator și optimist.",
+      "Leagă rezultatul de bugetul lunar, lichiditate și obiectivele pe termen mediu sau lung.",
     ],
     mistakes: [
-      "Sa te uiti doar la rata lunara si sa ignori costul total sau perioada.",
-      "Sa folosesti randamente optimiste ca si cum ar fi garantate.",
-      "Sa compari doua scenarii de finantare fara sa verifici avansul, costurile initiale si flexibilitatea reala.",
+      "Să te uiți doar la rata lunară și să ignori costul total sau perioada.",
+      "Să folosești randamente optimiste ca și cum ar fi garantate.",
+      "Să compari două scenarii de finanțare fără să verifici avansul, costurile inițiale și flexibilitatea reală.",
     ],
     nextSteps: [
-      "Continua cu un calculator complementar pentru validare: cost total, refinantare, fond de urgenta sau avans.",
-      "Testeaza un scenariu mai prudent inainte sa consideri rezultatul suficient.",
-      "Foloseste ghidurile asociate pentru a traduce cifra intr-o decizie financiara mai buna.",
+      "Continuă cu un calculator complementar pentru validare: cost total, refinanțare, fond de urgență sau avans.",
+      "Testează un scenariu mai prudent înainte să consideri rezultatul suficient.",
+      "Folosește ghidurile asociate pentru a traduce cifra într-o decizie financiară mai bună.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa compari credite, refinantare, obiective de economisire si bufferul financiar necesar pentru stabilitate.",
+          "Te ajută să compari credite, refinanțare, obiective de economisire și bufferul financiar necesar pentru stabilitate.",
       },
       {
         title: "Ce trebuie validat separat",
       body:
-          "Comisioanele, conditiile produsului, fiscalitatea si comportamentul real al bugetului trebuie verificate separat fata de formula orientativa.",
+          "Comisioanele, condițiile produsului, fiscalitatea și comportamentul real al bugetului trebuie verificate separat față de formula orientativă.",
       },
     ],
   },
   imobiliare: {
     summary:
-      "In imobiliare, rezultatul este util doar daca il legi de costul total, lichiditatea initiala si scenariul real de folosire sau exploatare a proprietatii.",
+      "În imobiliare, rezultatul este util doar dacă îl legi de costul total, lichiditatea inițială și scenariul real de folosire sau exploatare a proprietății.",
     checks: [
-      "Verifica daca toate costurile sunt puse in acelasi cadru: pret, costuri initiale, costuri recurente si rezerva.",
-      "Compara macar un scenariu prudent si unul optimist pentru chirie, ocupare sau renovare.",
-      "Nu citi proprietatea doar prin rata sau doar prin randament; leaga calculul de bugetul complet.",
+      "Verifică dacă toate costurile sunt puse în același cadru: preț, costuri inițiale, costuri recurente și rezervă.",
+      "Compară măcar un scenariu prudent și unul optimist pentru chirie, ocupare sau renovare.",
+      "Nu citi proprietatea doar prin rată sau doar prin randament; leagă calculul de bugetul complet.",
     ],
     mistakes: [
-      "Sa tratezi pretul afisat ca si cum ar fi costul total al proiectului.",
-      "Sa folosesti randamentul brut fara sa scazi administrarea, neocuparea sau costurile recurente.",
-      "Sa proiectezi cresterea chiriei sau profitul din flip pe ipoteze prea optimiste.",
+      "Să tratezi prețul afișat ca și cum ar fi costul total al proiectului.",
+      "Să folosești randamentul brut fără să scazi administrarea, neocuparea sau costurile recurente.",
+      "Să proiectezi creșterea chiriei sau profitul din flip pe ipoteze prea optimiste.",
     ],
     nextSteps: [
-      "Continua cu un calculator complementar pentru avans, cost total, buget lunar sau randament.",
-      "Compara scenariul de locuire cu scenariul investitional daca proprietatea poate juca ambele roluri.",
-      "Foloseste ghidurile categoriei pentru a transforma cifra intr-o decizie mai prudenta.",
+      "Continuă cu un calculator complementar pentru avans, cost total, buget lunar sau randament.",
+      "Compară scenariul de locuire cu scenariul investițional dacă proprietatea poate juca ambele roluri.",
+      "Folosește ghidurile categoriei pentru a transforma cifra într-o decizie mai prudentă.",
     ],
     sections: [
       {
-        title: "Ce decizie sustine",
+        title: "Ce decizie susține",
         body:
-          "Te ajuta sa compari proprietati, sa bugetezi achizitia, sa alegi intre chirie si cumparare sau sa verifici daca o investitie imobiliara rezista dupa costurile reale.",
+          "Te ajută să compari proprietăți, să bugetezi achiziția, să alegi între chirie și cumpărare sau să verifici dacă o investiție imobiliară rezistă după costurile reale.",
       },
       {
         title: "Ce trebuie validat separat",
         body:
-          "Starea proprietatii, costurile de inchidere, finantarea concreta, ocuparea reala si costurile de exploatare trebuie verificate separat fata de formula de pe pagina.",
+          "Starea proprietății, costurile de închidere, finanțarea concretă, ocuparea reală și costurile de exploatare trebuie verificate separat față de formula de pe pagină.",
       },
     ],
   },
@@ -422,12 +422,12 @@ export const buildDecisionSupport = (calculator: Pick<
 
   const dynamicStep =
     relatedCount > 0
-      ? `Continua cu una dintre cele ${relatedCount} pagini conexe recomandate pentru a valida sau aprofunda rezultatul.`
-      : "Continua cu hub-ul categoriei pentru a compara rezultatul cu alte scenarii apropiate.";
+      ? `Continuă cu una dintre cele ${relatedCount} pagini conexe recomandate pentru a valida sau aprofunda rezultatul.`
+      : "Continuă cu hub-ul categoriei pentru a compara rezultatul cu alte scenarii apropiate.";
 
   return {
     eyebrow: `Decision support ${audienceLabel(calculator.audience)}`,
-    title: `Cum folosesti ${calculator.title.toLowerCase()} intr-o decizie reala`,
+    title: `Cum folosești ${calculator.title.toLowerCase()} într-o decizie reală`,
     summary: guidance.summary,
     checks: guidance.checks,
     mistakes: guidance.mistakes,
