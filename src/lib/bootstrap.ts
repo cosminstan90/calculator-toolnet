@@ -4588,9 +4588,27 @@ export const regenerateCalculatorContent = async (
       overrideAccess: true,
       draft: false,
       data: {
+        title: definition.title,
+        shortDescription: meta.shortDescription,
+        intro: meta.intro,
+        interpretationNotes: meta.interpretationNotes,
+        examples: (meta.examples ?? [{ title: "Exemplu de calcul", narrative: meta.example }]).map(
+          (example) => ({
+            title: example.title,
+            narrative: example.narrative,
+          })
+        ),
+        howToSteps: definition.howToSteps.map((step) => ({ step })),
         seoBody: buildCalculatorSeoBody(key, definition, meta),
         contentBlocks: buildCalculatorBlocks(key, definition, meta),
         faq: ensureCalculatorFaq(key, meta.faq),
+        seo: buildSeoPayload({
+          metaTitle: meta.seo?.metaTitle ?? `${definition.title} online`,
+          metaDescription: meta.seo?.metaDescription ?? meta.shortDescription,
+          canonicalPath:
+            meta.seo?.canonicalPath ??
+            `/calculatoare/${definition.categorySlug}/${definition.slug}`,
+        }),
       },
     });
     results.push({ key, status: "updated" });
@@ -4632,7 +4650,16 @@ export const regenerateArticleContent = async (
       id: doc.id,
       overrideAccess: true,
       draft: false,
-      data: { content: seed.content },
+      data: {
+        title: seed.title,
+        excerpt: seed.excerpt,
+        content: seed.content,
+        seo: buildSeoPayload({
+          metaTitle: seed.title,
+          metaDescription: seed.excerpt,
+          canonicalPath: `/blog/${seed.slug}`,
+        }),
+      },
     });
     results.push({ key: seed.slug, status: "updated" });
     onProgress?.(seed.slug, "updated");
@@ -4678,6 +4705,11 @@ export const regenerateCategoryContent = async (
         summary: seed.summary,
         introContent: seed.introContent,
         contentBlocks: buildCategoryBlocks(seed),
+        seo: buildSeoPayload({
+          metaTitle: `${seed.name} - calculatoare online utile`,
+          metaDescription: seed.summary,
+          canonicalPath: `/calculatoare/${seed.slug}`,
+        }),
       },
     });
     results.push({ key: seed.slug, status: "updated" });
